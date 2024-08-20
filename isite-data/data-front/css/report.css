@@ -1,0 +1,21 @@
+.report-block{
+    width: 30%;
+    height: 90px;
+    color: #fff;
+}
+.report-block-left{
+    width: 90px;
+    height: 90px;
+    line-height: 130px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.report-block-right{
+    width: calc(100% - 90px);
+}
+.chart-box{
+    margin-top: 20px;
+    background-color: #eee;
+    width: calc(100% - 20px);
+    padding: 10px;
+}

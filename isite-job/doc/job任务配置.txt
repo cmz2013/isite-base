@@ -1,0 +1,7 @@
+执行器管理：
+bi-admin	业务中台	自动注册
+
+
+任务管理：
+项目综合指标计算	分片广播	0 0 0 * * ?	BEAN：syntheseIndexJobHandler	丢弃后续调度	张崇铭	STOP
+项目单项指标计算	分片广播	0 0 0 * * ?	BEAN：singleIndexJobHandler	丢弃后续调度 子任务ID(项目综合指标计算)	张崇铭	RUNNING

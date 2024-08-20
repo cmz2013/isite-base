@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>用户管理</title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/base.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/pagination.js"></script>
+	<script type="text/javascript" src="/js/menu.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/user.js"></script>
+</head>
+<body>
+	<div class="page-box">
+		<div class="page-left"></div>
+		<div class="page-right">
+			<div class="contain">
+				<div class="contain-title">用户管理</div>
+				<div class="flex-row2 height-50 padding-r-160">
+					<div class="contain-input-block">
+						<input class="contain-input" type="text" name="" placeholder="请输入筛选条件">
+						<div class="contain-input-btn" onclick="queryData()">搜索</div>
+                    </div>
+                    <div class="width-250"></div>
+                    <div class="width-250"></div>
+					<div class="width-250 flex-row3">
+						<div class="contain-btn" onclick="showFixed('tk1')">新增</div>
+					</div>
+				</div>
+				<div class="border-b-ddd">
+					<div class="table-row1">
+						<div class="table-block1 width25">账号</div>
+						<div class="table-block1 width25">权限</div>
+						<div class="table-block1 width25">角色</div>
+						<div class="table-block1 width25">操作</div>
+					</div>
+					<div id="table">
+
+					</div>
+				</div>
+				<div class="padding-t-20">
+		            <div class="m-style"></div> 
+		        </div>
+			</div>
+		</div>
+	</div>
+	<div class="m-fixed" id="tk1">
+		<div class="m-fixedbox">
+			<div class="flex-row2 height-72">
+				<div class="size-18">新增</div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+			</div>
+			<div class="flex-row1 height-50">
+				账号：<input type="text" class="contain-input" name="" placeholder="请输入账号">
+            </div>
+            <div class="flex-row1 height-50">
+				密码：<input type="password" class="contain-input" name="" placeholder="请输入密码">
+            </div>
+            <div class="flex-row1 height-50" id="danxuan1">
+                角色：
+                <div class="db-radio-btn" onclick="clickRadio(this,'#danxuan1',0)">
+                    <i class="db-radio-bg db-radio-choose"></i>普通用户
+                </div>
+                <div class="db-radio-btn" onclick="clickRadio(this,'#danxuan1',1)">
+                    <i class="db-radio-bg"></i>管理员
+                </div>
+            </div>
+            <div class="flex-row1 height-50" id="danxuan2">
+                权限：
+                <div class="db-radio-btn" onclick="clickRadio(this,'#danxuan2',0)">
+                    <i class="db-radio-bg db-radio-choose"></i>项目管理系统
+                </div>
+			</div>
+			<div class="flex-row3 height-72">
+				<div class="m-fixed-border-btn1" onclick="closeFixed()">取消</div>
+				<div class="m-fixed-solid-btn1">确定</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

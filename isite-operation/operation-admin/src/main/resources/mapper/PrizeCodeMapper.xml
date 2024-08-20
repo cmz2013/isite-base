@@ -1,0 +1,10 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.isite.operation.mapper.PrizeCodeMapper">
+
+    <select id="selectOneUnused" resultType="PrizeCodePo">
+        select id, prize_id, code, user_id, create_time, update_time
+        from prize_code
+        where prize_id = #{prizeId} and used_id = 0
+        limit 1
+    </select>
+</mapper>

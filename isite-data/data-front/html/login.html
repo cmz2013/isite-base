@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/login.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/login.js"></script>
+</head>
+<body style="background-size: 100%;overflow: hidden;background: #000 url(/images/login/bg.png) no-repeat;">
+	<div class="img-position">
+		<img class="center-img rotate1" src="/images/login/circle1.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate2" src="/images/login/circle2.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate3" src="/images/login/circle3.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate4" src="/images/login/circle4.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate5" src="/images/login/circle5.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate6" src="/images/login/circle6.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate7" src="/images/login/circle7.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate8" src="/images/login/circle8.png">
+	</div>
+	<div class="img-position">
+		<img class="center-img rotate9" src="/images/login/circle9.png">
+	</div>
+
+	<!-- 外边5个 -->
+	<div class="img-position">
+		<img class="decorate-img decorate1" src="/images/login/decorate1.png">
+		<div class="decorate1-font">FE</div>
+	</div>
+	<div class="img-position">
+		<img class="decorate-img decorate2" src="/images/login/decorate2.png">
+		<div class="decorate2-font">50%</div>
+	</div>
+	<div class="img-position">
+		<img class="decorate-img decorate3" src="/images/login/decorate3.png">
+	</div>
+	<div class="img-position">
+		<img class="decorate-img decorate4" src="/images/login/decorate4.png">
+		<div class="decorate4-font">80%</div>
+	</div>
+	<div class="img-position">
+		<img class="decorate-img decorate5" src="/images/login/decorate5.png">
+	</div>
+
+	<div class="img-position">
+		<img class="decorate-img logo-in" src="/images/login/logo-in.png" onclick="showLoginBox()">
+	</div>
+
+	<div id="loginBox" style="display: none">
+		<div class="img-position">
+			<img class="decorate-img loginBox" src="/images/login/login-box.png">
+		</div>
+		<div class="img-position">
+			<img class="decorate-img loginLogo" src="/images/login/logo.png">
+		</div>
+		<div class="img-position">
+			<div class="decorate-img loginWord">数据集成管理平台</div>
+		</div>
+		<div class="img-position">
+			<img class="decorate-img loginUser" src="/images/login/login-user.png">
+			<input class="loginUserInput" autocomplete='off' id="userName" type="text" placeholder="用户名" name="">
+		</div>
+		<div class="img-position">
+			<img class="decorate-img loginPwd" src="/images/login/login-pwd.png">
+			<input class="loginPwdInput" id="userPsw" type="password" placeholder="密码" name="">
+		</div>
+		<div class="img-position">
+			<img class="decorate-img loginBtn" onclick="getAccessToken()" src="/images/login/login-btn.png">
+			<div class="loginFont" onclick="getAccessToken()">登录</div>
+		</div>
+	</div>
+</body>
+</html>

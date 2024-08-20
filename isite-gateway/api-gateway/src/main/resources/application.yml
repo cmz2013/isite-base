@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        # 配置跨域请求
+        corsConfigurations:
+          '[/**]':
+            allowCredentials: true
+            # 将特殊字符值引起来
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            maxAge: 18000
+      # 使用全局过滤器配置，不用每个路由都配置一次
+      default-filters:
+        # PreserveHostHeader 用于保留原始请求中的 Host头信息
+        - PreserveHostHeader
+        # RemoveRequestHeader 用于在请求发送到目标服务之前移除指定的请求头
+        - RemoveRequestHeader=Access-Control-Allow-Credentials
+        - RemoveRequestHeader=Access-Control-Allow-Origin
+        - RemoveRequestHeader=Access-Control-Allow-Headers
+        - RemoveRequestHeader=Access-Control-Allow-Methods
+        - RemoveRequestHeader=Access-Control-Allow-Age

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>数据接口</title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/base.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/switch.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/pagination.js"></script>
+	<script type="text/javascript" src="/js/menu.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/api.js"></script>
+</head>
+<body>
+	<div class="page-box">
+		<div class="page-left"></div>
+		<div class="page-right">
+			<div class="contain">
+				<div class="contain-title">数据接口</div>
+				<div class="flex-row2 height-50">
+					<div class="contain-input-block">
+						<input class="contain-input" type="text" id="appCode" placeholder="请输入执行器编码">
+						<div class="contain-input-btn" onclick="queryData()">搜索</div>
+					</div>
+					<div class="contain-select-block" onclick="clickSelect(this)">
+						<div class="contain-select-name">接口类型：</div>
+						<div>
+							<input class="contain-select-input" type="text" name="" id="wsType" placeholder="请选择接口类型" value="远程回调接口" readonly="readonly">
+							<div class="contain-select-btn">＜</div>
+							<div class="contain-option-box">
+								<div class="contain-option" onclick="clickOption(this)">远程回调接口</div>
+								<div class="contain-option" onclick="clickOption(this)">本地服务接口</div>
+							</div>
+						</div>
+					</div>
+					<div class="contain-select-block" onclick="if('远程回调接口' == $('#wsType').val()) clickSelect(this)">
+						<div class="contain-select-name">协议：</div>
+						<div>
+							<input class="contain-select-input" type="text" name="" id="accessProtocol" placeholder="请选择接口协议" value="REST" readonly="readonly">
+							<div class="contain-select-btn">＜</div>
+							<div class="contain-option-box">
+								<div class="contain-option" onclick="clickOption(this)">REST</div>
+								<div class="contain-option" onclick="clickOption(this)">SOAP</div>
+							</div>
+						</div>
+					</div>
+					<div class="width-250 flex-row3">
+						<div class="contain-btn" onclick="showFixed('tk2')">新增</div>
+					</div>
+				</div>
+				<div class="border-b-ddd">
+					<div class="table-row1">
+						<div class="table-block1 width4">ID</div>
+						<div class="table-block1 width11">执行器编码</div>
+						<div class="table-block1 width15">接口地址</div>
+						<div class="table-block1 width10">方法</div>
+						<div class="table-block1 width10">参数</div>
+						<div class="table-block1 width6">命名空间</div>
+						<div class="table-block1 width6">元素前缀</div>
+						<div class="table-block1 width6">请求超时</div>
+						<div class="table-block1 width15">告警Email</div>
+						<div class="table-block1 width7">状态</div>
+						<div class="table-block1 width10">操作</div>
+					</div>
+					<div id="table">
+					</div>
+				</div>
+				<div class="padding-t-20">
+		            <div class="m-style"></div> 
+		        </div>
+			</div>
+		</div>
+	</div>
+	<!-- 删除弹框确认 -->
+	<div class="m-fixed" id="tk1">
+		<div class="m-fixedbox">
+			<div class="flex-row2 height-72">
+				<div class="size-18">提示</div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+			</div>
+			<div class="flex-row1 height-50" id="delInfo">
+				您确定要删除1001吗？
+			</div>
+			<div class="flex-row3 height-72">
+				<div class="m-fixed-border-btn1" onclick="closeFixed()">取消</div>
+				<div class="m-fixed-solid-btn1" onclick="delDataApi()">确定</div>
+			</div>
+		</div>
+	</div>
+	<!-- 数据集成接口配置弹框 -->
+	<div class="m-fixed" id="tk2">
+		<div class="m-fixedbox">
+			<div class="flex-row2 height-72">
+				<div class="size-18">数据接口配置</div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+			</div>
+			<div class="flex-row1 height-50">
+				<div>执行器编码：</div>
+				<input type="text" class="contain-input" name="" placeholder="请输入执行器编码">
+			</div>
+			<div class="flex-row1 height-50">
+				<div>接口参数：</div>
+				<input type="text" class="contain-input" name="" placeholder="请输入要修改的名称">
+			</div>
+			<div class="flex-row1 height-50">
+				<div>接口返回：</div>
+				<input type="text" class="contain-input" name="" placeholder="请输入要修改的名称">
+			</div>
+			<div class="flex-row3 height-72">
+				<div class="m-fixed-border-btn1" onclick="closeFixed()">取消</div>
+				<div class="m-fixed-solid-btn1">确定</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

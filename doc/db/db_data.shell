@@ -1,0 +1,24 @@
+use db_data
+
+db.createUser({user: "mongodb", pwd: "mongodb", roles:[{role: "dbAdmin", db: "db_data"}]})
+
+db.createCollection("data_api")
+
+db.data_api.createIndex({"appCode" : 1})
+
+db.getCollection("data_api").insert({"_id" : "1", "appCode" : "project-admin", "wsType" : NumberInt(1), "status" : NumberInt(1), "emails": "zhangcm@glodon.com", "createTime" : ISODate("2022-09-08T03:46:13.885Z"), "updateTime" : ISODate("2022-09-08T03:46:13.885Z")})
+
+db.getCollection('data_api').insert({"_id" : "2", "appCode" : "project-admin", "wsType" : NumberInt(0), "serverUrl" : "http://isite-dev.com:7010/project/api/demo", "wsProtocol" : "REST", "method" : "POST", "contentType" : "application/json", "timeout" : NumberInt(3000), "status" : NumberInt(1), "emails": "zhangcm@glodon.com", "createTime" : ISODate("2022-09-08T03:46:13.885Z"), "updateTime" : ISODate("2022-09-08T03:46:13.885Z")})
+
+db.createCollection("data_log")
+
+db.data_log.createIndex({"apiId" : 1})
+
+db.data_log.createIndex({"createTime" : 1})
+
+db.createCollection("executor")
+
+db.executor.createIndex({"appCode" : 1}, {unique : true})
+
+db.getCollection('executor').insert({"_id" : "1", "appCode" : "project-admin", "appName" : "项目管理系统", "userSecret" : "D4dgdvHt3STm0jKhg1rZm8AnajGczbuL7N3bTTDAX5E=", "createTime" : ISODate("2022-09-08T03:46:13.885Z"), "updateTime" : ISODate("2022-09-08T03:46:13.885Z")})
+

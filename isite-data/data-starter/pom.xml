@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.isite</groupId>
+        <artifactId>web-parent</artifactId>
+        <version>2.0.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>data-starter</artifactId>
+
+    <properties>
+        <axis2.version>1.7.9</axis2.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-digester3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>data-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>commons-web</artifactId>
+            <version>${isite.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

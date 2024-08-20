@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>运行报表</title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/base.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/report.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+    <script type="text/javascript" src="/js/echarts.min.js"></script>
+    <script type="text/javascript" src="/js/report.js"></script>
+</head>
+<body>
+	<div class="page-box">
+		<div class="page-left"></div>
+		<div class="page-right">
+			<div class="contain">
+				<div class="contain-title">运行报表</div>
+				<div class="flex-row2">
+                    <div class="report-block flex-row1 bg-blue">
+                        <div class="report-block-left">
+                            <img src="/images/icon/task-num.png">
+                        </div>
+                        <div class="report-block-right">
+                            <div class="padding-l-16 padding-t-10">接口数量</div>
+                            <div class="size-18 weight-b padding-l-16" id="apiNumber"></div>
+                            <div class="cut-line"></div>
+                            <div class="padding-l-16 padding-tb-8">启用的接口数量</div>
+                        </div>
+                    </div>
+                    <div class="report-block flex-row1 bg-orange">
+                        <div class="report-block-left">
+                            <img src="/images/icon/run-num.png">
+                        </div>
+                        <div class="report-block-right">
+                            <div class="padding-l-16 padding-t-10">调用次数</div>
+                            <div class="size-18 weight-b padding-l-16" id="callLatestNumber"></div>
+                            <div class="cut-line"></div>
+                            <div class="padding-l-16 padding-tb-8">最近1小时接口调用的次数</div>
+                        </div>
+                    </div>
+                    <div class="report-block flex-row1 bg-green">
+                        <div class="report-block-left">
+                            <img src="/images/icon/run-num.png">
+                        </div>
+                        <div class="report-block-right">
+                            <div class="padding-l-16 padding-t-10">执行器数量</div>
+                            <div class="size-18 weight-b padding-l-16" id="executorNumber"></div>
+                            <div class="cut-line"></div>
+                            <div class="padding-l-16 padding-tb-8">在线的执行器数量</div>
+                        </div>
+                    </div>
+                </div>
+				<div class="chart-box">
+                    <div class="flex-row2">
+                        <div id="zhexian" style="height: 360px; width: 800px; padding: 10px;">
+                        </div>
+                        <div id="bing" style="height: 360px; width: 800px; padding: 10px;">
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

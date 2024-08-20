@@ -1,0 +1,9 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.isite.operation.mapper.ActivityMapper">
+
+    <select id="selectActivityIds" resultType="java.lang.Integer">
+        select distinct a.id
+        from activity a inner join task t on a.id = t.activity_id and t.event_type = #{eventType.code}
+        where a.status = 1
+    </select>
+</mapper>

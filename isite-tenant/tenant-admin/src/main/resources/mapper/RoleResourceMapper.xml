@@ -1,0 +1,13 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.isite.tenant.mapper.RoleResourceMapper">
+
+    <select id="selectResources" resultType="ResourcePo">
+        SELECT `id`, `name`, `href`, `sort`, `remark`, `type`, `pid`,
+               `pids`, `icon`, `client_id`, `create_time`, `update_time`
+        FROM `resource`
+        WHERE `id` IN (
+            SELECT `resource_id`
+            FROM `role_resource`
+            WHERE `role_id` = #{roleId}) AND `client_id` = #{clientId}
+    </select>
+</mapper>

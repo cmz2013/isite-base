@@ -1,0 +1,45 @@
+package org.isite.user.client;
+
+import org.isite.commons.lang.data.Result;
+import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.vo.UserSecret;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWORD;
+import static org.isite.user.data.constant.UrlConstants.API_GET_USER_SECRET;
+import static org.isite.user.data.constant.UrlConstants.API_POST_USER;
+import static org.isite.user.data.constant.UrlConstants.API_PUT_USER_PASSWORD;
+
+/**
+ * @Author <font color='blue'>zhangcm</font>
+ */
+//@FeignClient(contextId = "userClient", value = SERVICE_ID)
+public interface UserClient {
+    /**
+     * @Description 查询用户秘钥
+     */
+    @GetMapping(value = API_GET_USER_SECRET)
+    Result<UserSecret> getUserSecret(@PathVariable("identifier") String identifier,
+                                     @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+    /**
+     * @Description (用于认证鉴权中心)更新/设置用户密码，密码已加密
+     */
+    @PutMapping(value = API_PUT_USER_PASSWORD)
+    Result<Integer> updatePassword(@PathVariable("userId") Long userId,
+                                   @RequestParam("password") String userPassword,
+                                   @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+
+    /**
+     * @Description (用于认证鉴权中心)注册用户信息
+     */
+    @PostMapping(API_POST_USER)
+    Result<Integer> addUser(@RequestBody UserDto userDto,
+                            @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>执行器管理</title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/base.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/pagination.js"></script>
+	<script type="text/javascript" src="/js/menu.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/executor.js"></script>
+</head>
+<body>
+	<div class="page-box">
+		<div class="page-left"></div>
+		<div class="page-right">
+			<div class="contain">
+				<div class="contain-title">执行器</div>
+				<div class="flex-row2 height-50 padding-r-160">
+					<div class="contain-input-block">
+						<input class="contain-input" type="text" name="" placeholder="请输入筛选条件">
+						<div class="contain-input-btn" onclick="clickSearch()">搜索</div>
+                    </div>
+                    <div class="width-250"></div>
+                    <div class="width-250"></div>
+					<div class="width-250 flex-row3">
+						<div class="contain-btn" onclick="showFixed('tk1')">新增</div>
+					</div>
+				</div>
+				<div class="border-b-ddd">
+					<div class="table-row1">
+						<div class="table-block1 width10">接口ID</div>
+						<div class="table-block1 width20">AppCode</div>
+						<div class="table-block1 width20">执行器名称</div>
+						<div class="table-block1 width20">令牌</div>
+						<div class="table-block1 width20">OnLine机器地址</div>
+						<div class="table-block1 width10">操作</div>
+					</div>
+					<div id="table">
+						
+					</div>
+				</div>
+				<div class="padding-t-20">
+		            <div class="m-style"></div> 
+		        </div>
+			</div>
+		</div>
+    </div>
+    <!-- 新增弹框 -->
+	<div class="m-fixed" id="tk1">
+		<div class="m-fixedbox">
+			<div class="flex-row2 height-72">
+				<div class="size-18">新增</div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+			</div>
+			<div class="flex-row1 height-50">
+				<div class="width-96 text-r">AppCode：</div><input type="text" class="contain-input" name="" placeholder="请输入AppCode">
+            </div>
+            <div class="flex-row1 height-50">
+				<div class="width-96 text-r">名称：</div><input type="text" class="contain-input" name="" placeholder="请输入名称">
+            </div>
+			<div class="flex-row1 height-50">
+				<div class="width-96 text-r">令牌：</div><input type="text" class="contain-input" name="" placeholder="请输入令牌">
+			</div>
+			<div class="flex-row3 height-72">
+				<div class="m-fixed-border-btn1" onclick="closeFixed()">取消</div>
+				<div class="m-fixed-solid-btn1">确定</div>
+			</div>
+		</div>
+    </div>
+    <!-- 查看机器地址弹框 -->
+    <div class="m-fixed" id="tk2">
+		<div class="m-fixedbox">
+			<div class="flex-row2 height-72">
+				<div class="size-18" id="hostName"></div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+            </div>
+			<div id="hostList"></div>
+			<div class="flex-row3 height-72">
+				<div class="m-fixed-solid-btn1" onclick="closeFixed()">确定</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

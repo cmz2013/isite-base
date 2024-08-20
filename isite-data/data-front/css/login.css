@@ -1,0 +1,235 @@
+.img-position{
+	width: 100%;
+    position: absolute;
+    text-align: center;
+    height: 100%;
+}
+.rotate1{
+	width: 45%;
+	animation:firstRotate 10s linear infinite;
+}
+@keyframes firstRotate {
+  0% {
+    transform:  rotateZ(0deg);
+  }
+  100% {
+    transform:  rotateZ(360deg);
+  }
+}
+.rotate2{
+	width: 41%;
+	margin-top: 2%;
+	animation:secondRotate 2s linear infinite;
+}
+@keyframes secondRotate {
+  0% {
+    transform: rotateZ(0deg) ;
+  }
+  100% {
+    transform: rotateZ(180deg) ;
+  }
+}
+.rotate3{
+	width: 30%;
+    margin-top: 7.2%;
+	animation:thirdRotate 10s linear infinite;
+}
+@keyframes thirdRotate {
+  0% {
+    transform:  rotateZ(0deg);
+  }
+  100% {
+    transform:  rotateZ(-360deg);
+  }
+}
+.rotate4{
+	width: 18%;
+    margin-top: 13%;
+	animation:fouthRotate 4s linear infinite;
+}
+@keyframes fouthRotate {
+  0% {
+    transform:  rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+.rotate5{
+	width: 11%;
+    margin-top: 16.3%;
+	animation:fifthRotate 4s linear infinite;
+}
+@keyframes fifthRotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+.rotate6{
+	width: 16%;
+    margin-top: 14%;
+	animation:sixthRotate 4s linear infinite;
+}
+@keyframes sixthRotate {
+  0% {
+    transform: rotateX(45deg) rotateY(45deg);
+  }
+  100% {
+    transform: rotateX(405deg) rotateY(405deg);
+  }
+}
+.rotate7{
+	width: 13%;
+    margin-top: 15.5%;
+	animation:seventhRotate 4s linear infinite;
+}
+@keyframes seventhRotate {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+.rotate8{
+	width: 7%;
+    margin-top: 18%;
+	animation:eighthRotate 4s linear infinite;
+}
+@keyframes eighthRotate {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+.rotate9{
+	width: 4.5%;
+    margin-top: 19.3%;
+	animation:ninthRotate 4s linear infinite;
+}
+@keyframes ninthRotate {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+.decorate-img{
+}
+.decorate1{
+	width: 9%;
+	margin-top: 9%;
+	margin-left: -23%;
+}
+.decorate1-font{
+    margin-top: -3.6%;
+    margin-left: -22.6%;
+    color: #FFF;
+    font-size: 18px;
+}
+.decorate2{
+	width: 8%;
+	margin-top: 8%;
+	margin-left: 25%;
+}
+.decorate2-font{
+    margin-top: -2.6%;
+    margin-left: 20%;
+    color: #FFF;
+    font-size: 18px;
+}
+.decorate3{
+	width: 8%;
+	margin-top: 20%;
+	margin-left: -32%;
+}
+.decorate3-font{
+}
+.decorate4{
+	width: 8%;
+	margin-top: 28%;
+	margin-left: 23%;
+}
+.decorate4-font{
+    margin-top: -4%;
+    margin-left: 17.8%;
+    color: #FFF;
+    font-size: 18px;
+}
+.decorate5{
+	width: 9%;
+	margin-top: 30%;
+	margin-left: -25%;
+}
+.decorate5-font{
+}
+.logo-in{
+	width: 10%;
+	margin-top: 20%;
+	cursor: pointer;
+}
+.loginBox{
+	width: 17%;
+	margin-top: 11%;
+}
+.loginLogo{
+	width: 3%;
+	margin-top: 13%;
+}
+.loginWord{
+    width: 15%;
+    text-align: center;
+    margin: 16.5% auto 0;
+    color: #00ebf8;
+    font-weight: bold;
+    font-size: 22px;
+}
+.loginUser{
+	width: 13%;
+	margin-top: 21%;
+}
+.loginUserInput{
+	position: absolute;
+	width: 12%;
+	margin-top: 21.7%;
+	margin-left: -12.5%;
+	z-index: 5;
+	border: 0;
+	outline: none;
+	background: none !important;
+	color: #FFF;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #17abb3;
+}
+.loginPwd{
+	width: 13%;
+	margin-top: 25.5%;
+}
+.loginPwdInput{
+	position: absolute;
+	width: 12%;
+	margin-top: 26%;
+	margin-left: -12.5%;
+	z-index: 5;
+	border: 0;
+	outline: none;
+	background: none !important;
+	color: #FFF;
+}
+.loginBtn{
+	width: 13%;
+	margin-top: 30%;
+	cursor: pointer;
+}
+.loginFont{
+	margin-top: -2.5%;
+	color: #8ef9ff;
+    cursor: pointer;
+}

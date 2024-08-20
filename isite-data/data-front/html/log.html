@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>接口日志</title>
+	<link href="/css/common.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/base.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/pagination.js"></script>
+	<script type="text/javascript" src="/js/menu.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/log.js"></script>
+</head>
+<body>
+	<div class="page-box">
+		<div class="page-left"></div>
+		<div class="page-right">
+			<div class="contain">
+				<div class="contain-title">接口日志</div>
+				<div class="flex-row2 height-50 padding-r-160">
+					<div class="contain-input-block">
+						<input class="contain-input" type="text" name="" placeholder="请输入筛选条件">
+						<div class="contain-input-btn" onclick="clickSearch()">搜索</div>
+					</div>
+					
+					<div class="contain-select-block" onclick="clickSelect(this)">
+						<div class="contain-select-name">时间：</div>
+						<div>
+							<input class="contain-select-input" type="text" name="" placeholder="请选择执行时间" readonly="readonly">
+							<div class="contain-select-btn">＜</div>
+							<div class="contain-option-box">
+								<div class="contain-option" onclick="clickOption(this)">2020-11-27</div>
+								<div class="contain-option" onclick="clickOption(this)">2020-11-26</div>
+								<div class="contain-option" onclick="clickOption(this)">2020-11-25</div>
+								<div class="contain-option" onclick="clickOption(this)">2020-11-24</div>
+							</div>
+						</div>
+					</div>
+					<div class="width-250"></div>
+				</div>
+				<div class="border-b-ddd">
+					<div class="table-row1">
+						<div class="table-block1 width4">接口ID</div>
+						<div class="table-block1 width15">执行器编码</div>
+						<div class="table-block1 width20">接口参数</div>
+						<div class="table-block1 width20">接口返回值</div>
+						<div class="table-block1 width6">执行结果</div>
+						<div class="table-block1 width5">备注</div>
+						<div class="table-block1 width10">创建时间</div>
+						<div class="table-block1 width10">更新时间</div>
+						<div class="table-block1 width10">操作</div>
+					</div>
+					<div id="table">
+						
+					</div>
+				</div>
+				<div class="padding-t-20">
+		            <div class="m-style"></div> 
+		        </div>
+			</div>
+		</div>
+	</div>
+	<div class="m-fixed" id="tk1">
+		<div class="m-fixedbox">
+			<div class="flex-row2">
+				<div class="size-18">提示</div>
+				<img class="change-hand" onclick="closeFixed()" src="/images/icon/icon-close.png">
+			</div>
+			<div class="flex-row1 height-50">
+				您确定要重新执行选中行吗？
+			</div>
+			<div class="flex-row3 height-50">
+				<div class="m-fixed-border-btn1" onclick="closeFixed()">取消</div>
+				<div class="m-fixed-solid-btn1">确定</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
