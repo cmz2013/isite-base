@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<digester-rules>
+<pattern value="result">
+    <object-create-rule classname="org.isite.commons.lang.data.Result"/>
+    <call-method-rule pattern="code" methodname="setCode" paramcount="1" paramtypes="java.lang.Integer"/>
+    <!--指定了带有一个参数的方法调用，它的值就是当前XML元素的字符数据（参数字符串类型）-->
+    <call-method-rule pattern="message" methodname="setMessage" paramcount="1"/>
+    <call-method-rule pattern="data" methodname="setData" paramcount="1"/>
+</pattern>
+</digester-rules>
