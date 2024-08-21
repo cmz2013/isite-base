@@ -16,12 +16,10 @@ public class DataAuthorityConfig {
 
     @Bean
     public DataAuthorityAssert dataAuthorityAssert(
+            PathMatcher pathMatcher,
             @Value("${security.oauth2.permit}") String oauthPermits,
-            @Value("${security.data.permit}") String dataPermits,
-            PathMatcher pathMatcher) {
-        DataAuthorityAssert dataAuthorityAssert = new DataAuthorityAssert(oauthPermits, dataPermits);
-        dataAuthorityAssert.setPathMatcher(pathMatcher);
-        return dataAuthorityAssert;
+            @Value("${security.data.permit}") String dataPermits) {
+        return new DataAuthorityAssert(pathMatcher, oauthPermits, dataPermits);
     }
 
 }

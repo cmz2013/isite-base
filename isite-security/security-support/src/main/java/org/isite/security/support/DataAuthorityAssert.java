@@ -1,9 +1,7 @@
 package org.isite.security.support;
 
-import lombok.Setter;
 import org.isite.security.data.oauth.DataAuthority;
 import org.isite.security.data.oauth.OauthEmployee;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;
@@ -14,14 +12,13 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.COMMA;
 
 /**
  * @Description 检查用户数据接口权限
  * @Author <font color='blue'>zhangcm</font>
  */
-public class DataAuthorityAssert implements InitializingBean {
+public class DataAuthorityAssert {
     /**
      * 不需要登录认证就可以访问的接口
      */
@@ -33,10 +30,10 @@ public class DataAuthorityAssert implements InitializingBean {
     /**
      * 用于路径比对。在SpringBoot Web项目中，WebMvcAdapter#configurePathMatch自定义了PathMatcher
      */
-    @Setter
-    private PathMatcher pathMatcher;
+    private final PathMatcher pathMatcher;
 
-    public DataAuthorityAssert(String oauthPermits, String dataPermits) {
+    public DataAuthorityAssert(PathMatcher pathMatcher, String oauthPermits, String dataPermits) {
+        this.pathMatcher = pathMatcher;
         if (isNotBlank(oauthPermits)) {
             this.oauthPermits = oauthPermits.split(COMMA);
         }
@@ -112,8 +109,4 @@ public class DataAuthorityAssert implements InitializingBean {
         return null == authority.getMethod() || authority.getMethod().name().equalsIgnoreCase(method);
     }
 
-    @Override
-    public void afterPropertiesSet() {
-        notNull(this.pathMatcher, "pathMatcher must be set");
-    }
 }
