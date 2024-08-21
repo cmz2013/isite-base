@@ -25,7 +25,7 @@ public class MessageUtils  {
         return message;
     }
 
-    public static String getMessage(String code, String defaultMessage) {
-        return getBean(MessageSourceAccessor.class).getMessage(code, defaultMessage);
+    public static String getMessage(String key, String defaultMessage) {
+        return getBean(MessageSourceAccessor.class).getMessage(key, defaultMessage);
     }
 }

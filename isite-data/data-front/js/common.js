@@ -71,7 +71,7 @@ function ajaxSetup() {
 				if (error) {
 					error.apply(this, arguments);
 				} else {
-					showToast('服务器维护中');
+					showToast('网络连接失败，请稍后再试。');
 				}
 			};
 		}

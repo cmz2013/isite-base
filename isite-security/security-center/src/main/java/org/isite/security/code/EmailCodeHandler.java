@@ -26,10 +26,12 @@ import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;
 @ConditionalOnBean(value = EmailConfig.class)
 public class EmailCodeHandler extends VerifyCodeHandler {
 
-    private EmailClient emailClient;
+    private final EmailClient emailClient;
 
-    public EmailCodeHandler() {
+    @Autowired
+    public EmailCodeHandler(EmailClient emailClient) {
         super(EMAIL);
+        this.emailClient = emailClient;
     }
 
     @Override
@@ -49,11 +51,6 @@ public class EmailCodeHandler extends VerifyCodeHandler {
             log.error(e.getMessage(), e);
             return false;
         }
-    }
-
-    @Autowired
-    public void setEmailClient(EmailClient emailClient) {
-        this.emailClient = emailClient;
     }
 
     @Override

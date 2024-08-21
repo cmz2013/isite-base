@@ -1,6 +1,5 @@
 package org.isite.security.data.enums;
 
-import lombok.Getter;
 import org.isite.commons.lang.enums.Enumerable;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
@@ -10,25 +9,30 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
  * @Description 验证码发送方式
  * @Author <font color='blue'>zhangcm</font>
  */
-@Getter
 public enum VerifyCodeMode implements Enumerable<String> {
     /**
      * 手机短信验证码
      */
-    SMS(getMessage("VerifyCode.sms", "phone number")),
+    SMS("VerifyCode.sms", "phone number"),
     /**
      * Email验证码
      */
-    EMAIL(getMessage("VerifyCode.email", "email address"));
+    EMAIL("VerifyCode.email", "email address");
 
-    private final String label;
+    private final String labelKey;
+    private final String defaultLabel;
 
-    VerifyCodeMode(String label) {
-        this.label = label;
+    VerifyCodeMode(String labelKey, String defaultLabel) {
+        this.labelKey = labelKey;
+        this.defaultLabel = defaultLabel;
     }
 
     @Override
     public String getCode() {
         return this.name();
+    }
+
+    public String getLabel() {
+        return getMessage(labelKey, defaultLabel);
     }
 }
