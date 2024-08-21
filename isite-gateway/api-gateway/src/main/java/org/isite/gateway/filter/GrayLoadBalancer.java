@@ -18,7 +18,6 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.cloud.constants.CloudConstants.X_VERSION;
-import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.schedule.RandomScheduler.choose;
 import static org.isite.gateway.support.GatewayUtils.getServiceId;
 
@@ -60,6 +59,6 @@ public class GrayLoadBalancer implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return ZERO;
+        return 300;
     }
 }

@@ -15,12 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>commons-cloud</artifactId>
-            <version>${isite.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.isite</groupId>
             <artifactId>sentinel-support</artifactId>
             <version>${isite.version}</version>
         </dependency>

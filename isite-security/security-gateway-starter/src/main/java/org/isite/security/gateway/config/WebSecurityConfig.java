@@ -2,10 +2,11 @@ package org.isite.security.gateway.config;
 
 import org.isite.commons.cloud.utils.RequestPathMatcher;
 import org.isite.security.gateway.client.OauthUserClient;
-import org.isite.security.gateway.filter.SecurityFilter;
+import org.isite.security.gateway.filter.WebSecurityFilter;
 import org.isite.security.support.DataAuthorityAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.PathMatcher;
@@ -15,22 +16,24 @@ import org.springframework.util.PathMatcher;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Configuration
-public class SecurityConfig {
+public class WebSecurityConfig {
 
     @Bean
+    @ConditionalOnMissingBean
     public PathMatcher pathMatcher() {
         return new RequestPathMatcher();
     }
 
     @Bean
-    public SecurityFilter securityFilter(
+    public WebSecurityFilter webSecurityFilter(
+            OauthUserClient oauthUserClient, PathMatcher pathMatcher,
             @Value("${security.oauth2.permit}") String oauthPermits,
-            OauthUserClient oauthUserClient,
             @Autowired(required = false) DataAuthorityAssert dataAuthorityAssert) {
-        SecurityFilter securityFilter = new SecurityFilter(oauthPermits);
-        securityFilter.setPathMatcher(pathMatcher());
-        securityFilter.setOauthUserClient(oauthUserClient);
-        securityFilter.setDataAuthorityAssert(dataAuthorityAssert);
-        return securityFilter;
+        WebSecurityFilter webSecurityFilter = new WebSecurityFilter(oauthPermits);
+        webSecurityFilter.setOauthUserClient(oauthUserClient);
+        //不能在配置类的其他@Bean方法中调用pathMatcher()，因为该方法添加了@ConditionalOnMissingBean注解，所以可能没有实例化
+        webSecurityFilter.setPathMatcher(pathMatcher);
+        webSecurityFilter.setDataAuthorityAssert(dataAuthorityAssert);
+        return webSecurityFilter;
     }
 }

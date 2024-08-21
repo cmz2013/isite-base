@@ -30,7 +30,6 @@ import static org.isite.commons.cloud.constants.CloudConstants.X_USER_ID;
 import static org.isite.commons.cloud.data.Converter.toResult;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.COMMA;
-import static org.isite.commons.lang.data.Constants.THREE;
 import static org.isite.commons.lang.http.HttpHeaders.AUTHORIZATION;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.commons.lang.utils.ResultUtils.isOk;
@@ -48,7 +47,7 @@ import static reactor.core.publisher.Mono.fromSupplier;
  * 如果只查询当前登录用户数据获公共数据，接口路径约定/my/**、public/**，(白名单)自动放行。
  * @Author <font color='blue'>zhangcm</font>
  */
-public class SecurityFilter implements GatewayFilter, Ordered, InitializingBean {
+public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBean {
     /**
      * 不需要登录认证就可以访问的接口
      */
@@ -63,7 +62,7 @@ public class SecurityFilter implements GatewayFilter, Ordered, InitializingBean 
         this.dataAuthorityAssert = dataAuthorityAssert;
     }
 
-    public SecurityFilter(String oauthPermits) {
+    public WebSecurityFilter(String oauthPermits) {
         if (isNotBlank(oauthPermits)) {
             this.oauthPermits = oauthPermits.split(COMMA);
         }
@@ -129,8 +128,8 @@ public class SecurityFilter implements GatewayFilter, Ordered, InitializingBean 
 
     @Override
     public int getOrder() {
-        // 设置过滤器的执行顺序，数值越小优先级越高。在HeaderFilter之后执行。
-        return THREE;
+        // 设置过滤器的执行顺序，数值越小优先级越高。
+        return -1;
     }
 
     @Override
