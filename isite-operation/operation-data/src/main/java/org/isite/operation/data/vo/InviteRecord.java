@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.commons.lang.data.Vo;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

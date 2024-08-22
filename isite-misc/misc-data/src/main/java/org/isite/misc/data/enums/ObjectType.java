@@ -19,21 +19,22 @@ public enum ObjectType implements Enumerable<Integer> {
     /**
      * 企业员工
      */
-    EMPLOYEE(21, "员工"),
+    TENANT_EMPLOYEE(21, "员工"),
 
-    ORDER(31, "订单"),
+    SHOP_ORDER(31, "订单"),
 
-    INQUIRY(81, "疑问"),
-    REPLY(82, "回答"),
+    QUESTION(81, "疑问"),
+    QUESTION_ANSWER(82, "答案"),
 
     /**
      * 运营活动
      */
-    ACTIVITY(91, "活动"),
+    OPERATION_ACTIVITY(91, "运营活动"),
     /**
      * 签到日志
      */
-    SIGN_LOG(92, "签到")
+    OPERATION_SIGN_LOG(92, "签到日志"),
+    OPERATION_INVITE_RECORD(93, "邀请记录")
     ;
 
     private final Integer code;

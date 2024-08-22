@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.isite.commons.lang.json.Comment;
 
 /**
- * 运营任务奖励：奖品
+ * @Description 运营任务奖励：奖品
  * 1）通过发送行为消息，运营任务异步统计数据赠送领奖记录（待抽奖），可以解决实时查询时统计数据的性能问题
  * 2）活动奖品必须通过活动接口同步发放，防止异步操作时出现并发锁冲突、库存不足等原因无法发放，信息不能同步给用户
  * 3）任务奖励比如积分、抽奖机会、领奖记录（待抽奖）等，是通过行为消息异步保存，不存在并发锁冲突、库存不足等原因导致无法发放
  * 4）任务奖励通过行为消息如果发放异常失败，则会直接丢弃
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

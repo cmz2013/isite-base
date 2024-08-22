@@ -16,7 +16,7 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class PrizeService extends PoService<PrizePo, Integer> {

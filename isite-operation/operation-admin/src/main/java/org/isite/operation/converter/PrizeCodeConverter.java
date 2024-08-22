@@ -4,7 +4,7 @@ import org.isite.operation.po.PrizeCodePo;
 import org.isite.operation.data.dto.PrizeCodeDto;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class PrizeCodeConverter {
 

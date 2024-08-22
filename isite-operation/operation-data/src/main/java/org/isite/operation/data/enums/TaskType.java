@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.isite.commons.lang.enums.Enumerable;
+import org.isite.operation.data.vo.AnswerPrizeProperty;
+import org.isite.operation.data.vo.InviteTaskProperty;
 import org.isite.operation.data.vo.OrderPrizeProperty;
 import org.isite.operation.data.vo.PrizeTaskProperty;
-import org.isite.operation.data.vo.ReplyPrizeProperty;
 import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.ScoreTaskProperty;
 import org.isite.operation.data.vo.SignScoreProperty;
@@ -17,19 +18,19 @@ import java.util.List;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
-import static org.isite.operation.data.enums.EventType.GET_ACTIVITY_WEBPAGE;
-import static org.isite.operation.data.enums.EventType.POST_INQUIRY;
-import static org.isite.operation.data.enums.EventType.POST_ORDER_PAYMENT_NOTIFY;
-import static org.isite.operation.data.enums.EventType.POST_REPLY;
-import static org.isite.operation.data.enums.EventType.POST_SIGN;
-import static org.isite.operation.data.enums.EventType.PUT_REPLY_ACCEPT;
+import static org.isite.operation.data.enums.EventType.GET_OPERATION_WEBPAGE;
+import static org.isite.operation.data.enums.EventType.POST_OPERATION_SIGN;
+import static org.isite.operation.data.enums.EventType.POST_QUESTION;
+import static org.isite.operation.data.enums.EventType.POST_QUESTION_ANSWER;
+import static org.isite.operation.data.enums.EventType.POST_SHOP_ORDER_PAYMENT_NOTIFY;
+import static org.isite.operation.data.enums.EventType.PUT_QUESTION_ANSWER_ADOPT;
 import static org.isite.operation.data.enums.EventType.PUT_USER;
 
 /**
- * @description 运营任务类型。
+ * @Description 运营任务类型。
  * 配置运营活动时，先选择行为类型（EventType），再根据行为类型查询和选择任务类型（TaskType）
  * 使用 @JsonFormat 注解可以将枚举类转为json再返回给前端
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @JsonFormat(shape = OBJECT)
 public enum TaskType implements Enumerable<Integer> {
@@ -37,26 +38,23 @@ public enum TaskType implements Enumerable<Integer> {
     /**
      * 积分类型任务
      */
-    SIGN_SCORE(1, POST_SIGN, "每日签到送积分", SignScoreProperty.class),
-    USER_SCORE(2, PUT_USER, "提交个人信息送积分", ScoreTaskProperty.class),
-    /**
-     * 邀请好友送积分（邀请码不为空），保存邀请记录再送积分 TODO
-     */
-    ACTIVITY_INVITE_SCORE(3, GET_ACTIVITY_WEBPAGE, "邀请好友送积分", ScoreTaskProperty.class),
-    REPLY_INVITE_SCORE(4, POST_REPLY, "邀请答疑送积分", ScoreTaskProperty.class),
-    //给提问人送积分
-    ACCEPT_REPLY_SCORE(5, PUT_REPLY_ACCEPT, "采纳答案送积分", ScoreTaskProperty.class),
+    USER_SCORE(1, PUT_USER, "提交个人信息送积分", ScoreTaskProperty.class),
+    OPERATION_SIGN_SCORE(2, POST_OPERATION_SIGN, "每日签到送积分", SignScoreProperty.class),
 
     /**
      * 奖品类型任务
-     * TODO 保存邀请记录再送奖品（邀请码不为空）
      */
-    REPLY_INVITE_PRIZE(101, POST_REPLY, "邀请答疑送奖品", PrizeTaskProperty.class),
-    INQUIRY_PRIZE(102, POST_INQUIRY, "提交疑问送奖品", PrizeTaskProperty.class),
-    REPLY_PRIZE(103, POST_REPLY, "提交回答送奖品", ReplyPrizeProperty.class),
-    //给回答人送奖品
-    ADOPT_REPLY_PRIZE(104, PUT_REPLY_ACCEPT, "回答被采纳送奖品", ReplyPrizeProperty.class),
-    ORDER_PRIZE(105, POST_ORDER_PAYMENT_NOTIFY, "老用户奖品福利", OrderPrizeProperty.class)
+    QUESTION_PRIZE(101, POST_QUESTION, "提交问题送奖品", PrizeTaskProperty.class),
+    QUESTION_ANSWER_PRIZE(102, POST_QUESTION_ANSWER, "答疑送奖品", AnswerPrizeProperty.class),
+    //提问人采纳答案时，给回复人送奖品。eventDto#userId为回复人ID
+    QUESTION_ANSWER_ADOPT_PRIZE(103, PUT_QUESTION_ANSWER_ADOPT, "答案被采纳送奖品", AnswerPrizeProperty.class),
+    SHOP_ORDER_PRIZE(104, POST_SHOP_ORDER_PAYMENT_NOTIFY, "老用户福利", OrderPrizeProperty.class),
+
+    /**
+     * 邀请类型任务（邀请码不为空），保存邀请记录再送奖励
+     */
+    QUESTION_ANSWER_INVITE(201, POST_QUESTION_ANSWER, "答疑邀请", InviteTaskProperty.class),
+    OPERATION_WEBPAGE_INVITE(202, GET_OPERATION_WEBPAGE, "活动邀请", InviteTaskProperty.class),
     ;
 
     private final Integer code;
@@ -89,7 +87,7 @@ public enum TaskType implements Enumerable<Integer> {
     }
 
     /**
-     * @description 当前行为类型可以触发的任务类型
+     * @Description 当前行为类型可以触发的任务类型
      */
     public static List<TaskType> values(EventType event) {
         return stream(values()).filter(taskType -> taskType.getEventType().equals(event)).collect(toList());

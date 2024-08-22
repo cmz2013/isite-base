@@ -3,8 +3,8 @@ package org.isite.operation.data.enums;
 import org.isite.commons.lang.enums.Enumerable;
 
 /**
- * 邀请码类型
- * @author <font color='blue'>zhangcm</font>
+ * @Description 邀请码类型
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum InviteCodeType implements Enumerable<Integer> {
     /**

@@ -26,14 +26,14 @@ import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo
 import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class WishPrizeService {
 
+    private PrizeGiverFactory prizeGiverFactory;
     private PrizeRecordService prizeRecordService;
     private ScoreRecordService scoreRecordService;
-    private PrizeGiverFactory prizeGiverFactory;
 
     /**
      * 添加心愿礼品

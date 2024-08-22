@@ -6,8 +6,8 @@ import org.isite.commons.lang.json.Comment;
 import org.isite.operation.data.enums.ScoreType;
 
 /**
- * 运营任务奖励：积分
- * @author <font color='blue'>zhangcm</font>
+ * @Description 积分奖励
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

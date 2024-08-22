@@ -5,15 +5,14 @@ import lombok.Setter;
 import org.isite.commons.lang.json.Comment;
 
 /**
- * @Description 许愿活动属性
+ * @Description 邀请奖励
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class WishPrizeProperty extends ActivityProperty {
-    /**
-     * 满分
-     */
-    @Comment("满分")
-    private Integer fullScore;
+public class InviteReward extends Reward {
+
+    @Comment("奖品")
+    private Integer prizeId;
+
 }

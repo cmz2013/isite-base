@@ -26,7 +26,7 @@ import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.utils.IoUtils.getString;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class ActivityService extends PoService<ActivityPo, Integer> {

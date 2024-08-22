@@ -29,7 +29,7 @@ import static org.isite.operation.data.constants.CacheKey.LOCK_SIGN_USER;
 import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class SignLogService extends PoService<SignLogPo, Long> {
@@ -95,7 +95,7 @@ public class SignLogService extends PoService<SignLogPo, Long> {
 
         Reward target = null;
         for (Reward reward : task.getProperty().getRewards()) {
-            notNull(reward.getCoefficient(), "reward.coefficient must not be null");
+            notNull(reward.getCoefficient(), "reward.coefficient cannot be null");
             if (continuousCount == reward.getCoefficient()) {
                 return reward;
             }

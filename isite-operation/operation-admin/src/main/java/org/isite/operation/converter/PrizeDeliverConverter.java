@@ -10,7 +10,7 @@ import static java.lang.System.currentTimeMillis;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class PrizeDeliverConverter {
 

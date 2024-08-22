@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * 订单奖品任务属性
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

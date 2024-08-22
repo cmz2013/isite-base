@@ -21,7 +21,7 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class TaskService extends PoService<TaskPo, Integer> {

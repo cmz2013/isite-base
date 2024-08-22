@@ -43,7 +43,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
      */
     @Transactional(rollbackFor = Exception.class)
     public N insert(List<P> pos) {
-        notEmpty(pos, "list must not be null");
+        notEmpty(pos, "list cannot be empty");
         checkBuiltInDataInsert(pos);
         return doInsert(pos);
     }

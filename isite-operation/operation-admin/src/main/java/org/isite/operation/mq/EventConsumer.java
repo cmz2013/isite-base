@@ -6,6 +6,7 @@ import org.isite.commons.web.mq.Consumer;
 import org.isite.operation.activity.ActivityMonitor;
 import org.isite.operation.activity.ActivityMonitorFactory;
 import org.isite.operation.data.dto.EventDto;
+import org.isite.operation.data.enums.EventType;
 import org.isite.operation.data.enums.TaskType;
 import org.isite.operation.data.vo.Activity;
 import org.isite.operation.service.OngoingActivityService;
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.operation.data.enums.TaskType.values;
 
 /**
@@ -33,9 +36,14 @@ public class EventConsumer implements Consumer<EventDto> {
 
     @Override
     public Basic handle(@Validated EventDto eventDto) {
-        List<Activity> activityList = ongoingActivityService.findActivityList(eventDto.getEventType());
+        EventType eventType = eventDto.getEventType();
+        List<Activity> activityList = ongoingActivityService.findActivityList(eventType);
         if (isEmpty(activityList)) {
             return new Basic.Ack();
+        }
+        Function<Object, Object> converter = eventType.getConverter();
+        if (null != converter && null != eventDto.getEventParam()) {
+            eventDto.setEventParam(converter.apply(eventDto.getEventParam()));
         }
         activityList.forEach(activity -> handle(activity, eventDto));
         return new Basic.Ack();
@@ -51,7 +59,11 @@ public class EventConsumer implements Consumer<EventDto> {
                 TaskExecutor<?> taskExecutor = taskExecutorFactory.get(taskType);
                 activity.getTasks().forEach(task -> {
                     if (taskType.equals(task.getTaskType())) {
-                        taskExecutor.execute(activity, task, eventDto);
+                        try {
+                            taskExecutor.execute(activity, task, eventDto);
+                        } catch (Exception e) {
+                            log.warn(toJsonString(eventDto), e);
+                        }
                     }
                 });
             }

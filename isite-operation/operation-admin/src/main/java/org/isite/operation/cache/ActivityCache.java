@@ -5,6 +5,9 @@ import com.alicp.jetcache.anno.Cached;
 import org.isite.commons.cloud.enums.TerminalType;
 import org.isite.commons.web.mq.Message;
 import org.isite.commons.web.mq.Publisher;
+import org.isite.operation.data.enums.EventType;
+import org.isite.operation.data.vo.Activity;
+import org.isite.operation.data.vo.Prize;
 import org.isite.operation.mq.WebpageProducer;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
@@ -13,9 +16,6 @@ import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskService;
 import org.isite.operation.service.WebpageService;
-import org.isite.operation.data.enums.EventType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -40,8 +40,8 @@ import static org.isite.operation.data.constants.CacheKey.WEBPAGE_ACTIVITY_USERA
 import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 
 /**
- * 运营活动缓存（只缓存已上架的活动）
- * @author <font color='blue'>zhangcm</font>
+ * @Description 运营活动缓存（只缓存已上架的活动）
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class ActivityCache {

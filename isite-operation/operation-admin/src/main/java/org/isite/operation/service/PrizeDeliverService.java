@@ -11,7 +11,7 @@ import tk.mybatis.mapper.weekend.Weekend;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class PrizeDeliverService extends PoService<PrizeDeliverPo, Integer> {

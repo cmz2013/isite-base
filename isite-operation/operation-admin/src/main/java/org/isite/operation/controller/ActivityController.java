@@ -99,11 +99,10 @@ public class ActivityController extends BaseController {
         notOnline(activityPo.getStatus());
         if (isRoot(activityPo.getPid())) {
             isFalse(activityService.exists(ActivityPo::getPid, activityPo.getId()),
-                    getMessage("parentActivity.notDelete",
-                            "the activity is already associated with a child activity and cannot be deleted"));
+                    getMessage("parentActivity.notDelete", "there are sub-activities"));
         }
         getBeans(TaskRecordService.class).values().forEach(
-                recordService -> notExistTaskRecord(recordService.existsByActivityId(activityId)));
+                taskRecordService -> notExistTaskRecord(taskRecordService.exists(activityId)));
         return toResult(activityService.deleteActivity(activityId));
     }
 

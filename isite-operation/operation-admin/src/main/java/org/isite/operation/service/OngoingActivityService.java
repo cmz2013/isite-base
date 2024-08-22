@@ -17,8 +17,8 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.lang.utils.VoUtils.get;
 
 /**
- * 进行中的活动Service
- * @author <font color='blue'>zhangcm</font>
+ * @Description 进行中的活动Service
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class OngoingActivityService {

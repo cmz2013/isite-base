@@ -6,19 +6,16 @@ import lombok.Setter;
 import javax.persistence.Table;
 
 /**
- * 活动邀请记录
- * @author <font color='blue'>zhangcm</font>
+ * @Description 邀请记录
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
 @Table(name = "invite_record")
 public class InviteRecordPo extends TaskRecordPo {
     /**
-     * 邀请人ID
+     * @Description inviterId 邀请人ID（解析邀请码获取）; userId 被邀请人ID
      */
     private Long inviterId;
-    /**
-     * 被邀请人ID
-     */
-    private Long visitorId;
+
 }

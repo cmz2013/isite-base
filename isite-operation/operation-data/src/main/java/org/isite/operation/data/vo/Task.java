@@ -6,10 +6,9 @@ import org.isite.commons.lang.data.Vo;
 import org.isite.operation.data.enums.TaskType;
 
 /**
- * 运营任务。任务约束条件包含ObjectType、objectValue、taskPeriod和自定属性（Property）
+ * @Description 运营任务。任务约束条件包含ObjectType、objectValue、taskPeriod和自定属性（Property）
  * 其他约束参数，是根据TaskType#EventType进行自定义
- *
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

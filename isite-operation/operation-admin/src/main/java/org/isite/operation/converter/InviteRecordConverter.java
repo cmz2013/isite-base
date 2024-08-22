@@ -5,7 +5,7 @@ import org.isite.operation.po.InviteRecordPo;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class InviteRecordConverter {
 

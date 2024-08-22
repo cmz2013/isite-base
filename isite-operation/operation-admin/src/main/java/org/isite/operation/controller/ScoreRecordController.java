@@ -45,7 +45,7 @@ public class ScoreRecordController extends BaseController {
      */
     @GetMapping(URL_MY + URL_OPERATION + "/activity/{activityId}/score/records")
     public Result<List<ScoreRecord>> findScoreRecords(@PathVariable("activityId") Integer activityId) {
-        return toResult(convert(scoreRecordService.findList(getUserId(), activityId), ScoreRecord::new));
+        return toResult(convert(scoreRecordService.findList(activityId, getUserId()), ScoreRecord::new));
     }
 
     @Autowired

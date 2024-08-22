@@ -5,12 +5,12 @@ import lombok.Setter;
 import org.isite.commons.lang.json.Comment;
 
 /**
- * 答疑奖品任务属性
- * @author <font color='blue'>zhangcm</font>
+ * @Description 答疑奖品任务属性
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class ReplyPrizeProperty extends PrizeTaskProperty {
+public class AnswerPrizeProperty extends PrizeTaskProperty {
     /**
      * 是否首答，空：不限制
      */

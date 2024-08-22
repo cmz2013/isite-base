@@ -7,8 +7,8 @@ import org.isite.commons.lang.data.Vo;
 import java.util.Date;
 
 /**
- * 奖品交付
- * @author <font color='blue'>zhangcm</font>
+ * @Description 奖品交付
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

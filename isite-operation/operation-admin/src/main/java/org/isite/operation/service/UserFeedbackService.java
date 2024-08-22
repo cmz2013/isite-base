@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-import static org.isite.operation.data.enums.EventType.POST_ORDER_PAYMENT_NOTIFY;
+import static org.isite.operation.data.enums.EventType.POST_SHOP_ORDER_PAYMENT_NOTIFY;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -24,7 +24,7 @@ public class UserFeedbackService {
     public void grantPrize(Activity activity, long userId) {
         EventDto eventDto = new EventDto();
         eventDto.setUserId(userId);
-        eventDto.setEventType(POST_ORDER_PAYMENT_NOTIFY);
+        eventDto.setEventType(POST_SHOP_ORDER_PAYMENT_NOTIFY);
         eventConsumer.handle(activity, eventDto);
     }
 

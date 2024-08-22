@@ -12,6 +12,7 @@ import org.isite.operation.po.TaskObjectPo;
 import org.isite.operation.po.TaskRecordPo;
 import org.isite.operation.service.TaskObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -53,7 +54,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             startTime = task.getTaskPeriod().getStartTime();
             limit = task.getTaskPeriod().getLimit();
         }
-        long taskNumber = getTaskNumber(activity.getId(), task.getId(), startTime, limit, eventDto.getUserId());
+        long taskNumber = getTaskNumber(activity.getId(), task.getId(), startTime, limit, eventDto);
         if (taskNumber > ZERO) {
             P taskRecord = createTaskRecord(eventDto, activity, task, startTime, taskNumber);
             if (null != taskRecord) {
@@ -86,7 +87,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     /**
      * 创建任务参与记录
      */
-    private P createTaskRecord(EventDto eventDto, Activity activity,
+    protected P createTaskRecord(EventDto eventDto, Activity activity,
                                Task task, Date periodStartTime, long taskNumber) {
         try {
             Class<P> rClass = getTaskRecordClass();
@@ -117,7 +118,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @param taskRecord 是TaskRecordPo子类的实例，该子类扩展的属性，需要在TaskExecutor的实现类中完成赋值并保存
      * @param reward 任务奖励
      */
-    public abstract void saveTaskRecord(Activity activity, P taskRecord, Reward reward);
+    protected abstract void saveTaskRecord(Activity activity, P taskRecord, Reward reward);
 
     /**
      * 选取运营任务奖励，多个奖品时默认按概率随机选取
@@ -131,6 +132,19 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
         }
         return task.getProperty().getRewards().size() == ONE ?
                 task.getProperty().getRewards().get(ZERO) : choose(task.getProperty().getRewards());
+    }
+
+    /**
+     * 获取任务号，即当前任务在当前任务周期内的执行次数，等于0不执行任务
+     * @param activityId 活动ID
+     * @param taskId 任务ID
+     * @param periodStartTime 当前任务周期开始时间
+     * @param limit 一个周期内可以重复完成任务的次数（可以空）
+     * @param eventDto 行为参数
+     * @return 任务号
+     */
+    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
+        return getTaskNumber(activityId, taskId, periodStartTime, limit, eventDto.getUserId());
     }
 
     /**
@@ -159,7 +173,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @param userId 用户ID
      * @return 任务记录条数
      */
-    protected abstract long countTaskRecord(int activityId, int taskId, Date startTime, long userId);
+    protected abstract long countTaskRecord(int activityId, int taskId, @Nullable Date startTime, long userId);
 
     @Autowired
     public void setTaskObjectService(TaskObjectService taskObjectService) {

@@ -30,7 +30,9 @@ public class EventDto {
      */
     private String objectValue;
     /**
-     * 行为参数，在消息DTO中只负责传输，不需要也不知道解析成什么数据结构；在具体的任务接口中，根据定义好的VO进行数据解析（生产者和消费者有明确的数据结构）
+     * @Description 行为参数（生产者和消费者有明确的数据结构）。
+     * 在EventConsumer执行任务之前，需要根据行为类型进行解析和转换行为参数。
      */
     private Object eventParam;
+
 }

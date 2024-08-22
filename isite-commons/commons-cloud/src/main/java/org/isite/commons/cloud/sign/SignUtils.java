@@ -88,7 +88,7 @@ public class SignUtils {
     public static boolean validateSignature(
             String api, String signature, String password, long timestamp, long validity,
             Map<String, Object> data) throws NoSuchAlgorithmException {
-        notBlank(signature, api + " signature must not be null");
+        notBlank(signature, api + " signature cannot be empty");
         long value = currentTimeMillis() / SECOND.getMillis() + ERROR_SECOND - timestamp;
         isTrue(value > ZERO, api + " timestamp error");
         isTrue(value < validity, api + " signature timeout");

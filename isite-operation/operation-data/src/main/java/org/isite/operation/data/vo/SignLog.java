@@ -7,7 +7,7 @@ import org.isite.commons.lang.data.Vo;
 import java.util.Date;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

@@ -20,7 +20,7 @@ import static org.isite.user.data.constant.UserConstants.FIELD_USER_ID;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public abstract class TaskRecordService<P extends TaskRecordPo> extends PoService<P, Long> {
 
@@ -37,9 +37,9 @@ public abstract class TaskRecordService<P extends TaskRecordPo> extends PoServic
     }
 
     /**
-     * 查询用户参与活动的任务记录，如果是主活动，任务记录包含了主活动及其子活动（两级）的任务记录
+     * 查询用户的任务记录，如果是主活动，任务记录包含了主活动及其子活动（两级）的任务记录
      */
-    public List<P> findList(long userId, int activityId) {
+    public List<P> findList(int activityId, long userId) {
         Weekend<P> weekend = of(getPoClass());
         Example example = new Example(getPoClass());
         weekend.and(example.createCriteria().andEqualTo(FIELD_USER_ID, userId));
@@ -49,12 +49,26 @@ public abstract class TaskRecordService<P extends TaskRecordPo> extends PoServic
     }
 
     /**
-     * 是否存在activityId的任务记录。如果是主活动，包含主活动及其子活动（两级）的任务记录
+     * 是否存在用户的任务记录。如果是主活动，包含主活动及其子活动（两级）的任务记录
      */
-    public boolean existsByActivityId(int activityId) {
+    public boolean exists(int activityId, long userId) {
+        Weekend<P> weekend = of(getPoClass());
+        Example example = new Example(getPoClass());
+        weekend.and(example.createCriteria().andEqualTo(FIELD_USER_ID, userId));
+        weekend.and(example.createCriteria().orEqualTo(FIELD_ACTIVITY_ID, activityId)
+                .orEqualTo(FIELD_ACTIVITY_PID, activityId));
+        return isNotEmpty(getMapper().selectByExampleAndRowBounds(
+                weekend, new RowBounds(ZERO, ONE)));
+    }
+
+    /**
+     * 是否存在任务记录。如果是主活动，包含主活动及其子活动（两级）的任务记录
+     */
+    public boolean exists(int activityId) {
         return isNotEmpty(getMapper().selectByExampleAndRowBounds(
                 of(getPoClass()).weekendCriteria().orEqualTo(P::getActivityId, activityId)
                         .orEqualTo(P::getActivityPid, activityId),
                 new RowBounds(ZERO, ONE)));
     }
+
 }

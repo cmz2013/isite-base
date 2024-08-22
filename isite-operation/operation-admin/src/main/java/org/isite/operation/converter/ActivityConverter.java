@@ -14,7 +14,7 @@ import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.isite.operation.converter.TaskConverter.toTasks;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class ActivityConverter {
 

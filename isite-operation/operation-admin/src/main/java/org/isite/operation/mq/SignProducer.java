@@ -1,12 +1,12 @@
 package org.isite.operation.mq;
 
 import org.isite.commons.web.mq.Producer;
-import org.isite.operation.po.SignLogPo;
 import org.isite.operation.data.dto.EventDto;
+import org.isite.operation.po.SignLogPo;
 import org.springframework.stereotype.Component;
 
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.data.enums.EventType.POST_SIGN;
+import static org.isite.operation.data.enums.EventType.POST_OPERATION_SIGN;
 /**
  * @author <font color='blue'>zhangcm</font>
  */
@@ -21,7 +21,7 @@ public class SignProducer implements Producer {
         EventDto eventDto = new EventDto();
         SignLogPo signLogPo = cast(returnValue);
         eventDto.setUserId(signLogPo.getUserId());
-        eventDto.setEventType(POST_SIGN);
+        eventDto.setEventType(POST_OPERATION_SIGN);
         eventDto.setObjectValue(signLogPo.getId().toString());
         eventDto.setEventParam(signLogPo.getContinuousCount());
         return eventDto;

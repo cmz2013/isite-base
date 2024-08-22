@@ -3,8 +3,8 @@ package org.isite.operation.data.vo;
 import java.util.List;
 
 /**
- * 奖品任务自定义属性
- * @author <font color='blue'>zhangcm</font>
+ * @Description 奖品任务自定义属性
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class PrizeTaskProperty extends TaskProperty<PrizeReward> {
 

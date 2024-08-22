@@ -8,7 +8,7 @@ import org.isite.operation.data.enums.PrizeType;
 import java.util.Date;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

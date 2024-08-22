@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.data.enums.TaskType.ORDER_PRIZE;
+import static org.isite.operation.data.enums.TaskType.SHOP_ORDER_PRIZE;
 
 /**
  * @Description 订单奖品任务接口，奖品奖励系数（coefficient）配置用户最低累计消费金额
@@ -38,6 +38,6 @@ public class OrderPrizeExecutor extends PrizeTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {ORDER_PRIZE};
+        return new TaskType[] {SHOP_ORDER_PRIZE};
     }
 }

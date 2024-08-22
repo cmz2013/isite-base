@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static java.lang.System.currentTimeMillis;
+import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHalfYear;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHour;
@@ -17,11 +18,10 @@ import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfQuarter;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfSecond;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfWeek;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfYear;
-import static org.isite.commons.lang.data.Constants.ONE;
 
 /**
- * 任务周期频率，例如：3天6次（unit=DAYS time=3 limit=6）
- * @author <font color='blue'>zhangcm</font>
+ * @Description 任务周期频率，例如：3天6次（unit=DAYS time=3 limit=6）
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

@@ -4,12 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 回答问题行为参数，用于解析JSON字符串：EventDto#eventParam
- * @author <font color='blue'>zhangcm</font>
+ * @Description 回答问题行为参数，用于解析JSON字符串：EventDto#eventParam
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class ReplyEventParam {
+public class AnswerEventParam extends InviteEventParam {
     /**
      * 是否首答
      */

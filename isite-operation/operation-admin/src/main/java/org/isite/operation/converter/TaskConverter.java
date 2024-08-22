@@ -15,7 +15,7 @@ import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.lang.json.Jackson.parseObject;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class TaskConverter {
 

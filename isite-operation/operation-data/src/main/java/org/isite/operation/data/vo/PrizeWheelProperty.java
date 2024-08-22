@@ -5,8 +5,8 @@ import lombok.Setter;
 import org.isite.commons.lang.json.Comment;
 
 /**
- * 抽奖活动属性
- * @author <font color='blue'>zhangcm</font>
+ * @Description 抽奖活动属性
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

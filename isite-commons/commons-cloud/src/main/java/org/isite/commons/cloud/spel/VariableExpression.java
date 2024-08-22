@@ -35,7 +35,7 @@ public class VariableExpression {
      * 解析SpEL表达式返回值
      */
     public static Object getValue(String expression, String[] parameterNames, Object[] args) {
-        notBlank(expression, "expression must not be null");
+        notBlank(expression, "expression cannot be empty");
         return EXPRESSION_PARSER.parseExpression(expression)
                 .getValue(new VariableExpression(parameterNames, args).getEvaluationContext());
     }

@@ -11,7 +11,7 @@ import static org.isite.commons.lang.utils.DateUtils.formatDate;
 import static org.isite.commons.lang.utils.StringUtils.join;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class IdempotentKey {
 

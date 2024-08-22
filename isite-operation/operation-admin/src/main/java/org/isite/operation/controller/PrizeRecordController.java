@@ -37,7 +37,7 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.misc.data.enums.ObjectType.EMPLOYEE;
+import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
@@ -77,7 +77,7 @@ public class PrizeRecordController extends BaseController {
         notOnline(activityService.get(activityId).getStatus());
         PrizeRecordPo prizeRecordPo = prizeRecordService.get(recordId);
         isTrue(prizeRecordPo.getActivityId().equals(activityId) &&
-                prizeRecordPo.getObjectType().equals(EMPLOYEE), new IllegalParameterError());
+                prizeRecordPo.getObjectType().equals(TENANT_EMPLOYEE), new IllegalParameterError());
         isTrue(isNotTrue(prizeRecordPo.getReceiveStatus()), getMessage("received.notDelete",
                 "It cannot be deleted if it has already been received"));
         return toResult(prizeRecordService.deletePrizeRecord(prizeRecordPo));

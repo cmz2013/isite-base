@@ -25,12 +25,12 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
-import static org.isite.misc.data.enums.ObjectType.ACTIVITY;
+import static org.isite.misc.data.enums.ObjectType.OPERATION_ACTIVITY;
 import static org.isite.operation.data.constants.CacheKey.LOCK_WHEEL_USER;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class PrizeWheelService {
@@ -91,7 +91,7 @@ public class PrizeWheelService {
             prizeRecordPo.setReceiveStatus(FALSE);
             prizeRecordPo.setLockStatus(FALSE);
             prizeRecordPo.setUserId(userId);
-            prizeRecordPo.setObjectType(ACTIVITY);
+            prizeRecordPo.setObjectType(OPERATION_ACTIVITY);
             prizeRecordPo.setObjectValue(activity.getId().toString());
             prizeRecordPo.setActivityId(activity.getId());
             prizeRecordPo.setActivityPid(activity.getPid());

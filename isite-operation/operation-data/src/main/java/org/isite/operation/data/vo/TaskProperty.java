@@ -8,10 +8,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 运营任务属性，通常用于配置简单属性，主要包括：
+ * @Description 运营任务属性，通常用于配置简单属性，主要包括：
  * 1）任务其他约束条件
  * 2）完成任务发放的奖励（保存到任务记录数据表中）
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
