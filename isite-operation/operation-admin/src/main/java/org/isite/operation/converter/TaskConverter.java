@@ -1,9 +1,9 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.po.TaskPo;
 import org.isite.operation.data.dto.TaskPostDto;
 import org.isite.operation.data.vo.Task;
 import org.isite.operation.data.vo.TaskPeriod;
+import org.isite.operation.po.TaskPo;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.json.Jackson.parseObject;
 
 /**
@@ -48,6 +49,15 @@ public class TaskConverter {
     public static TaskPo toTaskPo(TaskPostDto taskPostDto) {
         TaskPo taskPo = convert(taskPostDto, TaskPo::new);
         taskPo.setEventType(taskPo.getTaskType().getEventType());
+        if (null == taskPo.getProperty()) {
+            taskPo.setProperty(BLANK_STRING);
+        }
+        if (null == taskPo.getRemark()) {
+            taskPo.setRemark(BLANK_STRING);
+        }
+        if (null == taskPo.getTaskPeriod()) {
+            taskPo.setTaskPeriod(BLANK_STRING);
+        }
         return taskPo;
     }
 }

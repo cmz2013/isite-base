@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -34,7 +33,6 @@ public class UserConverter {
         userDto.setRealName(userPostDto.getRealName());
         userDto.setEmail(userPostDto.getEmail());
         userDto.setPhone(userPostDto.getPhone());
-        userDto.setStatus(ENABLED);
         return userDto;
     }
 }

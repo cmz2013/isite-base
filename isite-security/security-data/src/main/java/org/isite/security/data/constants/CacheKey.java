@@ -1,6 +1,6 @@
 package org.isite.security.data.constants;
 
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 
 /**
  * @Description 缓存KEY
@@ -14,7 +14,7 @@ public class CacheKey {
     /**
      * 认证鉴权中心缓存key的前缀
      */
-    public static final String SECURITY_PREFIX = BLANK;
+    public static final String SECURITY_PREFIX = BLANK_STRING;
     /**
      * 用户登录失败次数key: login:times:{username}。不区分端信息
      */

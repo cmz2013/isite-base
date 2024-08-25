@@ -1,7 +1,8 @@
 package org.isite.misc.client;
 
 import org.isite.commons.lang.data.Result;
-import org.isite.misc.data.dto.FileRecordDto;
+import org.isite.misc.data.dto.FileRecordPostDto;
+import org.isite.misc.data.dto.FileRecordPutDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +20,11 @@ public interface FileRecordClient {
      * 根据ID更新文件记录，返回更新条数
      */
     @PutMapping(PUT_FILE_RECORD)
-    Result<Integer> updateFileRecord(@RequestBody FileRecordDto fileRecordDto);
+    Result<Integer> updateFileRecord(@RequestBody FileRecordPutDto fileRecordPutDto);
 
     /**
      * 添加文件记录，返回ID
      */
     @PostMapping(MY_POST_FILE_RECORD)
-    Result<Integer> addFileRecord(@RequestBody FileRecordDto fileRecordDto);
+    Result<Integer> addFileRecord(@RequestBody FileRecordPostDto fileRecordPostDto);
 }

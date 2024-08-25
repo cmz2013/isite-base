@@ -1,12 +1,12 @@
 package org.isite.user.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.lang.data.Result;
-import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
+import org.isite.commons.lang.data.Result;
+import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sign.Signature;
 import org.isite.user.data.dto.UserDto;
 import org.isite.user.data.vo.User;
@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.lang.Assert.isFalse;
+import static org.isite.user.converter.UserConverter.toUserPo;
+import static org.isite.user.converter.UserConverter.toUserSelectivePo;
 import static org.isite.user.converter.UserSecretConverter.toSecret;
 import static org.isite.user.data.constant.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constant.UrlConstants.API_POST_USER;
@@ -68,8 +70,8 @@ public class UserController extends BaseController {
      * 管理员查询用户信息
      */
     @GetMapping(GET_USER)
-    public Result<User> getUser(@PathVariable("id") Long id) {
-        return toResult(convert(userService.get(id), User::new));
+    public Result<User> getUser(@PathVariable("identifier") String identifier) {
+        return toResult(convert(userService.getByIdentifier(identifier), User::new));
     }
 
     /**
@@ -83,7 +85,7 @@ public class UserController extends BaseController {
         if (isNotBlank(userDto.getEmail())) {
             isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()), getMessage(KEY_EMAIL_EXISTS, VALUE_EMAIL_EXISTS));
         }
-        return toResult(userService.insert(convert(userDto, UserPo::new)));
+        return toResult(userService.insert(toUserPo(userDto)));
     }
 
     @PutMapping(URL_USER)
@@ -97,7 +99,7 @@ public class UserController extends BaseController {
         if (isNotBlank(userDto.getEmail())) {
             isFalse(userService.exists(UserPo::getEmail, userDto.getEmail(), userDto.getId()), getMessage(KEY_EMAIL_EXISTS, VALUE_EMAIL_EXISTS));
         }
-        return toResult(userService.updateSelectiveById(convert(userDto, UserPo::new)));
+        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
     }
 
     @Signature

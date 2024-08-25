@@ -54,7 +54,6 @@ CREATE TABLE `dict_data` (
   `value` varchar(64) NOT NULL DEFAULT '' COMMENT '字典值',
   `sort` int unsigned NOT NULL DEFAULT 0 COMMENT '排序',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-  `status` tinyint unsigned NOT NULL DEFAULT 1 COMMENT '1 启用，0 停用',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   KEY `idx_dictdata_type` (`type`),

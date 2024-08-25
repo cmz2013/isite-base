@@ -23,9 +23,9 @@ public class RpcService {
      */
     public DataApiPo callApi(String appCode, WsType wsType, String apiId) {
         DataApiPo apiPo = new DataApiPo();
+        apiPo.setId(apiId);
         apiPo.setAppCode(appCode);
         apiPo.setWsType(wsType);
-        apiPo.setId(apiId);
         apiPo.setStatus(ENABLED);
 
         apiPo = dataApiService.findOne(apiPo);

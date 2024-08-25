@@ -38,18 +38,18 @@ public class DataLogService extends PoService<DataLogPo, String> {
      */
     @Transactional(rollbackFor = Exception.class)
     @Synchronized(locks = @Lock(name = LOCK_DATA_LOG, keys = "#logPo.id"))
-    public DataLogDto retry(DataLogPo logPo) {
+    public DataLogDto retry(DataLogPo dataLogPo) {
         //根据DataLog中的appCode设置FeignClient的name（value）
-        DataCompensateClient dataCompensateClient = feignClientFactory.getFeignClient(DataCompensateClient.class, logPo.getAppCode());
-        DataLogDto logDto = convert(logPo, DataLogDto::new);
+        DataCompensateClient dataCompensateClient = feignClientFactory.getFeignClient(DataCompensateClient.class, dataLogPo.getAppCode());
+        DataLogDto dataLogDto = convert(dataLogPo, DataLogDto::new);
         //执行完数据补偿，同步更新日志
-        logDto = getData(dataCompensateClient.retry(logDto));
-        if (null == logDto) {
-            delete(logPo.getId());
+        dataLogDto = getData(dataCompensateClient.retry(dataLogDto));
+        if (null == dataLogDto) {
+            this.delete(dataLogPo.getId());
         } else {
-            updateById(convert(logDto, DataLogPo::new));
+            this.updateById(convert(dataLogDto, DataLogPo::new));
         }
-        return logDto;
+        return dataLogDto;
     }
 
     @Autowired
@@ -72,16 +72,12 @@ public class DataLogService extends PoService<DataLogPo, String> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void save(DataLogPo log) {
-        if (null == log.getId()) {
-            insert(log);
-        } else {
-            updateById(log);
-        }
-        if (FALSE.equals(log.getStatus())) {
+    public void addDataLog(DataLogPo dataLogPo) {
+        this.insert(dataLogPo);
+        if (FALSE.equals(dataLogPo.getStatus())) {
             this.reportService.saveCallDetail(DATA_CALL_FAILURE);
             if (null != emailAlerter) {
-                this.emailAlerter.alert(log);
+                this.emailAlerter.alert(dataLogPo);
             }
         }
     }

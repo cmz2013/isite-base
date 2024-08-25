@@ -1,7 +1,6 @@
 package org.isite.operation.prize;
 
 import org.isite.operation.data.enums.PrizeType;
-import org.isite.operation.data.enums.ScoreType;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
@@ -12,25 +11,24 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.operation.task.IdempotentKey.toValue;
+import static org.isite.operation.data.enums.ScoreType.VIP_SCORE;
 
 /**
- * @Description 会员积分发放接口
- * VipScoreGiver发放会员积分，可以设置库存，限制发放的总份数；
- * ScoreTaskExecutor发放会员积分时，可以通过任务次数限制每人的发放次数，但是不能限制总份数
+ * @Description VIP积分发放接口
+ * ScoreGiver 可以设置奖品库存，限制发放的总份数。
+ * ScoreTaskExecutor 发放积分时，可以限制每人的发放次数，
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class ScoreGiver extends PrizeGiver {
+public class VipScoreGiver extends PrizeGiver {
     private ScoreRecordService scoreRecordService;
 
     @Override
     protected void grantPrize(PrizeRecordPo prizeRecordPo) {
         ScoreRecordPo scoreRecordPo = new ScoreRecordPo();
-        scoreRecordPo.setScoreType(ScoreType.VIP_SCORE);
+        scoreRecordPo.setScoreType(VIP_SCORE);
         scoreRecordPo.setScoreValue(parseInt(prizeRecordPo.getThirdPrizeValue()));
-        scoreRecordPo.setTaskId(ZERO);
+        scoreRecordPo.setTaskId(prizeRecordPo.getTaskId());
         scoreRecordPo.setActivityPid(prizeRecordPo.getActivityPid());
         scoreRecordPo.setObjectType(prizeRecordPo.getObjectType());
         scoreRecordPo.setObjectValue(prizeRecordPo.getObjectValue());
@@ -38,11 +36,7 @@ public class ScoreGiver extends PrizeGiver {
         scoreRecordPo.setUserId(prizeRecordPo.getUserId());
         scoreRecordPo.setActivityId(prizeRecordPo.getActivityId());
         scoreRecordPo.setRemark(prizeRecordPo.getRemark());
-
-        scoreRecordPo.setIdempotentKey(toValue(
-                prizeRecordPo.getActivityId(), ZERO, null, prizeRecordPo.getUserId(),
-                scoreRecordService.countScoreRecord(prizeRecordPo.getActivityId(), ZERO,
-                        null, prizeRecordPo.getUserId())));
+        scoreRecordPo.setIdempotentKey(prizeRecordPo.getIdempotentKey());
         scoreRecordService.insert(scoreRecordPo);
     }
 

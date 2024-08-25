@@ -2,6 +2,7 @@ package org.isite.user.client;
 
 import org.isite.commons.web.feign.FeignClientFactory;
 import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.vo.User;
 import org.isite.user.data.vo.UserSecret;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
@@ -15,6 +16,15 @@ import static org.isite.user.data.constant.UserConstants.SERVICE_ID;
 public class UserAccessor {
 
     private UserAccessor() {
+    }
+
+    /**
+     * @Description 查询用户
+     */
+    public static User getUser(String identifier) {
+        FeignClientFactory feignClientFactory = getBean(FeignClientFactory.class);
+        UserClient userClient = feignClientFactory.getFeignClient(UserClient.class, SERVICE_ID);
+        return getData(userClient.getUser(identifier));
     }
 
     /**

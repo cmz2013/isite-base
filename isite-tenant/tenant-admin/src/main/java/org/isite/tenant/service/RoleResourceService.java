@@ -6,8 +6,11 @@ import org.isite.tenant.po.ResourcePo;
 import org.isite.tenant.po.RoleResourcePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -25,5 +28,23 @@ public class RoleResourceService extends PoService<RoleResourcePo, Integer> {
      */
     public List<ResourcePo> findResources(String clientId, int roleId) {
         return ((RoleResourceMapper) getMapper()).selectResources(clientId, roleId);
+    }
+
+    /**
+     * 根据角色ID查询资源ID
+     */
+    public List<Integer> findResourceIds(int roleId) {
+        return ((RoleResourceMapper) getMapper()).selectResourceIds(roleId);
+    }
+
+    /**
+     * 删除该租户所有角色在role_resource表中对应的资源
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteRoleResources(int tenantId, List<Integer> resourceIds) {
+        if (isEmpty(resourceIds)) {
+            return;
+        }
+        ((RoleResourceMapper) getMapper()).deleteRoleResources(tenantId, resourceIds);
     }
 }

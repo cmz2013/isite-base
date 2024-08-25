@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.utils.TreeUtils.isRoot;
 import static org.isite.misc.converter.RegionConverter.toPcodes;
 
@@ -41,7 +41,7 @@ public class RegionService extends TreePoService<RegionPo, Integer> {
      */
     public String getFullName(int id) {
         if (isRoot(id)) {
-            return BLANK;
+            return BLANK_STRING;
         }
         RegionPo regionPo = get(id);
         StringBuilder fullName = new StringBuilder();

@@ -21,13 +21,13 @@ import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.isite.commons.cloud.spel.VariableExpression.getValue;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.MINUTE_SECONDS;
 import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.template.FreeMarker.process;
 import static org.isite.commons.lang.utils.TypeUtils.castArray;
 import static org.isite.commons.lang.utils.TypeUtils.isBasic;
-import static org.isite.commons.lang.template.FreeMarker.process;
 
 /**
  * Redis锁匠(非线程安全，每个线程创建各自独立的实例)，主要功能：
@@ -90,7 +90,7 @@ public class Locksmith {
     }
 
     public void setPrefix(String prefix) {
-        this.prefix = null == prefix ? BLANK : prefix;
+        this.prefix = null == prefix ? BLANK_STRING : prefix;
     }
 
     /**

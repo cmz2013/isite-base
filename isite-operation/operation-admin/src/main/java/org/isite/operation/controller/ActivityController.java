@@ -1,14 +1,14 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.lang.data.Result;
-import org.isite.commons.lang.enums.SwitchStatus;
-import org.isite.commons.lang.json.JsonField;
-import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
+import org.isite.commons.lang.data.Result;
+import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.json.JsonField;
+import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
@@ -37,6 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static org.isite.commons.cloud.constants.UrlConstants.URL_API;
+import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
@@ -46,10 +48,9 @@ import static org.isite.commons.lang.data.Constants.THOUSAND;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.commons.lang.utils.TreeUtils.isRoot;
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
+import static org.isite.operation.converter.ActivityConverter.toActivityPo;
 import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.data.enums.ActivityTheme.values;
@@ -79,10 +80,9 @@ public class ActivityController extends BaseController {
 
     @PostMapping(URL_OPERATION + "/activity")
     public Result<Integer> addActivity(@RequestBody @Validated(Add.class) ActivityDto activityDto) {
-        isTrue(isRoot(activityDto.getPid()) ||
-                        isRoot(activityService.get(activityDto.getPid()).getPid()),
+        isTrue(isRoot(activityDto.getPid()) || isRoot(activityService.get(activityDto.getPid()).getPid()),
                 getMessage("activity.twoLevels", "sub-activities can only have two levels"));
-        return toResult(activityService.addActivity(convert(activityDto, ActivityPo::new)));
+        return toResult(activityService.addActivity(toActivityPo(activityDto)));
     }
 
     @PutMapping(URL_OPERATION + "/activity")

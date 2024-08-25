@@ -20,6 +20,6 @@ public class PrizeReward extends Reward {
      * 2）执行一次任务，只能奖励一个奖品，即新增一条奖品记录，不支持多个奖品。但是，一个活动可以创建多个同一类型的任务
      */
     @Comment("奖品ID")
-    private Integer prizeId;
+    private int prizeId;
 }
 

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.isite.commons.lang.enums.Enumerable;
 import org.isite.operation.data.vo.AnswerPrizeProperty;
-import org.isite.operation.data.vo.InviteTaskProperty;
 import org.isite.operation.data.vo.OrderPrizeProperty;
 import org.isite.operation.data.vo.PrizeTaskProperty;
 import org.isite.operation.data.vo.Reward;
@@ -46,15 +45,15 @@ public enum TaskType implements Enumerable<Integer> {
      */
     QUESTION_PRIZE(101, POST_QUESTION, "提交问题送奖品", PrizeTaskProperty.class),
     QUESTION_ANSWER_PRIZE(102, POST_QUESTION_ANSWER, "答疑送奖品", AnswerPrizeProperty.class),
-    //提问人采纳答案时，给回复人送奖品。eventDto#userId为回复人ID
+    //提问人采纳答案时，给回复人送奖品。eventDto#userId为提问人ID，eventParam为回复人ID TODO
     QUESTION_ANSWER_ADOPT_PRIZE(103, PUT_QUESTION_ANSWER_ADOPT, "答案被采纳送奖品", AnswerPrizeProperty.class),
     SHOP_ORDER_PRIZE(104, POST_SHOP_ORDER_PAYMENT_NOTIFY, "老用户福利", OrderPrizeProperty.class),
 
     /**
      * 邀请类型任务（邀请码不为空），保存邀请记录再送奖励
      */
-    QUESTION_ANSWER_INVITE(201, POST_QUESTION_ANSWER, "答疑邀请", InviteTaskProperty.class),
-    OPERATION_WEBPAGE_INVITE(202, GET_OPERATION_WEBPAGE, "活动邀请", InviteTaskProperty.class),
+    QUESTION_ANSWER_INVITE(201, POST_QUESTION_ANSWER, "答疑邀请", PrizeTaskProperty.class),
+    OPERATION_WEBPAGE_INVITE(202, GET_OPERATION_WEBPAGE, "活动邀请", PrizeTaskProperty.class),
     ;
 
     private final Integer code;

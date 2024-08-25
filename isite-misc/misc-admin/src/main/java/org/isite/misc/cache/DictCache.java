@@ -17,6 +17,7 @@ import static com.alicp.jetcache.anno.CacheType.BOTH;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.lang.data.Constants.DAY_SECONDS;
 import static org.isite.commons.lang.data.Constants.MINUTE_SECONDS;
+import static org.isite.misc.converter.DictDataConverter.toDictDataPo;
 import static org.isite.misc.data.constants.CacheKey.DICT_TYPE_PREFIX;
 
 /**
@@ -41,9 +42,9 @@ public class DictCache {
     /**
      * 新增字典数据
      */
-    @CacheInvalidate(name = DICT_TYPE_PREFIX, key = "#dataDto.type")
-    public int addDictData(DictDataDto dataDto) {
-        return dictDataService.insert(convert(dataDto, DictDataPo::new));
+    @CacheInvalidate(name = DICT_TYPE_PREFIX, key = "#dictDataDto.type")
+    public int addDictData(DictDataDto dictDataDto) {
+        return dictDataService.insert(toDictDataPo(dictDataDto));
     }
 
     /**

@@ -1,8 +1,8 @@
 package org.isite.tenant.controller;
 
+import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.web.sign.Signature;
 import org.isite.tenant.data.dto.ResourceDto;
 import org.isite.tenant.data.vo.Resource;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.jpa.converter.TreeConverter.toTree;
+import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
 import static org.isite.tenant.data.constant.UrlConstants.API_GET_CLIENT_RESOURCES;
 import static org.isite.tenant.data.constant.UrlConstants.URL_TENANT;
 
@@ -61,9 +62,8 @@ public class ResourceController extends BaseController {
      * 添加资源信息
      */
     @PostMapping(URL_TENANT + "/resource")
-    public Result<Integer> addResource(
-            @RequestBody @Validated(Add.class) ResourceDto resourceDto) {
-        return toResult(resourceService.insert(convert(resourceDto, ResourcePo::new)));
+    public Result<Integer> addResource(@RequestBody @Validated(Add.class) ResourceDto resourceDto) {
+        return toResult(resourceService.insert(toResourcePo(resourceDto)));
     }
 
     /**

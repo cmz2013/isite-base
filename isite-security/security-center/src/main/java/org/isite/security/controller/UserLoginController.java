@@ -62,8 +62,8 @@ public class UserLoginController extends BaseController {
      * 校验验证码，注册用户信息
      */
     @PostMapping(API_POST_USER)
-    public Result<Integer> addUser(@Validated @RequestBody UserPostDto userPostDto) {
-        return toResult(userLoginService.addUser(userPostDto));
+    public Result<Integer> registUser(@Validated @RequestBody UserPostDto userPostDto) {
+        return toResult(userLoginService.registUser(userPostDto));
     }
 
     /**

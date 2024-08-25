@@ -11,14 +11,13 @@ import org.isite.operation.data.vo.TaskProperty;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
- * @description 运营任务
+ * @Description 运营任务
  * 运营任务是由业务行为（EventType）触发的，通过任务规则校验，判断是否可以完成运营任务，即是否可以获取抽奖次数、活动积分等
  * 任务规则包含EventType、ObjectType、objectId和规则参数（ruleParam）
  * 规则参数，是根据TaskType#EventType进行自定义
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
@@ -35,7 +34,6 @@ public class TaskPo extends Po<Integer> {
     /**
      * 触发任务的行为类型（和 Controller 接口一一对应）
      */
-    @NotNull
     private EventType eventType;
     /**
      * 任务类型

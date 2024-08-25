@@ -19,6 +19,7 @@ import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.security.converter.UserConverter.toUserDto;
 import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;
+import static org.isite.user.client.UserAccessor.addUser;
 import static org.isite.user.client.UserAccessor.getUserSecret;
 import static org.isite.user.data.constant.UserConstants.SERVICE_ID;
 
@@ -36,7 +37,7 @@ public class UserLoginService {
     /**
      * 校验验证码，注册用户信息
      */
-    public Integer addUser(UserPostDto userPostDto) {
+    public Integer registUser(UserPostDto userPostDto) {
         String agent = userPostDto.getPhone();
         if (EMAIL.equals(userPostDto.getVerifyCodeMode())) {
             notBlank(userPostDto.getEmail(), "email cannot be null");
@@ -45,7 +46,7 @@ public class UserLoginService {
         VerifyCodeHandler verifyCodeHandler = verifyCodeHandlerFactory.get(userPostDto.getVerifyCodeMode());
         isTrue(verifyCodeHandler.checkCode(agent, userPostDto.getCode()),
                 getMessage("VerifyCode.invalid", "the verification code is invalid"));
-        return UserAccessor.addUser(toUserDto(userPostDto), signSecret.password(SERVICE_ID));
+        return addUser(toUserDto(userPostDto), signSecret.password(SERVICE_ID));
     }
 
     /**
@@ -65,7 +66,7 @@ public class UserLoginService {
         //校验验证码
         isTrue(verifyCodeHandler.checkCode(userSecretDto.getAgent(), userSecretDto.getCode()),
                 getMessage("VerifyCode.invalid", "the verification code is invalid"));
-        tokenService.revokeTokens(userSecret.getUserName());
+        tokenService.revokeTokensByUser(userSecret.getUserName());
         return UserAccessor.updatePassword(
                 userSecret.getUserId(),
                 new BCryptPasswordEncoder().encode(userSecretDto.getPassword()),

@@ -2,7 +2,6 @@ package org.isite.user.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.commons.cloud.data.Dto;
 import org.isite.commons.cloud.data.op.Add;
 
@@ -25,10 +24,6 @@ public class UserDto extends Dto<Long> {
      */
     @NotBlank(groups = Add.class)
     private String realName;
-    /**
-     * 用户状态
-     */
-    private SwitchStatus status;
     /**
      * 电子邮箱
      */

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.data.enums.TaskType.USER_SCORE;
@@ -33,11 +32,10 @@ public class ScoreTaskExecutor extends TaskExecutor<ScoreRecordPo> {
 
     @Override
     public void saveTaskRecord(Activity activity, ScoreRecordPo taskRecord, Reward reward) {
-        ScoreReward scoreReward = cast(reward);
-        if (null == scoreReward) {
+        if (null == reward) {
             return;
         }
-        notNull(scoreReward.getScoreValue(), "scoreReward.scoreValue cannot be null");
+        ScoreReward scoreReward = cast(reward);
         isTrue(scoreReward.getScoreValue() > ZERO, "scoreReward.scoreValue must be greater than 0");
         taskRecord.setScoreValue(scoreReward.getScoreValue());
         taskRecord.setScoreType(scoreReward.getScoreType());

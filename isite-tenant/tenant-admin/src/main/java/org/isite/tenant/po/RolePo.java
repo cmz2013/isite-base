@@ -15,13 +15,13 @@ import javax.persistence.Table;
 @Table(name = "role")
 public class RolePo extends Po<Integer> {
     /**
-     * 租户ID
-     */
-    private Integer tenantId;
-    /**
      * 角色名称
      */
     private String name;
+    /**
+     * 租户ID
+     */
+    private Integer tenantId;
     /**
      * 备注
      */

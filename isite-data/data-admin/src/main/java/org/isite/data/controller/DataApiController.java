@@ -1,12 +1,12 @@
 package org.isite.data.controller;
 
-import org.isite.commons.lang.data.Result;
-import org.isite.commons.lang.enums.SwitchStatus;
-import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
+import org.isite.commons.lang.data.Result;
+import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.web.controller.BaseController;
 import org.isite.data.po.DataApiPo;
 import org.isite.data.service.DataApiService;
 import org.isite.data.support.dto.DataApiDto;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.data.converter.DataApiConverter.toDataApiPo;
 import static org.isite.data.support.constants.UrlConstants.URL_DATA;
 
 /**
@@ -38,18 +39,16 @@ public class DataApiController extends BaseController {
      * 添加数据接口
      */
     @PostMapping(URL_DATA + "/api")
-    public Result<Long> addDataApi(
-            @RequestBody @Validated(Add.class) DataApiDto dataApiDto) {
-        return toResult(dataApiService.insert(convert(dataApiDto, DataApiPo::new)));
+    public Result<Long> addDataApi(@RequestBody @Validated(Add.class) DataApiDto dataApiDto) {
+        return toResult(dataApiService.insert(toDataApiPo(dataApiDto)));
     }
 
     /**
      * 修改数据接口
      */
     @PutMapping(URL_DATA + "/api")
-    public Result<Long> updateDataApi(
-            @RequestBody @Validated(Update.class) DataApiDto dataApiDto) {
-        return toResult(dataApiService.updateById(convert(dataApiDto, DataApiPo::new)));
+    public Result<Long> updateDataApi(@RequestBody @Validated(Update.class) DataApiDto dataApiDto) {
+        return toResult(dataApiService.updateSelectiveById(convert(dataApiDto, DataApiPo::new)));
     }
 
     /**
@@ -66,7 +65,7 @@ public class DataApiController extends BaseController {
     @PutMapping(URL_DATA + "/api/{id}/status/{status}")
     public Result<Long> updateDataApi(
             @PathVariable("id") String id, @PathVariable("status") SwitchStatus status) {
-        return toResult(dataApiService.updateById(id, status));
+        return toResult(dataApiService.updateById(id, DataApiPo::getStatus, status));
     }
 
     /**

@@ -3,7 +3,6 @@ package org.isite.operation.task;
 import org.isite.operation.data.dto.EventDto;
 import org.isite.operation.data.enums.TaskType;
 import org.isite.operation.data.vo.OrderPrizeProperty;
-import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.TaskProperty;
 import org.isite.operation.service.UserFeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class OrderPrizeExecutor extends PrizeTaskExecutor {
      * 校验用户最低消费金额
      */
     @Override
-    protected boolean checkTaskProperty(TaskProperty<? extends Reward> taskProperty, EventDto eventDto) {
+    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         OrderPrizeProperty orderPrizeProperty = cast(taskProperty);
         int cumulateAmount = userFeedbackService.findCumulateAmount(eventDto.getUserId(), orderPrizeProperty.getStartTime());
         return cumulateAmount >= orderPrizeProperty.getCumulateAmount();

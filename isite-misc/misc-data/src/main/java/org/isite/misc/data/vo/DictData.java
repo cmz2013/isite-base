@@ -2,7 +2,6 @@ package org.isite.misc.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.commons.lang.data.Vo;
 
 /**
@@ -24,15 +23,11 @@ public class DictData extends Vo<Integer> {
      */
     private String value;
     /**
-     * 启停状态
-     */
-    private SwitchStatus status;
-    /**
      * 备注
      */
     private String remark;
     /**
      * 排序
      */
-    private String sort;
+    private Integer sort;
 }

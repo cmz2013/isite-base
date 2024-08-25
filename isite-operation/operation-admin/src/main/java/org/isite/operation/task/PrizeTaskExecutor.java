@@ -9,6 +9,7 @@ import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.Task;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.service.PrizeTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,6 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.data.enums.TaskType.QUESTION_ANSWER_ADOPT_PRIZE;
 import static org.isite.operation.data.enums.TaskType.QUESTION_PRIZE;
 
 /**
@@ -31,7 +31,13 @@ import static org.isite.operation.data.enums.TaskType.QUESTION_PRIZE;
 @Component
 public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
 
+    private PrizeTaskService prizeTaskService;
     private PrizeRecordService prizeRecordService;
+
+    @Autowired
+    public void setPrizeTaskService(PrizeTaskService prizeTaskService) {
+        this.prizeTaskService = prizeTaskService;
+    }
 
     /**
      * 1）运营任务异步方式发放奖品，状态为待领取不扣减实物库存，防止用户不领取（先到先得）。
@@ -49,11 +55,18 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
     }
 
     @Override
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+        return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
+    }
+
+    @Override
     public void saveTaskRecord(Activity activity, PrizeRecordPo taskRecord, Reward reward) {
-        PrizeReward prizeReward = cast(reward);
-        notNull(prizeReward.getPrizeId(), "prizeReward.prizeId cannot be null");
-        Prize prize = get(activity.getPrizes(), prizeReward.getPrizeId());
-        notNull(prize, getMessage("prize.notFound", "prize not found"));
+        if (null == reward) {
+            return;
+        }
+        int prizeId = ((PrizeReward) reward).getPrizeId();
+        Prize prize = get(activity.getPrizes(), prizeId);
+        notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
         toPrizeRecordPo(taskRecord, prize);
         prizeRecordService.insert(taskRecord);
     }
@@ -70,6 +83,6 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {QUESTION_PRIZE, QUESTION_ANSWER_ADOPT_PRIZE};
+        return new TaskType[] {QUESTION_PRIZE};
     }
 }

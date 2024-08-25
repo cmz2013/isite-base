@@ -30,6 +30,7 @@ public class PrizeRecordConverter {
         prizeRecordPo.setPrizeName(prize.getPrizeName());
         prizeRecordPo.setPrizeType(prize.getPrizeType());
         prizeRecordPo.setPrizeImage(prize.getPrizeImage());
+        prizeRecordPo.setRemark(prize.getRemark());
     }
 
     /**
@@ -46,7 +47,6 @@ public class PrizeRecordConverter {
         prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
         prizeRecordPo.setUserId(inviteRecordPo.getInviterId());
         prizeRecordPo.setActivityId(inviteRecordPo.getActivityId());
-        prizeRecordPo.setRemark(task.getTaskType().getLabel());
         prizeRecordPo.setIdempotentKey(inviteRecordPo.getIdempotentKey());
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
         prizeRecordPo.setLockStatus(FALSE);

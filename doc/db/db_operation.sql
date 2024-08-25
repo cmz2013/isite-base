@@ -66,7 +66,7 @@ CREATE TABLE `prize` (
   `probability` int unsigned NOT NULL DEFAULT 0 COMMENT '中奖概率/100000',
   `consume_inventory` int unsigned NOT NULL DEFAULT 0 COMMENT '已消耗库存',
   `lock_inventory` int unsigned NOT NULL DEFAULT 0 COMMENT '已锁定库存',
-  `sequence` int unsigned NOT NULL DEFAULT 0 COMMENT '奖品排列顺序',
+  `sort` int unsigned NOT NULL DEFAULT 0 COMMENT '排序',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`),
   KEY `idx_prize_activityid` (`activity_id`)

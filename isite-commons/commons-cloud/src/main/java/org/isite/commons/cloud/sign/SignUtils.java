@@ -23,7 +23,7 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Reflection.getValue;
 import static org.isite.commons.lang.data.Constants.AMPERSAND;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.EQUALS_SIGN;
 import static org.isite.commons.lang.data.Constants.THREE;
 import static org.isite.commons.lang.data.Constants.ZERO;
@@ -75,7 +75,7 @@ public class SignUtils {
                 context.append(key).append(EQUALS_SIGN).append(timestamp).append(AMPERSAND);
             } else {
                 context.append(key).append(EQUALS_SIGN)
-                        .append(null == data.get(key) ? BLANK : data.get(key)).append(AMPERSAND);
+                        .append(null == data.get(key) ? BLANK_STRING : data.get(key)).append(AMPERSAND);
             }
         });
         context.append(PASSWORD).append(EQUALS_SIGN).append(password);

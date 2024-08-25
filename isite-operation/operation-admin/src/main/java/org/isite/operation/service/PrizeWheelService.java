@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notEmpty;
@@ -38,6 +38,7 @@ public class PrizeWheelService {
     private PrizeTaskExecutor prizeTaskExecutor;
     private PrizeGiverFactory prizeGiverFactory;
     private PrizeRecordService prizeRecordService;
+    private PrizeService prizeService;
 
     /**
      * 抽取奖品
@@ -51,22 +52,14 @@ public class PrizeWheelService {
         notNull(recordPo, getMessage("draws.number.zero", "the number of draws is 0"));
         Prize prize = get(activity.getPrizes(), recordPo.getPrizeId());
         if (null == prize) {
-            List<Prize> prizes = filterPrizes(activity.getPrizes());
-            notEmpty(prizes, getMessage("prize.notInventory", "the prize is gone"));
+            List<Prize> prizes = prizeService.filterPrizes(activity.getPrizes());
+            notEmpty(prizes, getMessage("prize.notInventory", "there are no more prizes"));
             prize = choose(prizes, Prize::getProbability);
         }
         if (null != prize) {
             prizeGiverFactory.get(prize.getPrizeType()).execute(activity, prize, recordPo);
         }
         return prize;
-    }
-
-    /**
-     * 获取可用于抽奖的奖品
-     */
-    private List<Prize> filterPrizes(List<Prize> prizes) {
-        return prizes.stream().filter(prizeVo -> prizeVo.getTotalInventory() < ZERO
-                || prizeVo.getTotalInventory() - prizeVo.getConsumeInventory() > ZERO).collect(toList());
     }
 
     /**
@@ -92,7 +85,7 @@ public class PrizeWheelService {
             prizeRecordPo.setLockStatus(FALSE);
             prizeRecordPo.setUserId(userId);
             prizeRecordPo.setObjectType(OPERATION_ACTIVITY);
-            prizeRecordPo.setObjectValue(activity.getId().toString());
+            prizeRecordPo.setObjectValue(valueOf(activity.getId()));
             prizeRecordPo.setActivityId(activity.getId());
             prizeRecordPo.setActivityPid(activity.getPid());
             prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
@@ -117,5 +110,10 @@ public class PrizeWheelService {
     @Autowired
     public void setPrizeRecordService(PrizeRecordService prizeRecordService) {
         this.prizeRecordService = prizeRecordService;
+    }
+
+    @Autowired
+    public void setPrizeService(PrizeService prizeService) {
+        this.prizeService = prizeService;
     }
 }

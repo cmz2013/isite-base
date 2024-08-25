@@ -15,4 +15,11 @@ import java.util.List;
 public interface RoleResourceMapper extends PoMapper<RoleResourcePo, Integer> {
 
     List<ResourcePo> selectResources(@Param("clientId") String clientId, @Param("roleId") int roleId);
+
+    List<Integer> selectResourceIds(@Param("roleId") int roleId);
+
+    /**
+     * 删除该租户所有角色在role_resource表中对应的资源
+     */
+    void deleteRoleResources(@Param("tenantId") int tenantId, @Param("resourceIds") List<Integer> resourceIds);
 }

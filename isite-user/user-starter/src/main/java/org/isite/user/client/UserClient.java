@@ -2,6 +2,7 @@ package org.isite.user.client;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.vo.User;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,18 @@ import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWO
 import static org.isite.user.data.constant.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constant.UrlConstants.API_POST_USER;
 import static org.isite.user.data.constant.UrlConstants.API_PUT_USER_PASSWORD;
+import static org.isite.user.data.constant.UrlConstants.GET_USER;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 //@FeignClient(contextId = "userClient", value = SERVICE_ID)
 public interface UserClient {
+    /**
+     * @Description 查询用户
+     */
+    @GetMapping(value = GET_USER)
+    Result<User> getUser(@PathVariable("identifier") String identifier);
     /**
      * @Description 查询用户秘钥
      */

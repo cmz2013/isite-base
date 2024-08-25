@@ -47,10 +47,6 @@ public class UrlConstants {
      */
     public static final String DELETE_OAUTH_USER = URL_OAUTH + "/user";
     /**
-     * 注销当前用户在所有端的token
-     */
-    public static final String DELETE_OAUTH_USERS = URL_OAUTH + "/users";
-    /**
      * 注册用户信息
      */
     public static final String API_POST_USER = URL_API + URL_OAUTH + "/user";

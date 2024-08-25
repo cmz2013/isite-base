@@ -4,13 +4,14 @@ import org.isite.operation.data.dto.EventDto;
 import org.isite.operation.data.enums.TaskType;
 import org.isite.operation.data.vo.Activity;
 import org.isite.operation.data.vo.InviteEventParam;
-import org.isite.operation.data.vo.InviteReward;
 import org.isite.operation.data.vo.Prize;
+import org.isite.operation.data.vo.PrizeReward;
 import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.Task;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.service.InviteRecordService;
 import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.service.PrizeTaskService;
 import org.isite.operation.service.TaskRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -39,6 +40,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     private PrizeRecordService prizeRecordService;
     private InviteRecordService inviteRecordService;
+    private PrizeTaskService prizeTaskService;
 
     @Override
     protected InviteRecordPo createTaskRecord(
@@ -56,7 +58,6 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
         inviteRecordPo.setUserId(eventDto.getUserId());
         inviteRecordPo.setRemark(task.getTaskType().getLabel());
         inviteRecordPo.setIdempotentKey(toValue(activity.getId(), task.getId(), periodStartTime, inviterId, taskNumber));
-
         return inviteRecordPo;
     }
 
@@ -84,14 +85,19 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     }
 
     @Override
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+        return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
+    }
+
+    @Override
     protected void saveTaskRecord(Activity activity, InviteRecordPo inviteRecordPo, Reward reward) {
         inviteRecordService.insert(inviteRecordPo);
-        InviteReward inviteReward = cast(reward);
-        if (null == inviteReward || null == inviteReward.getPrizeId()) {
+        if (null == reward) {
             return;
         }
-        Prize prize = get(activity.getPrizes(), inviteReward.getPrizeId());
-        notNull(prize, getMessage("prize.notFound", "prize not found"));
+        int prizeId = ((PrizeReward) reward).getPrizeId();
+        Prize prize = get(activity.getPrizes(), prizeId);
+        notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
         prizeRecordService.insert(toPrizeRecordPo(
                 get(activity.getTasks(), inviteRecordPo.getTaskId()), inviteRecordPo, prize));
     }

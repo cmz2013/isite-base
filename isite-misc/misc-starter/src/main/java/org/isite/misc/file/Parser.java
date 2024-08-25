@@ -3,7 +3,7 @@ package org.isite.misc.file;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.isite.misc.data.dto.FileRecordDto;
+import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;
 
@@ -27,18 +27,18 @@ public abstract class Parser<T> {
 
     /**
      * @Description 解析文件
-     * @param fileRecordDto 文件记录
+     * @param fileRecord 文件记录
      * @param input 文件输入流
      */
-    public FileRecordDto execute(FileRecordDto fileRecordDto, InputStream input) {
+    public FileRecord execute(FileRecord fileRecord, InputStream input) {
         try {
-            fileRecordDto.setStatus(handle(toData(input)) ? PARSE_SUCCESS : PARSE_FAILURE);
+            fileRecord.setStatus(handle(toData(input)) ? PARSE_SUCCESS : PARSE_FAILURE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            fileRecordDto.setStatus(PARSE_FAILURE);
-            fileRecordDto.setRemark(e.getMessage());
+            fileRecord.setStatus(PARSE_FAILURE);
+            fileRecord.setRemark(e.getMessage());
         }
-        return fileRecordDto;
+        return fileRecord;
     }
 
     /**

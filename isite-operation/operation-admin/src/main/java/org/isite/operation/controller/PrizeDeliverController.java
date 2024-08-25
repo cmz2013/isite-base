@@ -25,7 +25,9 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverPo;
+import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverSelectivePo;
 import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -44,9 +46,13 @@ public class PrizeDeliverController extends BaseController {
                                             @RequestBody @Validated(Add.class) ConsigneeDto consigneeDto) {
         PrizeRecordPo prizeRecordPo = prizeRecordService.get(prizeRecordId);
         isTrue(getUserId().equals(prizeRecordPo.getUserId()), new OverstepAccessError());
-        return toResult(null == prizeDeliverService.findOne(PrizeDeliverPo::getPrizeRecordId, prizeRecordId) ?
-                prizeDeliverService.insert(toPrizeDeliverPo(prizeRecordId, consigneeDto)) :
-                prizeDeliverService.updatePrizeDeliver(prizeRecordId, convert(consigneeDto, PrizeDeliverPo::new)));
+        PrizeDeliverPo prizeDeliverPo = prizeDeliverService.findOne(PrizeDeliverPo::getPrizeRecordId, prizeRecordId);
+        if (null == prizeDeliverPo) {
+            return toResult(prizeDeliverService.insert(toPrizeDeliverPo(prizeRecordId, consigneeDto)));
+        } else {
+            copyProperties(consigneeDto, prizeDeliverPo);
+            return toResult(prizeDeliverService.updateById(prizeDeliverPo));
+        }
     }
 
     /**
@@ -54,10 +60,9 @@ public class PrizeDeliverController extends BaseController {
      */
     @PutMapping(URL_OPERATION + "/prize/{prizeRecordId}/deliver")
     public Result<Integer> updatePrizeDeliver(
-            @PathVariable("prizeRecordId") Long prizeRecordId,
-            @Validated @RequestBody PrizeDeliverDto deliverDto) {
+            @PathVariable("prizeRecordId") Long prizeRecordId, @Validated @RequestBody PrizeDeliverDto prizeDeliverDto) {
         return toResult(prizeDeliverService.updatePrizeDeliver(
-                prizeRecordId, toPrizeDeliverPo(getEmployeeId(), deliverDto)));
+                prizeRecordId, toPrizeDeliverSelectivePo(getEmployeeId(), prizeDeliverDto)));
     }
 
     /**

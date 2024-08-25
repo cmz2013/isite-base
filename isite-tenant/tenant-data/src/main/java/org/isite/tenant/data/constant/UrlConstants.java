@@ -18,6 +18,10 @@ public class UrlConstants {
      */
     public static final String GET_EMPLOYEE = URL_TENANT + "/employee/{id}";
     /**
+     * 更新租户状态
+     */
+    public static final String PUT_TENANT_STATUS = URL_TENANT + "/{id}/status/{status}";
+    /**
      * 员工授权信息
      */
     public static final String API_GET_EMPLOYEE_RBAC = URL_API + URL_TENANT + "/employee/rbac";

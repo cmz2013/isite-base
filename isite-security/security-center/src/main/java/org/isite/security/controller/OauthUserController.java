@@ -18,7 +18,6 @@ import java.util.Map;
 
 import static org.isite.security.converter.EmployeeConverter.toEmployeeMap;
 import static org.isite.security.data.constants.UrlConstants.DELETE_OAUTH_USER;
-import static org.isite.security.data.constants.UrlConstants.DELETE_OAUTH_USERS;
 import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_PRINCIPAL;
 import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_USER;
 import static org.isite.security.data.constants.UrlConstants.PUT_OAUTH_TENANT;
@@ -55,14 +54,6 @@ public class OauthUserController extends BaseController {
     @DeleteMapping(DELETE_OAUTH_USER)
     public Result<Boolean> revokeToken() {
         return toResult(tokenService.revokeToken(getTokenValue()));
-    }
-
-    /**
-     * 注销当前用户在所有端的token
-     */
-    @DeleteMapping(DELETE_OAUTH_USERS)
-    public Result<?> revokeTokens() {
-        return toResult(() -> tokenService.revokeTokens(getOauthUser().getUsername()));
     }
 
     /**

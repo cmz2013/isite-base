@@ -47,6 +47,10 @@ public class PrizePo extends Po<Integer> {
      */
     private Integer probability;
     /**
+     * 奖品排列顺序
+     */
+    private Integer sort;
+    /**
      * 已消耗库存
      */
     private Integer consumeInventory;
@@ -54,10 +58,6 @@ public class PrizePo extends Po<Integer> {
      * 已锁定库存
      */
     private Integer lockInventory;
-    /**
-     * 奖品排列顺序
-     */
-    private Integer sequence;
     /**
      * 备注
      */

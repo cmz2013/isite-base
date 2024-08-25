@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class EventDto {
     /**
-     * 用户id
+     * 当前登录用户id
      */
     @NotNull
     private Long userId;

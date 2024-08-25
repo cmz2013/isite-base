@@ -8,8 +8,8 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.schedule.RandomScheduler.nextInt;
 
 /**
- * @description 使用概率进行随机调度
- * @author <font color='blue'>zhangcm</font>
+ * @Description 使用概率进行随机调度
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class ProbabilityScheduler {
     private ProbabilityScheduler() {
@@ -30,9 +30,9 @@ public class ProbabilityScheduler {
 
     private static <T> T choose(List<T> list, int total, int[] weightArray) {
         if (total > ZERO) {
-            int r = nextInt(total);
+            int weight = nextInt(total);
             for (int i = ZERO; i < weightArray.length; i++) {
-                if (r < weightArray[i]) {
+                if (weight <= weightArray[i]) {
                     return list.get(i);
                 }
             }

@@ -1,6 +1,8 @@
 package org.isite.operation.task;
 
+import org.isite.operation.data.dto.EventDto;
 import org.isite.operation.data.enums.TaskType;
+import org.isite.operation.data.vo.Activity;
 import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.Task;
 import org.isite.operation.service.SignLogService;
@@ -20,8 +22,8 @@ public class SignScoreExecutor extends ScoreTaskExecutor {
     private SignLogService signLogService;
 
     @Override
-    protected Reward getReward(Task task, Object eventParam) {
-        return signLogService.getReward(task, cast(eventParam));
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+        return signLogService.getReward(cast(task.getProperty()), cast(eventDto.getEventParam()));
     }
 
     @Autowired

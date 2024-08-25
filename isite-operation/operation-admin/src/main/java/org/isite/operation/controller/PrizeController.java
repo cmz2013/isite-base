@@ -1,8 +1,8 @@
 package org.isite.operation.controller;
 
+import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
@@ -27,17 +27,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.THOUSAND;
 import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
+import static org.isite.operation.activity.ActivityAssert.notOnline;
+import static org.isite.operation.converter.PrizeConverter.toPrizePo;
 import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.data.constants.OperationConstants.FIELD_TOTAL_INVENTORY;
 import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.data.enums.PrizeType.PRIZE_CODE;
-import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
-import static org.isite.operation.activity.ActivityAssert.notOnline;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -67,7 +68,7 @@ public class PrizeController extends BaseController {
         notOnline(activityService.get(prizePostDto.getActivityId()).getStatus());
         isTrue(THOUSAND > prizeService.count(PrizePo::getActivityId, prizePostDto.getActivityId()),
                 getMessage("prize.total.error", "the total of prizes cannot exceed 1000"));
-        return toResult(prizeService.insert(convert(prizePostDto, PrizePo::new)));
+        return toResult(prizeService.insert(toPrizePo(prizePostDto)));
     }
 
     /**

@@ -6,7 +6,7 @@ import org.isite.jpa.data.TreeModel;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.COMMA;
 import static org.isite.commons.lang.utils.TreeUtils.isRoot;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
@@ -33,7 +33,7 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      */
     protected String getPids(I pid) {
         if (isRoot(pid)) {
-            return BLANK;
+            return BLANK_STRING;
         }
         P po = get(pid);
         notNull(po, "id not found: " + pid);

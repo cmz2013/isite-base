@@ -4,7 +4,6 @@ import org.isite.operation.data.dto.EventDto;
 import org.isite.operation.data.enums.TaskType;
 import org.isite.operation.data.vo.AnswerEventParam;
 import org.isite.operation.data.vo.AnswerPrizeProperty;
-import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.TaskProperty;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class AnswerPrizeExecutor extends PrizeTaskExecutor {
      * 校验是否首答和响应时间
      */
     @Override
-    protected boolean checkTaskProperty(TaskProperty<? extends Reward> taskProperty, EventDto eventDto) {
+    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         AnswerPrizeProperty answerPrizeProperty = cast(taskProperty);
         AnswerEventParam eventParam = cast(eventDto.getEventParam());
         if (null == answerPrizeProperty.getFirstReply() ||

@@ -23,7 +23,6 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
@@ -58,7 +57,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
         if (taskNumber > ZERO) {
             P taskRecord = createTaskRecord(eventDto, activity, task, startTime, taskNumber);
             if (null != taskRecord) {
-                saveTaskRecord(activity, taskRecord, getReward(task, eventDto.getEventParam()));
+                saveTaskRecord(activity, taskRecord, getReward(activity, task, eventDto));
             }
         }
     }
@@ -66,7 +65,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     /**
      * 校验任务自定义属性约束条件
      */
-    protected boolean checkTaskProperty(TaskProperty<? extends Reward> taskProperty, EventDto eventDto) {
+    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         return TRUE;
     }
 
@@ -122,16 +121,16 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
 
     /**
      * 选取运营任务奖励，多个奖品时默认按概率随机选取
+     * @param activity 运营活动
      * @param task 运营任务
-     * @param eventParam 行为参数
+     * @param eventDto 行为参数
      * @return 任务奖励
      */
-    protected Reward getReward(Task task, Object eventParam) {
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
         if (null == task.getProperty() || isEmpty(task.getProperty().getRewards())) {
             return null;
         }
-        return task.getProperty().getRewards().size() == ONE ?
-                task.getProperty().getRewards().get(ZERO) : choose(task.getProperty().getRewards());
+        return task.getProperty().getRewards().get(ZERO);
     }
 
     /**

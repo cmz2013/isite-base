@@ -31,6 +31,7 @@ public class ResourceDto extends TreeDto<Integer> {
     /**
      * 资源类型
      */
+    @NotBlank(groups = {Add.class, Update.class})
     private ResourceType type;
     /**
      * 排序
@@ -39,6 +40,7 @@ public class ResourceDto extends TreeDto<Integer> {
     /**
      * 终端ID
      */
+    @NotBlank(groups = {Add.class, Update.class})
     private String clientId;
     /**
      * 备注

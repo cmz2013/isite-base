@@ -41,6 +41,10 @@ public class Prize extends Vo<Integer> {
      */
     private Integer probability;
     /**
+     * 奖品排列顺序
+     */
+    private Integer sort;
+    /**
      * 已消耗库存
      */
     private Integer consumeInventory;
@@ -48,10 +52,6 @@ public class Prize extends Vo<Integer> {
      * 已锁定库存
      */
     private Integer lockInventory;
-    /**
-     * 奖品排列顺序
-     */
-    private Integer sequence;
     /**
      * 备注
      */

@@ -23,7 +23,7 @@ import static org.isite.commons.cloud.sign.SignUtils.getSignature;
 import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameter;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
 import static org.isite.commons.lang.data.Constants.AMPERSAND;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.EQUALS_SIGN;
 import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.QUESTION_MARK;
@@ -76,7 +76,7 @@ public class SignInterceptor implements RequestInterceptor {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getRequestData(RequestTemplate template) {
         byte[] bytes = template.body();
-        String body = isEmpty(bytes) ? BLANK : new String(bytes, template.requestCharset());
+        String body = isEmpty(bytes) ? BLANK_STRING : new String(bytes, template.requestCharset());
         if (isJson(template.headers().get(CONTENT_TYPE))) {
             //数组不参与签名
             return body.startsWith(JSON_OBJECT_PREFIX) ?

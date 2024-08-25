@@ -2,10 +2,7 @@ package org.isite.misc.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.data.Po;
-import org.isite.mybatis.type.EnumTypeHandler;
-import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
 
@@ -29,16 +26,11 @@ public class DictDataPo extends Po<Integer> {
      */
     private String value;
     /**
-     * 排序
-     */
-    private String sort;
-    /**
      * 备注
      */
     private String remark;
     /**
-     * 启停状态
+     * 排序
      */
-    @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SwitchStatus status;
+    private Integer sort;
 }

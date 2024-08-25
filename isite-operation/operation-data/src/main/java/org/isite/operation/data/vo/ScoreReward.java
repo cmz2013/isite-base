@@ -17,5 +17,5 @@ public class ScoreReward extends Reward {
     private ScoreType scoreType;
 
     @Comment("积分值")
-    private Integer scoreValue;
+    private int scoreValue;
 }

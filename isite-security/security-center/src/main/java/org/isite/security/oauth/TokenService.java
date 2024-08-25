@@ -96,9 +96,9 @@ public class TokenService extends DefaultTokenServices {
     /**
      * 注销当前用户在所有端的token
      */
-    public void revokeTokens(String username) {
+    public void revokeTokensByUser(String userName) {
         for (ClientProperties client : clientConfig.getClients()) {
-            Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(client.getClientId(), username);
+            Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(client.getClientId(), userName);
             if (isNotEmpty(tokens)) {
                 tokens.forEach(this::revokeToken);
             }

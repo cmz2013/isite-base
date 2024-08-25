@@ -17,7 +17,7 @@ public class UrlConstants {
     /**
      * 获取用户信息
      */
-    public static final String GET_USER = URL_USER + "/{id}";
+    public static final String GET_USER = URL_USER + "/{identifier}";
     /**
      * 分页查询用户列表
      */

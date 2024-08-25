@@ -6,7 +6,8 @@ import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.data.vo.SignScoreProperty;
+import org.isite.operation.data.vo.SignScoreReward;
 import org.isite.operation.mapper.SignLogMapper;
 import org.isite.operation.mq.SignProducer;
 import org.isite.operation.po.SignLogPo;
@@ -67,7 +68,7 @@ public class SignLogService extends PoService<SignLogPo, Long> {
         signLogPo.setSignTime(new Date(currentTimeMillis()));
         signLogPo.setContinuousCount(continuousCount);
         signLogPo.setTotalCount(totalCount);
-        insert(signLogPo);
+        this.insert(signLogPo);
         return signLogPo;
     }
 
@@ -84,34 +85,24 @@ public class SignLogService extends PoService<SignLogPo, Long> {
 
     /**
      * 根据用户连续签到获取任务奖励
-     * @param task 运营任务
+     * @param signScoreProperty 任务属性
      * @param continuousCount 连续签到天数
      * @return 任务奖励
      */
-    public Reward getReward(Task task, int continuousCount) {
-        if (null == task.getProperty() || isEmpty(task.getProperty().getRewards())) {
+    public Reward getReward(SignScoreProperty signScoreProperty, int continuousCount) {
+        if (null == signScoreProperty || isEmpty(signScoreProperty.getRewards())) {
             return null;
         }
-
-        Reward target = null;
-        for (Reward reward : task.getProperty().getRewards()) {
-            notNull(reward.getCoefficient(), "reward.coefficient cannot be null");
-            if (continuousCount == reward.getCoefficient()) {
+        SignScoreReward target = null;
+        for (SignScoreReward reward : signScoreProperty.getRewards()) {
+            notNull(reward.getContinuousCount(), "reward.continuousCount cannot be null");
+            if (continuousCount == reward.getContinuousCount()) {
                 return reward;
+            } else if (continuousCount > reward.getContinuousCount()) {
+                if (null == target || target.getContinuousCount() < reward.getContinuousCount()) {
+                    target =  reward;
+                }
             }
-            if (continuousCount > reward.getCoefficient()) {
-                target = getSigReward(target, reward);
-            }
-        }
-        return target;
-    }
-
-    /**
-     * 获取签到奖励
-     */
-    private Reward getSigReward(Reward target, Reward reward) {
-        if (null == target || target.getCoefficient() < reward.getCoefficient()) {
-            return reward;
         }
         return target;
     }

@@ -1,12 +1,12 @@
 package org.isite.misc.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.lang.data.Result;
-import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
+import org.isite.commons.lang.data.Result;
+import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.cache.DictCache;
 import org.isite.misc.data.dto.DictTypeDto;
 import org.isite.misc.data.vo.DictType;
@@ -22,10 +22,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.lang.Assert.isFalse;
+import static org.isite.misc.converter.DictTypeConverter.toDictTypePo;
 import static org.isite.misc.data.constants.UrlConstants.URL_MISC;
 
 /**
@@ -63,10 +64,10 @@ public class DictTypeController extends BaseController {
      * 新增字典类型
      */
     @PostMapping(URL_MISC + "/dict/type")
-    public Result<Integer> addDictType(@RequestBody @Validated(Add.class) DictTypeDto type) {
-        isFalse(dictTypeService.exists(DictTypePo::getValue, type.getValue()),
+    public Result<Integer> addDictType(@RequestBody @Validated(Add.class) DictTypeDto dictTypeDto) {
+        isFalse(dictTypeService.exists(DictTypePo::getValue, dictTypeDto.getValue()),
                 getMessage("DictType.exists", "the type already exists"));
-        return toResult(dictTypeService.insert(convert(type, DictTypePo::new)));
+        return toResult(dictTypeService.insert(toDictTypePo(dictTypeDto)));
     }
 
     /**

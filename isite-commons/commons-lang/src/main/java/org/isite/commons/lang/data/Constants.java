@@ -81,7 +81,7 @@ public class Constants {
     /**
      * 空字符串
      */
-    public static final String BLANK = "";
+    public static final String BLANK_STRING = "";
     /**
      * 空格
      */

@@ -25,7 +25,7 @@ import static java.io.File.separator;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.DOT;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
@@ -431,6 +431,6 @@ public class FileUtils {
 	 */
 	public static String getExtension(String name) {
 		int index = name.lastIndexOf(DOT);
-		return index > ZERO ? name.substring(index).toLowerCase() : BLANK;
+		return index > ZERO ? name.substring(index).toLowerCase() : BLANK_STRING;
 	}
 }

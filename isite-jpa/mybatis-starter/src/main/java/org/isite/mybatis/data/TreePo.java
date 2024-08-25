@@ -16,7 +16,8 @@ public class TreePo<I> extends Po<I> implements TreeModel<I> {
      */
     private I pid;
     /**
-     * 从根节点到当前节点的父节点，所有ID有序逗号分隔。通过右模糊可以查询分支节点下的所有节点
+     * 从根节点到当前节点的父节点，所有ID有序逗号分隔。通过右模糊可以查询分支节点下的所有节点。
+     * pids字段的值，由系统自动维护，不需要开发人员手工维护。
      */
     private String pids;
 }

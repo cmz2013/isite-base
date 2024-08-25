@@ -18,10 +18,6 @@ import javax.persistence.Table;
 @Table(name = "employee")
 public class EmployeePo extends Po<Long> {
     /**
-     * 租户ID
-     */
-    private Integer tenantId;
-    /**
      * 用户ID
      */
     private Long userId;
@@ -38,4 +34,9 @@ public class EmployeePo extends Po<Long> {
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
     private OfficeStatus officeStatus;
+    /**
+     * 租户ID
+     */
+    private Integer tenantId;
+
 }

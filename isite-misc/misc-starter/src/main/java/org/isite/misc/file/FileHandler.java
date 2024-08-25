@@ -1,9 +1,10 @@
 package org.isite.misc.file;
 
 import lombok.extern.slf4j.Slf4j;
-import org.isite.misc.client.FileRecordAccessor;
-import org.isite.misc.data.dto.FileRecordDto;
+import org.isite.misc.data.dto.FileRecordPostDto;
+import org.isite.misc.data.dto.FileRecordPutDto;
 import org.isite.misc.data.enums.FileStatus;
+import org.isite.misc.data.vo.FileRecord;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,6 +12,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.Executor;
 
+import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.misc.client.FileRecordAccessor.addFileRecord;
+import static org.isite.misc.client.FileRecordAccessor.updateFileRecord;
 import static org.isite.misc.data.enums.FileStatus.EXPORT_FAILURE;
 import static org.isite.misc.data.enums.FileStatus.EXPORT_PROCESS;
 import static org.isite.misc.data.enums.FileStatus.EXPORT_SUCCESS;
@@ -40,7 +45,7 @@ public abstract class FileHandler {
      * @param target HTTP接口，或FTP文件存放路径，例如分日期存放：/2018/01/01
      * @return 文件上传记录
      */
-    public FileRecordDto uploadFile(String fileName, InputStream stream, String target) throws Exception {
+    public FileRecord uploadFile(String fileName, InputStream stream, String target) throws Exception {
         return uploadFile(fileName, stream, target,null);
     }
 
@@ -51,43 +56,42 @@ public abstract class FileHandler {
      * @param target HTTP接口，或FTP文件存放路径，例如分日期存放：/2018/01/01
      * @return 文件上传记录
      */
-    public FileRecordDto uploadFile(
+    public FileRecord uploadFile(
             String fileName, InputStream input, String target, Parser<?> parser) throws Exception {
         storeFile(fileName, input, target);
-        FileRecordDto fileRecordDto = addFileRecord(fileName, target, UPLOAD_SUCCESS);
+        FileRecord fileRecord = createFileRecord(fileName, target, UPLOAD_SUCCESS);
         if (null != parser) {
             if (parser.isAsync()) {
-                executor.execute(() -> parseFile(fileRecordDto, parser));
+                executor.execute(() -> parseFile(fileRecord, parser));
             } else {
-                parseFile(fileRecordDto, parser);
+                parseFile(fileRecord, parser);
             }
         }
-        return fileRecordDto;
+        return fileRecord;
     }
 
     /**
      * @Description 解析文件
-     * @param fileRecordDto 文件记录
+     * @param fileRecord 文件记录
      */
-    private void parseFile(FileRecordDto fileRecordDto, Parser<?> parser) {
-        fileRecordDto.setStatus(PARSE_PROCESS);
-        updateFileRecord(fileRecordDto);
+    private void parseFile(FileRecord fileRecord, Parser<?> parser) {
+        updateFileStatus(fileRecord.getId(), PARSE_PROCESS, BLANK_STRING);
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-            downloadFile(fileRecordDto, output);
+            downloadFile(fileRecord, output);
             try(InputStream input = new ByteArrayInputStream(output.toByteArray());) {
-                fileRecordDto = parser.execute(fileRecordDto, input);
+                fileRecord = parser.execute(fileRecord, input);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            fileRecordDto.setStatus(PARSE_FAILURE);
-            fileRecordDto.setRemark(e.getMessage());
+            fileRecord.setStatus(PARSE_FAILURE);
+            fileRecord.setRemark(e.getMessage());
         }
-        updateFileRecord(fileRecordDto);
+        updateFileStatus(fileRecord.getId(), fileRecord.getStatus(), fileRecord.getRemark());
     }
 
-    private void updateFileRecord(FileRecordDto fileRecordDto) {
+    private void updateFileStatus(Integer id, FileStatus status, String remark) {
         try {
-            FileRecordAccessor.updateFileRecord(fileRecordDto);
+            updateFileRecord(new FileRecordPutDto(id, status, remark));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -108,53 +112,50 @@ public abstract class FileHandler {
      * @param target HTTP接口，或FTP文件存放路径，例如分日期存放：/2018/01/01
      * @return 文件记录
      */
-    public FileRecordDto exportFile(String fileName, StreamProvider provider, String target) {
-        FileRecordDto fileRecordDto = addFileRecord(fileName, target, EXPORT_WAITING);
-        executor.execute(() -> exportFile(fileRecordDto, provider));
-        return fileRecordDto;
+    public FileRecord exportFile(String fileName, StreamProvider provider, String target) {
+        FileRecord fileRecord = createFileRecord(fileName, target, EXPORT_WAITING);
+        executor.execute(() -> exportFile(fileRecord, provider));
+        return fileRecord;
     }
 
     /**
      * 异步导出生成文件
-     * @param fileRecordDto 文件记录
+     * @param fileRecord 文件记录
      * @param provider 文件流提供者
      */
-    private void exportFile(FileRecordDto fileRecordDto, StreamProvider provider) {
+    private void exportFile(FileRecord fileRecord, StreamProvider provider) {
         try {
-            fileRecordDto.setStatus(EXPORT_PROCESS);
-            updateFileRecord(fileRecordDto);
-            storeFile(fileRecordDto.getFileName(), provider.stream(), fileRecordDto.getTarget());
-            fileRecordDto.setStatus(EXPORT_SUCCESS);
-            updateFileRecord(fileRecordDto);
+            updateFileStatus(fileRecord.getId(), EXPORT_PROCESS, BLANK_STRING);
+            storeFile(fileRecord.getFileName(), provider.stream(), fileRecord.getTarget());
+            updateFileStatus(fileRecord.getId(), EXPORT_SUCCESS, BLANK_STRING);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            fileRecordDto.setStatus(EXPORT_FAILURE);
-            fileRecordDto.setRemark(e.getMessage());
-            updateFileRecord(fileRecordDto);
+            updateFileStatus(fileRecord.getId(), EXPORT_FAILURE, e.getMessage());
         }
     }
 
     /**
-     * @Description 添加文件记录
+     * @Description 创建文件记录
      * @param fileName 文件名
      * @param target HTTP接口，或FTP文件存放路径
      * @param status 状态
      * @return 文件记录
      */
-    private FileRecordDto addFileRecord(String fileName, String target, FileStatus status) {
-        FileRecordDto fileRecordDto = new FileRecordDto();
-        fileRecordDto.setStatus(status);
-        fileRecordDto.setFileName(fileName);
-        fileRecordDto.setTarget(target);
-        fileRecordDto.setId(FileRecordAccessor.addFileRecord(fileRecordDto));
-        return fileRecordDto;
+    private FileRecord createFileRecord(String fileName, String target, FileStatus status) {
+        FileRecordPostDto fileRecordPostDto = new FileRecordPostDto();
+        fileRecordPostDto.setStatus(status);
+        fileRecordPostDto.setFileName(fileName);
+        fileRecordPostDto.setTarget(target);
+        FileRecord fileRecord = convert(fileRecordPostDto, FileRecord::new);
+        fileRecord.setId(addFileRecord(fileRecordPostDto));
+        return fileRecord;
     }
 
     /**
      * @Description 下载文件
-     * @param fileRecordDto 文件记录
+     * @param fileRecord 文件记录
      * @param output 流使用完不关闭，可以继续写入
      */
-    protected abstract void downloadFile(FileRecordDto fileRecordDto, OutputStream output) throws Exception;
+    protected abstract void downloadFile(FileRecord fileRecord, OutputStream output) throws Exception;
 
 }

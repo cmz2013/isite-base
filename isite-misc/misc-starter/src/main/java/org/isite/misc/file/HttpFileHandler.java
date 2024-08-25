@@ -1,7 +1,7 @@
 package org.isite.misc.file;
 
 import org.isite.commons.lang.http.FileClient;
-import org.isite.misc.data.dto.FileRecordDto;
+import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,8 +26,8 @@ public class HttpFileHandler extends FileHandler {
     }
 
     @Override
-    protected void downloadFile(FileRecordDto fileRecordDto, OutputStream output) throws Exception {
-        fileClient.download(fileRecordDto.getTarget(), output);
+    protected void downloadFile(FileRecord fileRecord, OutputStream output) throws Exception {
+        fileClient.download(fileRecord.getTarget(), output);
     }
 
 }

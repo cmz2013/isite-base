@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notEmpty;
@@ -17,7 +18,6 @@ import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.setValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.Constants.INTERNAL_DATA_ILLEGAL_DELETE;
 import static org.isite.jpa.data.Constants.INTERNAL_DATA_ILLEGAL_INSERTED;
 
 /**
@@ -44,21 +44,32 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @Transactional(rollbackFor = Exception.class)
     public N insert(List<P> pos) {
         notEmpty(pos, "list cannot be empty");
-        checkBuiltInDataInsert(pos);
+        checkBuiltInData(pos);
         return doInsert(pos);
     }
 
-    private void checkBuiltInDataInsert(List<P> pos) {
+    protected void checkBuiltInData(List<P> pos) {
         if (BuiltIn.class.isAssignableFrom(getPoClass())) {
-            pos.forEach(po -> {
-                BuiltIn builtIn = (BuiltIn) po;
-                isTrue(null == builtIn.getInternal() || FALSE.equals(builtIn.getInternal()),
-                        INTERNAL_DATA_ILLEGAL_INSERTED);
-            });
+            List<BuiltIn> builtInPos = cast(pos);
+            builtInPos.forEach(po -> isTrue(null == po.getInternal() || FALSE.equals(po.getInternal()),
+                        INTERNAL_DATA_ILLEGAL_INSERTED));
         }
     }
 
     protected abstract N doInsert(List<P> pos);
+
+    /**
+     * 根据ID更新某个字段
+     */
+    @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
+    public N updateById(I id, Functions<P, Object> getter, Object value) {
+        checkBuiltInData(id);
+        P po = getPoClass().getConstructor().newInstance();
+        po.setId(id);
+        setValue(po, toFieldName(getter), value);
+        return doUpdateSelectiveById(po);
+    }
 
     /**
      * 根据非空字段删除数据
@@ -66,13 +77,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @Transactional(rollbackFor = Exception.class)
     public N delete(P po) {
         // 系统内置数据禁止删除
-        if (po instanceof BuiltIn) {
-            BuiltIn builtIn = (BuiltIn) po;
-            if (null == builtIn.getInternal()) {
-                builtIn.setInternal(FALSE);
-            }
-            isFalse(builtIn.getInternal(), INTERNAL_DATA_ILLEGAL_DELETE);
-        }
+        checkBuiltInData(po);
         return doDelete(po);
     }
 
@@ -83,21 +88,22 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
      */
     @Transactional(rollbackFor = Exception.class)
     public N delete(Functions<P, Object> getter, Object value) {
-        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
-            checkBuiltInDataDelete(getter, value);
-        }
+        checkBuiltInData(getter, value);
         return doDelete(getter, value);
     }
 
     /**
+     * @Description 根据getter字段检查是否存在内置数据。
      * 注解@SneakyThrows用于简化异常处理。它可以让方法在抛出受检异常时不需要显式地声明或捕获这些异常。
      */
     @SneakyThrows
-    private void checkBuiltInDataDelete(Functions<P, Object> getter, Object value) {
-        P po = getPoClass().getDeclaredConstructor().newInstance();
-        ((BuiltIn) po).setInternal(FALSE);
-        setValue(po, toFieldName(getter), value);
-        isFalse(exists(po), INTERNAL_DATA_ILLEGAL_INSERTED);
+    protected void checkBuiltInData(Functions<P, Object> getter, Object value) {
+        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
+            P po = cast(getPoClass().getDeclaredConstructor().newInstance());
+            ((BuiltIn) po).setInternal(TRUE);
+            setValue(po, toFieldName(getter), value);
+            isFalse(exists(po), INTERNAL_DATA_ILLEGAL_INSERTED);
+        }
     }
 
     protected abstract N doDelete(Functions<P, Object> getter, Object value);

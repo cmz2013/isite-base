@@ -37,6 +37,10 @@ public class PrizePostDto {
      */
     private String prizeImage;
     /**
+     * 奖品排列顺序
+     */
+    private Integer sort;
+    /**
      * 总库存，0不做库存校验
      */
     @NotNull
@@ -45,10 +49,6 @@ public class PrizePostDto {
      * 中奖概率/100000
      */
     private Integer probability;
-    /**
-     * 奖品排列顺序
-     */
-    private Integer sequence;
     /**
      * 备注
      */

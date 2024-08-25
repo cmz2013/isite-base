@@ -79,7 +79,6 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public int addActivity(ActivityPo activityPo) {
-        activityPo.setStatus(DISABLED);
         super.insert(activityPo);
         addWebpage(activityPo, WEB);
         addWebpage(activityPo, APP);

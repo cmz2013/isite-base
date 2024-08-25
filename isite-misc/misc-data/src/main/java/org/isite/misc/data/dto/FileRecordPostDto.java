@@ -2,8 +2,6 @@ package org.isite.misc.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Dto;
-import org.isite.commons.cloud.data.op.Add;
 import org.isite.misc.data.enums.FileStatus;
 
 import javax.validation.constraints.NotNull;
@@ -14,21 +12,21 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class FileRecordDto extends Dto<Integer> {
+public class FileRecordPostDto {
     /**
      * 文件名称
      */
-    @NotNull(groups = Add.class)
+    @NotNull
     private String fileName;
     /**
      * HTTP接口，或FTP文件存放路径
      */
-    @NotNull(groups = Add.class)
+    @NotNull
     private String target;
     /**
      * 状态
      */
-    @NotNull(groups = Add.class)
+    @NotNull
     private FileStatus status;
     /**
      * 备注

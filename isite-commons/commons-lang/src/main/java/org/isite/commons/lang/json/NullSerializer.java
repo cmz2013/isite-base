@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-import static org.isite.commons.lang.data.Constants.BLANK;
+import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 
 /**
  * 自定义null值序列化处理器
@@ -37,7 +37,7 @@ public class NullSerializer {
         @Override
         public void serialize(Object value, JsonGenerator jsonGenerator, 
         					  SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(BLANK);
+            jsonGenerator.writeString(BLANK_STRING);
         }
     }
 }

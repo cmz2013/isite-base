@@ -9,4 +9,6 @@ public interface Model<I> {
      * 获取主键
      */
     I getId();
+
+    void setId(I id);
 }

@@ -40,7 +40,7 @@ public class PrizePutDto extends Dto<Integer> {
     /**
      * 奖品排列顺序
      */
-    private Integer sequence;
+    private Integer sort;
     /**
      * 备注
      */

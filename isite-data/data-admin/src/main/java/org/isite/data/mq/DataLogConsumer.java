@@ -29,7 +29,7 @@ public class DataLogConsumer implements Consumer<DataLogDto> {
     @Override
     public Basic handle(DataLogDto dataLogDto) {
         try {
-            dataLogService.save(convert(dataLogDto, DataLogPo::new));
+            dataLogService.addDataLog(convert(dataLogDto, DataLogPo::new));
             return new Basic.Ack();
         } catch (Exception e) {
             log.error("save data log error", e);

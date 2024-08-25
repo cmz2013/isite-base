@@ -2,6 +2,7 @@ package org.isite.operation.service;
 
 import org.isite.commons.web.sync.ConcurrentError;
 import org.isite.mybatis.service.PoService;
+import org.isite.operation.data.vo.Prize;
 import org.isite.operation.mapper.PrizeMapper;
 import org.isite.operation.po.PrizePo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.ONE;
@@ -24,6 +29,17 @@ public class PrizeService extends PoService<PrizePo, Integer> {
     @Autowired
     public PrizeService(PrizeMapper prizeMapper) {
         super(prizeMapper);
+    }
+
+    /**
+     * 获取可用奖品
+     */
+    public List<Prize> filterPrizes(List<Prize> prizes) {
+        if (isEmpty(prizes)) {
+            return null;
+        }
+        return prizes.stream().filter(prizeVo -> prizeVo.getTotalInventory() < ZERO
+                || prizeVo.getTotalInventory() - prizeVo.getConsumeInventory() > ZERO).collect(toList());
     }
 
     /**

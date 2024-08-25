@@ -22,9 +22,9 @@ public class PrizeDeliverService extends PoService<PrizeDeliverPo, Integer> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int updatePrizeDeliver(Long prizeRecordId, PrizeDeliverPo deliverPo) {
+    public int updatePrizeDeliver(Long prizeRecordId, PrizeDeliverPo prizeDeliverPo) {
         Weekend<PrizeDeliverPo> weekend = of(PrizeDeliverPo.class);
         weekend.weekendCriteria().andEqualTo(PrizeDeliverPo::getPrizeRecordId, prizeRecordId);
-        return getMapper().updateByExampleSelective(deliverPo, weekend);
+        return getMapper().updateByExampleSelective(prizeDeliverPo, weekend);
     }
 }

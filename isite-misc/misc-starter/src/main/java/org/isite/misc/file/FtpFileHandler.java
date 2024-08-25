@@ -2,7 +2,7 @@ package org.isite.misc.file;
 
 import lombok.Setter;
 import org.isite.commons.lang.ftp.FtpClient;
-import org.isite.misc.data.dto.FileRecordDto;
+import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,11 +29,11 @@ public class FtpFileHandler extends FileHandler {
 
     /**
      * 从FTP服务器下载文件
-     * @param fileRecordDto 文件信息
+     * @param fileRecord 文件信息
      * @param output 文件下载后输出流
      */
     @Override
-    protected void downloadFile(FileRecordDto fileRecordDto, OutputStream output) throws Exception {
-        ftpClient.download(fileRecordDto.getTarget(), fileRecordDto.getFileName(), output);
+    protected void downloadFile(FileRecord fileRecord, OutputStream output) throws Exception {
+        ftpClient.download(fileRecord.getTarget(), fileRecord.getFileName(), output);
     }
 }
