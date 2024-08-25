@@ -4,8 +4,6 @@ import org.isite.operation.data.dto.EventDto;
 import org.isite.operation.data.enums.TaskType;
 import org.isite.operation.data.vo.OrderPrizeProperty;
 import org.isite.operation.data.vo.TaskProperty;
-import org.isite.operation.service.UserFeedbackService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static org.isite.commons.lang.utils.TypeUtils.cast;
@@ -17,22 +15,15 @@ import static org.isite.operation.data.enums.TaskType.SHOP_ORDER_PRIZE;
  */
 @Component
 public class OrderPrizeExecutor extends PrizeTaskExecutor {
-
-    private UserFeedbackService userFeedbackService;
-
     /**
      * 校验用户最低消费金额
      */
     @Override
     protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         OrderPrizeProperty orderPrizeProperty = cast(taskProperty);
-        int cumulateAmount = userFeedbackService.findCumulateAmount(eventDto.getUserId(), orderPrizeProperty.getStartTime());
+        //用户一年内累计消费金额是否满足奖品奖励条件
+        int cumulateAmount = cast(eventDto.getEventParam());
         return cumulateAmount >= orderPrizeProperty.getCumulateAmount();
-    }
-
-    @Autowired
-    public void setUserFeedbackService(UserFeedbackService userFeedbackService) {
-        this.userFeedbackService = userFeedbackService;
     }
 
     @Override

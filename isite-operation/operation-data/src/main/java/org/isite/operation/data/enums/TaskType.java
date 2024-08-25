@@ -45,8 +45,13 @@ public enum TaskType implements Enumerable<Integer> {
      */
     QUESTION_PRIZE(101, POST_QUESTION, "提交问题送奖品", PrizeTaskProperty.class),
     QUESTION_ANSWER_PRIZE(102, POST_QUESTION_ANSWER, "答疑送奖品", AnswerPrizeProperty.class),
-    //提问人采纳答案时，给回复人送奖品。eventDto#userId为提问人ID，eventParam为回复人ID TODO
+    /**
+     * 提问人采纳答案时，给回复人送奖品。eventDto#userId为提问人ID，eventParam为回答人ID
+     */
     QUESTION_ANSWER_ADOPT_PRIZE(103, PUT_QUESTION_ANSWER_ADOPT, "答案被采纳送奖品", AnswerPrizeProperty.class),
+    /**
+     * 老用户在活动期间完成消费，且在一年内累计消费金额满足条件时发放福利（eventParam为用户累计消费金额）
+     */
     SHOP_ORDER_PRIZE(104, POST_SHOP_ORDER_PAYMENT_NOTIFY, "老用户福利", OrderPrizeProperty.class),
 
     /**

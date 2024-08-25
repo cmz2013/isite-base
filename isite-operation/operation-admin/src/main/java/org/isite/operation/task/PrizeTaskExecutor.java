@@ -46,8 +46,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
     @Override
     protected PrizeRecordPo createTaskRecord(
             EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
-        PrizeRecordPo prizeRecordPo = super.createTaskRecord(
-                eventDto, activity, task, periodStartTime, taskNumber);
+        PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
         prizeRecordPo.setLockStatus(FALSE);
         prizeRecordPo.setReceiveStatus(FALSE);

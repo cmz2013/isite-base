@@ -9,6 +9,8 @@ import org.isite.commons.cloud.enums.TerminalType;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
+import org.isite.commons.web.mq.Message;
+import org.isite.commons.web.mq.Publisher;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
@@ -16,11 +18,11 @@ import org.isite.operation.converter.ActivityConverter;
 import org.isite.operation.data.dto.WebpagePutDto;
 import org.isite.operation.data.vo.Activity;
 import org.isite.operation.data.vo.Webpage;
+import org.isite.operation.mq.WebpageProducer;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.po.WebpagePo;
 import org.isite.operation.service.ActivityService;
-import org.isite.operation.service.InitLogService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskService;
 import org.isite.operation.service.WebpageService;
@@ -32,7 +34,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_API;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
@@ -40,13 +41,12 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.web.constants.UserAgent.getTerminalType;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getAuthorization;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.converter.WebpageConverter.toWebpagePo;
 import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
 
 /**
@@ -61,7 +61,6 @@ public class WebpageController extends BaseController {
     private ActivityService activityService;
     private TaskService taskService;
     private PrizeService prizeService;
-    private InitLogService initLogService;
 
     /**
      * 分页查询活动页面
@@ -77,12 +76,10 @@ public class WebpageController extends BaseController {
      * 用户访问活动页面，不需要登录就可以访问（从缓存读取数据）。被邀请人url携带邀请码：invite，发送行为消息触发运营任务
      */
     @GetMapping(URL_API + URL_OPERATION + "/webpage/{activityId}")
+    @Publisher(messages = @Message(queues = QUEUE_OPERATION_EVENT, producer = WebpageProducer.class))
     public Result<String> getWebpage(@PathVariable("activityId") int activityId) {
         Activity activity = activityCache.getActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
-        if (isNotBlank(getAuthorization())) {
-            initLogService.saveInitLog(activity, getUserId());
-        }
         return toResult(activityCache.getWebpage(activity, getTerminalType()));
     }
 
@@ -145,8 +142,4 @@ public class WebpageController extends BaseController {
         this.prizeService = prizeService;
     }
 
-    @Autowired
-    public void setInitLogService(InitLogService initLogService) {
-        this.initLogService = initLogService;
-    }
 }

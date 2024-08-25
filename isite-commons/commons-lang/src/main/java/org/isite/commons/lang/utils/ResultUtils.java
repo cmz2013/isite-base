@@ -18,7 +18,7 @@ public class ResultUtils {
      * @return true: 成功, false: 失败
      */
     public static boolean isOk(Result<?> result) {
-        return result.getCode() >= 200 && result.getCode() <= 299;
+        return null != result && result.getCode() >= 200 && result.getCode() <= 299;
     }
 
     /**

@@ -98,7 +98,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             taskRecord.setFinishTime(new Date(currentTimeMillis()));
             taskRecord.setUserId(eventDto.getUserId());
             taskRecord.setActivityId(activity.getId());
-            taskRecord.setRemark(task.getTaskType().getLabel());
+            taskRecord.setRemark(task.getRemark());
             taskRecord.setIdempotentKey(toValue(activity.getId(), task.getId(), periodStartTime, eventDto.getUserId(), taskNumber));
             return taskRecord;
         } catch (Exception e) {

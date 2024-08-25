@@ -3,12 +3,9 @@ package org.isite.operation.cache;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
 import org.isite.commons.cloud.enums.TerminalType;
-import org.isite.commons.web.mq.Message;
-import org.isite.commons.web.mq.Publisher;
 import org.isite.operation.data.enums.EventType;
 import org.isite.operation.data.vo.Activity;
 import org.isite.operation.data.vo.Prize;
-import org.isite.operation.mq.WebpageProducer;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -37,7 +34,6 @@ import static org.isite.operation.converter.ActivityConverter.toActivity;
 import static org.isite.operation.data.constants.CacheKey.ACTIVITY_IDS_EVENT_PREFIX;
 import static org.isite.operation.data.constants.CacheKey.ACTIVITY_PREFIX;
 import static org.isite.operation.data.constants.CacheKey.WEBPAGE_ACTIVITY_USERAGENT_PREFIX;
-import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 
 /**
  * @Description 运营活动缓存（只缓存已上架的活动）
@@ -97,8 +93,7 @@ public class ActivityCache {
      * @param terminalType 用户终端类型
      * @return 活动网页html代码
      */
-    @Publisher(messages = @Message(queues = QUEUE_OPERATION_EVENT, producer = WebpageProducer.class))
-    @Cached(name = WEBPAGE_ACTIVITY_USERAGENT_PREFIX, key = "#activity.id" + COLON + "#userAgent.code", expire = DAY_SECONDS)
+    @Cached(name = WEBPAGE_ACTIVITY_USERAGENT_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECONDS)
     public String getWebpage(Activity activity, TerminalType terminalType) {
         return webpageService.getWebpage(activity, terminalType);
     }

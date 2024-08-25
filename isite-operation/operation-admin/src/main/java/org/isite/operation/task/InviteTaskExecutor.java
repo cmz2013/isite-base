@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static java.lang.System.currentTimeMillis;
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
@@ -29,7 +28,6 @@ import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.data.enums.TaskType.OPERATION_WEBPAGE_INVITE;
 import static org.isite.operation.data.enums.TaskType.QUESTION_ANSWER_INVITE;
-import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**
  * @Description 积分任务父接口。使用活动积分可以兑换奖品
@@ -45,19 +43,9 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     @Override
     protected InviteRecordPo createTaskRecord(
             EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+        InviteRecordPo inviteRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
-        long inviterId = inviteEventParam.getInviterId();
-        InviteRecordPo inviteRecordPo = new InviteRecordPo();
-        inviteRecordPo.setInviterId(inviterId);
-        inviteRecordPo.setActivityId(activity.getId());
-        inviteRecordPo.setTaskId(task.getId());
-        inviteRecordPo.setActivityPid(activity.getPid());
-        inviteRecordPo.setObjectType(eventDto.getEventType().getObjectType());
-        inviteRecordPo.setObjectValue(eventDto.getObjectValue());
-        inviteRecordPo.setFinishTime(new Date(currentTimeMillis()));
-        inviteRecordPo.setUserId(eventDto.getUserId());
-        inviteRecordPo.setRemark(task.getTaskType().getLabel());
-        inviteRecordPo.setIdempotentKey(toValue(activity.getId(), task.getId(), periodStartTime, inviterId, taskNumber));
+        inviteRecordPo.setInviterId(inviteEventParam.getInviterId());
         return inviteRecordPo;
     }
 

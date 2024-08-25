@@ -42,14 +42,10 @@ public class MessageAspect implements Ordered {
         if (isEmpty(messages)) {
             return returnValue;
         }
-        sendMessages(messages, point.getArgs(), returnValue);
-        return returnValue;
-    }
-
-    private void sendMessages(Message[] messages, Object[] args, Object returnValue) {
         for (Message message : messages) {
-            sendMessage(message, args, returnValue);
+            sendMessage(message, point.getArgs(), returnValue);
         }
+        return returnValue;
     }
 
     /**

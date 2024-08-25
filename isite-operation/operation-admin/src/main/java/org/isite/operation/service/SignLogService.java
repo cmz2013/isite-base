@@ -1,7 +1,5 @@
 package org.isite.operation.service;
 
-import org.isite.commons.web.mq.Message;
-import org.isite.commons.web.mq.Publisher;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
@@ -9,7 +7,6 @@ import org.isite.operation.data.vo.Reward;
 import org.isite.operation.data.vo.SignScoreProperty;
 import org.isite.operation.data.vo.SignScoreReward;
 import org.isite.operation.mapper.SignLogMapper;
-import org.isite.operation.mq.SignProducer;
 import org.isite.operation.po.SignLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +24,6 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
 import static org.isite.operation.data.constants.CacheKey.LOCK_SIGN_USER;
-import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -51,8 +47,7 @@ public class SignLogService extends PoService<SignLogPo, Long> {
      * 完成每日签到
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = { @Lock(name = LOCK_SIGN_USER, keys = "#userId") })
-    @Publisher(messages = @Message(queues = QUEUE_OPERATION_EVENT, producer = SignProducer.class))
+    @Synchronized(locks = {@Lock(name = LOCK_SIGN_USER, keys = "#userId")})
     public SignLogPo saveSignLog(long userId) {
         int totalCount =  ONE;
         int continuousCount =  ONE;

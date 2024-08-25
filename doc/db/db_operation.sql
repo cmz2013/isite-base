@@ -191,12 +191,3 @@ CREATE TABLE `prize_deliver` (
   UNIQUE KEY `uk_prizedeliver_prizerecordid` (`prize_record_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='奖品交付';
 
-CREATE TABLE `init_log` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  `activity_id` int unsigned NOT NULL DEFAULT 0 COMMENT '运营活动id',
-  `user_id` int unsigned NOT NULL DEFAULT 0 COMMENT '用户id',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_preprocesslog_activityid_userid` (`activity_id`, `user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='初始化日志';
