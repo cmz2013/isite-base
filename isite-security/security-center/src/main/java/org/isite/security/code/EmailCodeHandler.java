@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.lang.data.Constants.SPACE;
 import static org.isite.commons.lang.template.FreeMarker.process;
 import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_VALIDITY;
 import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;
@@ -40,7 +41,8 @@ public class EmailCodeHandler extends VerifyCodeHandler {
             Map<String, Object> data = new HashMap<>();
             data.put(FIELD_CODE, code);
             data.put(FIELD_VALIDITY, VERIFY_CODE_VALIDITY);
-            this.emailClient.sendEmail(agent, null,
+            this.emailClient.sendEmail(agent,
+                    emailClient.getFromName() + SPACE + getMessage("VerifyCode.subject", "Verification Code"),
                     process(getMessage("VerifyCode.info",
                             "${code} is your verification code, " +
                                     "please complete the verification within ${validity} minutes. " +

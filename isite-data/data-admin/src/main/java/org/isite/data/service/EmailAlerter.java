@@ -14,7 +14,9 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_TEMPLATES;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.data.Constants.COMMA;
+import static org.isite.commons.lang.data.Constants.SPACE;
 import static org.isite.commons.lang.template.FreeMarker.process;
 
 /**
@@ -46,9 +48,10 @@ public class EmailAlerter {
         data.put("dataApi", dataApi);
         data.put("dataLog", logPo);
 
-        for (String email : dataApi.getEmails().split(COMMA)) {
+        for (String to : dataApi.getEmails().split(COMMA)) {
             try {
-                emailClient.sendEmail(email, emailClient.getFromName() + " 告警",
+                emailClient.sendEmail(to,
+                        emailClient.getFromName() + SPACE +  getMessage("EmailAlerter.subject", "Alarm"),
                         process(URL_TEMPLATES, "alert_email.ftl", data));
             } catch (Exception e) {
                 log.error("告警邮件发送失败", e);

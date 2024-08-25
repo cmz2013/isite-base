@@ -124,7 +124,7 @@ public class HttpClient {
 
             // 不使用缓存
             connection.setUseCaches(FALSE);
-            // 设置是否从urlConnection读入
+            // 设置是否从connection读入
             connection.setDoInput(TRUE);
             connection.setRequestMethod(method.name());
             /*
