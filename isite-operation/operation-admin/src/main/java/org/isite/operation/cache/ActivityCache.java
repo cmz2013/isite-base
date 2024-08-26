@@ -16,24 +16,26 @@ import org.isite.operation.service.WebpageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.alicp.jetcache.anno.CacheType.BOTH;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+import static org.isite.commons.cloud.enums.TerminalType.APP;
+import static org.isite.commons.cloud.enums.TerminalType.WEB;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.COLON;
 import static org.isite.commons.lang.data.Constants.DAY_SECONDS;
 import static org.isite.commons.lang.data.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.operation.converter.ActivityConverter.toActivity;
 import static org.isite.operation.data.constants.CacheKey.ACTIVITY_IDS_EVENT_PREFIX;
 import static org.isite.operation.data.constants.CacheKey.ACTIVITY_PREFIX;
-import static org.isite.operation.data.constants.CacheKey.WEBPAGE_ACTIVITY_USERAGENT_PREFIX;
+import static org.isite.operation.data.constants.CacheKey.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
 
 /**
  * @Description 运营活动缓存（只缓存已上架的活动）
@@ -67,11 +69,11 @@ public class ActivityCache {
      */
     @Cached(name = ACTIVITY_IDS_EVENT_PREFIX, key = "#eventType.code", expire = DAY_SECONDS)
     public List<Integer> findActivityIds(EventType eventType) {
-        return activityService.findActivityIds(eventType);
+        return activityService.findEnabledActivityIds(eventType);
     }
 
     @Cached(name = ACTIVITY_PREFIX, key = "#activityId", cacheType = BOTH, expire = DAY_SECONDS, localExpire = MINUTE_SECONDS)
-    public Activity getActivity(Integer activityId) {
+    public Activity getActivity(int activityId) {
         ActivityPo activityPo = activityService.getActivity(activityId, ENABLED);
         notNull(activityPo, getMessage("activity.notFound", "activity not found"));
         return toActivity(activityPo, taskService.findList(TaskPo::getActivityId, activityId),
@@ -93,7 +95,7 @@ public class ActivityCache {
      * @param terminalType 用户终端类型
      * @return 活动网页html代码
      */
-    @Cached(name = WEBPAGE_ACTIVITY_USERAGENT_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECONDS)
+    @Cached(name = WEBPAGE_ACTIVITY_TERMINAL_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECONDS)
     public String getWebpage(Activity activity, TerminalType terminalType) {
         return webpageService.getWebpage(activity, terminalType);
     }
@@ -108,17 +110,36 @@ public class ActivityCache {
     }
 
     /**
-     * 更新活动为下架状态
+     * 更新活动状态为下架
      */
-    public int updateStatus(Activity activity) {
-        List<String> keys = new ArrayList<>();
-        keys.add(ACTIVITY_PREFIX + activity.getId());
-        keys.add(WEBPAGE_ACTIVITY_USERAGENT_PREFIX + activity.getId() + COLON + TRUE);
-        keys.add(WEBPAGE_ACTIVITY_USERAGENT_PREFIX + activity.getId() + COLON + FALSE);
-        activity.getTasks().stream().map(task -> task.getTaskType().getEventType())
-                .distinct().forEach(event -> keys.add(ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
-        redisTemplate.delete(keys);
-        return activityService.updateStatus(activity.getId(), DISABLED);
+    @Transactional(rollbackFor = Exception.class)
+    public int disableActivity(Activity activity) {
+        int count = activityService.updateById(activity.getId(), ActivityPo::getStatus, DISABLED);
+        if (count > ZERO) {
+            List<String> keys = new ArrayList<>();
+            keys.add(ACTIVITY_PREFIX + activity.getId());
+            keys.add(WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + COLON + WEB.getCode());
+            keys.add(WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + COLON + APP.getCode());
+            activity.getTasks().stream().map(task -> task.getTaskType().getEventType())
+                    .distinct().forEach(event -> keys.add(ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
+            redisTemplate.delete(keys);
+        }
+        return count;
+    }
+
+    /**
+     * 更新活动状态为上架
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Integer enableActivity(int activityId) {
+        int count = activityService.updateById(activityId, ActivityPo::getStatus, ENABLED);
+        if (count > ZERO) {
+            List<String> keys = new ArrayList<>();
+            taskService.findList(TaskPo::getActivityId, activityId).stream().map(task -> task.getTaskType().getEventType())
+                    .distinct().forEach(event -> keys.add(ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
+            redisTemplate.delete(keys);
+        }
+        return count;
     }
 
     @Autowired
@@ -145,4 +166,5 @@ public class ActivityCache {
     public void setRedisTemplate(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+
 }

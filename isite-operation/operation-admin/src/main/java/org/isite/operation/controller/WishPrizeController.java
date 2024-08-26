@@ -43,7 +43,7 @@ public class WishPrizeController extends BaseController {
     @PostMapping(URL_MY + URL_OPERATION + "/wish/{activityId}/prize/{prizeId}")
     public Result<Integer> addWishPrize(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
-        Activity activity = ongoingActivityService.getActivity(activityId);
+        Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
         Prize prize = get(activity.getPrizes(), prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found"));
@@ -55,7 +55,7 @@ public class WishPrizeController extends BaseController {
      */
     @GetMapping(URL_MY + URL_OPERATION + "/wish/{activityId}/score")
     public Result<Long> getAvailableScore(@PathVariable("activityId") Integer activityId) {
-        Activity activity = ongoingActivityService.getActivity(activityId);
+        Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
         return toResult(wishPrizeService.findAvailableScore(activity, getUserId()));
     }
@@ -66,7 +66,7 @@ public class WishPrizeController extends BaseController {
     @PutMapping(URL_MY + URL_OPERATION + "/wish/{activityId}/prize/{prizeId}")
     public Result<Long> updateWishPrize(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
-        Prize prize = ongoingActivityService.getPrize(activityId, prizeId);
+        Prize prize = ongoingActivityService.getOngoingPrize(activityId, prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found"));
         return toResult(wishPrizeService.updateWishPrize(activityId, getUserId(), prize));
     }
@@ -77,7 +77,7 @@ public class WishPrizeController extends BaseController {
     @PutMapping(URL_MY + URL_OPERATION + "/wish/{activityId}/prize/{prizeId}/receive")
     public Result<PrizeRecord> receiveWishPrize(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
-        Activity activity = ongoingActivityService.getActivity(activityId);
+        Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
         return toResult(convert(wishPrizeService.receiveWishPrize(activity, prizeId, getUserId()), PrizeRecord::new));
     }

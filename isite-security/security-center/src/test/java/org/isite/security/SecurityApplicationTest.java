@@ -8,14 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest(classes = SecurityApplication.class)
-public class SecurityCenterApplicationTest {
+class SecurityApplicationTest {
 
     @Autowired
     private StringEncryptor stringEncryptor;
 
     @Test
     void testJasyptEnencrypt() {
-        System.out.println(stringEncryptor.encrypt("di8acdvHt3STm0JdoXcrZm8AnajGczbuL7N3bG6nAXzbj"));
+        System.out.println(stringEncryptor.encrypt("a2JMc4oJdCR78qpYRKHVSjCri"));
     }
 
     @Test

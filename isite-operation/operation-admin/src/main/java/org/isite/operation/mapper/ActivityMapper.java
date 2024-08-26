@@ -2,8 +2,8 @@ package org.isite.operation.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.isite.mybatis.mapper.PoMapper;
-import org.isite.operation.po.ActivityPo;
 import org.isite.operation.data.enums.EventType;
+import org.isite.operation.po.ActivityPo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +18,6 @@ public interface ActivityMapper extends PoMapper<ActivityPo, Integer> {
      * @param eventType 行为类型
      * @return 活动ID
      */
-    List<Integer> selectActivityIds(@Param("eventType") EventType eventType);
+    List<Integer> selectEnabledActivityIds(@Param("eventType") EventType eventType);
+
 }

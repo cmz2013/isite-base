@@ -22,7 +22,6 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.isite.commons.cloud.enums.TerminalType.APP;
 import static org.isite.commons.cloud.enums.TerminalType.WEB;
-import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.utils.IoUtils.getString;
 
 /**
@@ -44,8 +43,8 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
     /**
      * 根据行为类型查询上架的运营活动ID
      */
-    public List<Integer> findActivityIds(EventType eventType) {
-        return ((ActivityMapper) getMapper()).selectActivityIds(eventType);
+    public List<Integer> findEnabledActivityIds(EventType eventType) {
+        return ((ActivityMapper) getMapper()).selectEnabledActivityIds(eventType);
     }
 
     /**
@@ -91,17 +90,6 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
         if (null != input) {
             webpageService.insert(activityPo.getId(), terminalType, getString(input));
         }
-    }
-
-    /**
-     * 更新活动上下架状态
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public int updateStatus(Integer activityId, SwitchStatus status) {
-        ActivityPo activityPo = new ActivityPo();
-        activityPo.setId(activityId);
-        activityPo.setStatus(status);
-        return updateSelectiveById(activityPo);
     }
 
     /**

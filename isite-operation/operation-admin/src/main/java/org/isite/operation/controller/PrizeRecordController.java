@@ -90,7 +90,7 @@ public class PrizeRecordController extends BaseController {
     @PutMapping(URL_MY + URL_OPERATION + "/activity/{activityId}/prize/{prizeId}/receive")
     public Result<Integer> receivePrize(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
-        Activity activity = ongoingActivityService.getActivity(activityId);
+        Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
         Prize prize = get(activity.getPrizes(), prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found"));

@@ -145,16 +145,15 @@ public class ActivityController extends BaseController {
      * 活动上下架操作。上架的活动个数不能超过1000
      */
     @PutMapping(URL_OPERATION + "/activity/{activityId}/status/{status}")
-    @Synchronized(locks = {
-            @Lock(name = LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1")})
-    public Result<Integer> updateStatus(
-            @PathVariable("activityId") Integer activityId, @PathVariable("status") SwitchStatus status) {
+    @Synchronized(locks = {@Lock(name = LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1")})
+    public Result<Integer> updateStatus(@PathVariable("activityId") Integer activityId,
+                                        @PathVariable("status") SwitchStatus status) {
         if (DISABLED.equals(status)) {
-            return toResult(activityCache.updateStatus(activityCache.getActivity(activityId)));
+            return toResult(activityCache.disableActivity(activityCache.getActivity(activityId)));
         } else {
             isTrue(THOUSAND > activityService.count(ActivityPo::getStatus, ENABLED),
                     getMessage("activity.total.error", "the total of listed activities cannot exceed 1000"));
-            return toResult(activityService.updateStatus(activityId, status));
+            return toResult(activityCache.enableActivity(activityId));
         }
     }
 

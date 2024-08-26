@@ -34,7 +34,7 @@ public class PrizeWheelController extends BaseController {
      */
     @PutMapping(URL_MY + URL_OPERATION + "/wheel/{activityId}")
     public Result<Prize> drawPrize(@PathVariable("activityId") Integer activityId) {
-        Activity activity = ongoingActivityService.getActivity(activityId);
+        Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
         return toResult(prizeWheelService.drawPrize(activity, getUserId()));
     }

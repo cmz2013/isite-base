@@ -30,7 +30,6 @@ public class PrizeRecordConverter {
         prizeRecordPo.setPrizeName(prize.getPrizeName());
         prizeRecordPo.setPrizeType(prize.getPrizeType());
         prizeRecordPo.setPrizeImage(prize.getPrizeImage());
-        prizeRecordPo.setRemark(prize.getRemark());
     }
 
     /**

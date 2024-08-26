@@ -17,7 +17,10 @@ public class PropertyUtils {
 	 * 属性KEY：serviceId
 	 */
 	private static final String SPRING_APPLICATION_NAME = "spring.application.name";
-
+	/**
+	 * 属性KEY：端口号
+	 */
+	private static final String SERVER_PORT = "server.port";
 	/**
 	 * 读取属性
 	 */
@@ -30,6 +33,14 @@ public class PropertyUtils {
 	 */
 	public static String getApplicationName() {
 		return getProperty(SPRING_APPLICATION_NAME);
+	}
+
+	/**
+	 * 读取端口号
+	 */
+
+	public static Integer getPort() {
+		return getProperty(SERVER_PORT, Integer.class);
 	}
 
 	/**

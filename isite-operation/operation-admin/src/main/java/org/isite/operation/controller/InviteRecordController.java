@@ -1,9 +1,9 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.data.dto.InviteRecordDto;
 import org.isite.operation.data.vo.InviteRecord;
 import org.isite.operation.po.InviteRecordPo;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-import static org.isite.commons.cloud.constants.UrlConstants.URL_API;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
@@ -29,14 +26,6 @@ import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
 public class InviteRecordController extends BaseController {
 
     private InviteRecordService inviteRecordService;
-
-    /**
-     * 查询邀请排行榜单，不需要登录就可以访问
-     */
-    @GetMapping(URL_API + URL_OPERATION + "/invite/{activityId}/ranks")
-    public List<?> getInviteRank(@PathVariable("activityId") Integer activityId) {
-        return null; //TODO
-    }
 
     /**
      * 查询邀请记录（用于管理后台查询数据）

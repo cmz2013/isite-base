@@ -20,8 +20,7 @@ public class CacheKey {
     /**
      * 使用活动ID和用户终端类型作为活动网页源码缓存KEY
      */
-    public static final String WEBPAGE_ACTIVITY_USERAGENT_PREFIX = "WEBPAGE:ACTIVITY:USERAGENT:";
-
+    public static final String WEBPAGE_ACTIVITY_TERMINAL_PREFIX = "WEBPAGE:ACTIVITY:TERMINAL:";
     /**
      * 活动并发锁KEY。活动上架后不能编辑活动信息，防止并发造成数据错误
      * 活动并发锁用于防止多个用户，在编辑活动信息的时候同时上架；也可以防止多个用户同时编辑活动信息，并发场景导致数据异常

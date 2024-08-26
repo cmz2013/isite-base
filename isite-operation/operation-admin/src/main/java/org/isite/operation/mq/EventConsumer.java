@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
@@ -37,13 +36,12 @@ public class EventConsumer implements Consumer<EventDto> {
     @Override
     public Basic handle(@Validated EventDto eventDto) {
         EventType eventType = eventDto.getEventType();
-        List<Activity> activityList = ongoingActivityService.findActivityList(eventType);
+        List<Activity> activityList = ongoingActivityService.findOngoingActivities(eventType);
         if (isEmpty(activityList)) {
             return new Basic.Ack();
         }
-        Function<Object, Object> converter = eventType.getConverter();
-        if (null != converter && null != eventDto.getEventParam()) {
-            eventDto.setEventParam(converter.apply(eventDto.getEventParam()));
+        if (null != eventType.getConverter() && null != eventDto.getEventParam()) {
+            eventDto.setEventParam(eventType.getConverter().apply(eventDto.getEventParam()));
         }
         activityList.forEach(activity -> handle(activity, eventDto));
         return new Basic.Ack();
