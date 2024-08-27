@@ -8,7 +8,8 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.special.InsertListMapper;
 
 /**
- * @Description 1）通用Mapper配置参数 mapper.mappers，是我们定义 Mapper 时需要实现的接口。
+ * @Description
+ * 1）通用Mapper配置参数 mapper.mappers，是我们定义 Mapper 时需要继承的接口。
  * 注解 @RegisterMapper 可以避免 mapper.mappers 参数配置，通用 Mapper 检测到该接口被继承时，会自动注册。
  * 2）在Mapper接口中，不支持方法重载（方法名相同，参数类型不同），即xml文件中，sql语句的id必须唯一。
  * @Author <font color='blue'>zhangcm</font>
