@@ -49,7 +49,7 @@ public class TenantService extends PoService<TenantPo, Integer> {
     public void addTenant(TenantDto tenantDto) {
         //查询已注册的用户信息
         User user = getUser(tenantDto.getPhone());
-        notNull(user, getMessage("user.notRegister",
+        notNull(user, getMessage("user.notRegistered",
                 "the user is not registered: " + tenantDto.getPhone()));
         TenantPo tenantPo = toTenantPo(tenantDto);
         this.insert(tenantPo);
