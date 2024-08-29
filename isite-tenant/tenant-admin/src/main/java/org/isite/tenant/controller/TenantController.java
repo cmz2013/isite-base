@@ -13,6 +13,7 @@ import org.isite.tenant.data.dto.TenantGetDto;
 import org.isite.tenant.data.vo.Tenant;
 import org.isite.tenant.po.TenantPo;
 import org.isite.tenant.service.TenantService;
+import org.isite.user.data.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.lang.Assert.notNull;
+import static org.isite.tenant.converter.TenantConverter.toTenantPo;
+import static org.isite.tenant.converter.TenantConverter.toTenantSelectivePo;
 import static org.isite.tenant.data.constant.UrlConstants.PUT_TENANT_STATUS;
 import static org.isite.tenant.data.constant.UrlConstants.URL_TENANT;
+import static org.isite.user.client.UserAccessor.getUser;
 
 /**
  * @Description 租户信息 Controller
@@ -53,13 +59,15 @@ public class TenantController extends BaseController {
      * 添加租户
      */
     @PostMapping(URL_TENANT)
-    public Result<?> addTenant(@RequestBody @Validated(Add.class) TenantDto tenantDto) {
-        return toResult(() -> tenantService.addTenant(tenantDto));
+    public Result<Integer> addTenant(@RequestBody @Validated(Add.class) TenantDto tenantDto) {
+        User user = getUser(tenantDto.getPhone());
+        notNull(user, getMessage("user.notRegistered", "the user is not registered: " + tenantDto.getPhone()));
+        return toResult(tenantService.addTenant(user, toTenantPo(tenantDto), tenantDto.getResourceIds()));
     }
 
     @PutMapping(URL_TENANT)
-    public Result<?> updateTenant(@RequestBody @Validated(Update.class) TenantDto tenantDto) {
-        return toResult(() -> tenantService.updateTenant(tenantDto));
+    public Result<Integer> updateTenant(@RequestBody @Validated(Update.class) TenantDto tenantDto) {
+        return toResult(tenantService.updateTenant(toTenantSelectivePo(tenantDto), tenantDto.getResourceIds()));
     }
 
     @PutMapping(PUT_TENANT_STATUS)
