@@ -18,6 +18,9 @@ public class ResourceAccessor {
     private ResourceAccessor() {
     }
 
+    /**
+     * 内置用户登录时获取客户端所有资源
+     */
     public static List<Resource> getResources(String clientId, String signPassword) {
         ResourceClient resourceClient = getBean(FeignClientFactory.class).getFeignClient(ResourceClient.class, SERVICE_ID);
         return getData(resourceClient.getResources(clientId, signPassword));

@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
-import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.toFieldName;
@@ -120,6 +119,13 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     }
 
     @Override
+    public List<P> findLikePids(String pids) {
+        Weekend<P> weekend = of(this.getPoClass());
+        weekend.weekendCriteria().andLike(P::getPids, pids + PERCENT);
+        return mapper.selectByExample(weekend);
+    }
+
+    @Override
     public List<P> findList(Functions<P, Object> getter, Object value) {
         Weekend<P> weekend = of(this.getPoClass());
         weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
@@ -198,10 +204,18 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        notEmpty(values, "values cannot be empty");
+        return mapper.selectByExampleAndRowBounds(getWeekend(getter, values), new RowBounds(ZERO, THOUSAND));
+    }
+
+    @Override
+    public Integer countIn(Functions<P, Object> getter, Collection<?> values) {
+        return mapper.selectCountByExample(getWeekend(getter, values));
+    }
+
+    private Weekend<P> getWeekend(Functions<P, Object> getter, Collection<?> values) {
         Weekend<P> weekend = of(this.getPoClass());
         weekend.weekendCriteria().andIn(toFieldName(getter), values);
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        return weekend;
     }
 
     protected TreePoMapper<P, I> getMapper() {

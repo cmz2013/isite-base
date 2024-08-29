@@ -19,7 +19,7 @@ import java.util.List;
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "security.oauth2.endpoint")
-public class ClientConfig {
+public class EndpointConfig {
     /**
      * 客户端配置信息，注意：变量名和配置文件保持一致
      */

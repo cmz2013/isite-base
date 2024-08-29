@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.security.config.ClientConfig;
+import org.isite.security.config.EndpointConfig;
 import org.isite.security.config.ClientProperties;
 import org.isite.security.login.LoginHandlerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class TokenService extends DefaultTokenServices {
     private TokenStore tokenStore;
     private TokenRenewer tokenRenewer;
     private LoginHandlerFactory loginHandlerFactory;
-    private ClientConfig clientConfig;
+    private EndpointConfig endpointConfig;
 
     public TokenService() {
         super();
@@ -57,7 +57,7 @@ public class TokenService extends DefaultTokenServices {
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
         notNull(this.loginHandlerFactory, "loginHandlerFactory must be set");
-        notNull(this.clientConfig, "clientConfig must be set");
+        notNull(this.endpointConfig, "clientConfig must be set");
     }
 
     @Autowired
@@ -97,7 +97,7 @@ public class TokenService extends DefaultTokenServices {
      * 注销当前用户在所有端的token
      */
     public void revokeTokensByUser(String userName) {
-        for (ClientProperties client : clientConfig.getClients()) {
+        for (ClientProperties client : endpointConfig.getClients()) {
             Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(client.getClientId(), userName);
             if (isNotEmpty(tokens)) {
                 tokens.forEach(this::revokeToken);
@@ -123,7 +123,7 @@ public class TokenService extends DefaultTokenServices {
             } else {
                 //验证client
                 ClientProperties clientProperties =
-                        this.clientConfig.getClientProperties(authentication.getOAuth2Request().getClientId());
+                        this.endpointConfig.getClientProperties(authentication.getOAuth2Request().getClientId());
                 //token续签
                 if (TRUE.equals(clientProperties.getRenewal())) {
                     this.tokenRenewer.execute(accessToken, authentication, clientProperties.getAccessTokenValidity());
@@ -134,8 +134,8 @@ public class TokenService extends DefaultTokenServices {
     }
 
     @Autowired
-    public void setClientConfig(ClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
+    public void setEndpointConfig(EndpointConfig endpointConfig) {
+        this.endpointConfig = endpointConfig;
     }
 
     @Autowired

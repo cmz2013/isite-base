@@ -3,6 +3,8 @@ package org.isite.jpa.service;
 import lombok.Getter;
 import org.isite.jpa.data.TreeModel;
 
+import java.util.List;
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
@@ -31,7 +33,7 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
     /**
      * 根据父ID获取pids
      */
-    protected String getPids(I pid) {
+    public String getPids(I pid) {
         if (isRoot(pid)) {
             return BLANK_STRING;
         }
@@ -43,8 +45,12 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
     /**
      * 根据父节点获取pids
      */
-    protected static <P extends TreeModel<I>, I> String getPids(P parent) {
-        return isBlank(parent.getPids()) ?
-                parent.getId().toString() : parent.getPids() + COMMA + parent.getId();
+    public String getPids(P parent) {
+        return isBlank(parent.getPids()) ? parent.getId().toString() : parent.getPids() + COMMA + parent.getId();
     }
+
+    /**
+     * 根据pids右模糊查询
+     */
+    public abstract List<P> findLikePids(String pids);
 }

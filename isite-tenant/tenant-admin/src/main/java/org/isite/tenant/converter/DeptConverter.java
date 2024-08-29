@@ -29,4 +29,15 @@ public class DeptConverter {
         }
         return deptPo;
     }
+
+    public static DeptPo toDeptSelectivePo(DeptDto deptDto) {
+        DeptPo deptPo = convert(deptDto, DeptPo::new);
+        if (null == deptPo.getRemark()) {
+            deptPo.setRemark(BLANK_STRING);
+        }
+        if (null == deptPo.getPid()) {
+            deptPo.setPid(ZERO);
+        }
+        return deptPo;
+    }
 }

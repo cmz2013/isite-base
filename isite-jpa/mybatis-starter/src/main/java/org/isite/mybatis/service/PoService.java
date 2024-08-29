@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
-import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.toFieldName;
 import static org.isite.commons.lang.data.Constants.THOUSAND;
@@ -203,10 +202,16 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
      */
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        notEmpty(values, "values cannot be empty");
         Weekend<P> weekend = of(this.getPoClass());
         weekend.weekendCriteria().andIn(toFieldName(getter), values);
         return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+    }
+
+    @Override
+    public Integer countIn(Functions<P, Object> getter, Collection<?> values) {
+        Weekend<P> weekend = of(this.getPoClass());
+        weekend.weekendCriteria().andIn(toFieldName(getter), values);
+        return mapper.selectCountByExample(weekend);
     }
 
     protected PoMapper<P, I> getMapper() {

@@ -1,7 +1,7 @@
 package org.isite.security.support;
 
-import org.isite.security.data.oauth.DataAuthority;
-import org.isite.security.data.oauth.OauthEmployee;
+import org.isite.security.data.vo.DataAuthority;
+import org.isite.security.data.vo.OauthEmployee;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;

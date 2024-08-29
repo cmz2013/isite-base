@@ -1,7 +1,7 @@
 package org.isite.security.oauth;
 
 import org.isite.commons.cloud.sign.SignSecret;
-import org.isite.security.data.oauth.OauthEmployee;
+import org.isite.security.data.vo.OauthEmployee;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.springframework.beans.factory.annotation.Autowired;

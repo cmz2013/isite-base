@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.security.config.ClientConfig;
+import org.isite.security.config.EndpointConfig;
 import org.isite.security.config.ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientService implements ClientDetailsService {
 
-    private ClientConfig clientConfig;
+    private EndpointConfig endpointConfig;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) {
         //客户端配置
-        ClientProperties properties = clientConfig.getClientProperties(clientId);
+        ClientProperties properties = endpointConfig.getClientProperties(clientId);
         BaseClientDetails clientDetails = new BaseClientDetails();
         clientDetails.setClientId(clientId);
         clientDetails.setScope(properties.getScopes());
@@ -37,7 +37,7 @@ public class ClientService implements ClientDetailsService {
     }
 
     @Autowired
-    public void setClientConfig(ClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
+    public void setEndpointConfig(EndpointConfig endpointConfig) {
+        this.endpointConfig = endpointConfig;
     }
 }

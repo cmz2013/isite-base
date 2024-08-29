@@ -1,11 +1,11 @@
 package org.isite.mongo.converter;
 
-import lombok.SneakyThrows;
 import org.isite.commons.lang.Functions;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -29,11 +29,12 @@ public class QueryConverter {
     /**
      * 转换为Query对象
      */
-    @SneakyThrows
     public static <P> Query toQuery(Functions<P, Object> getter, Object value) {
-        Criteria criteria = new Criteria();
-        criteria.and(toFieldName(getter)).is(value);
-        return query(criteria);
+        return query(new Criteria().and(toFieldName(getter)).is(value));
+    }
+
+    public static <P> Query toQuery(Functions<P, Object> getter, Collection<?> values) {
+        return query(new Criteria().and(toFieldName(getter)).in(values));
     }
 
     /**

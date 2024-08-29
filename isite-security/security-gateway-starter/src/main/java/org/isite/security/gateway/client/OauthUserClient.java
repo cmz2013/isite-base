@@ -1,7 +1,7 @@
 package org.isite.security.gateway.client;
 
 import org.isite.commons.lang.data.Result;
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

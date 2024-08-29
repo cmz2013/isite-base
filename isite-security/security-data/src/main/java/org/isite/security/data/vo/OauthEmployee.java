@@ -1,4 +1,4 @@
-package org.isite.security.data.oauth;
+package org.isite.security.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;

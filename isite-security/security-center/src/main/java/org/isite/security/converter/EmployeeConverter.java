@@ -1,6 +1,6 @@
 package org.isite.security.converter;
 
-import org.isite.security.data.oauth.OauthEmployee;
+import org.isite.security.data.vo.OauthEmployee;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -71,4 +71,8 @@ public class UrlConstants {
      * 更换租户
      */
     public static final String PUT_OAUTH_TENANT = URL_OAUTH + "/tenant/{tenantId}";
+    /**
+     * 查询客户端
+     */
+    public static final String GET_OAUTH_CLIENTS = URL_OAUTH + "/clients";
 }

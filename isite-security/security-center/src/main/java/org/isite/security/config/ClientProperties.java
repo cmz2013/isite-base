@@ -26,6 +26,11 @@ public class ClientProperties implements Serializable {
     @Getter
     private String clientId;
     /**
+     * 客户端名称
+     */
+    @Getter
+    private String clientName;
+    /**
      * 设置access_token有效时间，秒
      */
     @Getter

@@ -1,7 +1,7 @@
 package org.isite.security.login;
 
 import org.isite.commons.cloud.sign.SignSecret;
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

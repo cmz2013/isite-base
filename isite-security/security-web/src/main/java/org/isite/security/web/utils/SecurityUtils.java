@@ -1,7 +1,7 @@
 package org.isite.security.web.utils;
 
-import org.isite.security.data.oauth.OauthEmployee;
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthEmployee;
+import org.isite.security.data.vo.OauthUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;

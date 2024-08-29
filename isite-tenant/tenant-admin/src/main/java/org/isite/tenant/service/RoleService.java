@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -66,9 +65,9 @@ public class RoleService extends PoService<RolePo, Integer> {
     @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
     public void updateAdminRole(int tenantId, List<Integer> resourceIds) {
         RolePo adminRole = getAdminRole(tenantId);
-        List<Integer> oldResourceIds = roleResourceService.findResourceIds(adminRole.getId());
-        //回收资源
-        roleResourceService.deleteRoleResources(tenantId, new LinkedList<>(oldResourceIds).stream()
+        List<Integer> oldResourceIds = roleResourceService.findRoleResourceIds(adminRole.getId());
+        //回收资源。filter方法会返回一个新的流，其中包含符合过滤条件的元素，但原始集合保持不变。
+        roleResourceService.deleteRoleResources(tenantId, oldResourceIds.stream()
                 .filter(resourceId -> !resourceIds.contains(resourceId)).collect(toList()));
         //administrator角色添加新增的资源
         roleResourceService.insert(resourceIds.stream().filter(

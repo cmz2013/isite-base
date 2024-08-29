@@ -26,14 +26,14 @@ public class RoleResourceService extends PoService<RoleResourcePo, Integer> {
     /**
      * 根据角色ID查询终端资源
      */
-    public List<ResourcePo> findResources(String clientId, int roleId) {
+    public List<ResourcePo> findRoleResources(String clientId, int roleId) {
         return ((RoleResourceMapper) getMapper()).selectResources(clientId, roleId);
     }
 
     /**
      * 根据角色ID查询资源ID
      */
-    public List<Integer> findResourceIds(int roleId) {
+    public List<Integer> findRoleResourceIds(int roleId) {
         return ((RoleResourceMapper) getMapper()).selectResourceIds(roleId);
     }
 

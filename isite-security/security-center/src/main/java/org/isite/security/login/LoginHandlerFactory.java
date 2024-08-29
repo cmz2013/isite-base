@@ -1,7 +1,7 @@
 package org.isite.security.login;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.security.config.ClientConfig;
+import org.isite.security.config.EndpointConfig;
 import org.isite.security.data.enums.ClientIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class LoginHandlerFactory extends AbstractFactory<LoginHandler, ClientIde
 
     private UserLoginHandler userLoginHandler;
     private TenantLoginHandler tenantLoginHandler;
-    private ClientConfig clientConfig;
+    private EndpointConfig endpointConfig;
 
     /**
      * 如果没有自定义客户端（clientId）配置，系统根据授权方式默认使用: TenantLoginEndpoint / UserLoginEndpoint
@@ -25,7 +25,7 @@ public class LoginHandlerFactory extends AbstractFactory<LoginHandler, ClientIde
     public LoginHandler getLoginHandler(String clientId) {
         LoginHandler loginHandler = this.get(clientId);
         if (null == loginHandler) {
-            return clientConfig.getClientProperties(clientId).getScopes()
+            return endpointConfig.getClientProperties(clientId).getScopes()
                     .contains(AUTHORIZATION_SCOPE_RBAC) ? tenantLoginHandler : userLoginHandler;
         }
         return loginHandler;
@@ -42,7 +42,7 @@ public class LoginHandlerFactory extends AbstractFactory<LoginHandler, ClientIde
     }
 
     @Autowired
-    public void setClientConfig(ClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
+    public void setEndpointConfig(EndpointConfig endpointConfig) {
+        this.endpointConfig = endpointConfig;
     }
 }

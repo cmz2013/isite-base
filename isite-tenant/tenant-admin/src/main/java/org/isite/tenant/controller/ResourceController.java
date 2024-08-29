@@ -3,11 +3,15 @@ package org.isite.tenant.controller;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.commons.web.sign.Signature;
 import org.isite.tenant.data.dto.ResourceDto;
 import org.isite.tenant.data.vo.Resource;
 import org.isite.tenant.po.ResourcePo;
+import org.isite.tenant.po.RoleResourcePo;
 import org.isite.tenant.service.ResourceService;
+import org.isite.tenant.service.RoleResourceService;
+import org.isite.tenant.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.lang.Assert.isFalse;
+import static org.isite.commons.lang.Assert.isTrue;
+import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.jpa.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
 import static org.isite.tenant.data.constant.UrlConstants.API_GET_CLIENT_RESOURCES;
@@ -33,7 +42,12 @@ import static org.isite.tenant.data.constant.UrlConstants.URL_TENANT;
 public class ResourceController extends BaseController {
 
     private ResourceService resourceService;
+    private RoleService roleService;
+    private RoleResourceService roleResourceService;
 
+    /**
+     * 内置用户登录时获取客户端所有资源
+     */
     @Signature
     @GetMapping(API_GET_CLIENT_RESOURCES)
     public Result<List<Resource>> getResources(@PathVariable("clientId") String clientId) {
@@ -42,35 +56,37 @@ public class ResourceController extends BaseController {
     }
 
     /**
-     * 根据父节点ID，查询终端资源
+     * 根据客户端ID和父节点ID查询资源。如果不是内置用户 tenantId = 0，则只能查询租户自己的资源
      */
     @GetMapping(URL_TENANT + "/resources/{clientId}/{pid}")
     public Result<List<Resource>> findResources(
             @PathVariable("clientId") String clientId, @PathVariable("pid") Integer pid) {
-        return toResult(toTree(resourceService.findResources(clientId, pid), po -> convert(po, Resource::new)));
+        List<Integer> resourceIds = null;
+        if (ZERO != getTenantId()) {
+            resourceIds = roleResourceService.findList(RoleResourcePo::getRoleId, roleService.getAdminRole(
+                    getTenantId()).getId()).stream().map(RoleResourcePo::getResourceId).collect(toList());
+        }
+        return toResult(toTree(resourceService.findResources(clientId, pid, resourceIds),
+                po -> convert(po, Resource::new)));
     }
 
     /**
-     * 根据ID查询资源信息
-     */
-    @GetMapping(URL_TENANT + "/resource/{id}")
-    public Result<Resource> findById(@PathVariable("id") Integer id) {
-        return toResult(convert(resourceService.get(id), Resource::new));
-    }
-
-    /**
-     * 添加资源信息
+     * 系统内置用户添加资源信息
      */
     @PostMapping(URL_TENANT + "/resource")
     public Result<Integer> addResource(@RequestBody @Validated(Add.class) ResourceDto resourceDto) {
+        isTrue(ZERO == getTenantId(), new OverstepAccessError());
         return toResult(resourceService.insert(toResourcePo(resourceDto)));
     }
 
     /**
-     * 删除资源信息
+     * 系统内置用户删除资源信息
      */
     @DeleteMapping(URL_TENANT + "/resource/{id}")
     public Result<Integer> deleteResource(@PathVariable("id") Integer id) {
+        isTrue(ZERO == getTenantId(), new OverstepAccessError());
+        isFalse(roleResourceService.exists(RoleResourcePo::getResourceId, id),
+                "The resource is already in use and cannot be deleted");
         return toResult(resourceService.delete(id));
     }
 
@@ -85,4 +101,13 @@ public class ResourceController extends BaseController {
         this.resourceService = resourceService;
     }
 
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    @Autowired
+    public void setRoleResourceService(RoleResourceService roleResourceService) {
+        this.roleResourceService = roleResourceService;
+    }
 }

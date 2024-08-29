@@ -1,6 +1,6 @@
 package org.isite.security.login;
 
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

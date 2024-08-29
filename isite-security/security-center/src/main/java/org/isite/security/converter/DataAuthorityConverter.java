@@ -1,6 +1,6 @@
 package org.isite.security.converter;
 
-import org.isite.security.data.oauth.DataAuthority;
+import org.isite.security.data.vo.DataAuthority;
 import org.isite.tenant.data.vo.DataApi;
 
 import java.util.HashMap;

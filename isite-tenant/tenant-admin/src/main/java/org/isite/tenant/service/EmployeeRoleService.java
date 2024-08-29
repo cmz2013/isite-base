@@ -20,7 +20,8 @@ public class EmployeeRoleService extends PoService<EmployeeRolePo, Integer> {
         super(employeeRoleMapper);
     }
 
-    public List<RolePo> findRoles(long employeeId) {
+    public List<RolePo> findEmployeeRoles(long employeeId) {
         return ((EmployeeRoleMapper) getMapper()).selectRoles(employeeId);
     }
+
 }

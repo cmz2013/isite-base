@@ -176,10 +176,17 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
     protected abstract N doDelete(I id);
 
     /**
-     * 使用in条件查询
+     * @Description 使用in条件查询。
+     * NOT IN 子句有时可能会导致性能问题，特别是在子查询返回大量数据时。
+     * 在这种情况下，可以考虑使用 LEFT JOIN 和 IS NULL 来替代 NOT IN，因为这种替代方法在某些情况下可能会更高效。
      * @param getter get方法
-     * @param values 查询条件
+     * @param values 查询条件，values的元素个数不宜太多，避免一次查询条件过长导致数据库性能下降
      * @return 查询结果
      */
     public abstract List<P> findIn(Functions<P, Object> getter, Collection<?> values);
+
+    /**
+     * 使用in条件统计条数
+     */
+    public abstract N countIn(Functions<P, Object> getter, Collection<?> values);
 }

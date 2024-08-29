@@ -1,6 +1,6 @@
 package org.isite.security.login;
 
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 

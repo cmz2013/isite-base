@@ -26,7 +26,11 @@ public class UrlConstants {
      */
     public static final String API_GET_EMPLOYEE_RBAC = URL_API + URL_TENANT + "/employee/rbac";
     /**
-     * 客户端资源
+     * 内置用户登录时获取客户端所有资源
      */
     public static final String API_GET_CLIENT_RESOURCES = URL_API + URL_TENANT + "/resources/{clientId}";
+    /**
+     * 租户查询可以访问的客户端
+     */
+    public static final String GET_OAUTH_CLIENTS = URL_TENANT + "/oauth/clients";
 }

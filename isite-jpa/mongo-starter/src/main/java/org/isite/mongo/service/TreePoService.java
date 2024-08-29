@@ -9,7 +9,6 @@ import org.isite.jpa.service.TreeModelService;
 import org.isite.mongo.data.TreePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Collection;
@@ -18,7 +17,6 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.regex;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.Reflection.toFieldName;
 import static org.isite.commons.lang.data.Constants.DOLLAR;
 import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.THOUSAND;
@@ -172,7 +170,12 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        return mongoTemplate.find(query(new Criteria().and(toFieldName(getter)).in(values)), getPoClass());
+        return mongoTemplate.find(toQuery(getter, values), getPoClass());
+    }
+
+    @Override
+    public Long countIn(Functions<P, Object> getter, Collection<?> values) {
+        return mongoTemplate.count(toQuery(getter, values), getPoClass());
     }
 
     @Override
@@ -200,6 +203,11 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     public List<P> findList(Functions<P, Object> getter, Object value) {
         return mongoTemplate.find(toQuery(getter, value).limit(THOUSAND), getPoClass());
+    }
+
+    @Override
+    public List<P> findLikePids(String pids) {
+        return mongoTemplate.find(query(where(FIELD_PIDS).regex("^" + pids)), getPoClass());
     }
 
     /**

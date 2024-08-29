@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.isite.security.login.LoginHandlerFactory;
 import org.isite.security.login.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

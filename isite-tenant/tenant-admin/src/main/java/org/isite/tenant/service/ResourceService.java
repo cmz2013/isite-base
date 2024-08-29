@@ -9,6 +9,7 @@ import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.List;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
@@ -24,13 +25,16 @@ public class ResourceService extends TreePoService<ResourcePo, Integer> {
     }
 
     /**
-     * 根据pid查询终端资源
+     * 根据客户端ID和pid查询资源
      */
-    public List<ResourcePo> findResources(String clientId, Integer pid) {
+    public List<ResourcePo> findResources(String clientId, Integer pid, List<Integer> resourceIds) {
         Weekend<ResourcePo> weekend = of(ResourcePo.class);
         weekend.orderBy(ResourcePo::getSort);
         weekend.weekendCriteria().andEqualTo(ResourcePo::getPid, pid)
                 .andEqualTo(ResourcePo::getClientId, clientId);
+        if (isNotEmpty(resourceIds)) {
+            weekend.weekendCriteria().andIn(ResourcePo::getId, resourceIds);
+        }
         return findList(weekend);
     }
 }

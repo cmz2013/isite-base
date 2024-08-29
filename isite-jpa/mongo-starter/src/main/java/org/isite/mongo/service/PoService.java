@@ -208,6 +208,11 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Long> {
         return mongoTemplate.find(query(new Criteria().and(toFieldName(getter)).in(values)), getPoClass());
     }
 
+    @Override
+    public Long countIn(Functions<P, Object> getter, Collection<?> values) {
+        return mongoTemplate.count(query(new Criteria().and(toFieldName(getter)).in(values)), getPoClass());
+    }
+
     @Autowired
     public void setMongoTemplate(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;

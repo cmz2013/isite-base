@@ -2,7 +2,7 @@ package org.isite.security.controller;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.isite.security.oauth.TenantService;
 import org.isite.security.oauth.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;

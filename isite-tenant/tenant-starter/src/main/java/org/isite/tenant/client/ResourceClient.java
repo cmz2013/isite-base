@@ -17,6 +17,9 @@ import static org.isite.tenant.data.constant.UrlConstants.API_GET_CLIENT_RESOURC
 //@FeignClient(contextId = "resourceClient", value = SERVICE_ID)
 public interface ResourceClient {
 
+    /**
+     * 内置用户登录时获取客户端所有资源
+     */
     @GetMapping(value = API_GET_CLIENT_RESOURCES)
     Result<List<Resource>> getResources(
             @PathVariable("clientId") String clientId,

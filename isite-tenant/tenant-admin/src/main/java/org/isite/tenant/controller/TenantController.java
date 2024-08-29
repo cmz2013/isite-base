@@ -56,7 +56,9 @@ public class TenantController extends BaseController {
     }
 
     /**
-     * 添加租户
+     * @Description 添加租户。
+     * SpringMVC框架提交参数list时，默认只能接收到256个数据，可以单独Controller或者全局进行配置，
+     * 否则当前端页面传的数组数据长度大于256位的时候就会报错
      */
     @PostMapping(URL_TENANT)
     public Result<Integer> addTenant(@RequestBody @Validated(Add.class) TenantDto tenantDto) {

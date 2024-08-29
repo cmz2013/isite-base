@@ -6,9 +6,12 @@ import org.isite.commons.cloud.data.Dto;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
+
+import static org.isite.commons.lang.data.Constants.ONE;
+import static org.isite.commons.lang.data.Constants.THOUSAND;
 
 /**
  * @Description 租户信息
@@ -35,7 +38,7 @@ public class TenantDto extends Dto<Integer> {
     /**
      * 功能权限
      */
-    @NotEmpty(groups = {Add.class, Update.class})
+    @Size(min = ONE, max = THOUSAND, groups = {Add.class, Update.class})
     private List<Integer> resourceIds;
     /**
      * 备注

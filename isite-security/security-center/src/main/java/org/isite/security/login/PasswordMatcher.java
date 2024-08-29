@@ -1,6 +1,6 @@
 package org.isite.security.login;
 
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

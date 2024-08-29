@@ -12,10 +12,6 @@ import org.isite.tenant.data.enums.OfficeStatus;
 @Setter
 public class Employee extends Vo<Long> {
     /**
-     * 租户ID
-     */
-    private Integer tenantId;
-    /**
      * 用户ID
      */
     private Long userId;

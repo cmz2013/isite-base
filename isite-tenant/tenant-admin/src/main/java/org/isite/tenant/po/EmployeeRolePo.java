@@ -9,7 +9,6 @@ import org.isite.mybatis.data.Po;
 import javax.persistence.Table;
 
 /**
- * @Description Administrator 角色的员工，至少要有一个，不能都删除
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter

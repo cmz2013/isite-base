@@ -1,11 +1,12 @@
 package org.isite.security.login;
 
 import org.isite.commons.cloud.sign.SignSecret;
-import org.isite.security.data.oauth.OauthEmployee;
+import org.isite.security.data.vo.OauthEmployee;
 import org.isite.tenant.data.constant.TenantConstants;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.isite.tenant.data.vo.Role;
+import org.isite.tenant.data.vo.Tenant;
 import org.isite.user.data.constant.UserConstants;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.security.converter.DataAuthorityConverter.toDataAuthority;
 import static org.isite.tenant.client.RbacAccessor.getRbac;
 import static org.isite.tenant.client.ResourceAccessor.getResources;
-import static org.isite.tenant.data.constant.TenantConstants.ROLE_ADMINISTRATOR;
 import static org.isite.user.client.UserAccessor.getUserSecret;
 
 /**
@@ -46,9 +46,12 @@ public class OauthEmployeeService extends UserDetailsService {
          * 3、多租户的用户，登录以后可以更换租户，同时更新rbac权限信息
          */
         if (TRUE.equals(employee.getInternal())) {
+            Tenant tenant = new Tenant();
+            tenant.setId(ZERO);
+            employee.setTenant(tenant);
             employee.setEmployeeId((long) ZERO);
             Role role = new Role();
-            role.setName(ROLE_ADMINISTRATOR);
+            role.setId(ZERO);
             role.setResources(getResources(clientId, signSecret.password(TenantConstants.SERVICE_ID)));
             employee.setRoles(singletonList(role));
         } else {

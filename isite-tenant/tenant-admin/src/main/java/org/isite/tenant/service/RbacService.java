@@ -71,7 +71,7 @@ public class RbacService {
         Rbac rbac = new Rbac();
         rbac.setTenant(convert(tenantPo, Tenant::new));
         rbac.setEmployeeId(employeePo.getId());
-        List<RolePo> rolePos = employeeRoleService.findRoles(employeePo.getId());
+        List<RolePo> rolePos = employeeRoleService.findEmployeeRoles(employeePo.getId());
         if (isEmpty(rolePos)) {
             return rbac;
         }
@@ -79,13 +79,12 @@ public class RbacService {
 
         //按角色分别设置系统资源（功能权限）
         rolePos.forEach(rolePo -> {
-            List<ResourcePo> resourcePos = roleResourceService.findResources(clientId, rolePo.getId());
+            List<ResourcePo> resourcePos = roleResourceService.findRoleResources(clientId, rolePo.getId());
             if (isEmpty(resourcePos)) {
                 return;
             }
-
-            List<Resource> resources = toTree(resourcePos, po -> convert(po, Resource::new),
-                    ids -> resourceService.findIn(ResourcePo::getId, ids));
+            List<Resource> resources = toTree(resourcePos,
+                    po -> convert(po, Resource::new), ids -> resourceService.findIn(ResourcePo::getId, ids));
             rbac.getRoles().add(toRole(rolePo, resources));
             List<DataApi> dataApis = convert(resourceApiService
                     .findDataApis(convert(resourcePos, ResourcePo::getId)), DataApi::new);

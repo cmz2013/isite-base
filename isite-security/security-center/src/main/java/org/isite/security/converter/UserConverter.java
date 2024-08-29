@@ -1,7 +1,7 @@
 package org.isite.security.converter;
 
 import org.isite.security.data.dto.UserPostDto;
-import org.isite.security.data.oauth.OauthUser;
+import org.isite.security.data.vo.OauthUser;
 import org.isite.user.data.dto.UserDto;
 
 import java.util.HashMap;
