@@ -70,6 +70,9 @@ public class RoleController extends BaseController {
         return toResult(roleService.addRole(toRolePo(roleDto), roleDto.getResourceIds()));
     }
 
+    /**
+     * 租户的角色只能租户自己修改，系统内置超管不能操作用户数据
+     */
     @PutMapping(URL_TENANT + "/role")
     public Result<Integer> updateRole(@RequestBody @Validated(Update.class) RoleDto roleDto) {
         isFalse(roleService.getAdminRole(getTenantId()).getId().equals(roleDto.getId()),

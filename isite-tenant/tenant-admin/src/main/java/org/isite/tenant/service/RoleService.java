@@ -43,7 +43,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * @Description 运营管理员创建租户时，给该租户添加 Administrator 角色。
+     * @Description 运营管理员新增租户时，系统自动给该租户添加 Administrator 角色。
      * 租户不可以自己修改或删除 Administrator 角色。
      */
     @Transactional(rollbackFor = Exception.class)
@@ -59,7 +59,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * @Description 运营管理员修改租户的 Administrator 角色权限。
+     * @Description 运营管理员修改租户时，系统自动修改租户的 Administrator 角色权限。
      * 运营管理员修改租户Administrator 角色权限时，租户不能新增或修改角色权限。
      */
     @Transactional(rollbackFor = Exception.class)
@@ -87,7 +87,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * @Description 租户管理员新增角色
+     * @Description 租户自己新增角色
      */
     @Transactional(rollbackFor = Exception.class)
     @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
@@ -99,7 +99,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * 检查是否超出管理员权限范围
+     * 检查是否超出管理员权限范围。必须在同步锁内完成校验，保证数据一致性
      */
     private void checkResources(int tenantId, List<Integer> resourceIds) {
         int adminRoleId = getAdminRole(tenantId).getId();
@@ -109,7 +109,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * @Description 租户管理员修改角色，先删除原有权限，再添加新权限
+     * @Description 租户自己修改角色，先删除原有权限，再添加新权限
      */
     @Transactional(rollbackFor = Exception.class)
     @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
