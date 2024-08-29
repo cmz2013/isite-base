@@ -1,5 +1,8 @@
 package org.isite.tenant.service;
 
+import org.isite.commons.web.exception.OverstepAccessError;
+import org.isite.commons.web.sync.Lock;
+import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
 import org.isite.tenant.mapper.RoleMapper;
 import org.isite.tenant.po.RolePo;
@@ -10,10 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.tenant.converter.RoleResourceConverter.toRoleResourcePos;
+import static org.isite.tenant.data.constant.CacheKey.LOCK_TENANT;
 import static org.isite.tenant.data.constant.TenantConstants.ROLE_ADMINISTRATOR;
 
 /**
@@ -52,18 +59,11 @@ public class RoleService extends PoService<RolePo, Integer> {
     }
 
     /**
-     * 一个租户有且只有一个 Administrator 角色
+     * @Description 运营管理员修改租户的 Administrator 角色权限。
+     * 运营管理员修改租户Administrator 角色权限时，租户不能新增或修改角色权限。
      */
-    private RolePo getAdminRole(int tenantId) {
-        RolePo rolePo = new RolePo();
-        rolePo.setTenantId(tenantId);
-        rolePo.setName(ROLE_ADMINISTRATOR);
-        return this.findOne(rolePo);
-    }
-
-    /**
-     * 运营管理员修改租户的 Administrator 角色权限
-     */
+    @Transactional(rollbackFor = Exception.class)
+    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
     public void updateAdminRole(int tenantId, List<Integer> resourceIds) {
         RolePo adminRole = getAdminRole(tenantId);
         List<Integer> oldResourceIds = roleResourceService.findResourceIds(adminRole.getId());
@@ -74,5 +74,62 @@ public class RoleService extends PoService<RolePo, Integer> {
         roleResourceService.insert(resourceIds.stream().filter(
                 resourceId -> !oldResourceIds.contains(resourceId)).map(
                 resourceId -> new RoleResourcePo(adminRole.getId(), resourceId)).collect(toList()));
+    }
+
+    /**
+     * 一个租户有且只有一个 Administrator 角色
+     */
+    public RolePo getAdminRole(int tenantId) {
+        RolePo rolePo = new RolePo();
+        rolePo.setTenantId(tenantId);
+        rolePo.setName(ROLE_ADMINISTRATOR);
+        return this.findOne(rolePo);
+    }
+
+    /**
+     * @Description 租户管理员新增角色
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
+    public int addRole(RolePo rolePo, List<Integer> resourceIds) {
+        checkResources(rolePo.getTenantId(), resourceIds);
+        this.insert(rolePo);
+        roleResourceService.insert(toRoleResourcePos(rolePo.getId(), resourceIds));
+        return rolePo.getId();
+    }
+
+    /**
+     * 检查是否超出管理员权限范围
+     */
+    private void checkResources(int tenantId, List<Integer> resourceIds) {
+        int adminRoleId = getAdminRole(tenantId).getId();
+        Set<Integer> adminResourceIds = roleResourceService.findList(RoleResourcePo::getRoleId, adminRoleId)
+                .stream().map(RoleResourcePo::getResourceId).collect(toSet());
+        isTrue(adminResourceIds.containsAll(resourceIds), new OverstepAccessError());
+    }
+
+    /**
+     * @Description 租户管理员修改角色，先删除原有权限，再添加新权限
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
+    public int updateRole(RolePo rolePo, List<Integer> resourceIds) {
+        checkResources(rolePo.getTenantId(), resourceIds);
+        return roleResourceService.deleteAndInsert(RoleResourcePo::getRoleId,rolePo.getId(),
+                toRoleResourcePos(rolePo.getId(), resourceIds));
+    }
+
+    public boolean exists(int tenantId, String name) {
+        RolePo rolePo = new RolePo();
+        rolePo.setTenantId(tenantId);
+        rolePo.setName(name);
+        return exists(rolePo);
+    }
+
+    public boolean exists(int tenantId, String name, int excludeId) {
+        RolePo rolePo = new RolePo();
+        rolePo.setTenantId(tenantId);
+        rolePo.setName(name);
+        return exists(rolePo, excludeId);
     }
 }

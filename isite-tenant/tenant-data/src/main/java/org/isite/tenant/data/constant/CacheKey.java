@@ -1,13 +1,14 @@
 package org.isite.tenant.data.constant;
 
 /**
- * 缓存KEY
- *
- * @author <font color='blue'>zhangcm</font>
+ * @Description 缓存KEY
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class CacheKey {
 
     private CacheKey() {
     }
+
+    public static final String LOCK_TENANT = "LOCK:TENANT:${arg0}";
 
 }

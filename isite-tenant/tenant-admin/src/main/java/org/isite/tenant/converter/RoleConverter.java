@@ -28,6 +28,14 @@ public class RoleConverter {
         return rolePo;
     }
 
+    public static RolePo toRoleSelectivePo(RoleDto roleDto) {
+        RolePo rolePo = convert(roleDto, RolePo::new);
+        if (null == rolePo.getRemark()) {
+            rolePo.setRemark(BLANK_STRING);
+        }
+        return rolePo;
+    }
+
     public static Role toRole(RolePo rolePo, List<Resource> resources) {
         Role role = convert(rolePo, Role::new);
         role.setResources(resources);

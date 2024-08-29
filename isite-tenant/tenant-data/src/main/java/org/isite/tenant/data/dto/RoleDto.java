@@ -7,6 +7,8 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -19,6 +21,11 @@ public class RoleDto extends Dto<Integer> {
      */
     @NotBlank(groups = {Add.class, Update.class})
     private String name;
+    /**
+     * 功能权限
+     */
+    @NotEmpty(groups = {Add.class, Update.class})
+    private List<Integer> resourceIds;
     /**
      * 备注
      */
