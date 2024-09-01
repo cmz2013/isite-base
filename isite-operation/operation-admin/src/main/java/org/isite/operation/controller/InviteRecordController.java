@@ -4,8 +4,8 @@ import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.operation.data.dto.InviteRecordDto;
-import org.isite.operation.data.vo.InviteRecord;
+import org.isite.operation.support.dto.InviteRecordDto;
+import org.isite.operation.support.vo.InviteRecord;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.service.InviteRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.operation.converter.InviteRecordConverter.toInviteRecordPo;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

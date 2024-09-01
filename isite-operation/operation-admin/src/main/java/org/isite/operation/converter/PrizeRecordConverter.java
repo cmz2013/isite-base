@@ -1,7 +1,7 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.Task;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.PrizeRecordPo;

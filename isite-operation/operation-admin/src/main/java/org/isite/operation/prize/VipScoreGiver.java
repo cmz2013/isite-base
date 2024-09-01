@@ -1,6 +1,6 @@
 package org.isite.operation.prize;
 
-import org.isite.operation.data.enums.PrizeType;
+import org.isite.operation.support.enums.PrizeType;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
@@ -11,7 +11,7 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
-import static org.isite.operation.data.enums.ScoreType.VIP_SCORE;
+import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 
 /**
  * @Description VIP积分发放接口

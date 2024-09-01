@@ -9,10 +9,12 @@ import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sign.Signature;
 import org.isite.user.data.dto.UserDto;
-import org.isite.user.data.vo.User;
+import org.isite.user.data.vo.UserBasic;
+import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 import org.isite.user.po.UserPo;
 import org.isite.user.service.UserService;
+import org.isite.user.service.VipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +30,18 @@ import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
+import static org.isite.commons.lang.Assert.notNull;
+import static org.isite.user.converter.UserConverter.toUserDetails;
 import static org.isite.user.converter.UserConverter.toUserPo;
 import static org.isite.user.converter.UserConverter.toUserSelectivePo;
-import static org.isite.user.converter.UserSecretConverter.toSecret;
-import static org.isite.user.data.constant.UrlConstants.API_GET_USER_SECRET;
-import static org.isite.user.data.constant.UrlConstants.API_POST_USER;
-import static org.isite.user.data.constant.UrlConstants.API_PUT_USER_PASSWORD;
-import static org.isite.user.data.constant.UrlConstants.GET_USER;
-import static org.isite.user.data.constant.UrlConstants.GET_USERS;
-import static org.isite.user.data.constant.UrlConstants.URL_USER;
+import static org.isite.user.converter.UserSecretConverter.toUserSecret;
+import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
+import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
+import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
+import static org.isite.user.data.constants.UrlConstants.GET_USERS;
+import static org.isite.user.data.constants.UrlConstants.GET_USER_BY_IDENTIFIER;
+import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
+import static org.isite.user.data.constants.UrlConstants.URL_USER;
 
 /**
  * @Description 用户Controller
@@ -45,14 +50,13 @@ import static org.isite.user.data.constant.UrlConstants.URL_USER;
 @RestController
 public class UserController extends BaseController {
 
-    private static final String KEY_USERNAME_EXISTS = "userName.exists";
-    private static final String KEY_PHONE_EXISTS = "phone.exists";
-    private static final String KEY_EMAIL_EXISTS = "email.exists";
-    private static final String VALUE_USERNAME_EXISTS = "username already exists";
-    private static final String VALUE_PHONE_EXISTS = "phone number already exists";
-    private static final String VALUE_EMAIL_EXISTS = "email already exists";
-
+    private VipService vipService;
     private UserService userService;
+
+    @Autowired
+    public void setVipService(VipService vipService) {
+        this.vipService = vipService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -60,18 +64,20 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(GET_USERS)
-    public PageResult<User> findPage(PageRequest<UserDto> request) {
+    public PageResult<UserBasic> findPage(PageRequest<UserDto> request) {
         try (Page<UserPo> page = userService.findPage(toPageQuery(request, UserPo::new))) {
-            return toPageResult(request, convert(page.getResult(), User::new), page.getTotal());
+            return toPageResult(request, convert(page.getResult(), UserBasic::new), page.getTotal());
         }
     }
 
     /**
-     * 管理员查询用户信息
+     * @Description 根据唯一标识（username、phone、email）获取用户信息
      */
-    @GetMapping(GET_USER)
-    public Result<User> getUser(@PathVariable("identifier") String identifier) {
-        return toResult(convert(userService.getByIdentifier(identifier), User::new));
+    @GetMapping(GET_USER_BY_IDENTIFIER)
+    public Result<UserDetails> getUser(@PathVariable("identifier") String identifier) {
+        UserPo userPo = userService.getByIdentifier(identifier);
+        notNull(userPo, getMessage("user.not.found", "user not found"));
+        return toResult(toUserDetails(userPo, vipService.isVip(userPo.getId())));
     }
 
     /**
@@ -80,32 +86,45 @@ public class UserController extends BaseController {
     @Signature
     @PostMapping(API_POST_USER)
     public Result<Integer> addUser(@RequestBody @Validated(Add.class) UserDto userDto) {
-        isFalse(userService.exists(UserPo::getUserName, userDto.getUserName()), getMessage(KEY_USERNAME_EXISTS, VALUE_USERNAME_EXISTS));
-        isFalse(userService.exists(UserPo::getPhone, userDto.getPhone()), getMessage(KEY_PHONE_EXISTS, VALUE_PHONE_EXISTS));
-        if (isNotBlank(userDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()), getMessage(KEY_EMAIL_EXISTS, VALUE_EMAIL_EXISTS));
-        }
+        checkUserIdentifier(userDto);
         return toResult(userService.insert(toUserPo(userDto)));
+    }
+
+    @PostMapping(POST_USER_IF_ABSENT)
+    public Result<Long> addUserIfAbsent(@PathVariable("phone") String phone) {
+        UserPo userPo = userService.getByIdentifier(phone);
+        if (userPo == null) {
+            userPo = toUserPo(phone);
+            userService.insert(userPo);
+        }
+        return toResult(userPo.getId());
     }
 
     @PutMapping(URL_USER)
     public Result<Integer> updateUser(@RequestBody @Validated(Update.class) UserDto userDto) {
+        checkUserIdentifier(userDto);
+        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
+    }
+
+    private void checkUserIdentifier(UserDto userDto) {
         if (isNotBlank(userDto.getUserName())) {
-            isFalse(userService.exists(UserPo::getUserName, userDto.getUserName(), userDto.getId()), getMessage(KEY_USERNAME_EXISTS, VALUE_USERNAME_EXISTS));
+            isFalse(userService.exists(UserPo::getUserName, userDto.getUserName()),
+                    getMessage("userName.exists",  "username already exists"));
         }
         if (isNotBlank(userDto.getPhone())) {
-            isFalse(userService.exists(UserPo::getPhone, userDto.getPhone(), userDto.getId()), getMessage(KEY_PHONE_EXISTS, VALUE_PHONE_EXISTS));
+            isFalse(userService.exists(UserPo::getPhone, userDto.getPhone()),
+                    getMessage("phone.exists", "phone number already exists"));
         }
         if (isNotBlank(userDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail(), userDto.getId()), getMessage(KEY_EMAIL_EXISTS, VALUE_EMAIL_EXISTS));
+            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()),
+                    getMessage("email.exists", "email already exists"));
         }
-        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
     }
 
     @Signature
     @GetMapping(API_GET_USER_SECRET)
     public Result<UserSecret> getUserSecret(@PathVariable("identifier") String identifier) {
-        return toResult(toSecret(userService.getByIdentifier(identifier)));
+        return toResult(toUserSecret(userService.getByIdentifier(identifier)));
     }
 
     /**

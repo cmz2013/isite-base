@@ -15,7 +15,7 @@ public class Role extends Vo<Integer> {
     /**
      * 角色名称
      */
-    private String name;
+    private String roleName;
     /**
      * 功能权限
      */

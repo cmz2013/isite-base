@@ -40,6 +40,13 @@ public class RoleConverter {
         return rolePo;
     }
 
+    public static RolePo toRoleSelectivePo(int tenantId, String roleName) {
+        RolePo rolePo = new RolePo();
+        rolePo.setTenantId(tenantId);
+        rolePo.setRoleName(roleName);
+        return rolePo;
+    }
+
     public static Role toRole(RolePo rolePo, List<Resource> resources) {
         Role role = convert(rolePo, Role::new);
         role.setResources(resources);

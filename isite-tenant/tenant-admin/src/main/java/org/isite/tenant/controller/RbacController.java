@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.tenant.data.constant.UrlConstants.API_GET_EMPLOYEE_RBAC;
+import static org.isite.tenant.data.constants.UrlConstants.API_GET_EMPLOYEE_RBAC;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -1,8 +1,8 @@
 package org.isite.operation.activity;
 
 import org.isite.commons.cloud.factory.Strategy;
-import org.isite.operation.data.enums.ActivityTheme;
-import org.isite.operation.data.vo.Activity;
+import org.isite.operation.support.enums.ActivityTheme;
+import org.isite.operation.support.vo.Activity;
 
 /**
  * @Description 运营活动监视接口（可以不实现该接口）

@@ -1,7 +1,7 @@
 package org.isite.operation.prize;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.operation.data.enums.PrizeType;
+import org.isite.operation.support.enums.PrizeType;
 import org.springframework.stereotype.Component;
 
 /**

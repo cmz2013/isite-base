@@ -1,13 +1,13 @@
 package org.isite.operation.task;
 
-import org.isite.operation.data.dto.EventDto;
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.InviteEventParam;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeReward;
-import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.InviteEventParam;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeReward;
+import org.isite.operation.support.vo.Reward;
+import org.isite.operation.support.vo.Task;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.service.InviteRecordService;
 import org.isite.operation.service.PrizeRecordService;
@@ -26,8 +26,8 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.data.enums.TaskType.OPERATION_WEBPAGE_INVITE;
-import static org.isite.operation.data.enums.TaskType.QUESTION_ANSWER_INVITE;
+import static org.isite.operation.support.enums.TaskType.OPERATION_WEBPAGE_INVITE;
+import static org.isite.operation.support.enums.TaskType.QUESTION_ANSWER_INVITE;
 
 /**
  * @Description 积分任务父接口。使用活动积分可以兑换奖品
@@ -42,21 +42,21 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     protected InviteRecordPo createTaskRecord(
-            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
-        InviteRecordPo inviteRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
-        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
+            OperationEventDto operationEventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+        InviteRecordPo inviteRecordPo = super.createTaskRecord(operationEventDto, activity, task, periodStartTime, taskNumber);
+        InviteEventParam inviteEventParam = cast(operationEventDto.getEventParam());
         inviteRecordPo.setInviterId(inviteEventParam.getInviterId());
         return inviteRecordPo;
     }
 
     @Override
-    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
+    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, OperationEventDto operationEventDto) {
         //已参与活动不能被邀请
         getBeans(TaskRecordService.class).values().forEach(taskRecordService -> isFalse(
-                taskRecordService.exists(activityId, eventDto.getUserId()), "can't invite users who already exist"));
+                taskRecordService.exists(activityId, operationEventDto.getUserId()), "can't invite users who already exist"));
 
         //邀请人任务周期约束限制
-        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
+        InviteEventParam inviteEventParam = cast(operationEventDto.getEventParam());
         return getTaskNumber(activityId, taskId, periodStartTime, limit, inviteEventParam.getInviterId());
     }
 
@@ -73,7 +73,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     }
 
     @Override
-    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+    protected Reward getReward(Activity activity, Task task, OperationEventDto operationEventDto) {
         return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
     }
 

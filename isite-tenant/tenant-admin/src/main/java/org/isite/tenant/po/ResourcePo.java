@@ -20,7 +20,7 @@ public class ResourcePo extends TreePo<Integer> {
     /**
      * 资源名称
      */
-    private String name;
+    private String resourceName;
     /**
      * 访问路径
      */

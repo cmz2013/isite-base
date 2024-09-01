@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static org.isite.user.client.UserAccessor.getUserSecret;
-import static org.isite.user.data.constant.UserConstants.SERVICE_ID;
+import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
 
 /**
  * @Description 获取用户信息

@@ -16,10 +16,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static java.lang.System.currentTimeMillis;
 import static java.util.List.of;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.jpa.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.data.enums.OfficeStatus.DIMISSION;
@@ -58,16 +59,14 @@ public class RbacService {
     }
 
     private Rbac getRbac(TenantPo tenantPo, long userId, String clientId) {
-        //租户停用
-        if (DISABLED.equals(tenantPo.getStatus())) {
+        if (DISABLED.equals(tenantPo.getStatus()) ||
+                tenantPo.getExpireTime().getTime() <= currentTimeMillis()) {
             return null;
         }
         EmployeePo employeePo = employeeService.getEmployee(tenantPo.getId(), userId);
-        //租户或员工不可用
         if (null == employeePo || DIMISSION.equals(employeePo.getOfficeStatus())) {
             return null;
         }
-
         Rbac rbac = new Rbac();
         rbac.setTenant(convert(tenantPo, Tenant::new));
         rbac.setEmployeeId(employeePo.getId());

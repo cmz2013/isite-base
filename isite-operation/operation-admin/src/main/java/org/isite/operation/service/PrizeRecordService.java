@@ -2,8 +2,8 @@ package org.isite.operation.service;
 
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.ConcurrentError;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.mapper.PrizeRecordMapper;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
@@ -34,10 +34,10 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_ACTIVITY_ID;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_ACTIVITY_PID;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_RECEIVE_STATUS;
-import static org.isite.user.data.constant.UserConstants.FIELD_USER_ID;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_PID;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_RECEIVE_STATUS;
+import static org.isite.user.data.constants.UserConstants.FIELD_USER_ID;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**

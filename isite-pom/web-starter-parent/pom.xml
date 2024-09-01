@@ -62,6 +62,16 @@
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
+                <artifactId>shop-starter</artifactId>
+                <version>${isite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.isite</groupId>
+                <artifactId>operation-starter</artifactId>
+                <version>${isite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.isite</groupId>
                 <artifactId>sentinel-web-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>

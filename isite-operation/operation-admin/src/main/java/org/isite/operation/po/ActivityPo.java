@@ -5,8 +5,8 @@ import lombok.Setter;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
-import org.isite.operation.data.enums.ActivityTheme;
-import org.isite.operation.data.vo.ActivityProperty;
+import org.isite.operation.support.enums.ActivityTheme;
+import org.isite.operation.support.vo.ActivityProperty;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;

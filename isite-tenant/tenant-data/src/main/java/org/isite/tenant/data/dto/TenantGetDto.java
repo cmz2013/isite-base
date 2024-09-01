@@ -14,7 +14,7 @@ public class TenantGetDto {
     /**
      * 租户名称
      */
-    private String name;
+    private String tenantName;
     /**
      * 启用/停用
      */

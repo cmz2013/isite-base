@@ -3,9 +3,9 @@ package org.isite.operation.cache;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
 import org.isite.commons.cloud.enums.TerminalType;
-import org.isite.operation.data.enums.EventType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.enums.EventType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -33,9 +33,9 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.operation.converter.ActivityConverter.toActivity;
-import static org.isite.operation.data.constants.CacheKey.ACTIVITY_IDS_EVENT_PREFIX;
-import static org.isite.operation.data.constants.CacheKey.ACTIVITY_PREFIX;
-import static org.isite.operation.data.constants.CacheKey.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.ACTIVITY_IDS_EVENT_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
 
 /**
  * @Description 运营活动缓存（只缓存已上架的活动）

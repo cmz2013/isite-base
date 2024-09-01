@@ -1,12 +1,12 @@
 package org.isite.operation.task;
 
-import org.isite.operation.data.dto.EventDto;
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeReward;
-import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeReward;
+import org.isite.operation.support.vo.Reward;
+import org.isite.operation.support.vo.Task;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeRecordService;
 import org.isite.operation.service.PrizeTaskService;
@@ -22,7 +22,7 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.data.enums.TaskType.QUESTION_PRIZE;
+import static org.isite.operation.support.enums.TaskType.QUESTION_PRIZE;
 
 /**
  * @Description 奖品任务父接口，在领奖记录表 prize_record 中，保存用户的奖品记录
@@ -45,8 +45,8 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
      */
     @Override
     protected PrizeRecordPo createTaskRecord(
-            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
-        PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
+            OperationEventDto operationEventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+        PrizeRecordPo prizeRecordPo = super.createTaskRecord(operationEventDto, activity, task, periodStartTime, taskNumber);
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
         prizeRecordPo.setLockStatus(FALSE);
         prizeRecordPo.setReceiveStatus(FALSE);
@@ -54,7 +54,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
     }
 
     @Override
-    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+    protected Reward getReward(Activity activity, Task task, OperationEventDto operationEventDto) {
         return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
     }
 

@@ -21,7 +21,7 @@ import static org.isite.security.converter.UserConverter.toUserDto;
 import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;
 import static org.isite.user.client.UserAccessor.addUser;
 import static org.isite.user.client.UserAccessor.getUserSecret;
-import static org.isite.user.data.constant.UserConstants.SERVICE_ID;
+import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

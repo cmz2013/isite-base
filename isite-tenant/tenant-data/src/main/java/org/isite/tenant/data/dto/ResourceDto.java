@@ -19,7 +19,7 @@ public class ResourceDto extends TreeDto<Integer> {
      * 资源名称
      */
     @NotBlank(groups = {Add.class, Update.class})
-    private String name;
+    private String resourceName;
     /**
      * 链接
      */

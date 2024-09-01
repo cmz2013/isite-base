@@ -31,8 +31,8 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.jpa.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
-import static org.isite.tenant.data.constant.UrlConstants.API_GET_CLIENT_RESOURCES;
-import static org.isite.tenant.data.constant.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.UrlConstants.API_GET_CLIENT_RESOURCES;
+import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
 
 /**
  * @Description 系统资源Controller

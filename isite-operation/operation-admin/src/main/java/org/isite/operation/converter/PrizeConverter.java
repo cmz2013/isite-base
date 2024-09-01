@@ -1,6 +1,6 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.data.dto.PrizePostDto;
+import org.isite.operation.support.dto.PrizePostDto;
 import org.isite.operation.po.PrizePo;
 
 import static org.isite.commons.cloud.data.Converter.convert;

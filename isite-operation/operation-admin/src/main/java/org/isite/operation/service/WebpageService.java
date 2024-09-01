@@ -2,7 +2,7 @@ package org.isite.operation.service;
 
 import org.isite.commons.cloud.enums.TerminalType;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.data.vo.Activity;
+import org.isite.operation.support.vo.Activity;
 import org.isite.operation.mapper.WebpageMapper;
 import org.isite.operation.po.WebpagePo;
 import org.springframework.stereotype.Service;

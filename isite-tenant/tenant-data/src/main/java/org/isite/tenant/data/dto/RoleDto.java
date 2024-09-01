@@ -23,7 +23,7 @@ public class RoleDto extends Dto<Integer> {
      * 角色名称
      */
     @NotBlank(groups = {Add.class, Update.class})
-    private String name;
+    private String roleName;
     /**
      * 功能权限
      */

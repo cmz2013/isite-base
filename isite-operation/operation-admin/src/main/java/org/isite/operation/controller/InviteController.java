@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.lang.encoder.NumberEncoder.encode;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
-import static org.isite.operation.data.enums.BusinessIdentity.OPERATION_ACTIVITY;
-import static org.isite.operation.data.enums.InviteCodeType.USER_ID;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.enums.BusinessIdentity.OPERATION_ACTIVITY;
+import static org.isite.operation.support.enums.InviteCodeType.USER_ID;
 
 /**
  * @Description 邀请活动 Controller

@@ -15,7 +15,7 @@ public class Region extends Tree<Region, Integer> {
     /**
      * 地区名称
      */
-    private String name;
+    private String regionName;
     /**
      * 地区完整名称
      */

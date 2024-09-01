@@ -3,7 +3,7 @@ package org.isite.operation.po;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.type.EnumTypeHandler;
-import org.isite.operation.data.enums.ScoreType;
+import org.isite.operation.support.enums.ScoreType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;

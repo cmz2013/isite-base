@@ -8,11 +8,11 @@ import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
-import org.isite.operation.data.dto.TaskPostDto;
-import org.isite.operation.data.dto.TaskPutDto;
-import org.isite.operation.data.enums.EventType;
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.support.dto.TaskPostDto;
+import org.isite.operation.support.dto.TaskPutDto;
+import org.isite.operation.support.enums.EventType;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.Task;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.TaskService;
@@ -37,9 +37,9 @@ import static org.isite.commons.lang.data.Constants.THOUSAND;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.TaskConverter.toTaskPo;
-import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
-import static org.isite.operation.data.enums.TaskType.values;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.enums.TaskType.values;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

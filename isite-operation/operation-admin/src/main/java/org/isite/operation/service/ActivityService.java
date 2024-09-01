@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import org.isite.commons.cloud.enums.TerminalType;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.data.enums.EventType;
+import org.isite.operation.support.enums.EventType;
 import org.isite.operation.mapper.ActivityMapper;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizeCodePo;

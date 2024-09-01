@@ -1,13 +1,13 @@
 package org.isite.operation.activity;
 
-import org.isite.operation.data.enums.ActivityTheme;
-import org.isite.operation.data.vo.Activity;
+import org.isite.operation.support.enums.ActivityTheme;
+import org.isite.operation.support.vo.Activity;
 import org.isite.operation.service.PrizeRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.operation.data.enums.ActivityTheme.WISH_PRIZE;
+import static org.isite.operation.support.enums.ActivityTheme.WISH_PRIZE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

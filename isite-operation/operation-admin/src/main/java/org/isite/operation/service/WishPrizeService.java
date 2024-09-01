@@ -1,8 +1,8 @@
 package org.isite.operation.service;
 
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.WishPrizeProperty;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.WishPrizeProperty;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.prize.PrizeGiverFactory;
 import org.springframework.beans.factory.annotation.Autowired;

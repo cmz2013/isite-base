@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
 
+import static java.lang.Long.parseLong;
+import static org.isite.commons.lang.Regex.isDigit;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
@@ -34,13 +37,16 @@ public class UserService extends PoService<UserPo, Long> {
     }
 
     /**
-     * 根据唯一标识（username、phone、email）查询用户信息
+     * 根据唯一标识（id、username、phone）查询用户信息
      */
     public UserPo getByIdentifier(String identifier) {
         Weekend<UserPo> weekend = of(getPoClass());
-        weekend.weekendCriteria().orEqualTo(UserPo::getUserName, identifier)
-                .orEqualTo(UserPo::getPhone, identifier)
-                .orEqualTo(UserPo::getEmail, identifier);
+        WeekendCriteria<UserPo, Object> criteria = weekend.weekendCriteria()
+                .orEqualTo(UserPo::getUserName, identifier)
+                .orEqualTo(UserPo::getPhone, identifier);
+        if (isDigit(identifier)) {
+            criteria.orEqualTo(UserPo::getId, parseLong(identifier));
+        }
         return getMapper().selectOneByExample(weekend);
     }
 }

@@ -3,9 +3,9 @@ package org.isite.operation.service;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.SignScoreProperty;
-import org.isite.operation.data.vo.SignScoreReward;
+import org.isite.operation.support.vo.Reward;
+import org.isite.operation.support.vo.SignScoreProperty;
+import org.isite.operation.support.vo.SignScoreReward;
 import org.isite.operation.mapper.SignLogMapper;
 import org.isite.operation.po.SignLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
-import static org.isite.operation.data.constants.CacheKey.LOCK_SIGN_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_SIGN_USER;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

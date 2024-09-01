@@ -20,7 +20,7 @@ public class RegionPo extends TreePo<Integer> {
     /**
      * 地区名称
      */
-    private String name;
+    private String regionName;
     /**
      * 地区编码
      *

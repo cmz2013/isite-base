@@ -2,7 +2,7 @@ package org.isite.user.client;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.user.data.dto.UserDto;
-import org.isite.user.data.vo.User;
+import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWORD;
-import static org.isite.user.data.constant.UrlConstants.API_GET_USER_SECRET;
-import static org.isite.user.data.constant.UrlConstants.API_POST_USER;
-import static org.isite.user.data.constant.UrlConstants.API_PUT_USER_PASSWORD;
-import static org.isite.user.data.constant.UrlConstants.GET_USER;
+import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
+import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
+import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
+import static org.isite.user.data.constants.UrlConstants.GET_USER_BY_IDENTIFIER;
+import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -24,10 +25,10 @@ import static org.isite.user.data.constant.UrlConstants.GET_USER;
 //@FeignClient(contextId = "userClient", value = SERVICE_ID)
 public interface UserClient {
     /**
-     * @Description 查询用户
+     * @Description 根据唯一标识（id、username、phone）获取用户信息
      */
-    @GetMapping(value = GET_USER)
-    Result<User> getUser(@PathVariable("identifier") String identifier);
+    @GetMapping(value = GET_USER_BY_IDENTIFIER)
+    Result<UserDetails> getUser(@PathVariable("identifier") String identifier);
     /**
      * @Description 查询用户秘钥
      */
@@ -49,4 +50,6 @@ public interface UserClient {
     Result<Integer> addUser(@RequestBody UserDto userDto,
                             @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
 
+    @PostMapping(POST_USER_IF_ABSENT)
+    Result<Long> addUserIfAbsent(@PathVariable("phone") String phone);
 }

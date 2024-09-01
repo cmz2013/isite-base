@@ -1,7 +1,7 @@
 package org.isite.operation.converter;
 
 import org.isite.operation.po.PrizeCodePo;
-import org.isite.operation.data.dto.PrizeCodeDto;
+import org.isite.operation.support.dto.PrizeCodeDto;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -1,9 +1,9 @@
 package org.isite.operation.task;
 
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.ScoreReward;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Reward;
+import org.isite.operation.support.vo.ScoreReward;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Date;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.data.enums.TaskType.USER_SCORE;
+import static org.isite.operation.support.enums.TaskType.USER_SCORE;
 
 /**
  * @Description 积分任务父接口。使用活动积分可以兑换奖品

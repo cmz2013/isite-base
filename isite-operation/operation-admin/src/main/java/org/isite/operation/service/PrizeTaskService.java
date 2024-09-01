@@ -1,9 +1,9 @@
 package org.isite.operation.service;
 
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeReward;
-import org.isite.operation.data.vo.PrizeTaskProperty;
-import org.isite.operation.data.vo.Reward;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeReward;
+import org.isite.operation.support.vo.PrizeTaskProperty;
+import org.isite.operation.support.vo.Reward;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

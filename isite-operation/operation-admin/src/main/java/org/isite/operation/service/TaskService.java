@@ -4,7 +4,7 @@ import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.TaskMapper;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.po.TaskRecordPo;
-import org.isite.operation.data.vo.Task;
+import org.isite.operation.support.vo.Task;
 import org.isite.operation.task.TaskExecutorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

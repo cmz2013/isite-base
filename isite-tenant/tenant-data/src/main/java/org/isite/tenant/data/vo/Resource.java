@@ -12,9 +12,13 @@ import org.isite.tenant.data.enums.ResourceType;
 @Setter
 public class Resource extends Tree<Resource, Integer> {
     /**
+     * 资源类型
+     */
+    private ResourceType type;
+    /**
      * 资源名称
      */
-    private String name;
+    private String resourceName;
     /**
      * 链接
      */
@@ -23,10 +27,6 @@ public class Resource extends Tree<Resource, Integer> {
      * 图标
      */
     private String icon;
-    /**
-     * 资源类型
-     */
-    private ResourceType type;
     /**
      * 排序
      */

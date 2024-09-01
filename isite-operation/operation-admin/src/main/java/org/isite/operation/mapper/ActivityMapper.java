@@ -2,7 +2,7 @@ package org.isite.operation.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.isite.mybatis.mapper.PoMapper;
-import org.isite.operation.data.enums.EventType;
+import org.isite.operation.support.enums.EventType;
 import org.isite.operation.po.ActivityPo;
 import org.springframework.stereotype.Repository;
 

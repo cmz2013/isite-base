@@ -4,19 +4,20 @@ USE `db_tenant`;
 
 CREATE TABLE `tenant` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) NOT NULL DEFAULT '' COMMENT '租户名称',
+  `tenant_name` varchar(128) NOT NULL DEFAULT '' COMMENT '租户名称',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `status` tinyint DEFAULT NULL COMMENT '状态',
   `contact` varchar(32) NOT NULL DEFAULT '' COMMENT '联系人',
   `phone` varchar(32) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `expire_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '到期时间',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='租户';
 
-CREATE TABLE `dept` (
+CREATE TABLE `department` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '部门名称',
+  `department_name` varchar(32) NOT NULL DEFAULT '' COMMENT '部门名称',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `status` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '状态',
   `pid` int unsigned NOT NULL DEFAULT 0 COMMENT '父节点id(根节点的父ID为0）',
@@ -25,7 +26,7 @@ CREATE TABLE `dept` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `idx_organization_tenantid` (`tenant_id`)
+  KEY `idx_department_tenantid` (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门';
 
 CREATE TABLE `employee` (
@@ -43,7 +44,7 @@ CREATE TABLE `employee` (
 
 CREATE TABLE `role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '角色名称',
+  `role_name` varchar(64) NOT NULL DEFAULT '' COMMENT '角色名称',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   `tenant_id` int unsigned NOT NULL DEFAULT 0 COMMENT '租户ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -56,7 +57,7 @@ CREATE TABLE `resource` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `pid` int unsigned NOT NULL DEFAULT 0 COMMENT '父节点id(根节点的父ID为0）',
   `pids` varchar(255) NOT NULL DEFAULT '' COMMENT '所有父节点ID，逗号分隔，从根节点到子节点有序',
-  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '资源名称',
+  `resource_name` varchar(64) NOT NULL DEFAULT '' COMMENT '资源名称',
   `type` varchar(8) NOT NULL DEFAULT '' COMMENT '资源类型，文件夹 folder, 页面 page, 按钮 btn',
   `icon` varchar(128) NOT NULL DEFAULT '' COMMENT '图标',
   `href` varchar(128) NOT NULL DEFAULT '' COMMENT 'url地址',
@@ -169,8 +170,10 @@ CREATE TABLE `employee_role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `employee_id` int unsigned NOT NULL DEFAULT 0 COMMENT '员工ID',
   `role_id` int unsigned NOT NULL DEFAULT 0 COMMENT '角色ID',
+  `tenant_id` int unsigned NOT NULL DEFAULT 0 COMMENT '租户ID',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
-  KEY `idx_employeerole_employeeid` (`employee_id`)
+  KEY `idx_employeerole_employeeid` (`employee_id`),
+  KEY `idx_employeerole_tenantid` (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工角色';

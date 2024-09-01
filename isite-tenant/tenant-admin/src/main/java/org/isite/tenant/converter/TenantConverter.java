@@ -2,6 +2,9 @@ package org.isite.tenant.converter;
 
 import org.isite.tenant.data.dto.TenantDto;
 import org.isite.tenant.po.TenantPo;
+import org.isite.user.data.vo.UserDetails;
+
+import java.util.Date;
 
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.lang.data.Constants.BLANK_STRING;
@@ -21,6 +24,16 @@ public class TenantConverter {
         if (null == tenantPo.getRemark()) {
             tenantPo.setRemark(BLANK_STRING);
         }
+        return tenantPo;
+    }
+
+    public static TenantPo toTenantPo(UserDetails userDetails, String tenantName, Date expireTime) {
+        TenantPo tenantPo = new TenantPo();
+        tenantPo.setTenantName(tenantName);
+        tenantPo.setContact(userDetails.getRealName());
+        tenantPo.setPhone(userDetails.getPhone());
+        tenantPo.setExpireTime(expireTime);
+        tenantPo.setStatus(ENABLED);
         return tenantPo;
     }
 

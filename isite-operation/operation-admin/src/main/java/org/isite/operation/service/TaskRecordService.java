@@ -14,9 +14,9 @@ import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.data.Constants.ONE;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_ACTIVITY_ID;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_ACTIVITY_PID;
-import static org.isite.user.data.constant.UserConstants.FIELD_USER_ID;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_PID;
+import static org.isite.user.data.constants.UserConstants.FIELD_USER_ID;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**

@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>operation-data</artifactId>
+            <artifactId>operation-support</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>

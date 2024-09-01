@@ -5,7 +5,6 @@ import org.isite.tenant.mapper.TenantMapper;
 import org.isite.tenant.po.EmployeePo;
 import org.isite.tenant.po.EmployeeRolePo;
 import org.isite.tenant.po.TenantPo;
-import org.isite.user.data.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +33,12 @@ public class TenantService extends PoService<TenantPo, Integer> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Integer addTenant(User user, TenantPo tenantPo, List<Integer> resourceIds) {
+    public Integer addTenant(long userId, TenantPo tenantPo, List<Integer> resourceIds) {
         this.insert(tenantPo);
         int roleId = roleService.addAdminRole(tenantPo.getId(), resourceIds);
-        EmployeePo employeePo = toEmployeePo(user.getId(), tenantPo.getId());
+        EmployeePo employeePo = toEmployeePo(userId, tenantPo.getId());
         employeeService.insert(employeePo);
-        employeeRoleService.insert(new EmployeeRolePo(employeePo.getId(), roleId));
+        employeeRoleService.insert(new EmployeeRolePo(employeePo.getId(), roleId, tenantPo.getId()));
         return tenantPo.getId();
     }
 

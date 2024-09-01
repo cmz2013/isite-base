@@ -15,7 +15,7 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.security.converter.DataAuthorityConverter.toDataAuthority;
 import static org.isite.security.web.utils.SecurityUtils.getTokenValue;
 import static org.isite.tenant.client.RbacAccessor.getRbac;
-import static org.isite.tenant.data.constant.TenantConstants.SERVICE_ID;
+import static org.isite.tenant.data.constants.TenantConstants.SERVICE_ID;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

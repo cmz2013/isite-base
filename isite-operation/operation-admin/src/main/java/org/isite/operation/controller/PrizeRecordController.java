@@ -8,10 +8,10 @@ import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.data.dto.PrizeRecordDto;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeRecord;
+import org.isite.operation.support.dto.PrizeRecordDto;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeRecord;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.ActivityService;
@@ -41,8 +41,8 @@ import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

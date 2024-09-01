@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.security.client.EndpointAccessor.findOauthClients;
-import static org.isite.tenant.data.constant.UrlConstants.GET_OAUTH_CLIENTS;
+import static org.isite.tenant.data.constants.UrlConstants.GET_OAUTH_CLIENTS;
 
 @RestController
 public class EndpointController extends BaseController {

@@ -5,8 +5,8 @@ import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.operation.data.dto.ScoreRecordDto;
-import org.isite.operation.data.vo.ScoreRecord;
+import org.isite.operation.support.dto.ScoreRecordDto;
+import org.isite.operation.support.vo.ScoreRecord;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

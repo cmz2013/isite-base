@@ -6,9 +6,9 @@ import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.data.dto.PrizePostDto;
-import org.isite.operation.data.dto.PrizePutDto;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.dto.PrizePostDto;
+import org.isite.operation.support.dto.PrizePutDto;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.ActivityService;
@@ -35,10 +35,10 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeConverter.toPrizePo;
-import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_TOTAL_INVENTORY;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
-import static org.isite.operation.data.enums.PrizeType.PRIZE_CODE;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_TOTAL_INVENTORY;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -1,8 +1,8 @@
 package org.isite.operation.mq;
 
 import org.isite.commons.web.mq.Producer;
-import org.isite.operation.data.dto.EventDto;
-import org.isite.operation.data.vo.InviteEventParam;
+import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.vo.InviteEventParam;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
@@ -12,8 +12,8 @@ import static org.isite.commons.lang.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
-import static org.isite.operation.data.constants.OperationConstants.FIELD_INVITE;
-import static org.isite.operation.data.enums.EventType.GET_OPERATION_WEBPAGE;
+import static org.isite.operation.support.constants.OperationConstants.FIELD_INVITE;
+import static org.isite.operation.support.enums.EventType.GET_OPERATION_WEBPAGE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -22,23 +22,23 @@ import static org.isite.operation.data.enums.EventType.GET_OPERATION_WEBPAGE;
 public class WebpageProducer implements Producer {
 
     @Override
-    public EventDto getBody(Object[] args, Object returnValue) {
+    public OperationEventDto getBody(Object[] args, Object returnValue) {
         Long userId = getUserId();
         if (null == userId) {
             return null;
         }
         String inviteCode = getRequest().getParameter(FIELD_INVITE);
         if (isOk(cast(returnValue)) && isNotBlank(inviteCode)) {
-            EventDto eventDto = new EventDto();
-            eventDto.setUserId(userId);
-            eventDto.setEventType(GET_OPERATION_WEBPAGE);
-            eventDto.setObjectValue(valueOf(args[ZERO]));
+            OperationEventDto operationEventDto = new OperationEventDto();
+            operationEventDto.setUserId(userId);
+            operationEventDto.setEventType(GET_OPERATION_WEBPAGE);
+            operationEventDto.setObjectValue(valueOf(args[ZERO]));
 
             InviteEventParam eventParam = new InviteEventParam();
             //活动邀请码
             eventParam.setInviteCode(inviteCode);
-            eventDto.setEventParam(eventParam);
-            return eventDto;
+            operationEventDto.setEventParam(eventParam);
+            return operationEventDto;
         }
         return null;
     }

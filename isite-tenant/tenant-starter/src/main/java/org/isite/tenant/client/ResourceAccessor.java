@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
 import static org.isite.commons.lang.utils.ResultUtils.getData;
-import static org.isite.tenant.data.constant.TenantConstants.SERVICE_ID;
+import static org.isite.tenant.data.constants.TenantConstants.SERVICE_ID;
 
 /**
  * @Description ResourceClient 辅助类

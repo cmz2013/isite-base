@@ -1,3 +1,5 @@
+/.idea
+/doc/install/
 /isite-commons/commons-cloud/target/
 /isite-commons/commons-lang/target/
 /isite-commons/commons-web/target/
@@ -17,7 +19,8 @@
 /isite-misc/misc-data/target/
 /isite-misc/misc-starter/target/
 /isite-operation/operation-admin/target/
-/isite-operation/operation-data/target/
+/isite-operation/operation-support/target/
+/isite-operation/operation-starter/target/
 /isite-security/security-center/target/
 /isite-security/security-client/target/
 /isite-security/security-data/target/
@@ -35,5 +38,6 @@
 /isite-user/user-center/target/
 /isite-user/user-data/target/
 /isite-user/user-starter/target/
-/.idea
-/doc/install/
+/isite-shop/shop-admin/target/
+/isite-shop/shop-starter/target/
+/isite-shop/shop-support/target/

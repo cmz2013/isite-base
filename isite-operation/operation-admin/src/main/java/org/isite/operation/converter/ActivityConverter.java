@@ -1,8 +1,8 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.data.dto.ActivityDto;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.dto.ActivityDto;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;

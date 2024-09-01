@@ -19,8 +19,8 @@ import static java.util.stream.Collectors.toSet;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.tenant.converter.RoleResourceConverter.toRoleResourcePos;
-import static org.isite.tenant.data.constant.CacheKey.LOCK_TENANT;
-import static org.isite.tenant.data.constant.TenantConstants.ROLE_ADMINISTRATOR;
+import static org.isite.tenant.data.constants.CacheKey.LOCK_TENANT;
+import static org.isite.tenant.data.constants.TenantConstants.ROLE_ADMINISTRATOR;
 
 /**
  * @Description 角色信息Service
@@ -49,7 +49,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     public int addAdminRole(int tenantId, List<Integer> resourceIds) {
         RolePo rolePo = new RolePo();
         rolePo.setTenantId(tenantId);
-        rolePo.setName(ROLE_ADMINISTRATOR);
+        rolePo.setRoleName(ROLE_ADMINISTRATOR);
         rolePo.setRemark(BLANK_STRING);
         this.insert(rolePo);
         int roleId = rolePo.getId();
@@ -81,7 +81,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     public RolePo getAdminRole(int tenantId) {
         RolePo rolePo = new RolePo();
         rolePo.setTenantId(tenantId);
-        rolePo.setName(ROLE_ADMINISTRATOR);
+        rolePo.setRoleName(ROLE_ADMINISTRATOR);
         return this.findOne(rolePo);
     }
 
@@ -116,19 +116,5 @@ public class RoleService extends PoService<RolePo, Integer> {
         checkResources(rolePo.getTenantId(), resourceIds);
         return roleResourceService.deleteAndInsert(RoleResourcePo::getRoleId,rolePo.getId(),
                 toRoleResourcePos(rolePo.getId(), resourceIds));
-    }
-
-    public boolean exists(int tenantId, String name) {
-        RolePo rolePo = new RolePo();
-        rolePo.setTenantId(tenantId);
-        rolePo.setName(name);
-        return exists(rolePo);
-    }
-
-    public boolean exists(int tenantId, String name, int excludeId) {
-        RolePo rolePo = new RolePo();
-        rolePo.setTenantId(tenantId);
-        rolePo.setName(name);
-        return exists(rolePo, excludeId);
     }
 }

@@ -13,7 +13,7 @@ import static org.isite.commons.lang.data.Constants.THREE;
 import static org.isite.commons.lang.data.Constants.TWO;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum ChronoUnit implements Enumerable<Integer> {
     /**

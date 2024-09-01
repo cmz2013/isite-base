@@ -2,12 +2,12 @@ package org.isite.operation.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.cloud.factory.Strategy;
-import org.isite.operation.data.dto.EventDto;
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Reward;
-import org.isite.operation.data.vo.Task;
-import org.isite.operation.data.vo.TaskProperty;
+import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Reward;
+import org.isite.operation.support.vo.Task;
+import org.isite.operation.support.vo.TaskProperty;
 import org.isite.operation.po.TaskObjectPo;
 import org.isite.operation.po.TaskRecordPo;
 import org.isite.operation.service.TaskObjectService;
@@ -43,8 +43,8 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * 保存任务完成记录
      */
     @Transactional(rollbackFor = Exception.class)
-    public void execute(Activity activity, Task task, EventDto eventDto) {
-        if (!checkTaskProperty(task.getProperty(), eventDto) && checkTaskObject(task, eventDto)) {
+    public void execute(Activity activity, Task task, OperationEventDto operationEventDto) {
+        if (!checkTaskProperty(task.getProperty(), operationEventDto) && checkTaskObject(task, operationEventDto)) {
             return;
         }
         Integer limit = null;
@@ -53,11 +53,11 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             startTime = task.getTaskPeriod().getStartTime();
             limit = task.getTaskPeriod().getLimit();
         }
-        long taskNumber = getTaskNumber(activity.getId(), task.getId(), startTime, limit, eventDto);
+        long taskNumber = getTaskNumber(activity.getId(), task.getId(), startTime, limit, operationEventDto);
         if (taskNumber > ZERO) {
-            P taskRecord = createTaskRecord(eventDto, activity, task, startTime, taskNumber);
+            P taskRecord = createTaskRecord(operationEventDto, activity, task, startTime, taskNumber);
             if (null != taskRecord) {
-                saveTaskRecord(activity, taskRecord, getReward(activity, task, eventDto));
+                saveTaskRecord(activity, taskRecord, getReward(activity, task, operationEventDto));
             }
         }
     }
@@ -65,19 +65,19 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     /**
      * 校验任务自定义属性约束条件
      */
-    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
+    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, OperationEventDto operationEventDto) {
         return TRUE;
     }
 
     /**
      * 校验任务对象约束条件
      */
-    protected boolean checkTaskObject(Task task, EventDto eventDto) {
+    protected boolean checkTaskObject(Task task, OperationEventDto operationEventDto) {
         TaskObjectPo taskObjectPo = new TaskObjectPo();
         taskObjectPo.setTaskId(task.getId());
         if (taskObjectService.count(taskObjectPo) > ZERO) {
-            taskObjectPo.setObjectType(eventDto.getEventType().getObjectType());
-            taskObjectPo.setObjectValue(eventDto.getObjectValue());
+            taskObjectPo.setObjectType(operationEventDto.getEventType().getObjectType());
+            taskObjectPo.setObjectValue(operationEventDto.getObjectValue());
             return taskObjectService.count(taskObjectPo) > ZERO;
         }
         return TRUE;
@@ -86,20 +86,21 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     /**
      * 创建任务参与记录
      */
-    protected P createTaskRecord(EventDto eventDto, Activity activity,
-                               Task task, Date periodStartTime, long taskNumber) {
+    protected P createTaskRecord(OperationEventDto operationEventDto, Activity activity,
+                                 Task task, Date periodStartTime, long taskNumber) {
         try {
             Class<P> rClass = getTaskRecordClass();
             P taskRecord = rClass.getDeclaredConstructor().newInstance();
             taskRecord.setTaskId(task.getId());
             taskRecord.setActivityPid(activity.getPid());
-            taskRecord.setObjectType(eventDto.getEventType().getObjectType());
-            taskRecord.setObjectValue(eventDto.getObjectValue());
+            taskRecord.setObjectType(operationEventDto.getEventType().getObjectType());
+            taskRecord.setObjectValue(operationEventDto.getObjectValue());
             taskRecord.setFinishTime(new Date(currentTimeMillis()));
-            taskRecord.setUserId(eventDto.getUserId());
+            taskRecord.setUserId(operationEventDto.getUserId());
             taskRecord.setActivityId(activity.getId());
             taskRecord.setRemark(task.getRemark());
-            taskRecord.setIdempotentKey(toValue(activity.getId(), task.getId(), periodStartTime, eventDto.getUserId(), taskNumber));
+            taskRecord.setIdempotentKey(toValue(
+                    activity.getId(), task.getId(), periodStartTime, operationEventDto.getUserId(), taskNumber));
             return taskRecord;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -123,10 +124,10 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * 选取运营任务奖励，多个奖品时默认按概率随机选取
      * @param activity 运营活动
      * @param task 运营任务
-     * @param eventDto 行为参数
+     * @param operationEventDto 行为参数
      * @return 任务奖励
      */
-    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
+    protected Reward getReward(Activity activity, Task task, OperationEventDto operationEventDto) {
         if (null == task.getProperty() || isEmpty(task.getProperty().getRewards())) {
             return null;
         }
@@ -139,11 +140,12 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @param taskId 任务ID
      * @param periodStartTime 当前任务周期开始时间
      * @param limit 一个周期内可以重复完成任务的次数（可以空）
-     * @param eventDto 行为参数
+     * @param operationEventDto 行为参数
      * @return 任务号
      */
-    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
-        return getTaskNumber(activityId, taskId, periodStartTime, limit, eventDto.getUserId());
+    protected long getTaskNumber(
+            int activityId, int taskId, Date periodStartTime, Integer limit, OperationEventDto operationEventDto) {
+        return getTaskNumber(activityId, taskId, periodStartTime, limit, operationEventDto.getUserId());
     }
 
     /**

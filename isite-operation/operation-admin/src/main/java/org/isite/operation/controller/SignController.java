@@ -4,7 +4,7 @@ import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.mq.Message;
 import org.isite.commons.web.mq.Publisher;
-import org.isite.operation.data.vo.SignLog;
+import org.isite.operation.support.vo.SignLog;
 import org.isite.operation.mq.SignProducer;
 import org.isite.operation.service.SignLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.data.constants.OperationConstants.QUEUE_OPERATION_EVENT;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
  * @Description 每日签到

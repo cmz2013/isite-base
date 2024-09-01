@@ -16,8 +16,7 @@ CREATE TABLE `user` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_user_name` (`user_name`),
-  UNIQUE KEY `uk_user_phone` (`phone`),
-  UNIQUE KEY `uk_user_email` (`email`)
+  UNIQUE KEY `uk_user_phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息';
 
 INSERT INTO `user` VALUES (1,'admin','管理员','15010029113','$2a$10$xRH1cpLKVfgrWkDFzCsonuOt2OVMx9n54Pd5CQgIjAX/Ma8OCH.nC','zhangcm@glodon.com',1,1,'系统内置','2025-01-01 09:00:00','2025-01-01 00:00:00');
@@ -35,3 +34,13 @@ CREATE TABLE `consignee` (
   PRIMARY KEY (`id`),
   KEY `idx_consignee_userid` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收件人';
+
+CREATE TABLE `vip` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `user_id` int unsigned NOT NULL DEFAULT 0 COMMENT '用户id',
+  `expire_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '到期时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_vip_userid` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='VIP会员';

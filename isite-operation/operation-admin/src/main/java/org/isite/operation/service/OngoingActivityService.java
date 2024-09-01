@@ -1,9 +1,9 @@
 package org.isite.operation.service;
 
 import org.isite.operation.cache.ActivityCache;
-import org.isite.operation.data.enums.EventType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.enums.EventType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

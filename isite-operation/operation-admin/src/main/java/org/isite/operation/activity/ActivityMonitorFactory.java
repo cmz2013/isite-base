@@ -1,7 +1,7 @@
 package org.isite.operation.activity;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.operation.data.enums.ActivityTheme;
+import org.isite.operation.support.enums.ActivityTheme;
 import org.springframework.stereotype.Component;
 
 /**

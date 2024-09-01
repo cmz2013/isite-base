@@ -1,7 +1,7 @@
 package org.isite.operation.task;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.operation.data.enums.TaskType;
+import org.isite.operation.support.enums.TaskType;
 import org.springframework.stereotype.Component;
 
 /**

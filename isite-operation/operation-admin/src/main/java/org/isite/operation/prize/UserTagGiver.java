@@ -1,7 +1,7 @@
 package org.isite.operation.prize;
 
 import org.isite.misc.data.dto.TagRecordDto;
-import org.isite.operation.data.enums.PrizeType;
+import org.isite.operation.support.enums.PrizeType;
 import org.isite.operation.po.PrizeRecordPo;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static org.isite.misc.client.TagRecordAccessor.addTagRecord;
 import static org.isite.misc.data.enums.ObjectType.USER;
-import static org.isite.operation.data.enums.PrizeType.USER_TAG;
+import static org.isite.operation.support.enums.PrizeType.USER_TAG;
 
 /**
  * @Description 用户标签发放接口

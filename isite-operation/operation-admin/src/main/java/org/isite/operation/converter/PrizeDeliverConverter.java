@@ -1,6 +1,6 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.data.dto.PrizeDeliverDto;
+import org.isite.operation.support.dto.PrizeDeliverDto;
 import org.isite.operation.po.PrizeDeliverPo;
 import org.isite.user.data.dto.ConsigneeDto;
 

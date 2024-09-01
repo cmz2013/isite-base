@@ -87,6 +87,10 @@ public class Constants {
      */
     public static final String SPACE = " ";
     /**
+     * 下划线
+     */
+    public static final String UNDERLINE = "_";
+    /**
      * 逗号
      */
     public static final String COMMA = ",";

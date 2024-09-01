@@ -2,9 +2,9 @@ package org.isite.operation.controller;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeRecord;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeRecord;
 import org.isite.operation.service.OngoingActivityService;
 import org.isite.operation.service.WishPrizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
  * @Description 许愿活动（积分活动示例），活动步骤：

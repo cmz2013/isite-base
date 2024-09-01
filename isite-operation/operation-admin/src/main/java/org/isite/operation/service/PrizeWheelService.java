@@ -2,9 +2,9 @@ package org.isite.operation.service;
 
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
-import org.isite.operation.data.vo.PrizeWheelProperty;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeWheelProperty;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.prize.PrizeGiverFactory;
 import org.isite.operation.task.PrizeTaskExecutor;
@@ -26,7 +26,7 @@ import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.misc.data.enums.ObjectType.OPERATION_ACTIVITY;
-import static org.isite.operation.data.constants.CacheKey.LOCK_WHEEL_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_WHEEL_USER;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**

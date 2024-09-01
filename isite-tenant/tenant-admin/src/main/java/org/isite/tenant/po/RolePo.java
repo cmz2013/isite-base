@@ -17,7 +17,7 @@ public class RolePo extends Po<Integer> {
     /**
      * 角色名称
      */
-    private String name;
+    private String roleName;
     /**
      * 租户ID
      */

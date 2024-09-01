@@ -1,6 +1,5 @@
 package org.isite.gateway.filter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -8,7 +7,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -25,12 +23,10 @@ import static org.isite.gateway.support.GatewayUtils.getServiceId;
  * @Description 根据请求头服务版本号来决定路由到哪个服务
  * @Author <font color='blue'>zhangcm</font>
  */
-@Component
 public class GrayLoadBalancer implements GlobalFilter, Ordered {
 
     private final DiscoveryClient discoveryClient;
 
-    @Autowired
     public GrayLoadBalancer(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }

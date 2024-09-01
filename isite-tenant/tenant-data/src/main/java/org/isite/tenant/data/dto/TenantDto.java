@@ -8,6 +8,7 @@ import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.List;
 
 import static org.isite.commons.lang.data.Constants.ONE;
@@ -24,7 +25,7 @@ public class TenantDto extends Dto<Integer> {
      * 租户名称
      */
     @NotNull(groups = {Add.class, Update.class})
-    private String name;
+    private String tenantName;
     /**
      * 联系人
      */
@@ -44,4 +45,9 @@ public class TenantDto extends Dto<Integer> {
      * 备注
      */
     private String remark;
+    /**
+     * 到期时间
+     */
+    @NotNull(groups = {Add.class, Update.class})
+    private Date expireTime;
 }

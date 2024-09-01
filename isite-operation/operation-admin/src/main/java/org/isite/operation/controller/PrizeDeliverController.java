@@ -4,8 +4,8 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
-import org.isite.operation.data.dto.PrizeDeliverDto;
-import org.isite.operation.data.vo.PrizeDeliver;
+import org.isite.operation.support.dto.PrizeDeliverDto;
+import org.isite.operation.support.vo.PrizeDeliver;
 import org.isite.operation.po.PrizeDeliverPo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeDeliverService;
@@ -26,7 +26,7 @@ import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployee
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverPo;
 import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverSelectivePo;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**

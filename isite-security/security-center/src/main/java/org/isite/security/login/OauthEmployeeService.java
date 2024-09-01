@@ -2,12 +2,12 @@ package org.isite.security.login;
 
 import org.isite.commons.cloud.sign.SignSecret;
 import org.isite.security.data.vo.OauthEmployee;
-import org.isite.tenant.data.constant.TenantConstants;
+import org.isite.tenant.data.constants.TenantConstants;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.isite.tenant.data.vo.Role;
 import org.isite.tenant.data.vo.Tenant;
-import org.isite.user.data.constant.UserConstants;
+import org.isite.user.data.constants.UserConstants;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,13 +1,12 @@
 package org.isite.tenant.converter;
 
-import org.isite.tenant.data.dto.DeptDto;
-import org.isite.tenant.po.DeptPo;
+import org.isite.tenant.data.dto.DepartmentDto;
+import org.isite.tenant.po.DepartmentPo;
 
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.lang.data.Constants.BLANK_STRING;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -17,27 +16,34 @@ public class DeptConverter {
     private DeptConverter() {
     }
 
-    public static DeptPo toDeptPo(DeptDto deptDto) {
-        DeptPo deptPo = convert(deptDto, DeptPo::new);
-        deptPo.setTenantId(getTenantId());
-        deptPo.setStatus(ENABLED);
-        if (null == deptPo.getRemark()) {
-            deptPo.setRemark(BLANK_STRING);
+    public static DepartmentPo toDeptPo(int tenantId, DepartmentDto departmentDto) {
+        DepartmentPo departmentPo = convert(departmentDto, DepartmentPo::new);
+        departmentPo.setTenantId(tenantId);
+        departmentPo.setStatus(ENABLED);
+        if (null == departmentPo.getRemark()) {
+            departmentPo.setRemark(BLANK_STRING);
         }
-        if (null == deptPo.getPid()) {
-            deptPo.setPid(ZERO);
+        if (null == departmentPo.getPid()) {
+            departmentPo.setPid(ZERO);
         }
-        return deptPo;
+        return departmentPo;
     }
 
-    public static DeptPo toDeptSelectivePo(DeptDto deptDto) {
-        DeptPo deptPo = convert(deptDto, DeptPo::new);
-        if (null == deptPo.getRemark()) {
-            deptPo.setRemark(BLANK_STRING);
+    public static DepartmentPo toDeptSelectivePo(DepartmentDto departmentDto) {
+        DepartmentPo departmentPo = convert(departmentDto, DepartmentPo::new);
+        if (null == departmentPo.getRemark()) {
+            departmentPo.setRemark(BLANK_STRING);
         }
-        if (null == deptPo.getPid()) {
-            deptPo.setPid(ZERO);
+        if (null == departmentPo.getPid()) {
+            departmentPo.setPid(ZERO);
         }
-        return deptPo;
+        return departmentPo;
+    }
+
+    public static DepartmentPo toDeptSelectivePo(int tenantId, String deptName) {
+        DepartmentPo departmentPo = new DepartmentPo();
+        departmentPo.setTenantId(tenantId);
+        departmentPo.setDepartmentName(deptName);
+        return departmentPo;
     }
 }

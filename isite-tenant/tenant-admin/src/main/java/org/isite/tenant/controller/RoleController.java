@@ -39,7 +39,7 @@ import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.converter.RoleConverter.toRolePo;
 import static org.isite.tenant.converter.RoleConverter.toRoleQuery;
 import static org.isite.tenant.converter.RoleConverter.toRoleSelectivePo;
-import static org.isite.tenant.data.constant.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
 
 /**
  * @Description 角色信息 Controller
@@ -98,7 +98,7 @@ public class RoleController extends BaseController {
      */
     @PostMapping(URL_TENANT + "/role")
     public Result<Integer> addRole(@RequestBody @Validated(Add.class) RoleDto roleDto) {
-        isFalse(roleService.exists(getTenantId(), roleDto.getName()),
+        isFalse(roleService.exists(toRoleSelectivePo(getTenantId(), roleDto.getRoleName())),
                 getMessage("role.exists", "Role name already exists"));
         return toResult(roleService.addRole(toRolePo(roleDto), roleDto.getResourceIds()));
     }
@@ -108,19 +108,20 @@ public class RoleController extends BaseController {
      */
     @PutMapping(URL_TENANT + "/role")
     public Result<Integer> updateRole(@RequestBody @Validated(Update.class) RoleDto roleDto) {
-        isFalse(roleService.getAdminRole(getTenantId()).getId().equals(roleDto.getId()),
+        int tenantId = getTenantId();
+        isFalse(roleService.getAdminRole(tenantId).getId().equals(roleDto.getId()),
                 "You cannot modify the Administrator role");
-        isTrue(roleService.get(roleDto.getId()).getTenantId().equals(getTenantId()), new OverstepAccessError());
-        isFalse(roleService.exists(getTenantId(), roleDto.getName(), roleDto.getId()),
+        isTrue(roleService.get(roleDto.getId()).getTenantId().equals(tenantId), new OverstepAccessError());
+        isFalse(roleService.exists(toRoleSelectivePo(getTenantId(), roleDto.getRoleName()), roleDto.getId()),
                 getMessage("role.exists", "Role name already exists"));
         return toResult(roleService.updateRole(toRoleSelectivePo(roleDto), roleDto.getResourceIds()));
     }
 
     @DeleteMapping(URL_TENANT + "/role/{id}")
     public Result<Integer> deleteRole(@PathVariable("id") Integer id) {
-        isFalse(roleService.getAdminRole(getTenantId()).getId().equals(id),
-                "You cannot delete the Administrator role");
-        isTrue(roleService.get(id).getTenantId().equals(getTenantId()), new OverstepAccessError());
+        int tenantId = getTenantId();
+        isFalse(roleService.getAdminRole(tenantId).getId().equals(id), "You cannot delete the Administrator role");
+        isTrue(roleService.get(id).getTenantId().equals(tenantId), new OverstepAccessError());
         return toResult(roleService.delete(id));
     }
 }

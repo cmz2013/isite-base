@@ -4,9 +4,9 @@ import org.isite.commons.cloud.factory.Strategy;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
-import org.isite.operation.data.enums.PrizeType;
-import org.isite.operation.data.vo.Activity;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.enums.PrizeType;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,9 @@ import static java.lang.Boolean.TRUE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.operation.data.constants.CacheKey.LOCK_PRIZE;
-import static org.isite.operation.data.enums.PrizeType.PHYSICAL;
-import static org.isite.operation.data.enums.PrizeType.THANK;
+import static org.isite.operation.support.constants.CacheKey.LOCK_PRIZE;
+import static org.isite.operation.support.enums.PrizeType.PHYSICAL;
+import static org.isite.operation.support.enums.PrizeType.THANK;
 
 /**
  * @Description 奖品发放接口

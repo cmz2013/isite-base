@@ -8,8 +8,8 @@ import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.data.dto.PrizeCodeDto;
-import org.isite.operation.data.vo.PrizeCode;
+import org.isite.operation.support.dto.PrizeCodeDto;
+import org.isite.operation.support.vo.PrizeCode;
 import org.isite.operation.po.PrizeCodePo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.service.ActivityService;
@@ -33,8 +33,8 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodePo;
-import static org.isite.operation.data.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.data.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 
 /**

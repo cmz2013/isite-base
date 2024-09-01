@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.isite.commons.lang.data.Vo;
 import org.isite.commons.lang.enums.SwitchStatus;
 
+import java.util.Date;
+
 /**
  * @Description 租户信息
  * 1）内置根用户root创建租户、租户超管角色及权限（ROLE_ADMINISTRATOR）
@@ -17,11 +19,7 @@ public class Tenant extends Vo<Integer> {
     /**
      * 租户名称
      */
-    private String name;
-    /**
-     * 启用/停用
-     */
-    private SwitchStatus status;
+    private String tenantName;
     /**
      * 联系人
      */
@@ -31,7 +29,15 @@ public class Tenant extends Vo<Integer> {
      */
     private String phone;
     /**
+     * 启用/停用
+     */
+    private SwitchStatus status;
+    /**
      * 备注
      */
     private String remark;
+    /**
+     * 到期时间
+     */
+    private Date expireTime;
 }

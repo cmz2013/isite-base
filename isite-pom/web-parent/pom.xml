@@ -51,6 +51,11 @@
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
+                <artifactId>shop-support</artifactId>
+                <version>${isite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.isite</groupId>
                 <artifactId>security-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
@@ -61,7 +66,7 @@
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>operation-data</artifactId>
+                <artifactId>operation-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>

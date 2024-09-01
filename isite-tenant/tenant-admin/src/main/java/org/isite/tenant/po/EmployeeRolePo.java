@@ -25,4 +25,8 @@ public class EmployeeRolePo extends Po<Integer> {
      * 角色ID
      */
     private Integer roleId;
+    /**
+     * 租户ID
+     */
+    private Integer tenantId;
 }

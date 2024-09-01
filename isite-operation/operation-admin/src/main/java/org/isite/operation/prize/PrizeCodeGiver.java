@@ -1,12 +1,12 @@
 package org.isite.operation.prize;
 
-import org.isite.operation.data.enums.PrizeType;
+import org.isite.operation.support.enums.PrizeType;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.isite.operation.data.enums.PrizeType.PRIZE_CODE;
+import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
 
 /**
  * @Description 兑奖码发放接口

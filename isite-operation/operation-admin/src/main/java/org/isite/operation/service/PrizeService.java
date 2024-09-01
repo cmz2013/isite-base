@@ -2,7 +2,7 @@ package org.isite.operation.service;
 
 import org.isite.commons.web.sync.ConcurrentError;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.data.vo.Prize;
+import org.isite.operation.support.vo.Prize;
 import org.isite.operation.mapper.PrizeMapper;
 import org.isite.operation.po.PrizePo;
 import org.springframework.beans.factory.annotation.Autowired;

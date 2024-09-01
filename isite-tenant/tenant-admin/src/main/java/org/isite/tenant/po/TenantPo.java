@@ -8,6 +8,7 @@ import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @Description 租户信息
@@ -20,7 +21,7 @@ public class TenantPo extends Po<Integer> {
     /**
      * 租户名称
      */
-    private String name;
+    private String tenantName;
     /**
      * 启用/停用
      */
@@ -38,4 +39,8 @@ public class TenantPo extends Po<Integer> {
      * 备注
      */
     private String remark;
+    /**
+     * 到期时间
+     */
+    private Date expireTime;
 }

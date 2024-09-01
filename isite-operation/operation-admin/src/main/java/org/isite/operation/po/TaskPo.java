@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
-import org.isite.operation.data.enums.EventType;
-import org.isite.operation.data.enums.TaskType;
-import org.isite.operation.data.vo.TaskPeriod;
-import org.isite.operation.data.vo.TaskProperty;
+import org.isite.operation.support.enums.EventType;
+import org.isite.operation.support.enums.TaskType;
+import org.isite.operation.support.vo.TaskPeriod;
+import org.isite.operation.support.vo.TaskProperty;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
