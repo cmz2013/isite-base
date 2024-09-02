@@ -18,6 +18,10 @@ import java.util.Date;
 @Table(name = "trade_order")
 public class TradeOrderPo extends Po<Long> {
     /**
+     * 用户ID
+     */
+    private Long userId;
+    /**
      * 统一订单号
      */
     private Long orderNumber;
@@ -25,10 +29,6 @@ public class TradeOrderPo extends Po<Long> {
      * 支付单唯一编码
      */
     private Long paymentNumber;
-    /**
-     * 用户ID
-     */
-    private Long userId;
     /**
      * 下单时间
      */

@@ -3,7 +3,6 @@ package org.isite.shop.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.lang.data.Vo;
-import org.isite.shop.support.enums.SpuType;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -12,17 +11,17 @@ import org.isite.shop.support.enums.SpuType;
 @Setter
 public class TradeOrderItem extends Vo<Long> {
     /**
+     * 产品ID
+     */
+    private Integer spuId;
+    /**
+     * 产品名称
+     */
+    private String spuName;
+    /**
      * 商品id
      */
     private Integer skuId;
-    /**
-     * 商品类型
-     */
-    private SpuType spuType;
-    /**
-     * 商品名称
-     */
-    private String skuName;
     /**
      * 商品数量
      */

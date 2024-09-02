@@ -41,7 +41,7 @@ public class TradeOrderResourceConsumer implements Consumer<TradeOrderDto> {
                 ResourceSaleParam saleParam = parseObject(tradeOrderItemDto.getSupplierParam(), ResourceSaleParam.class);
                 if (null == saleParam.getTenantId()) {
                     for (int i = ZERO; i < tradeOrderItemDto.getSkuCount(); i++) {
-                        String tenantName = tradeOrderItemDto.getSkuName() + (i == ZERO ? BLANK_STRING : UNDERLINE + i);
+                        String tenantName = tradeOrderItemDto.getSpuName() + (i == ZERO ? BLANK_STRING : UNDERLINE + i);
                         addTenant(tenantName, tradeOrderDto.getUserId(), saleParam);
                     }
                 } else {

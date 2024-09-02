@@ -16,39 +16,15 @@ import javax.persistence.Table;
  */
 @Getter
 @Setter
-@Table(name = "sku")
-public class SkuPo extends Po<Integer> {
+@Table(name = "spu")
+public class SpuPo extends Po<Integer> {
     /**
-     * 产品ID
+     * 产品名称
      */
-    private Integer spuId;
+    private String spuName;
     /**
-     * 供应商自定义参数
+     * 供应商
      */
-    private String supplierParam;
-    /**
-     * 商品列表是否显示
-     */
-    private Boolean show;
-    /**
-     * 前台划线价(分)
-     */
-    private Integer marketPrice;
-    /**
-     * 成本单价(分)
-     */
-    private Integer costPrice;
-    /**
-     * 销售单价(分)
-     */
-    private Integer salePrice;
-    /**
-     * 已售出数量
-     */
-    private Integer soldNum;
-    /**
-     * 备注
-     */
-    private String remark;
+    private String supplier;
 
 }

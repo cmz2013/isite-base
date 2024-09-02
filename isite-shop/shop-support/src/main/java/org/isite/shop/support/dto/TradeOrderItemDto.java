@@ -2,7 +2,6 @@ package org.isite.shop.support.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.shop.support.enums.SpuType;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,15 +9,15 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class TradeOrderItemDto {
     /**
-     * 商品类型
+     * 产品ID
      */
     @NotNull
-    private SpuType spuType;
+    private Integer spuId;
     /**
-     * 商品名称
+     * 产品名称
      */
     @NotNull
-    private String skuName;
+    private String spuName;
     /**
      * 商品数量
      */

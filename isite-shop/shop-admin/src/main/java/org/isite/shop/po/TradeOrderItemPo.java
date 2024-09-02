@@ -3,7 +3,6 @@ package org.isite.shop.po;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
-import org.isite.shop.support.enums.SpuType;
 
 import javax.persistence.Table;
 
@@ -16,43 +15,43 @@ public class TradeOrderItemPo extends Po<Long> {
      */
     private Long orderId;
     /**
+     * 产品ID
+     */
+    private Integer spuId;
+    /**
+     * 产品名称
+     */
+    private String spuName;
+    /**
      * 商品id
      */
     private Integer skuId;
-    /**
-     * 商品类型
-     */
-    private SpuType spuType;
-    /**
-     * 商品名称
-     */
-    private String skuName;
     /**
      * 商品数量
      */
     private Integer skuCount;
     /**
-     * 前台划线价
+     * 前台划线价(分)
      */
     private Integer marketPrice;
     /**
-     * 成本单价
+     * 成本单价(分)
      */
     private Integer costPrice;
     /**
-     * 销售单价
+     * 销售单价(分)
      */
     private Integer salePrice;
     /**
-     * 优惠金额
+     * 优惠金额(分)
      */
     private Integer discountPrice;
     /**
-     * 实际支付金额
+     * 实际支付金额(分)
      */
     private Integer payPrice;
     /**
-     * 服务费
+     * 服务费(分)
      */
     private Integer serviceCharge;
     /**

@@ -3,22 +3,18 @@ package org.isite.shop.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.lang.data.Vo;
-import org.isite.shop.support.enums.SpuType;
 
 /**
+ * @Description 商品信息
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
 public class Sku extends Vo<Integer> {
     /**
-     * 商品类型
+     * 产品信息
      */
-    private SpuType spuType;
-    /**
-     * 商品名称
-     */
-    private String skuName;
+    private Spu spu;
     /**
      * 供应商自定义参数
      */
@@ -35,4 +31,8 @@ public class Sku extends Vo<Integer> {
      * 已销售数量
      */
     private Integer soldNum;
+    /**
+     * 备注
+     */
+    private String remark;
 }
