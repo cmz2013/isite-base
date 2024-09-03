@@ -23,6 +23,14 @@ public class TradeOrderItemPo extends Po<Long> {
      */
     private String spuName;
     /**
+     * 供应商
+     */
+    private String supplier;
+    /**
+     * 供应商自定义参数
+     */
+    private String supplierParam;
+    /**
      * 商品id
      */
     private Integer skuId;
@@ -58,8 +66,4 @@ public class TradeOrderItemPo extends Po<Long> {
      * 支付积分
      */
     private Integer payScore;
-    /**
-     * 供应商自定义参数(Sku的supplierParam)
-     */
-    private String supplierParam;
 }

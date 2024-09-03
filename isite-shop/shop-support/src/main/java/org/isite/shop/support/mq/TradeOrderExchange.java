@@ -10,6 +10,7 @@ import static org.isite.shop.support.constants.ShopConstants.EXCHANGE_TRADE_ORDE
  * @Author <font color='blue'>zhangcm</font>
  */
 public class TradeOrderExchange extends DirectExchange {
+
     public TradeOrderExchange() {
         /*
          * durable:是否持久化,默认是false,持久化队列：会被存储在磁盘上，当消息代理重启时仍然存在

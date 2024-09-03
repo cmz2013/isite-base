@@ -19,12 +19,16 @@ public class TradeOrderItemDto {
     @NotNull
     private String spuName;
     /**
-     * 商品数量
+     * 供应商
      */
-    @NotNull
-    private Integer skuCount;
+    private String supplier;
     /**
      * 供应商自定义参数
      */
     private String supplierParam;
+    /**
+     * 商品数量
+     */
+    @NotNull
+    private Integer skuCount;
 }

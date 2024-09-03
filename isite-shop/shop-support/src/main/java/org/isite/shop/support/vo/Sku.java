@@ -16,10 +16,6 @@ public class Sku extends Vo<Integer> {
      */
     private Spu spu;
     /**
-     * 供应商自定义参数
-     */
-    private String supplierParam;
-    /**
      * 前台划线价
      */
     private Integer marketPrice;

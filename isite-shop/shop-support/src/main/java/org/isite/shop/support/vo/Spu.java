@@ -19,5 +19,8 @@ public class Spu extends Vo<Integer> {
      * 供应商
      */
     private String supplier;
-
+    /**
+     * 供应商自定义参数
+     */
+    private String supplierParam;
 }

@@ -23,10 +23,6 @@ public class SkuPo extends Po<Integer> {
      */
     private Integer spuId;
     /**
-     * 供应商自定义参数
-     */
-    private String supplierParam;
-    /**
      * 商品列表是否显示
      */
     private Boolean show;

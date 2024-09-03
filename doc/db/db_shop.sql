@@ -6,19 +6,19 @@ CREATE TABLE `spu` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `spu_name` varchar(32) NOT NULL DEFAULT '' COMMENT '产品名称',
   `supplier` varchar(32) NOT NULL DEFAULT '' COMMENT '供应商',
+  `supplier_param` varchar(255) NOT NULL DEFAULT '' COMMENT '供应商自定义参数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品信息';
 
 INSERT INTO `spu` VALUES
-(1,'功能权限','tenant-resource','2025-01-01 09:00:00','2025-01-01 00:00:00'),
-(2,'VIP会员','user-vip','2025-01-01 09:00:00','2025-01-01 00:00:00');
+(1,'iSite 旗舰版','tenant-resource','','2025-01-01 09:00:00','2025-01-01 00:00:00'),
+(2,'VIP 会员','user-vip','','2025-01-01 09:00:00','2025-01-01 00:00:00');
 
 CREATE TABLE `sku` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `spu_id` int unsigned NOT NULL DEFAULT 0 COMMENT '产品ID',
-  `supplier_param` varchar(255) NOT NULL DEFAULT '' COMMENT '供应商自定义参数',
   `show` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '商品列表是否显示',
   `market_price` int unsigned NOT NULL DEFAULT 0 COMMENT '前台划线价(分)',
   `cost_price` int unsigned NOT NULL DEFAULT 0 COMMENT '成本单价(分)',
@@ -51,6 +51,8 @@ CREATE TABLE `trade_order_item` (
   `order_id` int unsigned NOT NULL DEFAULT 0 COMMENT '订单id',
   `spu_id` int unsigned NOT NULL DEFAULT 0 COMMENT '产品ID',
   `spu_name` varchar(32) NOT NULL DEFAULT '' COMMENT '产品名称',
+  `supplier` varchar(32) NOT NULL DEFAULT '' COMMENT '供应商',
+  `supplier_param` varchar(255) NOT NULL DEFAULT '' COMMENT '供应商自定义参数',
   `sku_id` int unsigned NOT NULL DEFAULT 0 COMMENT '商品id',
   `sku_count` int unsigned NOT NULL DEFAULT 0 COMMENT '商品数量',
   `market_price` int unsigned NOT NULL DEFAULT 0 COMMENT '前台划线价(分)',
@@ -60,7 +62,6 @@ CREATE TABLE `trade_order_item` (
   `pay_price` int unsigned NOT NULL DEFAULT 0 COMMENT '实际支付金额(分)',
   `service_charge` int unsigned NOT NULL DEFAULT 0 COMMENT '服务费(分)',
   `pay_score` int unsigned NOT NULL DEFAULT 0 COMMENT '支付积分(会员积分)',
-  `supplier_param` varchar(255) NOT NULL DEFAULT '' COMMENT '供应商自定义参数',
   PRIMARY KEY (`id`),
   KEY `idx_tradeorderitem_orderid` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单条目';

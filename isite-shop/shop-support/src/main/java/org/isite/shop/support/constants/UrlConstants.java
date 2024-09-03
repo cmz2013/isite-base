@@ -9,4 +9,6 @@ public class UrlConstants {
 
     private UrlConstants() {
     }
+
+    public static final String URL_SHOP = "/shop";
 }
