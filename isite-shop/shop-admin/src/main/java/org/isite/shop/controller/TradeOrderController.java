@@ -19,7 +19,7 @@ public class TradeOrderController extends BaseController {
      */
     @PostMapping(URL_API + URL_SHOP + "/pay/notify")
     public String payNotify(@RequestBody String data) {
-        // TODO 解析数据，校验签名合法且支付成功时(设计策略模式，支持多种支付方式)，转发数据到MQ: QUEUE_TRADE_ORDER_SUCCESS
+        // TODO 解析数据，校验签名合法且支付成功时(设计策略模式，支持多种支付方式)，转发数据（多种支付方式统一数据结构）到MQ: QUEUE_TRADE_ORDER_SUCCESS
         return null;
     }
 }
