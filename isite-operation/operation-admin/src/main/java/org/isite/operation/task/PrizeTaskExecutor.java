@@ -1,6 +1,6 @@
 package org.isite.operation.task;
 
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
@@ -45,8 +45,8 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
      */
     @Override
     protected PrizeRecordPo createTaskRecord(
-            OperationEventDto operationEventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
-        PrizeRecordPo prizeRecordPo = super.createTaskRecord(operationEventDto, activity, task, periodStartTime, taskNumber);
+            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+        PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
         prizeRecordPo.setLockStatus(FALSE);
         prizeRecordPo.setReceiveStatus(FALSE);
@@ -54,7 +54,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
     }
 
     @Override
-    protected Reward getReward(Activity activity, Task task, OperationEventDto operationEventDto) {
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
         return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
     }
 

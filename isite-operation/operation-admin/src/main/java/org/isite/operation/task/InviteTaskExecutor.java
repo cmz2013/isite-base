@@ -1,6 +1,11 @@
 package org.isite.operation.task;
 
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.po.InviteRecordPo;
+import org.isite.operation.service.InviteRecordService;
+import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.service.PrizeTaskService;
+import org.isite.operation.service.TaskRecordService;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.InviteEventParam;
@@ -8,11 +13,6 @@ import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.PrizeReward;
 import org.isite.operation.support.vo.Reward;
 import org.isite.operation.support.vo.Task;
-import org.isite.operation.po.InviteRecordPo;
-import org.isite.operation.service.InviteRecordService;
-import org.isite.operation.service.PrizeRecordService;
-import org.isite.operation.service.PrizeTaskService;
-import org.isite.operation.service.TaskRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.support.enums.TaskType.OPERATION_WEBPAGE_INVITE;
-import static org.isite.operation.support.enums.TaskType.QUESTION_ANSWER_INVITE;
+import static org.isite.operation.support.enums.TaskType.QUESTION_REPLY_INVITE;
 
 /**
  * @Description 积分任务父接口。使用活动积分可以兑换奖品
@@ -42,21 +42,21 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     protected InviteRecordPo createTaskRecord(
-            OperationEventDto operationEventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
-        InviteRecordPo inviteRecordPo = super.createTaskRecord(operationEventDto, activity, task, periodStartTime, taskNumber);
-        InviteEventParam inviteEventParam = cast(operationEventDto.getEventParam());
+            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+        InviteRecordPo inviteRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
+        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
         inviteRecordPo.setInviterId(inviteEventParam.getInviterId());
         return inviteRecordPo;
     }
 
     @Override
-    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, OperationEventDto operationEventDto) {
+    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
         //已参与活动不能被邀请
         getBeans(TaskRecordService.class).values().forEach(taskRecordService -> isFalse(
-                taskRecordService.exists(activityId, operationEventDto.getUserId()), "can't invite users who already exist"));
+                taskRecordService.exists(activityId, eventDto.getUserId()), "can't invite users who already exist"));
 
         //邀请人任务周期约束限制
-        InviteEventParam inviteEventParam = cast(operationEventDto.getEventParam());
+        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
         return getTaskNumber(activityId, taskId, periodStartTime, limit, inviteEventParam.getInviterId());
     }
 
@@ -73,7 +73,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     }
 
     @Override
-    protected Reward getReward(Activity activity, Task task, OperationEventDto operationEventDto) {
+    protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
         return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
     }
 
@@ -102,6 +102,6 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {OPERATION_WEBPAGE_INVITE, QUESTION_ANSWER_INVITE};
+        return new TaskType[] {OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE};
     }
 }

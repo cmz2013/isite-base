@@ -17,10 +17,6 @@ public class UserConstants {
      */
     public static final String FIELD_USER_ID = "userId";
     /**
-     * VIP会员产品供应商
-     */
-    public static final String SPU_SUPPLIER__USER_VIP = "user-vip";
-    /**
      * 队列：订单支付成功-VIP会员（功能权限）
      */
     public static final String QUEUE_TRADE_ORDER_SUCCESS_USER_VIP = "trade-order-success-user-vip";

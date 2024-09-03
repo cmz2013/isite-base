@@ -47,7 +47,7 @@ public class FileClient {
     /**
      * 文件上传form data字段名，默认file
      */
-    private String fileField = "file";
+    private String fieldFile = "file";
 
     private Map<String, String> headers;
 
@@ -96,7 +96,7 @@ public class FileClient {
          * 直接导致高8位丢失，从而导致中文乱码。所以，这里使用write方法
          */
         output.write((CONTENT_DISPOSITION + ": form-data; name=\"" +
-                fileField + "\"; filename=\"" + filename + "\"").getBytes());
+                fieldFile + "\"; filename=\"" + filename + "\"").getBytes());
         output.writeBytes(LINE_END);
         output.writeBytes(CONTENT_TYPE + ": application/octet-stream" + LINE_END);
         output.writeBytes(CONTENT_TRANSFER_ENCODING + ": binary" + LINE_END);

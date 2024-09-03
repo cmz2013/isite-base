@@ -1,7 +1,7 @@
 package org.isite.operation.mq;
 
 import org.isite.commons.web.mq.Producer;
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.vo.InviteEventParam;
 import org.springframework.stereotype.Component;
 
@@ -22,23 +22,23 @@ import static org.isite.operation.support.enums.EventType.GET_OPERATION_WEBPAGE;
 public class WebpageProducer implements Producer {
 
     @Override
-    public OperationEventDto getBody(Object[] args, Object returnValue) {
+    public EventDto getBody(Object[] args, Object returnValue) {
         Long userId = getUserId();
         if (null == userId) {
             return null;
         }
         String inviteCode = getRequest().getParameter(FIELD_INVITE);
         if (isOk(cast(returnValue)) && isNotBlank(inviteCode)) {
-            OperationEventDto operationEventDto = new OperationEventDto();
-            operationEventDto.setUserId(userId);
-            operationEventDto.setEventType(GET_OPERATION_WEBPAGE);
-            operationEventDto.setObjectValue(valueOf(args[ZERO]));
+            EventDto eventDto = new EventDto();
+            eventDto.setUserId(userId);
+            eventDto.setEventType(GET_OPERATION_WEBPAGE);
+            eventDto.setObjectValue(valueOf(args[ZERO]));
 
             InviteEventParam eventParam = new InviteEventParam();
             //活动邀请码
             eventParam.setInviteCode(inviteCode);
-            operationEventDto.setEventParam(eventParam);
-            return operationEventDto;
+            eventDto.setEventParam(eventParam);
+            return eventDto;
         }
         return null;
     }

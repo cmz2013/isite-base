@@ -1,6 +1,6 @@
 package org.isite.operation.task;
 
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.OrderPrizeProperty;
 import org.isite.operation.support.vo.TaskProperty;
@@ -19,10 +19,10 @@ public class OrderPrizeExecutor extends PrizeTaskExecutor {
      * 校验用户最低消费金额
      */
     @Override
-    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, OperationEventDto operationEventDto) {
+    protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         OrderPrizeProperty orderPrizeProperty = cast(taskProperty);
         //用户一年内累计消费金额是否满足奖品奖励条件
-        int cumulateAmount = cast(operationEventDto.getEventParam());
+        int cumulateAmount = cast(eventDto.getEventParam());
         return cumulateAmount >= orderPrizeProperty.getCumulateAmount();
     }
 

@@ -55,10 +55,6 @@ public class TradeOrderItemPo extends Po<Long> {
      */
     private Integer discountPrice;
     /**
-     * 实际支付金额(分)
-     */
-    private Integer payPrice;
-    /**
      * 服务费(分)
      */
     private Integer serviceCharge;
@@ -66,4 +62,8 @@ public class TradeOrderItemPo extends Po<Long> {
      * 支付积分
      */
     private Integer payScore;
+    /**
+     * 实际支付总金额(分)
+     */
+    private Integer payPrice;
 }

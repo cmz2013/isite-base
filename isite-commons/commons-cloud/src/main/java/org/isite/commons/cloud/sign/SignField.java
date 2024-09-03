@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.signature;
+package org.isite.commons.cloud.sign;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SignatureField {
+public @interface SignField {
     String value();
 }

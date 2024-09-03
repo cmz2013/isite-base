@@ -1,7 +1,7 @@
 package org.isite.operation.mq;
 
 import org.isite.commons.web.mq.ReceiverWrapper;
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPE
  */
 @Component
 @RabbitListener(queues = QUEUE_OPERATION_EVENT)
-public class OperationEventReceiver extends ReceiverWrapper<OperationEventDto> {
+public class OperationEventReceiver extends ReceiverWrapper<EventDto> {
 
     @Autowired
     public OperationEventReceiver(OperationEventConsumer consumer) {

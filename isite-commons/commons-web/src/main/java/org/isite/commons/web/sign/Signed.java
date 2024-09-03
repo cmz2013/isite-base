@@ -1,4 +1,4 @@
-package org.isite.commons.web.signature;
+package org.isite.commons.web.sign;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -33,7 +33,7 @@ public @interface Signed {
     /**
      * 获取签名或生成签名时使用的秘钥
      */
-    Class<? extends SignatureSecret> secret() default SignatureSecret.class;
+    Class<? extends SignSecret> secret() default SignSecret.class;
 
     /**
      * 从请求头读取数据，如果没有配置则使用默认值
@@ -45,5 +45,5 @@ public @interface Signed {
     /**
      * 签名校验
      */
-    Class<? extends SignatureVerification> verification() default SignatureVerification.class;
+    Class<? extends Verification> verification() default Verification.class;
 }

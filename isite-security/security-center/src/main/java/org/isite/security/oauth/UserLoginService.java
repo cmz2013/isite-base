@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.commons.web.signature.SignatureSecret;
+import org.isite.commons.web.sign.SignSecret;
 import org.isite.security.code.VerifyCodeHandler;
 import org.isite.security.code.VerifyCodeHandlerFactory;
 import org.isite.security.data.dto.UserPostDto;
@@ -30,7 +30,7 @@ import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
 public class UserLoginService {
 
     private static final String BAD_SECRET = "incorrect username or %s";
-    private SignatureSecret signatureSecret;
+    private SignSecret signSecret;
     private VerifyCodeHandlerFactory verifyCodeHandlerFactory;
     private TokenService tokenService;
 
@@ -46,14 +46,14 @@ public class UserLoginService {
         VerifyCodeHandler verifyCodeHandler = verifyCodeHandlerFactory.get(userPostDto.getVerifyCodeMode());
         isTrue(verifyCodeHandler.checkCode(agent, userPostDto.getCode()),
                 getMessage("VerifyCode.invalid", "the verification code is invalid"));
-        return addUser(toUserDto(userPostDto), signatureSecret.password(SERVICE_ID));
+        return addUser(toUserDto(userPostDto), signSecret.password(SERVICE_ID));
     }
 
     /**
      * 校验验证码，更新用户密码
      */
     public int updatePassword(UserSecretDto userSecretDto) {
-        UserSecret userSecret = getUserSecret(userSecretDto.getUsername(), signatureSecret.password(SERVICE_ID));
+        UserSecret userSecret = getUserSecret(userSecretDto.getUsername(), signSecret.password(SERVICE_ID));
         VerifyCodeMode verifyCodeMode = userSecretDto.getVerifyCodeMode();
         //核实用户的密保手机号或email地址
         notNull(userSecret, format(getMessage("VerifyCode.badSecret", BAD_SECRET), verifyCodeMode.getLabel()));
@@ -67,12 +67,12 @@ public class UserLoginService {
         tokenService.revokeTokensByUser(userSecret.getUserName());
         return UserAccessor.updatePassword(userSecret.getUserId(),
                 new BCryptPasswordEncoder().encode(userSecretDto.getPassword()),
-                signatureSecret.password(SERVICE_ID));
+                signSecret.password(SERVICE_ID));
     }
 
     @Autowired
-    public void setSignSecret(SignatureSecret signatureSecret) {
-        this.signatureSecret = signatureSecret;
+    public void setSignSecret(SignSecret signSecret) {
+        this.signSecret = signSecret;
     }
 
     @Autowired

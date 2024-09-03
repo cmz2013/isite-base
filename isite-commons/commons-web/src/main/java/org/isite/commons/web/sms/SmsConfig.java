@@ -21,14 +21,14 @@ public class SmsConfig {
     @Bean
     public SmsClient smsClient(SmsProperties smsProperties) {
         SmsClient smsClient = new SmsClient(smsProperties.getApiUrl(), smsProperties.getApiKey());
-        if (isNotBlank(smsProperties.getKeyField())) {
-            smsClient.setKeyField(smsProperties.getKeyField());
-        }
         if (isNotBlank(smsProperties.getMobileField())) {
-            smsClient.setMobileField(smsProperties.getMobileField());
+            smsClient.setFieldMobile(smsProperties.getMobileField());
         }
         if (isNotBlank(smsProperties.getContentField())) {
-            smsClient.setContentField(smsProperties.getContentField());
+            smsClient.setFieldContent(smsProperties.getContentField());
+        }
+        if (isNotBlank(smsProperties.getKeyField())) {
+            smsClient.setFieldKey(smsProperties.getKeyField());
         }
         return smsClient;
     }

@@ -1,6 +1,6 @@
 package org.isite.security.login;
 
-import org.isite.commons.web.signature.SignatureSecret;
+import org.isite.commons.web.sign.SignSecret;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,11 @@ import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
 @Service
 public class OauthUserService extends UserDetailsService {
 
-    private SignatureSecret signatureSecret;
+    private SignSecret signSecret;
 
     @Override
     public OauthUser getOauthUser(String username, String clientId) {
-        UserSecret userSecret = getUserSecret(username, signatureSecret.password(SERVICE_ID));
+        UserSecret userSecret = getUserSecret(username, signSecret.password(SERVICE_ID));
         if (null == userSecret) {
             return null;
         }
@@ -34,8 +34,8 @@ public class OauthUserService extends UserDetailsService {
     }
 
     @Autowired
-    public void setSignSecret(SignatureSecret signatureSecret) {
-        this.signatureSecret = signatureSecret;
+    public void setSignSecret(SignSecret signSecret) {
+        this.signSecret = signSecret;
     }
 
 }

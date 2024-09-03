@@ -17,6 +17,13 @@ import java.util.List;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
+import static org.isite.operation.support.enums.EventType.GET_OPERATION_WEBPAGE;
+import static org.isite.operation.support.enums.EventType.POST_OPERATION_SIGN;
+import static org.isite.operation.support.enums.EventType.POST_QUESTION;
+import static org.isite.operation.support.enums.EventType.POST_QUESTION_REPLY;
+import static org.isite.operation.support.enums.EventType.POST_SHOP_PAY_NOTIFY;
+import static org.isite.operation.support.enums.EventType.PUT_QUESTION_REPLY_ADOPT;
+import static org.isite.operation.support.enums.EventType.PUT_USER;
 
 /**
  * @Description 运营任务类型。
@@ -30,28 +37,28 @@ public enum TaskType implements Enumerable<Integer> {
     /**
      * 积分类型任务
      */
-    USER_SCORE(1, EventType.PUT_USER, "提交个人信息送积分", ScoreTaskProperty.class),
-    OPERATION_SIGN_SCORE(2, EventType.POST_OPERATION_SIGN, "每日签到送积分", SignScoreProperty.class),
+    USER_SCORE(1, PUT_USER, "提交个人信息送积分", ScoreTaskProperty.class),
+    OPERATION_SIGN_SCORE(2, POST_OPERATION_SIGN, "每日签到送积分", SignScoreProperty.class),
 
     /**
      * 奖品类型任务
      */
-    QUESTION_PRIZE(101, EventType.POST_QUESTION, "提交问题送奖品", PrizeTaskProperty.class),
-    QUESTION_ANSWER_PRIZE(102, EventType.POST_QUESTION_ANSWER, "答疑送奖品", AnswerPrizeProperty.class),
+    QUESTION_PRIZE(101, POST_QUESTION, "提交问题送奖品", PrizeTaskProperty.class),
+    QUESTION_REPLY_PRIZE(102, POST_QUESTION_REPLY, "答疑送奖品", AnswerPrizeProperty.class),
     /**
      * 提问人采纳答案时，给回复人送奖品。eventDto#userId为提问人ID，eventParam为回答人ID
      */
-    QUESTION_ANSWER_ADOPT_PRIZE(103, EventType.PUT_QUESTION_ANSWER_ADOPT, "答案被采纳送奖品", AnswerPrizeProperty.class),
+    QUESTION_REPLY_ADOPT_PRIZE(103, PUT_QUESTION_REPLY_ADOPT, "答案被采纳送奖品", AnswerPrizeProperty.class),
     /**
      * 老用户在活动期间完成消费，且在一年内累计消费金额满足条件时发放福利（eventParam为用户累计消费金额）
      */
-    SHOP_ORDER_PRIZE(104, EventType.POST_SHOP_ORDER_PAYMENT_NOTIFY, "老用户福利", OrderPrizeProperty.class),
+    SHOP_ORDER_PRIZE(104, POST_SHOP_PAY_NOTIFY, "老用户福利", OrderPrizeProperty.class),
 
     /**
      * 邀请类型任务（邀请码不为空），保存邀请记录再送奖励
      */
-    QUESTION_ANSWER_INVITE(201, EventType.POST_QUESTION_ANSWER, "答疑邀请", PrizeTaskProperty.class),
-    OPERATION_WEBPAGE_INVITE(202, EventType.GET_OPERATION_WEBPAGE, "活动邀请", PrizeTaskProperty.class),
+    QUESTION_REPLY_INVITE(201, POST_QUESTION_REPLY, "答疑邀请", PrizeTaskProperty.class),
+    OPERATION_WEBPAGE_INVITE(202, GET_OPERATION_WEBPAGE, "活动邀请", PrizeTaskProperty.class),
     ;
 
     private final Integer code;

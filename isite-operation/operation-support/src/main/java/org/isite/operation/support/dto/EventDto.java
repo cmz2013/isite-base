@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class OperationEventDto {
+public class EventDto {
     /**
      * 当前登录用户id
      */

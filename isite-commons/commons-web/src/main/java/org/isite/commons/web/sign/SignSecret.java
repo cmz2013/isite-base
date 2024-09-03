@@ -1,4 +1,4 @@
-package org.isite.commons.web.signature;
+package org.isite.commons.web.sign;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import static org.isite.commons.cloud.utils.PropertyUtils.getProperty;
  */
 @Primary
 @Component
-public class SignatureSecret {
+public class SignSecret {
     private static final String PROPERTY_SIGNATURE_SECRET_PREFIX = "security.signature.secret.";
 
     /**

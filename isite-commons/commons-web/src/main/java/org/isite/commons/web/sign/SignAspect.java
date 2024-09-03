@@ -1,4 +1,4 @@
-package org.isite.commons.web.signature;
+package org.isite.commons.web.sign;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -31,9 +31,9 @@ import static org.isite.commons.web.utils.RequestUtils.getRequest;
 @Order(100)
 @Component
 @ConditionalOnProperty(name = "security.signature.enabled", havingValue = "true")
-public class SignatureAspect {
+public class SignAspect {
 
-    @Pointcut("@annotation(org.isite.commons.web.signature.Signed)")
+    @Pointcut("@annotation(org.isite.commons.web.sign.Signed)")
     public void access() {
         //用于匹配持有@Signature 注解的方法
     }
@@ -44,15 +44,15 @@ public class SignatureAspect {
         String signature = isNotBlank(signed.signature()) ?
                 (String) getValue(signed.signature(), ((MethodSignature) point).getParameterNames(), point.getArgs()) :
                 request.getHeader(signed.signatureHeader());
-        SignatureSecret secret = getBean(signed.secret());
+        SignSecret secret = getBean(signed.secret());
         String appCode = isNotBlank(signed.appCode()) ?
                 signed.appCode() : request.getHeader(signed.appCodeHeader());
         String password = secret.password(appCode);
-        SignatureVerification verification = getBean(signed.verification());
+        Verification verification = getBean(signed.verification());
         if (isNotBlank(password)) {
             isTrue(verification.verify(point, signed, signature, password), "invalid signature");
         } else {
-            isTrue(verification.verify(signed, signature, secret), "invalid signature");
+            isTrue(verification.verify(signature, secret.apiKey(appCode)), "invalid signature");
         }
         return point.proceed();
     }

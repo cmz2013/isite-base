@@ -2,7 +2,7 @@ package org.isite.tenant.controller;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.web.signature.Signed;
+import org.isite.commons.web.sign.Signed;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.isite.tenant.service.RbacService;

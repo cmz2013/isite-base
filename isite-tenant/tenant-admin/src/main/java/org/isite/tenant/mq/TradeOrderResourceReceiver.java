@@ -1,7 +1,7 @@
 package org.isite.tenant.mq;
 
 import org.isite.commons.web.mq.ReceiverWrapper;
-import org.isite.shop.support.dto.TradeOrderDto;
+import org.isite.shop.support.dto.TradeOrderSupplierDto;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import static org.isite.tenant.data.constants.TenantConstants.QUEUE_TRADE_ORDER_
  */
 @Component
 @RabbitListener(queues = QUEUE_TRADE_ORDER_SUCCESS_TENANT_RESOURCE)
-public class TradeOrderResourceReceiver extends ReceiverWrapper<TradeOrderDto> {
+public class TradeOrderResourceReceiver extends ReceiverWrapper<TradeOrderSupplierDto> {
 
     @Autowired
     public TradeOrderResourceReceiver(TradeOrderResourceConsumer consumer) {

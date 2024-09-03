@@ -35,31 +35,31 @@ public class TradeOrderItem extends Vo<Long> {
      */
     private Integer skuCount;
     /**
-     * 前台划线价
+     * 前台划线价(分)
      */
     private Integer marketPrice;
     /**
-     * 成本单价
+     * 成本单价(分)
      */
     private Integer costPrice;
     /**
-     * 销售单价
+     * 销售单价(分)
      */
     private Integer salePrice;
     /**
-     * 优惠金额
+     * 优惠金额(分)
      */
     private Integer discountPrice;
     /**
-     * 实际支付金额
-     */
-    private Integer payPrice;
-    /**
-     * 服务费
+     * 服务费(分)
      */
     private Integer serviceCharge;
     /**
      * 支付积分
      */
     private Integer payScore;
+    /**
+     * 实际支付总金额(分)
+     */
+    private Integer payPrice;
 }

@@ -1,9 +1,10 @@
-package org.isite.commons.web.signature;
+package org.isite.commons.web.sign;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.isite.commons.cloud.signature.SignatureField;
+import org.isite.commons.cloud.sign.SignField;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,8 @@ import java.util.Map;
 import static java.lang.Long.parseLong;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.signature.SignatureUtils.getSignatureParameters;
-import static org.isite.commons.cloud.signature.SignatureUtils.verifySignature;
+import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameters;
+import static org.isite.commons.cloud.sign.SignUtils.verifySignature;
 import static org.isite.commons.lang.data.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.http.HttpHeaders.X_FORWARDED_PREFIX;
@@ -28,8 +29,9 @@ import static org.isite.commons.web.utils.RequestUtils.getRequest;
  * @Description 接口签名验证
  * @Author <font color='blue'>zhangcm</font>
  */
+@Primary
 @Component
-public class SignatureVerification {
+public class Verification {
 
     /**
      * 接口签名有效期，单位：秒，如果没有配置则使用默认值30
@@ -37,11 +39,13 @@ public class SignatureVerification {
     @Value("${security.signature.validity:10}")
     private Long validity;
 
-    public boolean verify(Signed signed, String signature, SignatureSecret secret) {
-        HttpServletRequest request = getRequest();
-        String appCode = isNotBlank(signed.appCode()) ?
-                signed.appCode() : request.getHeader(signed.appCodeHeader());
-        return isNotBlank(signature) && signature.equals(secret.apiKey(appCode));
+    /**
+     * @param signature 接口签名
+     * @param target 正确的签名
+     * @return 接口签名是否正确
+     */
+    public boolean verify(String signature, String target) {
+        return isNotBlank(signature) && signature.equals(target);
     }
 
     public boolean verify(ProceedingJoinPoint point, Signed signed, String signature, String password)
@@ -90,8 +94,8 @@ public class SignatureVerification {
      */
     private String getSignatureField(String parameterName, Annotation[] annotations) {
         for (Annotation annotation : annotations) {
-            if (annotation instanceof SignatureField) {
-                return ((SignatureField) annotation).value();
+            if (annotation instanceof SignField) {
+                return ((SignField) annotation).value();
             }
         }
         return parameterName;

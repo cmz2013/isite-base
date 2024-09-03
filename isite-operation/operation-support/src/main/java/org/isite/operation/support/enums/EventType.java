@@ -13,7 +13,6 @@ import org.isite.operation.support.vo.InviteEventParam;
 import java.util.function.Function;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
-import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.isite.misc.data.enums.AppModule.OPERATION_ADMIN;
 import static org.isite.misc.data.enums.AppModule.QUESTION_ADMIN;
 import static org.isite.misc.data.enums.AppModule.SHOP_ADMIN;
@@ -22,7 +21,7 @@ import static org.isite.misc.data.enums.ObjectType.OPERATION_ACTIVITY;
 import static org.isite.misc.data.enums.ObjectType.OPERATION_SIGN_LOG;
 import static org.isite.misc.data.enums.ObjectType.QUESTION;
 import static org.isite.misc.data.enums.ObjectType.QUESTION_ANSWER;
-import static org.isite.misc.data.enums.ObjectType.SHOP_ORDER;
+import static org.isite.misc.data.enums.ObjectType.SHOP_TRADE_ORDER;
 import static org.isite.misc.data.enums.ObjectType.USER;
 
 /**
@@ -44,21 +43,22 @@ public enum EventType implements Enumerable<Integer> {
      */
     POST_QUESTION(101, "提交疑问", QUESTION, QUESTION_ADMIN, null),
     /**
-     * 用户答疑接口，被邀请人url携带邀请码：POST /inquiry/{inquiryId}/reply?invite={code}
-     * 发送行为消息EventDto时，行为参数用于传递 ReplyEventParam
+     * 用户答疑接口，被邀请人url携带邀请码：POST /question/{questionId}/reply?invite={code}
      */
-    POST_QUESTION_ANSWER(102, "答疑解惑", QUESTION_ANSWER, QUESTION_ADMIN,
+    POST_QUESTION_REPLY(102, "答疑解惑", QUESTION_ANSWER, QUESTION_ADMIN,
             eventParam -> Jackson.parseObject(eventParam.toString(), AnswerEventParam.class)),
     /**
-     * 提问人采纳答案接口 PUT /reply/{replyId}/accept
+     * 提问人采纳答案接口 PUT /reply/{replyId}/adopt
      * 发送行为消息时，EventDto#userId用于传递提问人ID，EventDto#eventParam用于传递 回答人ID
      */
-    PUT_QUESTION_ANSWER_ADOPT(103, "采纳答案", QUESTION_ANSWER, QUESTION_ADMIN, null),
+    PUT_QUESTION_REPLY_ADOPT(103, "采纳答案", QUESTION_ANSWER, QUESTION_ADMIN, null),
 
     /**
-     * 订单完成支付回调接口 POST /order/payment/notify
+     * 订单完成支付回调接口
+     * POST /api/shop/wxpay/notify
+     * POST /api/shop/alipay/notify
      */
-    POST_SHOP_ORDER_PAYMENT_NOTIFY(301, "订单完成支付", SHOP_ORDER, SHOP_ADMIN, null),
+    POST_SHOP_PAY_NOTIFY(301, "订单完成支付", SHOP_TRADE_ORDER, SHOP_ADMIN, null),
     /**
      * 每日签到接口 POST /sign
      * 发送行为消息EventDto时，行为参数用于传递 连续签到天数

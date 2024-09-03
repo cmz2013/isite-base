@@ -3,6 +3,9 @@ package org.isite.shop.po;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
+import org.isite.mybatis.type.EnumTypeHandler;
+import org.isite.shop.support.enums.SpuSupplier;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
 
@@ -25,7 +28,8 @@ public class SpuPo extends Po<Integer> {
     /**
      * 供应商
      */
-    private String supplier;
+    @ColumnType(typeHandler = EnumTypeHandler.class)
+    private SpuSupplier supplier;
     /**
      * 供应商自定义参数
      */

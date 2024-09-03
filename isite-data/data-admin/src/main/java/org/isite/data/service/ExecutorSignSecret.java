@@ -1,6 +1,6 @@
 package org.isite.data.service;
 
-import org.isite.commons.web.signature.SignatureSecret;
+import org.isite.commons.web.sign.SignSecret;
 import org.isite.data.po.ExecutorPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class ExecutorSignatureSecret extends SignatureSecret {
+public class ExecutorSignSecret extends SignSecret {
     private ExecutorService executorService;
 
     @Override

@@ -6,8 +6,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.isite.shop.support.enums.SpuSupplier.TENANT_RESOURCE;
 import static org.isite.tenant.data.constants.TenantConstants.QUEUE_TRADE_ORDER_SUCCESS_TENANT_RESOURCE;
-import static org.isite.tenant.data.constants.TenantConstants.SPU_SUPPLIER_TENANT_RESOURCE;
 import static org.springframework.amqp.core.BindingBuilder.bind;
 
 /**
@@ -32,6 +32,6 @@ public class TradeOrderResourceConfig {
 
     @Bean
     public Binding resourceSpuBinding(TradeOrderExchange tradeOrderExchange) {
-        return bind(tradeOrderResourceQueue()).to(tradeOrderExchange).with(SPU_SUPPLIER_TENANT_RESOURCE);
+        return bind(tradeOrderResourceQueue()).to(tradeOrderExchange).with(TENANT_RESOURCE.getCode());
     }
 }

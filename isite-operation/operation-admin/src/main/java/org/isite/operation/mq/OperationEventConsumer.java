@@ -5,7 +5,7 @@ import org.isite.commons.web.mq.Basic;
 import org.isite.commons.web.mq.Consumer;
 import org.isite.operation.activity.ActivityMonitor;
 import org.isite.operation.activity.ActivityMonitorFactory;
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.EventType;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
@@ -28,40 +28,40 @@ import static org.isite.operation.support.enums.TaskType.values;
  */
 @Slf4j
 @Component
-public class OperationEventConsumer implements Consumer<OperationEventDto> {
+public class OperationEventConsumer implements Consumer<EventDto> {
     private TaskExecutorFactory taskExecutorFactory;
     private ActivityMonitorFactory activityMonitorFactory;
     private OngoingActivityService ongoingActivityService;
 
     @Override
     @Validated
-    public Basic handle(OperationEventDto operationEventDto) {
-        EventType eventType = operationEventDto.getEventType();
+    public Basic handle(EventDto eventDto) {
+        EventType eventType = eventDto.getEventType();
         List<Activity> activityList = ongoingActivityService.findOngoingActivities(eventType);
         if (isEmpty(activityList)) {
             return new Basic.Ack();
         }
-        if (null != eventType.getConverter() && null != operationEventDto.getEventParam()) {
-            operationEventDto.setEventParam(eventType.getConverter().apply(operationEventDto.getEventParam()));
+        if (null != eventType.getConverter() && null != eventDto.getEventParam()) {
+            eventDto.setEventParam(eventType.getConverter().apply(eventDto.getEventParam()));
         }
-        activityList.forEach(activity -> handle(activity, operationEventDto));
+        activityList.forEach(activity -> handle(activity, eventDto));
         return new Basic.Ack();
     }
 
     /**
      * 处理行为消息
      */
-    public void handle(Activity activity, OperationEventDto operationEventDto) {
+    public void handle(Activity activity, EventDto eventDto) {
         ActivityMonitor monitor = activityMonitorFactory.get(activity.getTheme());
-        if (null == monitor || monitor.participate(activity, operationEventDto.getUserId())) {
-            for (TaskType taskType : values(operationEventDto.getEventType())) {
+        if (null == monitor || monitor.participate(activity, eventDto.getUserId())) {
+            for (TaskType taskType : values(eventDto.getEventType())) {
                 TaskExecutor<?> taskExecutor = taskExecutorFactory.get(taskType);
                 activity.getTasks().forEach(task -> {
                     if (taskType.equals(task.getTaskType())) {
                         try {
-                            taskExecutor.execute(activity, task, operationEventDto);
+                            taskExecutor.execute(activity, task, eventDto);
                         } catch (Exception e) {
-                            log.warn(toJsonString(operationEventDto), e);
+                            log.warn(toJsonString(eventDto), e);
                         }
                     }
                 });

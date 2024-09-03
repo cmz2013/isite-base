@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.commons.web.signature.SignatureSecret;
+import org.isite.commons.web.sign.SignSecret;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
@@ -23,7 +23,7 @@ import static org.isite.tenant.data.constants.TenantConstants.SERVICE_ID;
 @Component
 public class TenantService {
 
-    private SignatureSecret signatureSecret;
+    private SignSecret signSecret;
     private TokenStore tokenStore;
 
     /**
@@ -32,7 +32,7 @@ public class TenantService {
     public OauthEmployee changeTenant(OauthEmployee employee, Integer tenantId) {
         Rbac rbac = getRbac(
                 new LoginDto(tenantId, employee.getUserId(), employee.getClientId()),
-                signatureSecret.password(SERVICE_ID));
+                signSecret.password(SERVICE_ID));
         notNull(rbac, getMessage("Tenant.unavailable", "tenant unavailable"));
         employee.setTenant(rbac.getTenant());
         employee.setEmployeeId(rbac.getEmployeeId());
@@ -47,8 +47,8 @@ public class TenantService {
     }
 
     @Autowired
-    public void setSignSecret(SignatureSecret signatureSecret) {
-        this.signatureSecret = signatureSecret;
+    public void setSignSecret(SignSecret signSecret) {
+        this.signSecret = signSecret;
     }
 
     @Autowired

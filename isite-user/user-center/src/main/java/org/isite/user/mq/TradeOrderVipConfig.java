@@ -6,8 +6,8 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.isite.shop.support.enums.SpuSupplier.USER_VIP;
 import static org.isite.user.data.constants.UserConstants.QUEUE_TRADE_ORDER_SUCCESS_USER_VIP;
-import static org.isite.user.data.constants.UserConstants.SPU_SUPPLIER__USER_VIP;
 import static org.springframework.amqp.core.BindingBuilder.bind;
 
 /**
@@ -36,6 +36,6 @@ public class TradeOrderVipConfig {
      */
     @Bean
     public Binding vipSpuBinding(TradeOrderExchange tradeOrderExchange) {
-        return bind(tradeOrderVipQueue()).to(tradeOrderExchange).with(SPU_SUPPLIER__USER_VIP);
+        return bind(tradeOrderVipQueue()).to(tradeOrderExchange).with(USER_VIP.getCode());
     }
 }

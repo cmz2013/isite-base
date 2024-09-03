@@ -27,17 +27,17 @@ public class SmsClient {
      */
     private final String apiKey;
     /**
-     * API密钥参数名
-     */
-    private String keyField = "api_key";
-    /**
      * 短信发送接口接收短信的手机号码参数名
      */
-    private String mobileField = "mobile";
+    private String fieldMobile = "mobile";
     /**
      * 短信发送接口短信内容参数名
      */
-    private String contentField = "content";
+    private String fieldContent = "content";
+    /**
+     * API密钥参数名
+     */
+    private String fieldKey = "api_key";
 
     public SmsClient(String apiUrl, String apiKey) {
         this.apiUrl = apiUrl;
@@ -51,9 +51,9 @@ public class SmsClient {
      */
     public void send(String mobile, String content) throws IOException, URISyntaxException {
         Map<String, Object> params = new HashMap<>(THREE);
-        params.put(keyField, apiKey);
-        params.put(mobileField, mobile);
-        params.put(contentField, content);
+        params.put(fieldMobile, mobile);
+        params.put(fieldContent, content);
+        params.put(fieldKey, apiKey);
         HttpClient httpClient = new HttpClient();
         httpClient.post(apiUrl, params);
     }

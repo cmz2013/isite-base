@@ -11,7 +11,7 @@ import static org.isite.shop.support.constants.ShopConstants.QUEUE_TRADE_ORDER_S
  * @Author <font color='blue'>zhangcm</font>
  */
 @Configuration
-public class PaymentNoticeConfig {
+public class PayNoticeConfig {
 
     @Bean
     public Queue paymentNoticeQueue() {

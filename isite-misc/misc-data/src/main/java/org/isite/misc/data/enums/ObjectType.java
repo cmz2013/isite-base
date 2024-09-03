@@ -21,7 +21,7 @@ public enum ObjectType implements Enumerable<Integer> {
      */
     TENANT_EMPLOYEE(21, "员工"),
 
-    SHOP_ORDER(31, "订单"),
+    SHOP_TRADE_ORDER(31, "订单"),
 
     QUESTION(81, "疑问"),
     QUESTION_ANSWER(82, "答案"),

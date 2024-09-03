@@ -2,7 +2,7 @@ package org.isite.operation.mq;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.mq.Producer;
-import org.isite.operation.support.dto.OperationEventDto;
+import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.vo.SignLog;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +23,13 @@ public class SignProducer implements Producer {
     public Object getBody(Object[] args, Object returnValue) {
         Result<SignLog> result = cast(returnValue);
         if (isOk(result)) {
-            OperationEventDto operationEventDto = new OperationEventDto();
+            EventDto eventDto = new EventDto();
             SignLog signLog = result.getData();
-            operationEventDto.setUserId(signLog.getUserId());
-            operationEventDto.setEventType(POST_OPERATION_SIGN);
-            operationEventDto.setObjectValue(valueOf(signLog.getId()));
-            operationEventDto.setEventParam(signLog.getContinuousCount());
-            return operationEventDto;
+            eventDto.setUserId(signLog.getUserId());
+            eventDto.setEventType(POST_OPERATION_SIGN);
+            eventDto.setObjectValue(valueOf(signLog.getId()));
+            eventDto.setEventParam(signLog.getContinuousCount());
+            return eventDto;
         }
         return null;
     }

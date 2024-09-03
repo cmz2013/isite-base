@@ -1,6 +1,6 @@
 package org.isite.security.login;
 
-import org.isite.commons.web.signature.SignatureSecret;
+import org.isite.commons.web.sign.SignSecret;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.tenant.data.constants.TenantConstants;
 import org.isite.tenant.data.dto.LoginDto;
@@ -25,11 +25,11 @@ import static org.isite.user.client.UserAccessor.getUserSecret;
  */
 @Service
 public class OauthEmployeeService extends UserDetailsService {
-    private SignatureSecret signatureSecret;
+    private SignSecret signSecret;
 
     @Override
     public OauthEmployee getOauthUser(String username, String clientId) {
-        UserSecret userSecret = getUserSecret(username, signatureSecret.password(UserConstants.SERVICE_ID));
+        UserSecret userSecret = getUserSecret(username, signSecret.password(UserConstants.SERVICE_ID));
         if (null == userSecret) {
             return null;
         }
@@ -52,11 +52,11 @@ public class OauthEmployeeService extends UserDetailsService {
             employee.setEmployeeId((long) ZERO);
             Role role = new Role();
             role.setId(ZERO);
-            role.setResources(getResources(clientId, signatureSecret.password(TenantConstants.SERVICE_ID)));
+            role.setResources(getResources(clientId, signSecret.password(TenantConstants.SERVICE_ID)));
             employee.setRoles(singletonList(role));
         } else {
             Rbac rbac = getRbac(new LoginDto(userSecret.getUserId(), clientId),
-                    signatureSecret.password(TenantConstants.SERVICE_ID));
+                    signSecret.password(TenantConstants.SERVICE_ID));
             if (null == rbac) {
                 return null;
             }
@@ -69,8 +69,8 @@ public class OauthEmployeeService extends UserDetailsService {
     }
 
     @Autowired
-    public void setSignSecret(SignatureSecret signatureSecret) {
-        this.signatureSecret = signatureSecret;
+    public void setSignSecret(SignSecret signSecret) {
+        this.signSecret = signSecret;
     }
 
 }

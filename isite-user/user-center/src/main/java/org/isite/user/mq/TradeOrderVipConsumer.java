@@ -3,8 +3,8 @@ package org.isite.user.mq;
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.web.mq.Basic;
 import org.isite.commons.web.mq.Consumer;
-import org.isite.shop.support.dto.TradeOrderDto;
-import org.isite.shop.support.dto.TradeOrderItemDto;
+import org.isite.shop.support.dto.TradeOrderSkuDto;
+import org.isite.shop.support.dto.TradeOrderSupplierDto;
 import org.isite.user.data.vo.VipSaleParam;
 import org.isite.user.po.VipPo;
 import org.isite.user.service.VipService;
@@ -24,22 +24,22 @@ import static org.isite.commons.lang.json.Jackson.parseObject;
  */
 @Slf4j
 @Component
-public class TradeOrderVipConsumer implements Consumer<TradeOrderDto> {
+public class TradeOrderVipConsumer implements Consumer<TradeOrderSupplierDto> {
 
     private VipService vipService;
 
     @Override
     @Validated
-    public Basic handle(TradeOrderDto tradeOrderDto) {
+    public Basic handle(TradeOrderSupplierDto orderSupplierDto) {
         try {
-            VipPo vipPo = vipService.findOne(VipPo::getUserId, tradeOrderDto.getUserId());
+            VipPo vipPo = vipService.findOne(VipPo::getUserId, orderSupplierDto.getUserId());
             long expireTimeMillis = currentTimeMillis();
             if (null == vipPo) {
-                vipPo = new VipPo(tradeOrderDto.getUserId(), new Date(expireTimeMillis));
+                vipPo = new VipPo(orderSupplierDto.getUserId(), new Date(expireTimeMillis));
             } else if (vipPo.getExpireTime().getTime() < expireTimeMillis) {
                 vipPo.setExpireTime(new Date(expireTimeMillis));
             }
-            for (TradeOrderItemDto orderItem : tradeOrderDto.getOrderItems()) {
+            for (TradeOrderSkuDto orderItem : orderSupplierDto.getSkus()) {
                 VipSaleParam vipSaleParam = parseObject(orderItem.getSupplierParam(), VipSaleParam.class);
                 vipPo.setExpireTime(new Date(vipPo.getExpireTime().getTime() +
                         vipSaleParam.getExpireDays() * orderItem.getSkuCount() * DAY.getMillis()));

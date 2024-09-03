@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.signature;
+package org.isite.commons.cloud.sign;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import static org.isite.commons.lang.utils.TypeUtils.isBasic;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Slf4j
-public class SignatureUtils {
+public class SignUtils {
     /**
      * 签名字段：密码
      */
@@ -45,7 +45,7 @@ public class SignatureUtils {
      */
     private static final int ERROR_SECOND = THREE;
 
-    private SignatureUtils() {
+    private SignUtils() {
     }
 
     /**
@@ -156,8 +156,8 @@ public class SignatureUtils {
         for (Field attribute : attributes) {
             String name = attribute.getName();
             Object value = getValue(object, name);
-            SignatureField signatureField = attribute.getAnnotation(SignatureField.class);
-            name = null != signatureField ? signatureField.value() : name;
+            SignField signField = attribute.getAnnotation(SignField.class);
+            name = null != signField ? signField.value() : name;
             if (isSignatureValue(fields, name, value)) {
                 results.put(name, value);
             }

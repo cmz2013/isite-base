@@ -17,6 +17,8 @@ public class Constants {
      * 接口返回字段：信息
      */
     public static final String RESULT_MESSAGE = "message";
+    public static final String SUCCESS = "success";
+    public static final String FAILURE = "failure";
     /**
      * 接口返回字段：数据
      */

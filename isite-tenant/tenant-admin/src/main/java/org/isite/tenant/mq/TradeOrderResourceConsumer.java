@@ -3,7 +3,7 @@ package org.isite.tenant.mq;
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.web.mq.Basic;
 import org.isite.commons.web.mq.Consumer;
-import org.isite.shop.support.dto.TradeOrderDto;
+import org.isite.shop.support.dto.TradeOrderSupplierDto;
 import org.isite.tenant.data.vo.ResourceSaleParam;
 import org.isite.tenant.po.TenantPo;
 import org.isite.tenant.service.TenantService;
@@ -29,20 +29,20 @@ import static org.isite.user.client.UserAccessor.getUser;
  */
 @Slf4j
 @Component
-public class TradeOrderResourceConsumer implements Consumer<TradeOrderDto> {
+public class TradeOrderResourceConsumer implements Consumer<TradeOrderSupplierDto> {
 
     private TenantService tenantService;
 
     @Override
     @Validated
-    public Basic handle(TradeOrderDto tradeOrderDto) {
+    public Basic handle(TradeOrderSupplierDto orderSupplierDto) {
         try {
-            tradeOrderDto.getOrderItems().forEach(tradeOrderItemDto -> {
+            orderSupplierDto.getSkus().forEach(tradeOrderItemDto -> {
                 ResourceSaleParam saleParam = parseObject(tradeOrderItemDto.getSupplierParam(), ResourceSaleParam.class);
                 if (null == saleParam.getTenantId()) {
                     for (int i = ZERO; i < tradeOrderItemDto.getSkuCount(); i++) {
                         String tenantName = tradeOrderItemDto.getSpuName() + (i == ZERO ? BLANK_STRING : UNDERLINE + i);
-                        addTenant(tenantName, tradeOrderDto.getUserId(), saleParam);
+                        addTenant(tenantName, orderSupplierDto.getUserId(), saleParam);
                     }
                 } else {
                     updateTenant(tradeOrderItemDto.getSkuCount(), saleParam);

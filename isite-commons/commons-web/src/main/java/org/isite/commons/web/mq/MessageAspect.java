@@ -69,6 +69,6 @@ public class MessageAspect implements Ordered {
 
     @Override
     public int getOrder() {
-        return 100;
+        return -300;
     }
 }

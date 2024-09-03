@@ -4,7 +4,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
-import org.isite.commons.web.signature.Signed;
+import org.isite.commons.web.sign.Signed;
 import org.isite.tenant.data.dto.ResourceDto;
 import org.isite.tenant.data.vo.Resource;
 import org.isite.tenant.po.ResourcePo;
