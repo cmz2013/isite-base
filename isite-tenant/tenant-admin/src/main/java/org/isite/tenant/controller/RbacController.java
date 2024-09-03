@@ -2,7 +2,7 @@ package org.isite.tenant.controller;
 
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.web.sign.Signature;
+import org.isite.commons.web.signature.Signed;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.isite.tenant.service.RbacService;
@@ -21,7 +21,7 @@ public class RbacController extends BaseController {
 
     private RbacService rbacService;
 
-    @Signature
+    @Signed
     @GetMapping(API_GET_EMPLOYEE_RBAC)
     public Result<Rbac> getRbac(@Validated LoginDto loginDto) {
         return toResult(rbacService.getRbac(loginDto));

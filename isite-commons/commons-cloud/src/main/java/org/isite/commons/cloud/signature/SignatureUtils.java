@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.sign;
+package org.isite.commons.cloud.signature;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import static org.isite.commons.lang.utils.TypeUtils.isBasic;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Slf4j
-public class SignUtils {
+public class SignatureUtils {
     /**
      * 签名字段：密码
      */
@@ -45,7 +45,7 @@ public class SignUtils {
      */
     private static final int ERROR_SECOND = THREE;
 
-    private SignUtils() {
+    private SignatureUtils() {
     }
 
     /**
@@ -83,15 +83,18 @@ public class SignUtils {
     }
 
     /**
-     * 验证签名信息
+     * @Description 验证签名信息
+     * @param signature 接口提供的签名
+     * @param timestamp 时间戳
+     * @param validity 签名有效时间（秒）
      */
-    public static boolean validateSignature(
+    public static boolean verifySignature(
             String api, String signature, String password, long timestamp, long validity,
             Map<String, Object> data) throws NoSuchAlgorithmException {
-        notBlank(signature, api + " signature cannot be empty");
+        notBlank(signature, "signature cannot be empty");
         long value = currentTimeMillis() / SECOND.getMillis() + ERROR_SECOND - timestamp;
-        isTrue(value > ZERO, api + " timestamp error");
-        isTrue(value < validity, api + " signature timeout");
+        isTrue(value > ZERO, "timestamp error");
+        isTrue(value < validity, "signature timeout");
         return signature.equals(digest(getPlaintext(api, data, password, timestamp)));
     }
 
@@ -153,8 +156,8 @@ public class SignUtils {
         for (Field attribute : attributes) {
             String name = attribute.getName();
             Object value = getValue(object, name);
-            SignField signField = attribute.getAnnotation(SignField.class);
-            name = null != signField ? signField.value() : name;
+            SignatureField signatureField = attribute.getAnnotation(SignatureField.class);
+            name = null != signatureField ? signatureField.value() : name;
             if (isSignatureValue(fields, name, value)) {
                 results.put(name, value);
             }

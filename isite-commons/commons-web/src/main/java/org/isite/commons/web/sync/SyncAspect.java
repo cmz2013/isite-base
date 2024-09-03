@@ -43,7 +43,7 @@ public class SyncAspect implements Ordered {
      * 在方法上面标注 @Pointcut 注解，用来定义切入点
      * 表达式标签 @annotation()：用于匹配当前执行方法持有指定注解
      */
-    @Pointcut("@annotation(sync.org.isite.commons.web.Synchronized)")
+    @Pointcut("@annotation(org.isite.commons.web.sync.Synchronized)")
     public void access() {
         //用于匹配持有Synchronized注解的方法
     }

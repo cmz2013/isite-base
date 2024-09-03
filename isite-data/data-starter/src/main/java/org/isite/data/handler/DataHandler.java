@@ -1,7 +1,7 @@
 package org.isite.data.handler;
 
 import org.isite.commons.lang.data.Result;
-import org.isite.commons.cloud.sign.SignSecret;
+import org.isite.commons.web.signature.SignatureSecret;
 import org.isite.data.exception.ServerException;
 import org.isite.data.log.LogHandler;
 import org.isite.data.support.dto.DataLogDto;
@@ -26,7 +26,7 @@ import static org.isite.data.support.enums.WsType.SERVICE;
  */
 public abstract class DataHandler<P, R> implements InitializingBean {
 
-	private SignSecret signSecret;
+	private SignatureSecret signatureSecret;
 	private LogHandler logHandler;
 	/**
 	 * 处理请求数据，返回响应结果
@@ -79,7 +79,7 @@ public abstract class DataHandler<P, R> implements InitializingBean {
 	 * @Description 根据id查询数据接口
 	 */
 	protected DataApi getDataApi(String apiId) {
-		return callApi(SERVICE, apiId, signSecret.password(SERVICE_ID));
+		return callApi(SERVICE, apiId, signatureSecret.password(SERVICE_ID));
 	}
 
 	/**
@@ -102,8 +102,8 @@ public abstract class DataHandler<P, R> implements InitializingBean {
 	protected abstract P toData(String data, Class<P> pClass);
 
 	@Autowired
-	public void setSignSecret(SignSecret signSecret) {
-		this.signSecret = signSecret;
+	public void setSignSecret(SignatureSecret signatureSecret) {
+		this.signatureSecret = signatureSecret;
 	}
 
 	@Autowired
@@ -113,7 +113,7 @@ public abstract class DataHandler<P, R> implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		notNull(this.signSecret, "signSecret must be set");
+		notNull(this.signatureSecret, "signSecret must be set");
 		notNull(this.logHandler, "logHandler must be set");
 	}
 }

@@ -4,7 +4,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
-import org.isite.commons.web.sign.Signature;
+import org.isite.commons.web.signature.Signed;
 import org.isite.tenant.data.dto.ResourceDto;
 import org.isite.tenant.data.vo.Resource;
 import org.isite.tenant.po.ResourcePo;
@@ -48,7 +48,7 @@ public class ResourceController extends BaseController {
     /**
      * 内置用户登录时获取客户端所有资源
      */
-    @Signature
+    @Signed
     @GetMapping(API_GET_CLIENT_RESOURCES)
     public Result<List<Resource>> getResources(@PathVariable("clientId") String clientId) {
         return toResult(toTree(resourceService.findList(ResourcePo::getClientId, clientId),

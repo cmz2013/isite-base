@@ -19,8 +19,8 @@ import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWO
 import static org.isite.commons.cloud.constants.CloudConstants.X_APP_CODE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_SIGNATURE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_TIMESTAMP;
-import static org.isite.commons.cloud.sign.SignUtils.getSignature;
-import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameter;
+import static org.isite.commons.cloud.signature.SignatureUtils.getSignature;
+import static org.isite.commons.cloud.signature.SignatureUtils.getSignatureParameter;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
 import static org.isite.commons.lang.data.Constants.AMPERSAND;
 import static org.isite.commons.lang.data.Constants.BLANK_STRING;

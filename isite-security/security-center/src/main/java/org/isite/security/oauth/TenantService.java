@@ -1,6 +1,6 @@
 package org.isite.security.oauth;
 
-import org.isite.commons.cloud.sign.SignSecret;
+import org.isite.commons.web.signature.SignatureSecret;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
@@ -23,16 +23,16 @@ import static org.isite.tenant.data.constants.TenantConstants.SERVICE_ID;
 @Component
 public class TenantService {
 
-    private SignSecret signSecret;
+    private SignatureSecret signatureSecret;
     private TokenStore tokenStore;
 
     /**
      * 多租户的用户，登录以后可以切换租户，同时更新rbac权限信息
      */
     public OauthEmployee changeTenant(OauthEmployee employee, Integer tenantId) {
-        Rbac rbac = getRbac(new LoginDto(tenantId, employee.getUserId(), employee.getClientId()),
-                signSecret.password(SERVICE_ID));
-
+        Rbac rbac = getRbac(
+                new LoginDto(tenantId, employee.getUserId(), employee.getClientId()),
+                signatureSecret.password(SERVICE_ID));
         notNull(rbac, getMessage("Tenant.unavailable", "tenant unavailable"));
         employee.setTenant(rbac.getTenant());
         employee.setEmployeeId(rbac.getEmployeeId());
@@ -47,8 +47,8 @@ public class TenantService {
     }
 
     @Autowired
-    public void setSignSecret(SignSecret signSecret) {
-        this.signSecret = signSecret;
+    public void setSignSecret(SignatureSecret signatureSecret) {
+        this.signatureSecret = signatureSecret;
     }
 
     @Autowired

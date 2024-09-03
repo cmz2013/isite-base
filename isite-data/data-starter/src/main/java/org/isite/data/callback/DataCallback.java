@@ -2,7 +2,7 @@ package org.isite.data.callback;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.cloud.sign.SignSecret;
+import org.isite.commons.web.signature.SignatureSecret;
 import org.isite.data.client.WsClient;
 import org.isite.data.client.WsClientFactory;
 import org.isite.data.exception.CallbackException;
@@ -23,11 +23,12 @@ import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.cloud.constants.CloudConstants.X_APP_CODE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_SIGNATURE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_TIMESTAMP;
+import static org.isite.commons.cloud.signature.SignatureUtils.getSignature;
+import static org.isite.commons.cloud.signature.SignatureUtils.getSignatureParameter;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.data.Constants.NEW_LINE;
+import static org.isite.commons.lang.data.Constants.THREE;
 import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
-import static org.isite.commons.cloud.sign.SignUtils.getSignature;
-import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameter;
 import static org.isite.commons.lang.utils.StringUtils.join;
 import static org.isite.data.client.DataApiAccessor.callApi;
 import static org.isite.data.support.constants.DataConstants.SERVICE_ID;
@@ -47,7 +48,7 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 	private final Predicate<R> predicate;
 	private WsClientFactory wsClientFactory;
 	private LogHandler logHandler;
-	private SignSecret signSecret;
+	private SignatureSecret signatureSecret;
 
 	protected DataCallback(Predicate<R> predicate) {
 		this.predicate = predicate;
@@ -115,7 +116,7 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 
 	/**
 	 * @Description 在报文头添加接口签名信息，自定义头数据需要重写该方法。
-	 * 配置远程（外部系统）接口的签名秘钥：security.signature.secret.data-api-${id}
+	 * 配置远程（外部系统）接口的签名秘钥：security.signature.secret.{password/apiKey}.data-api-${id}
 	 * SOAP报文可以通过类似Map＜String, Map＜String, Object＞＞的数据结构，实现节点的层次结构。
 	 */
 	@SneakyThrows
@@ -123,9 +124,8 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 		String apiName = new URI(dataApi.getServerUrl()).getPath();
 		Map<String, Object> parameters = getSignatureParameter(data);
 		long timestamp = currentTimeMillis() / SECOND.getMillis();
-		String password = signSecret.password("data-api-" + dataApi.getId());
-
-		Map<String, String> headers = new HashMap<>();
+		String password = signatureSecret.password("data-api-" + dataApi.getId());
+		Map<String, String> headers = new HashMap<>(THREE);
 		headers.put(X_APP_CODE, dataApi.getAppCode());
 		headers.put(X_TIMESTAMP, valueOf(timestamp));
 		headers.put(X_SIGNATURE, getSignature(apiName, parameters, password, timestamp));
@@ -136,7 +136,7 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 	 * @Description 根据id查询数据接口
 	 */
 	protected DataApi getDataApi(String apiId) {
-		return callApi(CALLBACK, apiId, signSecret.password(SERVICE_ID));
+		return callApi(CALLBACK, apiId, signatureSecret.password(SERVICE_ID));
 	}
 
 	@Autowired
@@ -150,13 +150,13 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 	}
 
 	@Autowired
-	public void setSignSecret(SignSecret signSecret) {
-		this.signSecret = signSecret;
+	public void setSignSecret(SignatureSecret signatureSecret) {
+		this.signatureSecret = signatureSecret;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-		notNull(this.signSecret, "signSecret must be set");
+		notNull(this.signatureSecret, "signSecret must be set");
 		notNull(this.logHandler, "logHandler must be set");
 		notNull(this.wsClientFactory, "wsClientFactory must be set");
 	}

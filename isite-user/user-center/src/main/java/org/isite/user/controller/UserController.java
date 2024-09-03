@@ -7,7 +7,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.lang.data.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.web.sign.Signature;
+import org.isite.commons.web.signature.Signed;
 import org.isite.user.data.dto.UserDto;
 import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserDetails;
@@ -83,7 +83,7 @@ public class UserController extends BaseController {
     /**
      * 用于认证鉴权中心注册用户信息
      */
-    @Signature
+    @Signed
     @PostMapping(API_POST_USER)
     public Result<Integer> addUser(@RequestBody @Validated(Add.class) UserDto userDto) {
         checkUserIdentifier(userDto);
@@ -121,7 +121,7 @@ public class UserController extends BaseController {
         }
     }
 
-    @Signature
+    @Signed
     @GetMapping(API_GET_USER_SECRET)
     public Result<UserSecret> getUserSecret(@PathVariable("identifier") String identifier) {
         return toResult(toUserSecret(userService.getByIdentifier(identifier)));
@@ -130,7 +130,7 @@ public class UserController extends BaseController {
     /**
      * 用于认证鉴权中心更新用户密码
      */
-    @Signature
+    @Signed
     @PutMapping(API_PUT_USER_PASSWORD)
     public Result<Integer> updatePassword(
             @PathVariable("userId") Long userId, @RequestParam("password") String password) {
