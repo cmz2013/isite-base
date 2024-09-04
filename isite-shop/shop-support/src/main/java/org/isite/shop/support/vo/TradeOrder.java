@@ -29,6 +29,10 @@ public class TradeOrder extends Vo<Long> {
      */
     private Long orderNumber;
     /**
+     * 支付金额(分)
+     */
+    private Integer payPrice;
+    /**
      * 订单来源渠道
      */
     private SourceType sourceType;

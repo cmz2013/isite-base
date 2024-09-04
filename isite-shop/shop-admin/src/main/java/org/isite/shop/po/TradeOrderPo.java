@@ -32,6 +32,10 @@ public class TradeOrderPo extends Po<Long> {
      */
     private Long orderNumber;
     /**
+     * 支付金额(分)
+     */
+    private Integer payPrice;
+    /**
      * 订单来源渠道
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)

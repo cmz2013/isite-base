@@ -69,6 +69,10 @@ public class Constants {
      */
     public static final int TEN = 10;
     /**
+     * 数字100
+     */
+    public static final int HUNDRED = 100;
+    /**
      * 数字1000
      */
     public static final int THOUSAND = 1000;

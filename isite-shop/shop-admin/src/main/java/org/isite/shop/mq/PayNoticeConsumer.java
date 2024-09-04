@@ -21,6 +21,8 @@ import java.util.Map;
 
 import static java.lang.Boolean.TRUE;
 import static org.isite.commons.cloud.data.Converter.groupBy;
+import static org.isite.commons.lang.data.Constants.NEW_LINE;
+import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderSelectivePo;
 import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderSupplierDto;
@@ -67,20 +69,20 @@ public class PayNoticeConsumer implements Consumer<PayNoticeDto> {
         try {
             TradeOrderPo tradeOrderPo = tradeOrderService.findOne(TradeOrderPo::getOrderNumber, payNoticeDto.getOrderNumber());
             if (null == tradeOrderPo) {
-                log.error("订单号不存在：{}", payNoticeDto.getOrderNumber());
+                log.error(toJsonString(payNoticeDto) + NEW_LINE +
+                        "订单号不存在：{}", payNoticeDto.getOrderNumber());
                 return new Basic.Nack();
             }
-            List<TradeOrderItemPo> orderItemPos = tradeOrderItemService.findList(TradeOrderItemPo::getOrderId, tradeOrderPo.getId());
-            Integer totalPrice = tradeOrderItemService.sumPayPrice(orderItemPos);
-            if (!totalPrice.equals(payNoticeDto.getPayPrice())) {
-                log.error("订单 {} 总金额 {} 与支付金额 {} 不一致",
-                        payNoticeDto.getOrderNumber(), totalPrice, payNoticeDto.getPayPrice());
+            if (tradeOrderPo.getPayPrice() != payNoticeDto.getPayPrice()) {
+                log.error(toJsonString(payNoticeDto) + NEW_LINE +
+                        "订单金额与支付金额不一致: {} != {}", tradeOrderPo.getPayPrice(), payNoticeDto.getPayPrice());
                 return new Basic.Nack();
             }
             tradeOrderService.updateSelectiveById(toTradeOrderSelectivePo(tradeOrderPo.getId(), payNoticeDto));
-            Map<String, List<TradeOrderItemPo>> supplierMap = groupBy(orderItemPos, TradeOrderItemPo::getSupplier);
-            supplierMap.forEach((key, values) -> rabbitTemplate.convertAndSend(
-                    EXCHANGE_TRADE_ORDER_SUCCESS, key, toTradeOrderSupplierDto(tradeOrderPo, values)));
+            Map<String, List<TradeOrderItemPo>> supplierMap = groupBy(tradeOrderItemService.findList(
+                    TradeOrderItemPo::getOrderId, tradeOrderPo.getId()), TradeOrderItemPo::getSupplier);
+            supplierMap.forEach((supplier, orderItemPos) -> rabbitTemplate.convertAndSend(
+                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier, toTradeOrderSupplierDto(tradeOrderPo, orderItemPos)));
             return new Basic.Ack();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

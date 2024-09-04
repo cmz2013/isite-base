@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
+import static org.isite.commons.lang.data.Constants.HUNDRED;
 import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.enums.EventType.POST_SHOP_PAY_NOTIFY;
@@ -36,16 +37,16 @@ public class PayNoticeProducer implements Producer {
 
     @Override
     public Object getBody(Object[] args, Object returnValue) {
-        Basic result = cast(returnValue);
-        if (result.getClass().equals(Basic.Ack.class)) {
-            EventDto eventDto = new EventDto();
+        Basic basic = cast(returnValue);
+        if (basic instanceof Basic.Ack) {
             PayNoticeDto payNoticeDto = cast(args[ZERO]);
+            EventDto eventDto = new EventDto();
             TradeOrderPo tradeOrderPo = tradeOrderService.findOne(TradeOrderPo::getOrderNumber, payNoticeDto.getOrderNumber());
             eventDto.setUserId(tradeOrderPo.getUserId());
             eventDto.setEventType(POST_SHOP_PAY_NOTIFY);
             eventDto.setObjectValue(valueOf(tradeOrderPo.getOrderNumber()));
             //最近一年内累计消费金额(元)
-            eventDto.setEventParam(tradeOrderItemService.sumLastYearPayPrice(tradeOrderPo.getUserId()) / 100);
+            eventDto.setEventParam(tradeOrderItemService.sumLastYearPayPrice(tradeOrderPo.getUserId()) / HUNDRED);
             return eventDto;
         }
         return null;
