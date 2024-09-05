@@ -2,7 +2,6 @@ package org.isite.commons.cloud.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Result;
 
 import java.util.List;
 

@@ -1,13 +1,13 @@
 package org.isite.operation.mq;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.mq.Producer;
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.vo.SignLog;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
-import static org.isite.commons.lang.utils.ResultUtils.isOk;
+import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.enums.EventType.POST_OPERATION_SIGN;
 /**

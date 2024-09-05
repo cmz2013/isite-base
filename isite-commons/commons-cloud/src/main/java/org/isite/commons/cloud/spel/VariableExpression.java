@@ -7,7 +7,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.lang.Assert.notBlank;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description SpEL变量表达式

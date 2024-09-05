@@ -4,22 +4,27 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.session.RowBounds;
 import org.isite.commons.lang.Functions;
 import org.isite.jpa.data.ListQuery;
+import org.isite.jpa.data.OrderQuery;
 import org.isite.jpa.data.PageQuery;
 import org.isite.jpa.service.ModelService;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.mapper.PoMapper;
-import tk.mybatis.mapper.weekend.Fn;
 import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.util.Collection;
 import java.util.List;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.isite.commons.lang.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.Reflection.getFields;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
+import static org.isite.commons.lang.Reflection.getValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
-import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
+import static org.isite.jpa.data.Direction.ASC;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
@@ -178,20 +183,41 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
     @Override
     public Page<P> findPage(PageQuery<P> pageQuery) {
         //当前线程紧跟着的第一个select方法会被分页
-        offsetPage(pageQuery.getOffset(), pageQuery.getPageSize()).setOrderBy(pageQuery.orderBy());
+        Page<P> page = offsetPage(pageQuery.getOffset(), pageQuery.getPageSize());
+        String orderBy = pageQuery.orderBy();
+        if (isNotBlank(orderBy)) {
+            page.setOrderBy(orderBy);
+        }
         return (Page<P>) mapper.select(pageQuery.getPo());
     }
 
-    /**
-     * 根据顺序索引分页查询，不统计总条数
-     * @param listQuery 查询条件
-     * @param fn 顺序索引字段在PO中的get函数
-     * @return 查询结果
-     */
-    public List<P> findList(Weekend<P> weekend, ListQuery listQuery, Fn<P, Object> fn) {
-        return mapper.selectByExampleAndRowBounds(
-                weekend.weekendCriteria().andGreaterThan(fn, listQuery.getMinIndex()),
-                new RowBounds(ZERO, listQuery.getPageSize()));
+    @Override
+    public List<P> findList(ListQuery<P> listQuery) {
+        Weekend<P> weekend = of(this.getPoClass());
+        OrderQuery order = listQuery.getOrder();
+        WeekendCriteria<P, Object> criteria = weekend.weekendCriteria();
+        if (null != listQuery.getPo()) {
+            getFields(getPoClass()).forEach(field -> {
+                if (!field.getName().equals(order.getField())) {
+                    Object value = getValue(listQuery.getPo(), field);
+                    if (null != value) {
+                        criteria.andEqualTo(field.getName(), value);
+                    }
+                }
+            });
+        }
+        if (ASC.equals(order.getDirection())) {
+            if (null != listQuery.getIndex()) {
+                criteria.andGreaterThan(order.getField(), listQuery.getIndex());
+            }
+            weekend.orderBy(order.getField()).asc();
+        } else {
+            if (null != listQuery.getIndex()) {
+                criteria.andLessThan(order.getField(), listQuery.getIndex());
+            }
+            weekend.orderBy(order.getField()).desc();
+        }
+        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, listQuery.getPageSize()));
     }
 
     /**

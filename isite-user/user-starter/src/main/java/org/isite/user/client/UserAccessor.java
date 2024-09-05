@@ -6,7 +6,7 @@ import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.lang.utils.ResultUtils.getData;
+import static org.isite.commons.cloud.utils.ResultUtils.getData;
 import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
 
 /**
@@ -21,10 +21,10 @@ public class UserAccessor {
     /**
      * @Description 根据唯一标识（id、username、phone）获取用户信息
      */
-    public static UserDetails getUser(Object identifier) {
+    public static UserDetails getUserDetails(Object identifier) {
         FeignClientFactory feignClientFactory = getBean(FeignClientFactory.class);
         UserClient userClient = feignClientFactory.getFeignClient(UserClient.class, SERVICE_ID);
-        return getData(userClient.getUser(identifier.toString()));
+        return getData(userClient.getUserDetails(identifier.toString()));
     }
 
     /**

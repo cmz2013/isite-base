@@ -6,7 +6,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.security.constants.SecurityConstants.CLIENT_ID;
 import static org.isite.security.constants.SecurityConstants.SPRING_SECURITY_SAVED_REQUEST;
 

@@ -4,13 +4,13 @@ import lombok.SneakyThrows;
 import org.isite.commons.cloud.enums.TerminalType;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.support.enums.EventType;
 import org.isite.operation.mapper.ActivityMapper;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizeCodePo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.po.WebpagePo;
+import org.isite.operation.support.enums.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,7 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.isite.commons.cloud.enums.TerminalType.APP;
 import static org.isite.commons.cloud.enums.TerminalType.WEB;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.IoUtils.getString;
 
 /**
@@ -45,6 +46,13 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
      */
     public List<Integer> findEnabledActivityIds(EventType eventType) {
         return ((ActivityMapper) getMapper()).selectEnabledActivityIds(eventType);
+    }
+
+    /**
+     * 根据pid是判断该节点是否为根节点
+     */
+    public boolean isRoot(Integer pid) {
+        return null == pid || pid.equals(ZERO);
     }
 
     /**

@@ -2,7 +2,8 @@ package org.isite.jpa.service;
 
 import lombok.SneakyThrows;
 import org.isite.commons.lang.Functions;
-import org.isite.commons.lang.data.BuiltIn;
+import org.isite.jpa.data.BuiltIn;
+import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.data.Model;
 import org.isite.jpa.data.PageQuery;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.setValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.Constants.INTERNAL_DATA_ILLEGAL_INSERTED;
+import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_INSERTED;
 
 /**
  * @Description 返回结果集不超过1000条
@@ -125,4 +126,9 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
      * 根据非空字段分页查询数据，统计总条数
      */
     public abstract List<P> findPage(PageQuery<P> pageQuery);
+
+    /**
+     * 根据有序索引执行分页查询，不统计总条数
+     */
+    public abstract List<P> findList(ListQuery<P> listQuery);
 }

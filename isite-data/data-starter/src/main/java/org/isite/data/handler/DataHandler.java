@@ -1,6 +1,6 @@
 package org.isite.data.handler;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.sign.SignSecret;
 import org.isite.data.exception.ServerException;
 import org.isite.data.log.LogHandler;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static java.lang.Class.forName;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.utils.ResultUtils.isOk;
+import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.data.client.DataApiAccessor.callApi;
 import static org.isite.data.support.constants.DataConstants.SERVICE_ID;

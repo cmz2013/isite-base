@@ -15,8 +15,8 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_TEMPLATES;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.data.Constants.COMMA;
-import static org.isite.commons.lang.data.Constants.SPACE;
+import static org.isite.commons.lang.Constants.COMMA;
+import static org.isite.commons.lang.Constants.SPACE;
 import static org.isite.commons.lang.template.FreeMarker.process;
 
 /**

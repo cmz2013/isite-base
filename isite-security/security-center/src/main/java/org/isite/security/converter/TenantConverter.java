@@ -5,9 +5,9 @@ import org.isite.tenant.data.vo.Tenant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.isite.commons.lang.data.Constants.FIELD_NAME;
-import static org.isite.commons.lang.data.Constants.TWO;
-import static org.isite.jpa.data.Constants.FIELD_ID;
+import static org.isite.commons.lang.Constants.FIELD_NAME;
+import static org.isite.commons.lang.Constants.TWO;
+import static org.isite.jpa.data.JpaConstants.FIELD_ID;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -20,7 +20,7 @@ public class TenantConverter {
     public static Map<String, Object> toTenantMap(Tenant tenant) {
         Map<String, Object> result = new HashMap<>(TWO);
         result.put(FIELD_ID, tenant.getId());
-        result.put(FIELD_NAME, tenant.getName());
+        result.put(FIELD_NAME, tenant.getTenantName());
         return result;
     }
 }

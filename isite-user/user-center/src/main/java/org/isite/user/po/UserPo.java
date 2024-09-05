@@ -2,7 +2,7 @@ package org.isite.user.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.BuiltIn;
+import org.isite.jpa.data.BuiltIn;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;

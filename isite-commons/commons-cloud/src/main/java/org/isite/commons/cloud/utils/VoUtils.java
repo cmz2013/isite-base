@@ -1,6 +1,6 @@
-package org.isite.commons.lang.utils;
+package org.isite.commons.cloud.utils;
 
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 
 import java.util.List;
 

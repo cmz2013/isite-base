@@ -8,8 +8,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static java.security.MessageDigest.getInstance;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description MD5编码工具类

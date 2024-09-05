@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.enums.TaskType.USER_SCORE;
 

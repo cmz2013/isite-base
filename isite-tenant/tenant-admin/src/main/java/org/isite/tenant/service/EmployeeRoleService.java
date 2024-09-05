@@ -12,8 +12,8 @@ import tk.mybatis.mapper.weekend.Weekend;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**

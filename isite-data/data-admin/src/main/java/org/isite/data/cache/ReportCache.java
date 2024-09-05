@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.isite.commons.lang.data.Constants.ONE;
+import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.data.support.constants.CacheKey.DATA_API_NUMBER;
 import static org.isite.data.support.constants.CacheKey.DATA_CALL_PREFIX;

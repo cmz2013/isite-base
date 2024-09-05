@@ -39,6 +39,10 @@ public class SkuPo extends Po<Integer> {
      */
     private Integer salePrice;
     /**
+     * 会员单价(分)，VIP会员可以享受折扣优惠
+     */
+    private Integer vipPrice;
+    /**
      * 已售出数量
      */
     private Integer soldNum;
@@ -46,5 +50,4 @@ public class SkuPo extends Po<Integer> {
      * 备注
      */
     private String remark;
-
 }

@@ -2,15 +2,15 @@ package org.isite.data.handler;
 
 import lombok.SneakyThrows;
 import org.apache.commons.digester3.xmlrules.FromXmlRulesModule;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
 
 import static org.apache.commons.digester3.binder.DigesterLoader.newLoader;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.lang.data.Constants.EXTENSION_FTL;
-import static org.isite.commons.lang.data.Constants.EXTENSION_XML;
+import static org.isite.commons.lang.Constants.EXTENSION_FTL;
+import static org.isite.commons.lang.Constants.EXTENSION_XML;
 import static org.isite.commons.lang.template.xml.Thymeleaf.process;
 
 /**

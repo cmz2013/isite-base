@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE;
 import static org.apache.commons.net.ftp.FTPReply.isPositiveCompletion;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.SLASH;
+import static org.isite.commons.lang.Constants.SLASH;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */

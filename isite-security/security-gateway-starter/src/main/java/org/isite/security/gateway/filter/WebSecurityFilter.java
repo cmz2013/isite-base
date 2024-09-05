@@ -1,8 +1,8 @@
 package org.isite.security.gateway.filter;
 
 import lombok.Setter;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.lang.Error;
-import org.isite.commons.lang.data.Result;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.gateway.client.OauthUserClient;
@@ -24,15 +24,16 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.isite.commons.cloud.constants.CloudConstants.X_CLIENT_ID;
 import static org.isite.commons.cloud.constants.CloudConstants.X_EMPLOYEE_ID;
 import static org.isite.commons.cloud.constants.CloudConstants.X_TENANT_ID;
 import static org.isite.commons.cloud.constants.CloudConstants.X_USER_ID;
 import static org.isite.commons.cloud.data.Converter.toResult;
+import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.data.Constants.COMMA;
+import static org.isite.commons.lang.Constants.COMMA;
 import static org.isite.commons.lang.http.HttpHeaders.AUTHORIZATION;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.commons.lang.utils.ResultUtils.isOk;
 import static org.isite.gateway.support.GatewayUtils.getServiceId;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
@@ -95,6 +96,7 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
                 headers.add(X_EMPLOYEE_ID, valueOf((oauthEmployee.getEmployeeId())));
                 headers.add(X_TENANT_ID, valueOf(oauthEmployee.getTenant().getId()));
             }
+            headers.add(X_CLIENT_ID, oauthUser.getClientId());
             return chain.filter(exchange);
         }
         return doResponse(exchange, new Error(FORBIDDEN.value(),

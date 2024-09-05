@@ -20,7 +20,7 @@ import static java.lang.Boolean.FALSE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.lang.utils.VoUtils.get;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.support.enums.TaskType.QUESTION_PRIZE;
 

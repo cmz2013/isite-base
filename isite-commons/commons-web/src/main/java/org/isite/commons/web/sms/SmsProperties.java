@@ -23,13 +23,13 @@ public class SmsProperties {
     /**
      * API密钥参数名
      */
-    private String keyField;
+    private String fieldKey;
     /**
      * 短信发送接口接收短信的手机号码参数名
      */
-    private String mobileField;
+    private String fieldMobile;
     /**
      * 短信发送接口短信内容参数名
      */
-    private String contentField;
+    private String fieldContent;
 }

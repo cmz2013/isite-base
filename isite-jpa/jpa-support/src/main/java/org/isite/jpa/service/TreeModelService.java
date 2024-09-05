@@ -8,9 +8,9 @@ import java.util.List;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
-import static org.isite.commons.lang.data.Constants.COMMA;
-import static org.isite.commons.lang.utils.TreeUtils.isRoot;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.COMMA;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -53,4 +53,11 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      * 根据pids右模糊查询
      */
     public abstract List<P> findLikePids(String pids);
+
+    /**
+     * 根据pid是判断该节点是否为根节点
+     */
+    public boolean isRoot(I pid) {
+        return null == pid || pid.equals(ZERO) || BLANK_STRING.equals(pid);
+    }
 }

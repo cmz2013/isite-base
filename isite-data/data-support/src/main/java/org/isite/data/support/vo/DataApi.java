@@ -2,7 +2,7 @@ package org.isite.data.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.enums.WsType;

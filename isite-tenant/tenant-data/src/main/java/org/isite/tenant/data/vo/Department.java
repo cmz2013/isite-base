@@ -2,7 +2,7 @@ package org.isite.tenant.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Tree;
+import org.isite.commons.cloud.data.Tree;
 import org.isite.commons.lang.enums.SwitchStatus;
 
 /**

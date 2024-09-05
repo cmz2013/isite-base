@@ -17,7 +17,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 
 /**

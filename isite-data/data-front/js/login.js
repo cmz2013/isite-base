@@ -1,7 +1,7 @@
 let authorization = {
-    dev: "Basic ZGF0YS5icm93c2VyOmRhdGEuYnJvd3Nlcg==",
-    test: "Basic ZGF0YS5icm93c2VyOmRhdGEuYnJvd3Nlcg==",
-    pro: "Basic ZGF0YS5icm93c2VyOmRhdGEuYnJvd3Nlcg=="
+    dev: "Basic ZGF0YS5hZG1pbjpkYXRhLmFkbWlu",
+    test: "Basic ZGF0YS5hZG1pbjpkYXRhLmFkbWlu",
+    pro: "Basic ZGF0YS5hZG1pbjpkYXRhLmFkbWlu"
 };
 
 function showLoginBox() {

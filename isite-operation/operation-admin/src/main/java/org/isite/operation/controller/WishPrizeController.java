@@ -1,6 +1,6 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
@@ -18,7 +18,7 @@ import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.utils.VoUtils.get;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;

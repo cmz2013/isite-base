@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 import static java.util.Base64.getEncoder;
-import static org.isite.commons.lang.data.Constants.COLON;
+import static org.isite.commons.lang.Constants.COLON;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 /**

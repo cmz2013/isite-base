@@ -1,6 +1,6 @@
 package org.isite.misc.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.cache.RegionCache;
 import org.isite.misc.data.vo.Region;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.misc.data.constants.UrlConstants.PUBLIC_GET_PROVINCES;
 import static org.isite.misc.data.constants.UrlConstants.PUBLIC_GET_REGIONS;
 

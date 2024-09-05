@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 
 /**

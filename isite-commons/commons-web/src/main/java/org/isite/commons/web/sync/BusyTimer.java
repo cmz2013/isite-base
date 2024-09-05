@@ -4,7 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import static java.lang.Thread.sleep;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description 忙时等待定时器。获取不到锁时，允许短时间的忙等待

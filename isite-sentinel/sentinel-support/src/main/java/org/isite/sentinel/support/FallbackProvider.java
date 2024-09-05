@@ -7,12 +7,12 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.alibaba.csp.sentinel.slots.system.SystemBlockException;
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.data.Constants.COLON;
+import static org.isite.commons.lang.Constants.COLON;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 
 /**

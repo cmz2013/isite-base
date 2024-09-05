@@ -16,8 +16,8 @@ import java.util.Map;
 
 import static com.alipay.api.internal.util.AlipaySignature.rsaCheckV1;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_API;
-import static org.isite.commons.lang.data.Constants.FAILURE;
-import static org.isite.commons.lang.data.Constants.SUCCESS;
+import static org.isite.commons.lang.Constants.FAILURE;
+import static org.isite.commons.lang.Constants.SUCCESS;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.shop.converter.PayNoticeConverter.toAlipayNoticeDto;
 import static org.isite.shop.converter.PayNoticeConverter.toWxpayNoticeDto;
@@ -39,14 +39,19 @@ import static org.isite.shop.support.constants.WxpayConstants.XML_SUCCESS;
 @RestController
 public class PayNoticeController extends BaseController {
 
-    private AlipayConfig alipayConfig;
     private WxpayConfig wxpayConfig;
-    private WxpayNoticeService wxpayNoticeService;
     private RabbitTemplate rabbitTemplate;
+    private AlipayConfig alipayConfig;
+    private WxpayNoticeService wxpayNoticeService;
 
     @Autowired
     public void setAlipayConfig(AlipayConfig alipayConfig) {
         this.alipayConfig = alipayConfig;
+    }
+
+    @Autowired
+    public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Autowired
@@ -57,11 +62,6 @@ public class PayNoticeController extends BaseController {
     @Autowired
     public void setWxpayNoticeService(WxpayNoticeService wxpayNoticeService) {
         this.wxpayNoticeService = wxpayNoticeService;
-    }
-
-    @Autowired
-    public void setRabbitTemplate(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
     }
 
     /**

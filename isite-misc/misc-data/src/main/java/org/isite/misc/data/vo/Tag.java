@@ -2,7 +2,7 @@ package org.isite.misc.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 
 /**
  * @Description 标签，主要用于用户画像

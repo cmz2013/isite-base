@@ -2,11 +2,20 @@ package org.isite.commons.web.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.isite.security.data.enums.ClientIdentifier;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.isite.commons.cloud.constants.CloudConstants.X_CLIENT_ID;
+import static org.isite.commons.cloud.constants.CloudConstants.X_EMPLOYEE_ID;
+import static org.isite.commons.cloud.constants.CloudConstants.X_TENANT_ID;
+import static org.isite.commons.cloud.constants.CloudConstants.X_USER_ID;
 import static org.isite.commons.cloud.constants.CloudConstants.X_VERSION;
 import static org.isite.commons.lang.http.HttpHeaders.AUTHORIZATION;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getAuthorization;
+import static org.isite.commons.web.interceptor.TransmittableHeaders.getClientIdentifier;
+import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
+import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
+import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getVersion;
 
 /**
@@ -24,6 +33,22 @@ public class HeaderEnhancer implements RequestInterceptor {
         String authorization = getAuthorization();
         if (isNotBlank(authorization)) {
             template.header(AUTHORIZATION, authorization);
+        }
+        Long userId = getUserId();
+        if (null!= userId) {
+            template.header(X_USER_ID, userId.toString());
+        }
+        Long employeeId = getEmployeeId();
+        if (null!= employeeId) {
+            template.header(X_EMPLOYEE_ID, employeeId.toString());
+        }
+        Integer tenantId = getTenantId();
+        if (null!= tenantId) {
+            template.header(X_TENANT_ID, tenantId.toString());
+        }
+        ClientIdentifier clientIdentifier = getClientIdentifier();
+        if (null != clientIdentifier) {
+            template.header(X_CLIENT_ID, clientIdentifier.getCode());
         }
     }
 }

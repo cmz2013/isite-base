@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static java.lang.Boolean.TRUE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.operation.support.constants.CacheKey.LOCK_PRIZE;
 import static org.isite.operation.support.enums.PrizeType.PHYSICAL;
 import static org.isite.operation.support.enums.PrizeType.THANK;

@@ -16,8 +16,8 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**

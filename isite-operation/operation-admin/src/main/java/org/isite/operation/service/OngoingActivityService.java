@@ -13,7 +13,7 @@ import java.util.List;
 import static java.lang.System.currentTimeMillis;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.utils.VoUtils.get;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 
 /**
  * @Description 进行中的活动Service

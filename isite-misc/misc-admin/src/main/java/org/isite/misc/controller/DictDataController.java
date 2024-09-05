@@ -1,6 +1,6 @@
 package org.isite.misc.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;

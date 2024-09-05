@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
-import static org.isite.commons.lang.data.Constants.AMPERSAND;
-import static org.isite.commons.lang.data.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.AMPERSAND;
+import static org.isite.commons.lang.Constants.EQUALS_SIGN;
 import static org.isite.shop.support.constants.WxpayConstants.FIELD_KEY;
 import static org.isite.shop.support.constants.WxpayConstants.FIELD_SIGN;
 

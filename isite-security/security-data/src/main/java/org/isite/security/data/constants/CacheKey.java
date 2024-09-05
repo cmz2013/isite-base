@@ -1,6 +1,6 @@
 package org.isite.security.data.constants;
 
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 
 /**
  * @Description 缓存KEY

@@ -2,7 +2,7 @@ package org.isite.jpa.service;
 
 import lombok.Getter;
 import org.isite.commons.lang.Functions;
-import org.isite.commons.lang.data.BuiltIn;
+import org.isite.jpa.data.BuiltIn;
 import org.isite.jpa.data.Model;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +14,8 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.Constants.INTERNAL_DATA_ILLEGAL_DELETE;
-import static org.isite.jpa.data.Constants.INTERNAL_DATA_ILLEGAL_UPDATE;
+import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_DELETE;
+import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_UPDATE;
 
 /**
  * @Description 在增删改操作时，是否开启事务取决于数据库的默认行为和当前的会话设置。

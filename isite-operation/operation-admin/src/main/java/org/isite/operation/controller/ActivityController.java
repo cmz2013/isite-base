@@ -3,9 +3,9 @@ package org.isite.operation.controller;
 import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
-import org.isite.commons.lang.data.Result;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.commons.lang.json.JsonField;
 import org.isite.commons.web.controller.BaseController;
@@ -13,10 +13,6 @@ import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
 import org.isite.operation.converter.ActivityConverter;
-import org.isite.operation.support.dto.ActivityDto;
-import org.isite.operation.support.dto.ActivityQuery;
-import org.isite.operation.support.enums.ActivityTheme;
-import org.isite.operation.support.vo.Activity;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -24,6 +20,10 @@ import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskRecordService;
 import org.isite.operation.service.TaskService;
+import org.isite.operation.support.dto.ActivityDto;
+import org.isite.operation.support.dto.ActivityQuery;
+import org.isite.operation.support.enums.ActivityTheme;
+import org.isite.operation.support.vo.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,10 +44,9 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
-import static org.isite.commons.lang.utils.TreeUtils.isRoot;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.ActivityConverter.toActivityPo;
@@ -80,7 +79,8 @@ public class ActivityController extends BaseController {
 
     @PostMapping(URL_OPERATION + "/activity")
     public Result<Integer> addActivity(@RequestBody @Validated(Add.class) ActivityDto activityDto) {
-        isTrue(isRoot(activityDto.getPid()) || isRoot(activityService.get(activityDto.getPid()).getPid()),
+        isTrue(activityService.isRoot(activityDto.getPid()) ||
+                        activityService.isRoot(activityService.get(activityDto.getPid()).getPid()),
                 getMessage("activity.twoLevels", "sub-activities can only have two levels"));
         return toResult(activityService.addActivity(toActivityPo(activityDto)));
     }
@@ -97,7 +97,7 @@ public class ActivityController extends BaseController {
     public Result<Integer> deleteActivity(@PathVariable("activityId") Integer activityId) {
         ActivityPo activityPo = activityService.get(activityId);
         notOnline(activityPo.getStatus());
-        if (isRoot(activityPo.getPid())) {
+        if (activityService.isRoot(activityPo.getPid())) {
             isFalse(activityService.exists(ActivityPo::getPid, activityPo.getId()),
                     getMessage("parentActivity.notDelete", "there are sub-activities"));
         }

@@ -1,7 +1,6 @@
 package org.isite.commons.lang;
 
 import lombok.SneakyThrows;
-import org.isite.commons.lang.data.Constants;
 import org.isite.commons.lang.json.Comment;
 import org.isite.commons.lang.json.JsonField;
 
@@ -15,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.lang.reflect.Modifier.isPublic;
 import static java.lang.reflect.Modifier.isStatic;
@@ -25,12 +25,12 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.lang.utils.TypeUtils.castArray;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.json.Type.ARRAY;
 import static org.isite.commons.lang.json.Type.OBJECT;
 import static org.isite.commons.lang.json.Type.getType;
+import static org.isite.commons.lang.utils.TypeUtils.cast;
+import static org.isite.commons.lang.utils.TypeUtils.castArray;
 
 /**
  * 反射工具类
@@ -86,11 +86,21 @@ public class Reflection {
     public static Object getValue(Object object, String attribute) {
         Field field = getField(object.getClass(), attribute);
         if (null != field) {
-            //屏蔽Java语言的访问检查(public、private字段，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
-            field.setAccessible(TRUE);
-            return field.get(object);
+            return getValue(object, field);
         }
         return null;
+    }
+
+    /**
+     * 获取当前类或父类或父接口的字段值
+     */
+    @SneakyThrows
+    public static Object getValue(Object object, Field field) {
+        //屏蔽Java语言的访问检查(public、private字段，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
+        field.setAccessible(TRUE);
+        Object value = field.get(object);
+        field.setAccessible(FALSE);
+        return value;
     }
 
     /**
@@ -103,6 +113,7 @@ public class Reflection {
             //屏蔽Java语言的访问检查(public、private字段，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
             field.setAccessible(TRUE);
             field.set(object, value);
+            field.setAccessible(FALSE);
         }
     }
 
@@ -469,6 +480,7 @@ public class Reflection {
         method.setAccessible(TRUE);
         //手动调用writeReplace()方法，返回一个SerializedLambda对象
         SerializedLambda lambda = (SerializedLambda) method.invoke(getter);
+        method.setAccessible(FALSE);
         //得到lambda表达式中调用的方法名
         return toFieldName(lambda.getImplMethodName());
     }

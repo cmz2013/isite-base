@@ -3,6 +3,9 @@ package org.isite.shop.po;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
+import org.isite.mybatis.type.EnumTypeHandler;
+import org.isite.shop.support.enums.SpuSupplier;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
 
@@ -25,7 +28,8 @@ public class TradeOrderItemPo extends Po<Long> {
     /**
      * 供应商
      */
-    private String supplier;
+    @ColumnType(typeHandler = EnumTypeHandler.class)
+    private SpuSupplier supplier;
     /**
      * 供应商自定义参数
      */
@@ -51,19 +55,19 @@ public class TradeOrderItemPo extends Po<Long> {
      */
     private Integer salePrice;
     /**
-     * 优惠金额(分)
+     * 优惠金额(分)，只能使用一个优惠券
      */
     private Integer discountPrice;
+    /**
+     * 支付积分(一个积分可以抵1分钱)
+     */
+    private Integer payScore;
+    /**
+     * 实际支付总金额(分)，不含服务费
+     */
+    private Integer payPrice;
     /**
      * 服务费(分)
      */
     private Integer serviceCharge;
-    /**
-     * 支付积分
-     */
-    private Integer payScore;
-    /**
-     * 实际支付总金额(分)
-     */
-    private Integer payPrice;
 }

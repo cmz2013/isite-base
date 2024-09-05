@@ -7,7 +7,7 @@ import static java.lang.String.valueOf;
 import static java.util.Arrays.copyOfRange;
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 import static org.apache.commons.lang3.StringUtils.reverse;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description 自然数（正整数）编码解码操作

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.commons.lang.utils.ResultUtils.isOk;
+import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;

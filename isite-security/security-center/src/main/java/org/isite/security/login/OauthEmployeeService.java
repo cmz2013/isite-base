@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.singletonList;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.security.converter.DataAuthorityConverter.toDataAuthority;
 import static org.isite.tenant.client.RbacAccessor.getRbac;
 import static org.isite.tenant.client.ResourceAccessor.getResources;

@@ -1,6 +1,6 @@
 package org.isite.user.client;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.user.data.dto.UserDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
@@ -28,7 +28,7 @@ public interface UserClient {
      * @Description 根据唯一标识（id、username、phone）获取用户信息
      */
     @GetMapping(value = GET_USER_BY_IDENTIFIER)
-    Result<UserDetails> getUser(@PathVariable("identifier") String identifier);
+    Result<UserDetails> getUserDetails(@PathVariable("identifier") String identifier);
     /**
      * @Description 查询用户秘钥
      */

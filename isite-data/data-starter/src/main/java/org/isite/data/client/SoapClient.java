@@ -23,7 +23,7 @@ import static org.apache.axiom.om.OMAbstractFactory.getSOAP11Factory;
 import static org.apache.axis2.Constants.Configuration.DISABLE_SOAP_ACTION;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.data.support.enums.WsProtocol.SOAP;
 

@@ -16,7 +16,7 @@ import static java.lang.Boolean.TRUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.CHARSET;
+import static org.isite.commons.lang.Constants.CHARSET;
 import static org.isite.commons.lang.http.HttpHeaders.CONNECTION;
 import static org.isite.commons.lang.http.HttpHeaders.CONTENT_DISPOSITION;
 import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TRANSFER_ENCODING;

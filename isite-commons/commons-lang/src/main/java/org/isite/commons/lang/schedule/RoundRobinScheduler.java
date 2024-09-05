@@ -3,7 +3,7 @@ package org.isite.commons.lang.schedule;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @description 轮询调度

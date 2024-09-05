@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.json.Jackson.OBJECT_MAPPER;
 
 /**

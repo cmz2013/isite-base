@@ -13,12 +13,12 @@ import java.util.Set;
 
 import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.RESULT_CODE;
-import static org.isite.commons.lang.data.Constants.RESULT_DATA;
-import static org.isite.commons.lang.data.Constants.RESULT_MESSAGE;
-import static org.isite.commons.lang.data.Constants.SPACE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.RESULT_CODE;
+import static org.isite.commons.lang.Constants.RESULT_DATA;
+import static org.isite.commons.lang.Constants.RESULT_MESSAGE;
+import static org.isite.commons.lang.Constants.SPACE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
 import static org.isite.commons.lang.http.HttpStatus.OK;
 

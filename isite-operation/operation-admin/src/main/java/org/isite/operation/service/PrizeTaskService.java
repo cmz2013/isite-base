@@ -11,8 +11,8 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 
 /**

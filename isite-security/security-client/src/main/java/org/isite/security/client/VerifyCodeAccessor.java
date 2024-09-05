@@ -4,7 +4,7 @@ import org.isite.commons.web.feign.FeignClientFactory;
 import org.isite.security.data.dto.VerifyCodeDto;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.lang.utils.ResultUtils.getData;
+import static org.isite.commons.cloud.utils.ResultUtils.getData;
 import static org.isite.security.data.constants.SecurityConstants.SERVICE_ID;
 
 /**

@@ -13,7 +13,7 @@ import java.io.StringWriter;
 
 import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.isite.commons.lang.data.Constants.POUND_SIGN;
+import static org.isite.commons.lang.Constants.POUND_SIGN;
 
 /**
  * @author <font color='blue'>zhangcm</font>

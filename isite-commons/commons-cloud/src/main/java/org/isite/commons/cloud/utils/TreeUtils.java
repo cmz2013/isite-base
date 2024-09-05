@@ -1,11 +1,10 @@
-package org.isite.commons.lang.utils;
+package org.isite.commons.cloud.utils;
 
-import org.isite.commons.lang.data.Tree;
+import org.isite.commons.cloud.data.Tree;
 
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -13,13 +12,6 @@ import static org.isite.commons.lang.data.Constants.ZERO;
 public class TreeUtils {
 
     private TreeUtils() {
-    }
-
-    /**
-     * 是否为根节点
-     */
-    public static <I> boolean isRoot(I pid) {
-        return null == pid || pid.equals(ZERO);
     }
 
     /**

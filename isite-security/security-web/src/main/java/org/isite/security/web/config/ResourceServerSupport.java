@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.split;
-import static org.isite.commons.lang.data.Constants.COMMA;
+import static org.isite.commons.lang.Constants.COMMA;
 
 /** 
  * @Description 配置资源服务器。

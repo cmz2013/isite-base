@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.TEN;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.TEN;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.schedule.RandomScheduler.nextInt;
 import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_LENGTH;
 

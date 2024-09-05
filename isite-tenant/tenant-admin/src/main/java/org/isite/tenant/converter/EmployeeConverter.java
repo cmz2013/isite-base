@@ -3,8 +3,8 @@ package org.isite.tenant.converter;
 import org.isite.tenant.data.dto.EmployeeDto;
 import org.isite.tenant.po.EmployeePo;
 
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.tenant.data.enums.OfficeStatus.NORMAL;
 
 /**

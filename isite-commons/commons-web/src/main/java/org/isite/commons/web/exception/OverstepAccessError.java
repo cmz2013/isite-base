@@ -12,6 +12,7 @@ import static org.isite.commons.lang.http.HttpStatus.FORBIDDEN;
 public class OverstepAccessError extends Error {
 
     public OverstepAccessError() {
-        super(FORBIDDEN.getCode(), MessageUtils.getMessage("overstepAccess", "You do not have access to this resource"));
+        super(FORBIDDEN.getCode(), MessageUtils.getMessage("overstepAccess",
+                "You accessed a resource that you don't have permission to"));
     }
 }

@@ -20,8 +20,8 @@ import static java.lang.System.currentTimeMillis;
 import static java.util.List.of;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.TreeConverter.toTree;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
-import static org.isite.jpa.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.data.enums.OfficeStatus.DIMISSION;
 
@@ -82,8 +82,8 @@ public class RbacService {
             if (isEmpty(resourcePos)) {
                 return;
             }
-            List<Resource> resources = toTree(resourcePos,
-                    po -> convert(po, Resource::new), ids -> resourceService.findIn(ResourcePo::getId, ids));
+            List<Resource> resources = toTree(resourcePos, po -> convert(po, Resource::new),
+                    ids -> resourceService.findIn(ResourcePo::getId, ids));
             rbac.getRoles().add(toRole(rolePo, resources));
             List<DataApi> dataApis = convert(resourceApiService
                     .findDataApis(convert(resourcePos, ResourcePo::getId)), DataApi::new);

@@ -3,9 +3,9 @@ package org.isite.jpa.data;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
-public class Constants {
+public class JpaConstants {
 
-    private Constants() {
+    private JpaConstants() {
     }
 
     public static final String FIELD_ID = "id";

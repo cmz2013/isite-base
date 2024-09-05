@@ -31,7 +31,7 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;

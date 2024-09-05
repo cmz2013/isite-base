@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClientBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import static org.isite.commons.lang.data.Constants.DOT;
+import static org.isite.commons.lang.Constants.DOT;
 
 /**
  * @Description Feign客户端工厂类，动态指定服务ID，手动构建Feign客户端。

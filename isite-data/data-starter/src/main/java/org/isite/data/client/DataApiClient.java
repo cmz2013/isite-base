@@ -1,6 +1,6 @@
 package org.isite.data.client;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.data.support.enums.WsType;
 import org.isite.data.support.vo.DataApi;
 import org.springframework.web.bind.annotation.GetMapping;

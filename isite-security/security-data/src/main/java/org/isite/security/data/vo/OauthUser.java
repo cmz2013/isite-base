@@ -2,7 +2,7 @@ package org.isite.security.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.BuiltIn;
+import org.isite.jpa.data.BuiltIn;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

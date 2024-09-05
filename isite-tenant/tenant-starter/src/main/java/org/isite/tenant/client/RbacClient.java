@@ -1,6 +1,6 @@
 package org.isite.tenant.client;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.springframework.cloud.openfeign.SpringQueryMap;

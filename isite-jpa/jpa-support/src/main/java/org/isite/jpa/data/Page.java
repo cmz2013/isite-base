@@ -31,13 +31,4 @@ public class Page<T> extends ArrayList<T> {
     public List<T> getResult() {
         return this;
     }
-
-    public static <T> Page<T> of(PageQuery<?> pageQuery, List<T> results, long total) {
-        Page<T> page = new Page<>();
-        page.setPageNum(pageQuery.getPageNum());
-        page.setPageSize(pageQuery.getPageSize());
-        page.addAll(results);
-        page.setTotal(total);
-        return page;
-    }
 }

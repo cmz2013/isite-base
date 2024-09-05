@@ -1,14 +1,22 @@
 package org.isite.commons.web.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.lang.Error;
+import org.isite.commons.cloud.data.Result;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
-import static org.isite.commons.web.exception.ExceptionConverter.toResult;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.lang.Constants.SEMICOLON;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.EXPECTATION_FAILED;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -30,6 +38,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public Result<Object> errorHandler(HttpServletResponse response, Exception e) {
         response.setStatus(OK.value());
-        return toResult(e);
+        StringBuilder messages = new StringBuilder();
+        if (e instanceof ConstraintViolationException) {
+            for (ConstraintViolation<?> constraintViolation : ((ConstraintViolationException) e).getConstraintViolations()) {
+                messages.append(constraintViolation.getMessage()).append(SEMICOLON);
+            }
+            return new Result<>(BAD_REQUEST.value(), messages.toString());
+        }
+        if (e instanceof MethodArgumentNotValidException) {
+            for (FieldError fieldError : ((MethodArgumentNotValidException) e).getBindingResult().getFieldErrors()) {
+                messages.append(fieldError.getDefaultMessage()).append(SEMICOLON);
+            }
+            return new Result<>(BAD_REQUEST.value(), messages.toString());
+        }
+        if (e instanceof Error) {
+            return new Result<>(((Error) e).getCode(), getMessage(e));
+        }
+        return new Result<>(EXPECTATION_FAILED.value(), getMessage(e));
     }
 }

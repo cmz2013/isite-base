@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class UserDetails extends UserBasic {
     /**
-     * 是否为VIP会员(1：是，0：否)
+     * 是否为VIP会员
      */
-    private Boolean vip;
+    private boolean vip;
 }

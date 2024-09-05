@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.isite.commons.lang.data.Constants.THREE;
+import static org.isite.commons.lang.Constants.THREE;
 
 /**
  * @Description 发送短信的客户端

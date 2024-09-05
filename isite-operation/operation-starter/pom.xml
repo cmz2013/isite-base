@@ -17,5 +17,11 @@
             <groupId>org.isite</groupId>
             <artifactId>operation-support</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>commons-web</artifactId>
+            <version>${isite.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

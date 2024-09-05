@@ -1,14 +1,13 @@
 package org.isite.commons.web.controller;
 
-import org.isite.commons.lang.data.Result;
 import org.isite.commons.cloud.data.ListRequest;
 import org.isite.commons.cloud.data.ListResult;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.cloud.data.Result;
 
 import java.util.List;
 
-import static org.isite.commons.lang.data.Result.success;
 import static org.isite.commons.cloud.data.ListResult.success;
 import static org.isite.commons.cloud.data.PageResult.success;
 
@@ -24,7 +23,7 @@ public class BaseController {
      * @param <V> VO class
      */
     protected <V> Result<V> toResult(V vo) {
-        return Result.success(vo);
+        return success(vo);
     }
 
     /**
@@ -51,6 +50,6 @@ public class BaseController {
      */
     protected Result<Object> toResult(Runnable runnable) {
         runnable.run();
-        return Result.success();
+        return success();
     }
 }

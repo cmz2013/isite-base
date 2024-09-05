@@ -1,6 +1,6 @@
 package org.isite.tenant.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.security.data.vo.OauthClient;
 import org.isite.tenant.po.ResourcePo;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
+import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.security.client.EndpointAccessor.findOauthClients;
 import static org.isite.tenant.data.constants.UrlConstants.GET_OAUTH_CLIENTS;
@@ -32,11 +31,10 @@ public class EndpointController extends BaseController {
      */
     @GetMapping(GET_OAUTH_CLIENTS)
     public Result<List<OauthClient>> findClients() {
-        int roleId = roleService.getAdminRole(getTenantId()).getId();
-        List<Integer> resourceIds = roleResourceService.findList(RoleResourcePo::getRoleId, roleId)
-                .stream().map(RoleResourcePo::getResourceId).collect(toList());
-        return toResult(findOauthClients(resourceService.findIn(ResourcePo::getId, resourceIds)
-                .stream().map(ResourcePo::getClientId).collect(toSet())));
+        List<Integer> resourceIds = convert(roleResourceService.findList(RoleResourcePo::getRoleId,
+                roleService.getAdminRole(getTenantId()).getId()), RoleResourcePo::getResourceId);
+        return toResult(findOauthClients(convert(
+                resourceService.findIn(ResourcePo::getId, resourceIds), ResourcePo::getClientId)));
     }
 
     @Autowired

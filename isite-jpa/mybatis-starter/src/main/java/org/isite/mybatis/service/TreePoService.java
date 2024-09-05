@@ -2,12 +2,10 @@ package org.isite.mybatis.service;
 
 import org.apache.ibatis.session.RowBounds;
 import org.isite.commons.lang.Functions;
-import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.service.TreeModelService;
 import org.isite.mybatis.data.TreePo;
 import org.isite.mybatis.mapper.TreePoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.weekend.Fn;
 import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.Collection;
@@ -15,11 +13,11 @@ import java.util.List;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
 import static org.isite.commons.lang.Assert.notNull;
+import static org.isite.commons.lang.Constants.PERCENT;
+import static org.isite.commons.lang.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.data.Constants.PERCENT;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
-import static org.isite.commons.lang.data.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
@@ -188,18 +186,6 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     public boolean exists(P po, I exceptId) {
         return mapper.existsByPoAndExcludeId(po, exceptId);
-    }
-
-    /**
-     * 根据顺序索引分页查询，不统计总条数
-     * @param listQuery 查询条件
-     * @param fn 顺序索引字段在PO中的get函数
-     * @return 查询结果
-     */
-    public List<P> findList(Weekend<P> weekend, ListQuery listQuery, Fn<P, Object> fn) {
-        return mapper.selectByExampleAndRowBounds(
-                weekend.weekendCriteria().andGreaterThan(fn, listQuery.getMinIndex()),
-                new RowBounds(ZERO, listQuery.getPageSize()));
     }
 
     @Override

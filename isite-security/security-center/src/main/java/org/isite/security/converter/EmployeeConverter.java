@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
-import static org.isite.commons.lang.data.Constants.THREE;
+import static org.isite.commons.lang.Constants.THREE;
 import static org.isite.security.converter.ResourceConverter.toResourceMaps;
 import static org.isite.security.converter.ResourceConverter.toResources;
 import static org.isite.security.converter.RoleConverter.toRoleMaps;

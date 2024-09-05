@@ -4,8 +4,8 @@ import org.isite.tenant.data.dto.DepartmentDto;
 import org.isite.tenant.po.DepartmentPo;
 
 import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 
 /**

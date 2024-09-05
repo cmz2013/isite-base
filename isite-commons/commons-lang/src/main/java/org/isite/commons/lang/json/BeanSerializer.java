@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 在 JSON 中，值必须是以下数据类型之一：字符串，数字，对象（JSON 对象），数组，布尔，NULL
- * @author zhangcm
+ * @Description 在 JSON 中，值必须是以下数据类型之一：字符串，数字，对象（JSON 对象），数组，布尔，NULL
+ * @Author zhangcm
  */
 public class BeanSerializer extends BeanSerializerModifier {
 

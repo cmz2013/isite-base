@@ -2,7 +2,7 @@ package org.isite.shop.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -51,15 +51,15 @@ public class TradeOrderItem extends Vo<Long> {
      */
     private Integer discountPrice;
     /**
-     * 服务费(分)
-     */
-    private Integer serviceCharge;
-    /**
      * 支付积分
      */
     private Integer payScore;
     /**
-     * 实际支付总金额(分)
+     * 实际支付总金额(分)，不含服务费
      */
     private Integer payPrice;
+    /**
+     * 服务费(分)
+     */
+    private Integer serviceCharge;
 }

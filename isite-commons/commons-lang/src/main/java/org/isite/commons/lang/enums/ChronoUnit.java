@@ -2,15 +2,15 @@ package org.isite.commons.lang.enums;
 
 import lombok.Getter;
 
-import static org.isite.commons.lang.data.Constants.EIGHT;
-import static org.isite.commons.lang.data.Constants.FIVE;
-import static org.isite.commons.lang.data.Constants.FOUR;
-import static org.isite.commons.lang.data.Constants.NINE;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.SEVEN;
-import static org.isite.commons.lang.data.Constants.SIX;
-import static org.isite.commons.lang.data.Constants.THREE;
-import static org.isite.commons.lang.data.Constants.TWO;
+import static org.isite.commons.lang.Constants.EIGHT;
+import static org.isite.commons.lang.Constants.FIVE;
+import static org.isite.commons.lang.Constants.FOUR;
+import static org.isite.commons.lang.Constants.NINE;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.SEVEN;
+import static org.isite.commons.lang.Constants.SIX;
+import static org.isite.commons.lang.Constants.THREE;
+import static org.isite.commons.lang.Constants.TWO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

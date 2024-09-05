@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.valueOf;
-import static org.isite.commons.lang.data.Constants.HUNDRED;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.HUNDRED;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.enums.EventType.POST_SHOP_PAY_NOTIFY;
 

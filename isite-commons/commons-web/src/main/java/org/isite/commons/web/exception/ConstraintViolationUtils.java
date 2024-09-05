@@ -3,9 +3,9 @@ package org.isite.commons.web.exception;
 import javax.validation.ConstraintViolation;
 import java.util.Set;
 
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.SEMICOLON;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.SEMICOLON;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
 
 /**

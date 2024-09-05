@@ -8,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.data.Constants.RESULT_CODE;
-import static org.isite.commons.lang.data.Constants.RESULT_MESSAGE;
+import static org.isite.commons.lang.Constants.RESULT_CODE;
+import static org.isite.commons.lang.Constants.RESULT_MESSAGE;
 import static org.springframework.http.HttpStatus.PROXY_AUTHENTICATION_REQUIRED;
 
 /**

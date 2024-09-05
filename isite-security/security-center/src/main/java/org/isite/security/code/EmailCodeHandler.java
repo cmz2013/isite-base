@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.data.Constants.SPACE;
+import static org.isite.commons.lang.Constants.SPACE;
 import static org.isite.commons.lang.template.FreeMarker.process;
 import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_VALIDITY;
 import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;

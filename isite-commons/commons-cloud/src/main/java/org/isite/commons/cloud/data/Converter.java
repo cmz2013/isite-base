@@ -2,13 +2,15 @@ package org.isite.commons.cloud.data;
 
 import lombok.SneakyThrows;
 import org.isite.commons.lang.Error;
-import org.isite.commons.lang.data.Result;
+import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.data.Model;
+import org.isite.jpa.data.OrderQuery;
 import org.isite.jpa.data.PageQuery;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -29,8 +32,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
  * @author <font color='blue'>zhangcm</font>
  */
 public class Converter {
-
-    private static final String FIELD_QUERY = "query";
 
     private Converter() {
     }
@@ -70,7 +71,8 @@ public class Converter {
      * @param getter getter方法
      */
     public static <T, I> List<I> convert(List<T> srcList, Function<T, I> getter) {
-        return isEmpty(srcList) ? emptyList() : srcList.stream().map(getter).collect(toList());
+        return isEmpty(srcList) ? emptyList() : srcList.stream().map(getter).filter(Objects::nonNull)
+                .distinct().collect(toList());
     }
 
     /**
@@ -93,9 +95,24 @@ public class Converter {
         return srcList.stream().collect(groupingBy(getter));
     }
 
+    public static <Q, P extends Model<?>> ListQuery<P> toListQuery(ListRequest<Q> request, Supplier<P> constructor) {
+        ListQuery<P> listQuery = new ListQuery<>(
+                new OrderQuery(request.getOrder().getField(), request.getOrder().getDirection()));
+        listQuery.setIndex(request.getIndex());
+        listQuery.setPageSize(request.getPageSize());
+        listQuery.setPo(convert(request.getQuery(), constructor));
+        return listQuery;
+    }
+
     public static <Q, P extends Model<?>> PageQuery<P> toPageQuery(PageRequest<Q> request, Supplier<P> constructor) {
-        PageQuery<P> pageQuery = convert(request, PageQuery::new, FIELD_QUERY);
+        PageQuery<P> pageQuery = new PageQuery<>();
+        pageQuery.setPageNum(request.getPageNum());
+        pageQuery.setPageSize(request.getPageSize());
         pageQuery.setPo(convert(request.getQuery(), constructor));
+        if (isNotEmpty(request.getOrders())) {
+            pageQuery.setOrders(request.getOrders().stream().map(
+                    order -> new OrderQuery(order.getField(), order.getDirection())).collect(toList()));
+        }
         return pageQuery;
     }
 

@@ -11,8 +11,8 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.THOUSAND;
 
 /**
  * @Description 租户信息

@@ -2,7 +2,7 @@ package org.isite.data.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 
 /**
  * @Description 执行器（使用注册中心的内部服务）

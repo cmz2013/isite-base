@@ -5,7 +5,7 @@ import org.isite.misc.data.dto.FileRecordPostDto;
 import org.isite.misc.data.dto.FileRecordPutDto;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.lang.utils.ResultUtils.getData;
+import static org.isite.commons.cloud.utils.ResultUtils.getData;
 import static org.isite.misc.data.constants.MiscConstants.SERVICE_ID;
 
 /**

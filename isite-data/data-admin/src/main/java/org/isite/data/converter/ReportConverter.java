@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.isite.commons.lang.data.Constants.COLON;
-import static org.isite.commons.lang.data.Constants.TWO;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.COLON;
+import static org.isite.commons.lang.Constants.TWO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

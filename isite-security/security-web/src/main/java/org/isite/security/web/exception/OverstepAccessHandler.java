@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.RESULT_CODE;
-import static org.isite.commons.lang.data.Constants.RESULT_MESSAGE;
+import static org.isite.commons.lang.Constants.RESULT_CODE;
+import static org.isite.commons.lang.Constants.RESULT_MESSAGE;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;

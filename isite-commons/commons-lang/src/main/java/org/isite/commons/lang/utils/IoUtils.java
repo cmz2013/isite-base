@@ -14,7 +14,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @author <font color='blue'>zhangcm</font>

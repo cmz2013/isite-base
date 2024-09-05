@@ -1,6 +1,6 @@
 package org.isite.tenant.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.tenant.po.EmployeeRolePo;
@@ -21,8 +21,8 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.tenant.converter.EmployeeRoleConverter.toEmployeeRoleSelectivePo;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;

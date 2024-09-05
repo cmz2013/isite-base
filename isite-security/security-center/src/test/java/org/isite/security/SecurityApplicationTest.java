@@ -1,6 +1,7 @@
 package org.isite.security;
 
 import org.isite.commons.cloud.utils.PropertyUtils;
+import org.isite.security.web.utils.SecurityUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,12 @@ class SecurityApplicationTest {
 
     @Test
     void testJasyptEnencrypt() {
-        System.out.println(stringEncryptor.encrypt("a2JMc4oJdCR78qpYRKHVSjCri"));
+        System.out.println(stringEncryptor.encrypt("bi.app"));
+    }
+
+    @Test
+    void testBasicAuth() {
+        System.out.println(SecurityUtils.getBasicAuth("data.admin", "data.admin"));
     }
 
     @Test

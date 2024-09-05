@@ -3,8 +3,8 @@ package org.isite.data.callback;
 import java.util.function.Predicate;
 
 import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.isite.commons.lang.json.Jackson.toJsonString;

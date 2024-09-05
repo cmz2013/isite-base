@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 
 /**
- * 自定义null值序列化处理器
- * @author zhangcm
+ * @Description 自定义null值序列化处理器
+ * @Author zhangcm
  */
 public class NullSerializer {
 

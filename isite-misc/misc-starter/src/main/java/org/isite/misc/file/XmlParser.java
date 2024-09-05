@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 import static org.apache.commons.digester3.binder.DigesterLoader.newLoader;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.data.Constants.EXTENSION_XML;
+import static org.isite.commons.lang.Constants.EXTENSION_XML;
 
 /**
  * @Description 解析XML文件

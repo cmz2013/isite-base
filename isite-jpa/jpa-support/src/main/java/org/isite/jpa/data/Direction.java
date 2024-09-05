@@ -1,10 +1,10 @@
-package org.isite.commons.lang.data;
+package org.isite.jpa.data;
 
 import org.isite.commons.lang.enums.Enumerable;
 
 /**
- * 排序方向枚举类
- * @author <font color='blue'>zhangcm</font>
+ * @Description 排序方向枚举类
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum Direction implements Enumerable<String> {
     /**

@@ -8,9 +8,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.isite.commons.lang.data.Constants.COMMA;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.jpa.data.Constants.FIELD_PIDS;
+import static org.isite.commons.lang.Constants.COMMA;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.jpa.data.JpaConstants.FIELD_PIDS;
 import static org.springframework.boot.jdbc.DatabaseDriver.MYSQL;
 import static org.springframework.boot.jdbc.DatabaseDriver.ORACLE;
 

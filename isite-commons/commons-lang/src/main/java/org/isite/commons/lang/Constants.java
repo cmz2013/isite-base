@@ -1,4 +1,4 @@
-package org.isite.commons.lang.data;
+package org.isite.commons.lang;
 
 /**
  * @Description 数据常量

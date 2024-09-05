@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Add;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.data.dto.TagRecordDto;
 import org.isite.misc.data.vo.TagRecord;

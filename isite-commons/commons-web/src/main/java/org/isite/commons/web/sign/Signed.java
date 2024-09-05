@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import static org.isite.commons.cloud.constants.CloudConstants.X_APP_CODE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_SIGNATURE;
 import static org.isite.commons.cloud.constants.CloudConstants.X_TIMESTAMP;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 
 /**
  * @Description 标记方法在执行前，执行签名验证

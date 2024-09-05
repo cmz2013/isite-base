@@ -1,6 +1,6 @@
 package org.isite.data.controller;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.data.log.DataLogService;
 import org.isite.data.support.dto.DataLogDto;

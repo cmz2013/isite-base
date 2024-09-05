@@ -41,4 +41,8 @@ public class CloudConstants {
      * 当前登录员工的租户ID
      */
     public static final String X_TENANT_ID = "x-tenant-id";
+    /**
+     * 当前登录用户的客户端ID
+     */
+    public static final String X_CLIENT_ID = "x-client-id";
 }

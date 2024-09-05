@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.schedule.RandomScheduler.nextInt;
 
 /**

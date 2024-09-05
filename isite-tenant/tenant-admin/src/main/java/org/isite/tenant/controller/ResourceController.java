@@ -1,7 +1,7 @@
 package org.isite.tenant.controller;
 
 import org.isite.commons.cloud.data.op.Add;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.commons.web.sign.Signed;
@@ -27,9 +27,9 @@ import static java.util.stream.Collectors.toList;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
-import static org.isite.jpa.converter.TreeConverter.toTree;
+import static org.isite.commons.cloud.data.TreeConverter.toTree;
 import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
 import static org.isite.tenant.data.constants.UrlConstants.API_GET_CLIENT_RESOURCES;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;

@@ -21,8 +21,8 @@ import static java.lang.Boolean.TRUE;
 import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.task.IdempotentKey.toValue;
 

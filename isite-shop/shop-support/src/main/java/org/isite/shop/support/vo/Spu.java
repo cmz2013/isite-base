@@ -2,7 +2,7 @@ package org.isite.shop.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 import org.isite.shop.support.enums.SpuSupplier;
 
 /**

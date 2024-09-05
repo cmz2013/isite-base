@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.lang.data.Constants.ONE;
+import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHalfYear;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHour;

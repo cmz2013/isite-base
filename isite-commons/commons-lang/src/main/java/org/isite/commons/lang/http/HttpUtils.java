@@ -3,11 +3,11 @@ package org.isite.commons.lang.http;
 import java.util.Map;
 
 import static org.apache.commons.collections4.MapUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.AMPERSAND;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
-import static org.isite.commons.lang.data.Constants.EQUALS_SIGN;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.AMPERSAND;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * HTTP工具类

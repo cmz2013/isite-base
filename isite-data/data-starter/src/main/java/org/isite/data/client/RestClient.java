@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.http.ContentType.APPLICATION_JSON;
 import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TYPE;
 import static org.isite.commons.lang.http.HttpMethod.valueOf;

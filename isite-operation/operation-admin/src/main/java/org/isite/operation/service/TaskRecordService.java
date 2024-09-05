@@ -11,8 +11,8 @@ import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_PID;

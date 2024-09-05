@@ -2,6 +2,8 @@ package org.isite.mongo.service;
 
 import lombok.Getter;
 import org.isite.commons.lang.Functions;
+import org.isite.jpa.data.ListQuery;
+import org.isite.jpa.data.OrderQuery;
 import org.isite.jpa.data.Page;
 import org.isite.jpa.data.PageQuery;
 import org.isite.jpa.service.ModelService;
@@ -17,16 +19,18 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.Constants.FIELD_CREATE_TIME;
-import static org.isite.jpa.data.Constants.FIELD_ID;
-import static org.isite.jpa.data.Constants.FIELD_INTERNAL;
-import static org.isite.jpa.data.Constants.FIELD_UPDATE_TIME;
-import static org.isite.jpa.data.Page.of;
+import static org.isite.jpa.converter.PageConverter.toPage;
+import static org.isite.jpa.data.Direction.ASC;
+import static org.isite.jpa.data.JpaConstants.FIELD_CREATE_TIME;
+import static org.isite.jpa.data.JpaConstants.FIELD_ID;
+import static org.isite.jpa.data.JpaConstants.FIELD_INTERNAL;
+import static org.isite.jpa.data.JpaConstants.FIELD_UPDATE_TIME;
 import static org.isite.mongo.converter.QueryConverter.toQuery;
 import static org.isite.mongo.converter.QueryConverter.toQuerySelective;
 import static org.isite.mongo.converter.UpdateConverter.toUpdate;
@@ -157,10 +161,29 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Long> {
         long total = this.count(query);
         query.limit(pageQuery.getPageSize()).skip(pageQuery.getOffset());
         if (isNotEmpty(pageQuery.getOrders())) {
-            query.with(by(pageQuery.getOrders().stream().map(item -> new Sort.Order(
-                    valueOf(item.getDirection().name()), item.getProperty())).collect(toList())));
+            query.with(by(pageQuery.getOrders().stream().map(order -> new Sort.Order(
+                    valueOf(order.getDirection().name()), order.getField())).collect(toList())));
         }
-        return of(pageQuery, mongoTemplate.find(query, getPoClass()), total);
+        return toPage(pageQuery, mongoTemplate.find(query, getPoClass()), total);
+    }
+
+    @Override
+    public List<P> findList(ListQuery<P> listQuery) {
+        OrderQuery order = listQuery.getOrder();
+        Query query = null != listQuery.getPo() ?
+                toQuerySelective(listQuery.getPo(), order.getField()) : new Query();
+        if (null != listQuery.getIndex()) {
+            Criteria criteria = new Criteria();
+            if (ASC.equals(order.getDirection())) {
+                criteria.and(order.getField()).gt(listQuery.getIndex());
+            } else {
+                criteria.and(order.getField()).lt(listQuery.getIndex());
+            }
+            query.addCriteria(criteria);
+        }
+        query.limit(listQuery.getPageSize()).skip(ZERO);
+        query.with(by(valueOf(order.getDirection().name()), order.getField()));
+        return mongoTemplate.find(query, getPoClass());
     }
 
     @Override

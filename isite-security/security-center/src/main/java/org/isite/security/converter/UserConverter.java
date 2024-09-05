@@ -7,7 +7,7 @@ import org.isite.user.data.dto.UserDto;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.isite.commons.lang.data.Constants.ONE;
+import static org.isite.commons.lang.Constants.ONE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

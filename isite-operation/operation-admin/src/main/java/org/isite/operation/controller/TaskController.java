@@ -1,7 +1,7 @@
 package org.isite.operation.controller;
 
 import org.isite.commons.cloud.data.op.Update;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.lang.json.JsonField;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
@@ -33,7 +33,7 @@ import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.TaskConverter.toTaskPo;

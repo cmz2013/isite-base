@@ -2,9 +2,9 @@ package org.isite.shop.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
+import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.shop.support.enums.PaymentType;
-import org.isite.shop.support.enums.SourceType;
 import org.isite.shop.support.enums.TradeStatus;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class TradeOrder extends Vo<Long> {
+public class TradeOrderDetails extends Vo<Long> {
     /**
      * 用户ID
      */
@@ -35,7 +35,7 @@ public class TradeOrder extends Vo<Long> {
     /**
      * 订单来源渠道
      */
-    private SourceType sourceType;
+    private ClientIdentifier clientIdentifier;
     /**
      * 支付方式
      */
@@ -53,7 +53,11 @@ public class TradeOrder extends Vo<Long> {
      */
     private TradeStatus tradeStatus;
     /**
-     * 订单条目
+     * 服务费(分)
      */
-    private List<TradeOrderItem> items;
+    private Integer serviceCharge;
+    /**
+     * 订单条目明细
+     */
+    private List<TradeOrderItem> orderItems;
 }

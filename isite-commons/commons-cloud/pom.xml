@@ -15,10 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.isite</groupId>
             <artifactId>jpa-support</artifactId>
             <version>${isite.version}</version>
         </dependency>

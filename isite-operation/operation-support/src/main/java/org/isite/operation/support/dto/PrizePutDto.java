@@ -7,7 +7,7 @@ import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotBlank;
 
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

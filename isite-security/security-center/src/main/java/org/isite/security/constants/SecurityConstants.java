@@ -1,8 +1,8 @@
 package org.isite.security.constants;
 
-import static org.isite.commons.lang.data.Constants.FIVE;
-import static org.isite.commons.lang.data.Constants.SIX;
-import static org.isite.commons.lang.data.Constants.THREE;
+import static org.isite.commons.lang.Constants.FIVE;
+import static org.isite.commons.lang.Constants.SIX;
+import static org.isite.commons.lang.Constants.THREE;
 
 /**
  * @author : zhangcm

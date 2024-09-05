@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
-import static org.isite.commons.lang.utils.TreeUtils.isRoot;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.misc.converter.RegionConverter.toPcodes;
 
 /**
@@ -51,12 +50,12 @@ public class RegionService extends TreePoService<RegionPo, Integer> {
             codes.forEach(code -> {
                 for (RegionPo region : regions) {
                     if (code.equals(region.getCode())) {
-                        fullName.append(region.getName());
+                        fullName.append(region.getRegionName());
                         break;
                     }
                 }
             });
         }
-        return fullName.append(regionPo.getName()).toString();
+        return fullName.append(regionPo.getRegionName()).toString();
     }
 }

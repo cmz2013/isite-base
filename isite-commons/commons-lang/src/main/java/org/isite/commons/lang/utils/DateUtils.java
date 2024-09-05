@@ -18,14 +18,14 @@ import static java.util.Calendar.SECOND;
 import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
 import static java.util.TimeZone.getDefault;
-import static org.isite.commons.lang.data.Constants.FOUR;
-import static org.isite.commons.lang.data.Constants.NINE;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.SEVEN;
-import static org.isite.commons.lang.data.Constants.SIX;
-import static org.isite.commons.lang.data.Constants.TEN;
-import static org.isite.commons.lang.data.Constants.THREE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.FOUR;
+import static org.isite.commons.lang.Constants.NINE;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.SEVEN;
+import static org.isite.commons.lang.Constants.SIX;
+import static org.isite.commons.lang.Constants.TEN;
+import static org.isite.commons.lang.Constants.THREE;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -286,8 +286,8 @@ public class DateUtils {
 	public static Date getEndTimeOfDay() {
 		Calendar calendar = getCalendar();
 		calendar.set(HOUR_OF_DAY, 23);
-		calendar.set(SECOND, 59);
 		calendar.set(MINUTE, 59);
+		calendar.set(SECOND, 59);
 		calendar.set(MILLISECOND, 999);
 		return calendar.getTime();
 	}

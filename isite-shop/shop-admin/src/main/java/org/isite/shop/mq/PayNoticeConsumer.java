@@ -17,16 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.Boolean.TRUE;
 import static org.isite.commons.cloud.data.Converter.groupBy;
-import static org.isite.commons.lang.data.Constants.NEW_LINE;
+import static org.isite.commons.lang.Constants.NEW_LINE;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
+import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderItemSelectivePos;
 import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderSelectivePo;
 import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderSupplierDto;
 import static org.isite.shop.support.constants.ShopConstants.EXCHANGE_TRADE_ORDER_SUCCESS;
+import static org.isite.shop.support.enums.TradeStatus.NOTPAY;
 
 /**
  * @Description 订单支付成功消息消费者，完成以下操作：
@@ -70,19 +72,26 @@ public class PayNoticeConsumer implements Consumer<PayNoticeDto> {
             TradeOrderPo tradeOrderPo = tradeOrderService.findOne(TradeOrderPo::getOrderNumber, payNoticeDto.getOrderNumber());
             if (null == tradeOrderPo) {
                 log.error(toJsonString(payNoticeDto) + NEW_LINE +
-                        "订单号不存在：{}", payNoticeDto.getOrderNumber());
+                        "订单号 {} 不存在", payNoticeDto.getOrderNumber());
                 return new Basic.Nack();
             }
-            if (tradeOrderPo.getPayPrice() != payNoticeDto.getPayPrice()) {
+            if (!tradeOrderPo.getTradeStatus().equals(NOTPAY)) {
+                log.error(toJsonString(payNoticeDto) + NEW_LINE + "订单状态必须是未支付");
+                return new Basic.Nack();
+            }
+            if (!tradeOrderPo.getPayPrice().equals(payNoticeDto.getPayPrice())) {
                 log.error(toJsonString(payNoticeDto) + NEW_LINE +
-                        "订单金额与支付金额不一致: {} != {}", tradeOrderPo.getPayPrice(), payNoticeDto.getPayPrice());
+                        "订单金额 {} 与支付金额 {} 不一致", tradeOrderPo.getPayPrice(), payNoticeDto.getPayPrice());
                 return new Basic.Nack();
             }
             tradeOrderService.updateSelectiveById(toTradeOrderSelectivePo(tradeOrderPo.getId(), payNoticeDto));
-            Map<String, List<TradeOrderItemPo>> supplierMap = groupBy(tradeOrderItemService.findList(
-                    TradeOrderItemPo::getOrderId, tradeOrderPo.getId()), TradeOrderItemPo::getSupplier);
-            supplierMap.forEach((supplier, orderItemPos) -> rabbitTemplate.convertAndSend(
-                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier, toTradeOrderSupplierDto(tradeOrderPo, orderItemPos)));
+            List<TradeOrderItemPo> orderItemPos = tradeOrderItemService.findList(TradeOrderItemPo::getOrderId, tradeOrderPo.getId());
+            if (payNoticeDto.getServiceCharge() > ZERO) {
+                toTradeOrderItemSelectivePos(tradeOrderPo.getPayPrice(), orderItemPos, payNoticeDto.getServiceCharge())
+                        .forEach(tradeOrderItemService::updateSelectiveById);
+            }
+            groupBy(orderItemPos, TradeOrderItemPo::getSupplier).forEach((supplier, pos) -> rabbitTemplate.convertAndSend(
+                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier, toTradeOrderSupplierDto(tradeOrderPo, pos)));
             return new Basic.Ack();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

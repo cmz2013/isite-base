@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.lang.Reflection.getFields;
 import static org.isite.commons.lang.Reflection.getValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**

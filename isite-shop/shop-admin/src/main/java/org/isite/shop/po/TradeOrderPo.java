@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
+import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.shop.support.enums.PaymentType;
-import org.isite.shop.support.enums.SourceType;
 import org.isite.shop.support.enums.TradeStatus;
 import tk.mybatis.mapper.annotation.ColumnType;
 
@@ -32,14 +32,14 @@ public class TradeOrderPo extends Po<Long> {
      */
     private Long orderNumber;
     /**
-     * 支付金额(分)
+     * 订单支付金额(分)，不含服务费
      */
     private Integer payPrice;
     /**
      * 订单来源渠道
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SourceType sourceType;
+    private ClientIdentifier clientIdentifier;
     /**
      * 支付方式
      */
@@ -58,5 +58,8 @@ public class TradeOrderPo extends Po<Long> {
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
     private TradeStatus tradeStatus;
-
+    /**
+     * 服务费(分)
+     */
+    private Integer serviceCharge;
 }

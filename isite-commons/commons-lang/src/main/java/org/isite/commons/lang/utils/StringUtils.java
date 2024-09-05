@@ -1,8 +1,8 @@
 package org.isite.commons.lang.utils;
 
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

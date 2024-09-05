@@ -6,7 +6,7 @@ import org.isite.shop.po.TradeOrderItemPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.isite.commons.lang.data.Constants.ONE;
+import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
 
 /**

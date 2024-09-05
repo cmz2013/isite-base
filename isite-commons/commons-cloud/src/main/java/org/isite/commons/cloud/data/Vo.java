@@ -1,4 +1,4 @@
-package org.isite.commons.lang.data;
+package org.isite.commons.cloud.data;
 
 import lombok.Getter;
 import lombok.Setter;

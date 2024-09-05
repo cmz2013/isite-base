@@ -17,7 +17,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.tenant.converter.RoleResourceConverter.toRoleResourcePos;
 import static org.isite.tenant.data.constants.CacheKey.LOCK_TENANT;
 import static org.isite.tenant.data.constants.TenantConstants.ROLE_ADMINISTRATOR;

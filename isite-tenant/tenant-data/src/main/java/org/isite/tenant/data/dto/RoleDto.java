@@ -10,8 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.THOUSAND;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.THOUSAND;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -5,7 +5,7 @@ import static java.lang.reflect.Array.getLength;
 import static java.lang.reflect.Array.newInstance;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

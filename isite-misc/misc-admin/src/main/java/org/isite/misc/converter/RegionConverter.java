@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.lang.data.Constants.ONE;
-import static org.isite.commons.lang.data.Constants.TWO;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.TWO;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description 地区数据转换

@@ -6,7 +6,7 @@ import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.enums.TerminalType;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.mq.Message;

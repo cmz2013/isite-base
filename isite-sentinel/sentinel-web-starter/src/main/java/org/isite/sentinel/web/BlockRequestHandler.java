@@ -2,7 +2,7 @@ package org.isite.sentinel.web;
 
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.sentinel.support.FallbackProvider;
 
 import javax.servlet.http.HttpServletRequest;

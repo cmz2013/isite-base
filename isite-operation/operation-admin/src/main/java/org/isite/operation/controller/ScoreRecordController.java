@@ -3,7 +3,7 @@ package org.isite.operation.controller;
 import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.PageRequest;
 import org.isite.commons.cloud.data.PageResult;
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.support.dto.ScoreRecordDto;
 import org.isite.operation.support.vo.ScoreRecord;

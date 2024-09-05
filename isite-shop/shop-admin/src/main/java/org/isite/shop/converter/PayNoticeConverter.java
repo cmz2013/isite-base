@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
-import static org.isite.commons.lang.data.Constants.ZERO;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.DateUtils.PATTERN_DATETIME;
 import static org.isite.commons.lang.utils.DateUtils.PATTERN_DATETIME_DIVIDE;
 import static org.isite.commons.lang.utils.DateUtils.parseDate;

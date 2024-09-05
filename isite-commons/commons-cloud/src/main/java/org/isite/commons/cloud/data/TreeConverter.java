@@ -1,6 +1,5 @@
-package org.isite.jpa.converter;
+package org.isite.commons.cloud.data;
 
-import org.isite.commons.lang.data.Tree;
 import org.isite.jpa.data.TreeModel;
 
 import java.util.ArrayList;
@@ -13,11 +12,9 @@ import java.util.function.Function;
 
 import static java.util.Collections.emptyList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.data.Constants.ZERO;
-import static org.isite.commons.lang.utils.TreeUtils.get;
-import static org.isite.commons.lang.utils.TreeUtils.isRoot;
-import static org.isite.commons.lang.utils.VoUtils.notContain;
+import static org.isite.commons.cloud.utils.TreeUtils.get;
+import static org.isite.commons.cloud.utils.VoUtils.notContain;
+import static org.isite.commons.lang.Constants.ZERO;
 
 
 /**
@@ -74,7 +71,7 @@ public class TreeConverter {
     private static <T extends Tree<T, I>, P extends TreeModel<I>, I>
     void toTree(T tree, List<T> trees, List<P> nodes, Function<P, T> converter, Set<I> pids) {
         //根节点
-        if (isRoot(tree.getPid())) {
+        if (tree.isRoot()) {
             if (notContain(trees, tree.getId())) {
                 trees.add(tree);
             }
@@ -96,13 +93,11 @@ public class TreeConverter {
     /**
      * 创建T实例
      */
-    private static <T extends Tree<T, I>, P extends TreeModel<I>, I> T
-    toTree(P node, Function<P, T> converter) {
+    private static <T extends Tree<T, I>, P extends TreeModel<I>, I> T toTree(P node, Function<P, T> converter) {
         T tree = converter.apply(node);
         if (null == tree.getChildren()) {
             tree.setChildren(new ArrayList<>());
         }
-        notNull(tree.getId(), "id is required");
         return tree;
     }
 

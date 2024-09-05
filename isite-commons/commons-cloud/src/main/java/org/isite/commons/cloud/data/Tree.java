@@ -1,9 +1,12 @@
-package org.isite.commons.lang.data;
+package org.isite.commons.cloud.data;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+
+import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Description 树结构 VO
@@ -21,4 +24,11 @@ public class Tree<T extends Tree<T,  I>, I> extends Vo<I> {
      * 子节点。子节点和根节点类型必须相同
      */
     private List<T> children;
+
+    /**
+     * 根据pid是判断该节点是否为根节点
+     */
+    public boolean isRoot() {
+        return null == pid || pid.equals(ZERO) || BLANK_STRING.equals(pid);
+    }
 }

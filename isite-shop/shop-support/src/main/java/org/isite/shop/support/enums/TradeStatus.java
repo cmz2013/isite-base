@@ -7,7 +7,7 @@ import org.isite.commons.lang.enums.Enumerable;
  */
 public enum TradeStatus implements Enumerable<Integer> {
     /**
-     * 未支付
+     * 未支付（24小时内完成支付）
      */
     NOTPAY(0),
     /**
@@ -15,7 +15,7 @@ public enum TradeStatus implements Enumerable<Integer> {
      */
     SUCCESS(1),
     /**
-     * 退款
+     * 已退款
      */
     REFUND(2);
 

@@ -5,7 +5,7 @@ import org.isite.data.support.enums.WsType;
 import org.isite.data.support.vo.DataApi;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.lang.utils.ResultUtils.getData;
+import static org.isite.commons.cloud.utils.ResultUtils.getData;
 import static org.isite.data.support.constants.DataConstants.SERVICE_ID;
 
 /**

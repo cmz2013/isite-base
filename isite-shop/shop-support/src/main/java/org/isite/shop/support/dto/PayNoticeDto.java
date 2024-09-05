@@ -32,7 +32,7 @@ public class PayNoticeDto {
      */
     private Date payTime;
     /**
-     * 支付金额(分)
+     * 支付金额(分)，不含服务费
      */
     private Integer payPrice;
     /**

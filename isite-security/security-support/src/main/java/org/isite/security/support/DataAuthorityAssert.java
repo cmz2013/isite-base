@@ -12,7 +12,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.data.Constants.COMMA;
+import static org.isite.commons.lang.Constants.COMMA;
 
 /**
  * @Description 检查用户数据接口权限

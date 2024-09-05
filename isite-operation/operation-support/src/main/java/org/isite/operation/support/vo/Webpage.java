@@ -3,7 +3,7 @@ package org.isite.operation.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.enums.TerminalType;
-import org.isite.commons.lang.data.Vo;
+import org.isite.commons.cloud.data.Vo;
 
 /**
  * @Description 活动网页模板

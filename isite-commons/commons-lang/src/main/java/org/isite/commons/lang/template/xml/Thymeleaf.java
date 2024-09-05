@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.isite.commons.lang.utils.IoUtils.getString;
 import static org.isite.commons.lang.Reflection.getFields;
 import static org.isite.commons.lang.Reflection.getValue;
+import static org.isite.commons.lang.utils.IoUtils.getString;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class Thymeleaf {
 

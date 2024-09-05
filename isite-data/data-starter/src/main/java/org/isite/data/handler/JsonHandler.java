@@ -1,6 +1,6 @@
 package org.isite.data.handler;
 
-import org.isite.commons.lang.data.Result;
+import org.isite.commons.cloud.data.Result;
 
 import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
