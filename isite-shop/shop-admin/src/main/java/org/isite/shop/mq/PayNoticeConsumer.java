@@ -91,7 +91,7 @@ public class PayNoticeConsumer implements Consumer<PayNoticeDto> {
                         .forEach(tradeOrderItemService::updateSelectiveById);
             }
             groupBy(orderItemPos, TradeOrderItemPo::getSupplier).forEach((supplier, pos) -> rabbitTemplate.convertAndSend(
-                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier, toTradeOrderSupplierDto(tradeOrderPo, pos)));
+                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier.getCode(), toTradeOrderSupplierDto(tradeOrderPo, pos)));
             return new Basic.Ack();
         } catch (Exception e) {
             log.error(e.getMessage(), e);

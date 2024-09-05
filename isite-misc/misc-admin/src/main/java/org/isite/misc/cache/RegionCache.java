@@ -38,6 +38,6 @@ public class RegionCache {
     public List<Region> getRegionByPid(int pid) {
         String fullName = regionService.getFullName(pid);
         return regionService.findByPid(pid, ENABLED).stream().map(regionPo ->
-                toRegion(regionPo, fullName + regionPo.getName())).collect(toList());
+                toRegion(regionPo, fullName + regionPo.getRegionName())).collect(toList());
     }
 }
