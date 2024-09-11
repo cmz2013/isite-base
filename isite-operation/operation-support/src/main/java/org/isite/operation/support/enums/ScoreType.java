@@ -10,7 +10,7 @@ import org.isite.commons.lang.enums.Enumerable;
 @Getter
 public enum ScoreType implements Enumerable<Integer> {
     /**
-     * 会员积分(只有VIP会员才能获得)，一个会员积分可以抵扣1分钱，有效期为1年
+     * 会员积分，VIP会员通过完成积分任务可以获得会员积分。一个会员积分可以抵扣1分钱，有效期为1年
      */
     VIP_SCORE(1, "会员积分"),
     /**

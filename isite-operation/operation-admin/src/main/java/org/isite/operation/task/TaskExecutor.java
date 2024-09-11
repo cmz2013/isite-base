@@ -2,15 +2,15 @@ package org.isite.operation.task;
 
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.cloud.factory.Strategy;
+import org.isite.operation.po.TaskObjectPo;
+import org.isite.operation.po.TaskRecordPo;
+import org.isite.operation.service.TaskObjectService;
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Reward;
 import org.isite.operation.support.vo.Task;
 import org.isite.operation.support.vo.TaskProperty;
-import org.isite.operation.po.TaskObjectPo;
-import org.isite.operation.po.TaskRecordPo;
-import org.isite.operation.service.TaskObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +20,9 @@ import java.util.Date;
 import static java.lang.Boolean.TRUE;
 import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
@@ -30,8 +30,8 @@ import static org.isite.operation.task.IdempotentKey.toValue;
  * @Description 任务执行接口，用于处理行为消息
  * @param <P> 任务记录PO Class
  * 运营任务执行主要分为两个阶段：
- * 阶段一：用户完成业务操作发送行为消息
- * 阶段二：处理行为消息赠送任务奖励
+ * 阶段一：用户完成业务操作发送行为消息；
+ * 阶段二：处理行为消息赠送任务奖励（一个任务最多只能发放一个奖励）
  * @Author <font color='blue'>zhangcm</font>
  */
 @Slf4j
@@ -121,7 +121,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     protected abstract void saveTaskRecord(Activity activity, P taskRecord, Reward reward);
 
     /**
-     * 选取运营任务奖励，多个奖品时默认按概率随机选取
+     * 选取运营任务奖励，一个任务最多只能发放一个奖励
      * @param activity 运营活动
      * @param task 运营任务
      * @param eventDto 行为参数

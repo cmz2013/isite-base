@@ -14,7 +14,7 @@ import static java.lang.System.currentTimeMillis;
 import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 
 /**
- * @Description VIP积分发放接口
+ * @Description VIP积分发放接口（不区分用户是否为会员）。
  * ScoreGiver 可以设置奖品库存，限制发放的总份数。
  * ScoreTaskExecutor 发放积分时，可以限制每人的发放次数，
  * @Author <font color='blue'>zhangcm</font>

@@ -3,9 +3,6 @@ package org.isite.operation.service;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
-import org.isite.operation.support.vo.Reward;
-import org.isite.operation.support.vo.SignScoreProperty;
-import org.isite.operation.support.vo.SignScoreReward;
 import org.isite.operation.mapper.SignLogMapper;
 import org.isite.operation.po.SignLogPo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 
 import static java.lang.System.currentTimeMillis;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
@@ -76,29 +71,5 @@ public class SignLogService extends PoService<SignLogPo, Long> {
             return latestSignLog.getContinuousCount();
         }
         return ZERO;
-    }
-
-    /**
-     * 根据用户连续签到获取任务奖励
-     * @param signScoreProperty 任务属性
-     * @param continuousCount 连续签到天数
-     * @return 任务奖励
-     */
-    public Reward getReward(SignScoreProperty signScoreProperty, int continuousCount) {
-        if (null == signScoreProperty || isEmpty(signScoreProperty.getRewards())) {
-            return null;
-        }
-        SignScoreReward target = null;
-        for (SignScoreReward reward : signScoreProperty.getRewards()) {
-            notNull(reward.getContinuousCount(), "reward.continuousCount cannot be null");
-            if (continuousCount == reward.getContinuousCount()) {
-                return reward;
-            } else if (continuousCount > reward.getContinuousCount()) {
-                if (null == target || target.getContinuousCount() < reward.getContinuousCount()) {
-                    target =  reward;
-                }
-            }
-        }
-        return target;
     }
 }
