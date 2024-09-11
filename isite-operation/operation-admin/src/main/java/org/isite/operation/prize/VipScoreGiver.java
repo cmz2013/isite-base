@@ -1,9 +1,10 @@
 package org.isite.operation.prize;
 
-import org.isite.operation.support.enums.PrizeType;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
+import org.isite.operation.service.VipScoreService;
+import org.isite.operation.support.enums.PrizeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

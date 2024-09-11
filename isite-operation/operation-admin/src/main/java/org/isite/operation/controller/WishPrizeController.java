@@ -2,11 +2,12 @@ package org.isite.operation.controller;
 
 import org.isite.commons.cloud.data.Result;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.operation.service.OngoingActivityService;
+import org.isite.operation.service.ScoreRecordService;
+import org.isite.operation.service.WishPrizeService;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.PrizeRecord;
-import org.isite.operation.service.OngoingActivityService;
-import org.isite.operation.service.WishPrizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.cloud.utils.VoUtils.get;
+import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
@@ -36,6 +37,7 @@ public class WishPrizeController extends BaseController {
 
     private WishPrizeService wishPrizeService;
     private OngoingActivityService ongoingActivityService;
+    private ScoreRecordService scoreRecordService;
 
     /**
      * 保存许愿记录，从缓存查询活动和奖品信息
@@ -54,10 +56,10 @@ public class WishPrizeController extends BaseController {
      * 查询用户可用积分
      */
     @GetMapping(URL_MY + URL_OPERATION + "/wish/{activityId}/score")
-    public Result<Long> getAvailableScore(@PathVariable("activityId") Integer activityId) {
+    public Result<Integer> getAvailableScore(@PathVariable("activityId") Integer activityId) {
         Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
-        return toResult(wishPrizeService.findAvailableScore(activity, getUserId()));
+        return toResult(scoreRecordService.sumActivityScore(activity.getId(), getUserId()));
     }
 
     /**
@@ -90,5 +92,10 @@ public class WishPrizeController extends BaseController {
     @Autowired
     public void setOngoingActivityService(OngoingActivityService ongoingActivityService) {
         this.ongoingActivityService = ongoingActivityService;
+    }
+
+    @Autowired
+    public void setScoreRecordService(ScoreRecordService scoreRecordService) {
+        this.scoreRecordService = scoreRecordService;
     }
 }

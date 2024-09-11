@@ -34,6 +34,7 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
+import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordSelectivePo;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_PID;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_RECEIVE_STATUS;
@@ -151,7 +152,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      */
     @Transactional(rollbackFor = Exception.class)
     public int receivePrize(Activity activity, Prize prize, long userId) {
-        List<PrizeRecordPo> prizeRecordPos = findList(toPrizeRecordPo(prize.getId(), userId, FALSE));
+        List<PrizeRecordPo> prizeRecordPos = findList(toPrizeRecordSelectivePo(prize.getId(), userId, FALSE));
         notEmpty(prizeRecordPos, getMessage("prize.notFound", "prize not found"));
         PrizeGiver prizeGiver = prizeGiverFactory.get(prize.getPrizeType());
         prizeRecordPos.forEach(prizeRecordPo -> prizeGiver.execute(activity, prize, prizeRecordPo));
@@ -186,7 +187,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
         prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
         prizeRecordPo.setIdempotentKey(IdempotentKey.toValue(
                 activityPo.getId(), ZERO, null, userId,
-                count(toPrizeRecordPo(activityPo.getId(), ZERO, userId))));
+                count(toPrizeRecordSelectivePo(activityPo.getId(), ZERO, userId))));
         return this.insert(prizeRecordPo);
     }
 

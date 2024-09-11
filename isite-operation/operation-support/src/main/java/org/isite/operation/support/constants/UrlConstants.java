@@ -14,7 +14,7 @@ public class UrlConstants {
 
     public static final String URL_OPERATION = "/operation";
     /**
-     * 抵扣VIP积分
+     * 使用VIP积分
      */
-    public static final String PUT_VIP_SCORE = URL_MY + URL_OPERATION + "/vip/score";
+    public static final String PUT_USE_VIP_SCORE = URL_MY + URL_OPERATION + "/useScore";
 }

@@ -1,9 +1,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.isite.operation.mapper.ScoreRecordMapper">
 
-    <select id="selectTotalScore" resultType="long">
-        select sum(score_value)
+    <select id="sumAvailableScore" resultType="int">
+        select sum(score_value - used_score)
         from score_record
-        where activity_id = #{activityId} and user_id = #{userId}
+        where user_id = #{userId} and score_type = #{scoreType.code}
+          <if test="activityId!= null">
+              and activity_id = #{activityId}
+          </if>
+          <if test="startTime!= null">
+              and create_time <![CDATA[>=]]> #{startTime}
+          </if>
+          <if test="endTime!= null">
+              and create_time <![CDATA[<=]]> #{endTime}
+          </if>
+    </select>
+
+    <select id="selectOneAvailableScore" resultType="ScoreRecordPo">
+        select id, user_id, activity_id, score_type, score_value, used_score, create_time
+        from score_record
+        where user_id = #{userId} and score_type = #{scoreType.code} and (score_value - used_score) <![CDATA[>]]> 0
+        <if test="activityId!= null">
+            and activity_id = #{activityId}
+        </if>
+        <if test="startTime!= null">
+            and create_time <![CDATA[>=]]> #{startTime}
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectVipScoreRecord" resultType="ScoreRecordPo">
+        select id, user_id, score_type, score_value, used_score, create_time
+        from score_record
+        where user_id = #{userId} and score_type = 1 and create_time <![CDATA[>=]]> #{startTime}
     </select>
 </mapper>

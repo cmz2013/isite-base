@@ -16,11 +16,11 @@ public class VipScoreAccessor {
     }
 
     /**
-     * @Description 抵扣VIP积分，返回剩余可用积分
+     * @Description 使用VIP积分
      */
-    public static Integer deductVipScore(Integer vipScore) {
+    public static Boolean useVipScore(Integer score) {
         FeignClientFactory feignClientFactory = getBean(FeignClientFactory.class);
         VipScoreClient vipScoreClient = feignClientFactory.getFeignClient(VipScoreClient.class, SERVICE_ID);
-        return getData(vipScoreClient.deductVipScore(vipScore));
+        return getData(vipScoreClient.useVipScore(score));
     }
 }

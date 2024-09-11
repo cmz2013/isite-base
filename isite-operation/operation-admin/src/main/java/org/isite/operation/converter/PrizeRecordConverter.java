@@ -65,7 +65,7 @@ public class PrizeRecordConverter {
         prizeRecordPo.setPrizeImage(prizePo.getPrizeImage());
     }
 
-    public static PrizeRecordPo toPrizeRecordPo(int prizeId, long userId, Boolean receiveStatus) {
+    public static PrizeRecordPo toPrizeRecordSelectivePo(int prizeId, long userId, Boolean receiveStatus) {
         PrizeRecordPo recordPo = new PrizeRecordPo();
         recordPo.setPrizeId(prizeId);
         recordPo.setUserId(userId);
@@ -73,7 +73,7 @@ public class PrizeRecordConverter {
         return recordPo;
     }
 
-    public static PrizeRecordPo toPrizeRecordPo(int activityId, int taskId, long userId) {
+    public static PrizeRecordPo toPrizeRecordSelectivePo(int activityId, int taskId, long userId) {
         PrizeRecordPo prizeRecordPo = new PrizeRecordPo();
         prizeRecordPo.setActivityId(activityId);
         prizeRecordPo.setTaskId(taskId);

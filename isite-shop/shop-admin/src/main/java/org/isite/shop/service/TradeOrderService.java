@@ -18,12 +18,13 @@ import static java.lang.Long.parseLong;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofDays;
+import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.DateUtils.PATTERN_DATE;
 import static org.isite.commons.lang.utils.DateUtils.formatDate;
-import static org.isite.operation.client.VipScoreAccessor.deductVipScore;
+import static org.isite.operation.client.VipScoreAccessor.useVipScore;
 import static org.isite.shop.support.constants.CacheKey.ORDER_NUMBER_DAY_COUNT_PREFIX;
 import static org.isite.shop.support.enums.TradeStatus.NOTPAY;
 
@@ -96,7 +97,7 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
         //会员积分抵扣
         int payScore = orderItemPos.stream().mapToInt(TradeOrderItemPo::getPayScore).sum();
         if (payScore > ZERO) {
-            deductVipScore(payScore);
+            isTrue(useVipScore(payScore), getMessage("vip.score.not.enough", "VIP score not enough"));
         }
         return tradeOrderPo.getId();
     }

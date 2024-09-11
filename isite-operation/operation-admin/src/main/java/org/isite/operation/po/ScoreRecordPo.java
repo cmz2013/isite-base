@@ -25,4 +25,8 @@ public class ScoreRecordPo extends TaskRecordPo {
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
     private ScoreType scoreType;
+    /**
+     * 已使用积分
+     */
+    private Integer usedScore;
 }

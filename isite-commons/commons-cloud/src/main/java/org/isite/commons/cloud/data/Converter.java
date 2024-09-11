@@ -108,7 +108,9 @@ public class Converter {
         PageQuery<P> pageQuery = new PageQuery<>();
         pageQuery.setPageNum(request.getPageNum());
         pageQuery.setPageSize(request.getPageSize());
-        pageQuery.setPo(convert(request.getQuery(), constructor));
+        if (null != constructor) {
+            pageQuery.setPo(convert(request.getQuery(), constructor));
+        }
         if (isNotEmpty(request.getOrders())) {
             pageQuery.setOrders(request.getOrders().stream().map(
                     order -> new OrderQuery(order.getField(), order.getDirection())).collect(toList()));

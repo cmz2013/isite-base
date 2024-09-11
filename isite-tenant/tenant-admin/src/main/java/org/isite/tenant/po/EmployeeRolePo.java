@@ -1,8 +1,6 @@
 package org.isite.tenant.po;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
@@ -14,8 +12,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "employee_role")
-@NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor 不建议使用，因为字段顺序一旦调整，构造函数传参就会错误，如果类型匹配很容易忽略该错误
 public class EmployeeRolePo extends Po<Integer> {
     /**
      * 员工ID
@@ -29,4 +26,15 @@ public class EmployeeRolePo extends Po<Integer> {
      * 租户ID
      */
     private Integer tenantId;
+
+    public EmployeeRolePo() {
+        super();
+    }
+
+    public EmployeeRolePo(Long employeeId, Integer roleId, Integer tenantId) {
+        super();
+        this.employeeId = employeeId;
+        this.roleId = roleId;
+        this.tenantId = tenantId;
+    }
 }

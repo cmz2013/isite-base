@@ -2,14 +2,14 @@ package org.isite.operation.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.mybatis.data.Po;
 import org.isite.misc.data.enums.ObjectType;
+import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
 
 /**
- * 运营任务对象约束条件
- * @author <font color='blue'>zhangcm</font>
+ * @Description 运营任务对象约束条件
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
