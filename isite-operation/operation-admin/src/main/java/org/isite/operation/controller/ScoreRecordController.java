@@ -10,15 +10,20 @@ import org.isite.operation.service.ScoreRecordService;
 import org.isite.operation.support.vo.ScoreRecord;
 import org.isite.operation.support.vo.ScoreView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+
 import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.lang.Assert.isTrue;
+import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.ScoreRecordConverter.toScoreRecordSelectivePo;
 import static org.isite.operation.support.constants.UrlConstants.PUT_USE_VIP_SCORE;
@@ -71,9 +76,11 @@ public class ScoreRecordController extends BaseController {
         }
     }
 
+    @Validated
     @PutMapping(PUT_USE_VIP_SCORE)
-    public Result<Boolean> useVipScore(@RequestParam(("score")) Integer score) {
-        return toResult(scoreRecordService.useVipScore(getUserId(), score));
+    public Result<?> useVipScore(@RequestParam(("score")) @NotNull Integer score) {
+        isTrue(score > ZERO, "score must be greater than 0");
+        return toResult(() -> scoreRecordService.useVipScore(getUserId(), score));
     }
 
     @Autowired

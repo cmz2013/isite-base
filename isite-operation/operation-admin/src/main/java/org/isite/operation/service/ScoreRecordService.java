@@ -1,6 +1,8 @@
 package org.isite.operation.service;
 
 import com.github.pagehelper.Page;
+import org.isite.commons.web.sync.Lock;
+import org.isite.commons.web.sync.Synchronized;
 import org.isite.jpa.data.PageQuery;
 import org.isite.operation.mapper.ScoreRecordMapper;
 import org.isite.operation.po.ScoreRecordPo;
@@ -15,10 +17,13 @@ import java.util.Date;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeMonth;
 import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_SCORE_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_VIP_SCORE_USER;
 import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
 import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 import static tk.mybatis.mapper.weekend.Weekend.of;
@@ -79,7 +84,8 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    public boolean useActivityScore(int activityId, long userId, int score) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_SCORE_USER, keys = {"#activityId", "#userId"}))
+    public void useActivityScore(int activityId, long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
         ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ACTIVITY_SCORE, null);
         while(score > ZERO && null != scoreRecordPo) {
@@ -93,7 +99,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
                 scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ACTIVITY_SCORE, null);
             }
         }
-        return ZERO == score;
+        isTrue(ZERO == score, "Not enough activity score");
     }
 
     /**
@@ -102,7 +108,8 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    public boolean useVipScore(long userId, int score) {
+    @Synchronized(locks = @Lock(name = LOCK_VIP_SCORE_USER, keys = "#userId"))
+    public void useVipScore(long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
         Date startTime = getTimeBeforeYear(ONE);
         ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(null, userId, VIP_SCORE, startTime);
@@ -117,7 +124,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
                 scoreRecordPo = mapper.selectOneAvailableScore(null, userId, VIP_SCORE, startTime);
             }
         }
-        return ZERO == score;
+        isTrue(ZERO == score, "Not enough vip score");
     }
 
     public Page<ScoreRecordPo> findVipScoreRecords(long userId, PageQuery<?> pageQuery) {

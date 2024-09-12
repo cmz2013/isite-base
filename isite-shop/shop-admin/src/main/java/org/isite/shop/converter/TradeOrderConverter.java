@@ -146,19 +146,15 @@ public class TradeOrderConverter {
             isFalse(couponRecordPo.getUsed(), "Coupon has been used");
             tradeOrderItemPo.setDiscountPrice(couponRecordPo.getDiscountPrice());
             payPrice = payPrice - tradeOrderItemPo.getDiscountPrice();
+            isTrue(payPrice >= ZERO, "Coupon has been overpaid");
         } else {
             tradeOrderItemPo.setDiscountPrice(ZERO);
         }
         //计算订单条目实际支付金额，优惠券优先级大于会员积分抵扣
         if (null != tradeOrderItemPo.getPayScore()) {
-            if (payPrice > ZERO) {
-                if (payPrice >= tradeOrderItemPo.getPayScore()) {
-                    tradeOrderItemPo.setPayScore(orderItemPostDto.getPayScore());
-                    payPrice = payPrice - tradeOrderItemPo.getPayScore();
-                } else {
-                    tradeOrderItemPo.setPayScore(payPrice);
-                }
-            }
+            tradeOrderItemPo.setPayScore(orderItemPostDto.getPayScore());
+            isTrue(payPrice >= tradeOrderItemPo.getPayScore(), "Score has been overpaid");
+            payPrice = payPrice - tradeOrderItemPo.getPayScore();
         } else {
             tradeOrderItemPo.setPayScore(ZERO);
         }

@@ -35,6 +35,14 @@ public class CacheKey {
      */
     public static final String LOCK_WHEEL_USER = "LOCK:WHEEL:${id}:USER:${arg1}";
     /**
+     * 用户使用VIP积分并发锁KEY
+     */
+    public static final String LOCK_VIP_SCORE_USER = "LOCK:VIP:SCORE:USER:${arg0}";
+    /**
+     * 用户使用活动积分并发锁KEY
+     */
+    public static final String LOCK_ACTIVITY_SCORE_USER = "LOCK:ACTIVITY:${arg0}:SCORE:USER:${arg1}";
+    /**
      * 用户签到并发锁KEY
      */
     public static final String LOCK_SIGN_USER = "LOCK:SIGN:USER:${arg0}";

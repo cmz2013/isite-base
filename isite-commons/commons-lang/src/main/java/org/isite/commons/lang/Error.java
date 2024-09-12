@@ -12,9 +12,9 @@ public class Error extends RuntimeException {
     /**
      * 返回状态码。如果业务自定义异常状态码，建议按系统进行区间划分
      */
-    private final int code;
+    private final Integer code;
 
-    public Error(int code, String message) {
+    public Error(Integer code, String message) {
         super(message);
         this.code = code;
     }

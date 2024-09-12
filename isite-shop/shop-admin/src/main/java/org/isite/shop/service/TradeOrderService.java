@@ -1,5 +1,7 @@
 package org.isite.shop.service;
 
+import org.isite.commons.cloud.data.Result;
+import org.isite.commons.lang.Error;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.mybatis.service.PoService;
 import org.isite.shop.mapper.TradeOrderMapper;
@@ -18,7 +20,7 @@ import static java.lang.Long.parseLong;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofDays;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
@@ -97,7 +99,8 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
         //会员积分抵扣
         int payScore = orderItemPos.stream().mapToInt(TradeOrderItemPo::getPayScore).sum();
         if (payScore > ZERO) {
-            isTrue(useVipScore(payScore), getMessage("vip.score.not.enough", "VIP score not enough"));
+            Result<?> result = useVipScore(payScore);
+            isTrue(isOk(result), new Error(result.getCode(), result.getMessage()));
         }
         return tradeOrderPo.getId();
     }

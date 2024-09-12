@@ -13,5 +13,5 @@ import static org.isite.operation.support.constants.UrlConstants.PUT_USE_VIP_SCO
 public interface VipScoreClient {
 
     @PutMapping(PUT_USE_VIP_SCORE)
-    Result<Boolean> useVipScore(@RequestParam(("score")) Integer score);
+    Result<?> useVipScore(@RequestParam(("score")) Integer score);
 }
