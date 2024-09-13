@@ -1,5 +1,8 @@
 package org.isite.commons.lang.schedule;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.function.ToIntFunction;
 
@@ -22,7 +25,7 @@ public class ProbabilityScheduler {
         int total = ZERO;
         int[] weightArray = new int[list.size()];
         for (int i = ZERO; i < list.size(); i++) {
-            total += list.get(i).getCoefficient();
+            total += list.get(i).getWeight();
             weightArray[i] = total;
         }
         return choose(list, total, weightArray);
@@ -51,5 +54,18 @@ public class ProbabilityScheduler {
             weightArray[i] = total;
         }
         return choose(list, total, weightArray);
+    }
+
+    /**
+     * @Description 调度数据模型父类
+     * @Author <font color='blue'>zhangcm</font>
+     */
+    @Getter
+    @Setter
+    public static class Model {
+        /**
+         * 权重
+         */
+        private Integer weight;
     }
 }

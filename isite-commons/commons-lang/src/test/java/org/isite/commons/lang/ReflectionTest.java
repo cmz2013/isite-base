@@ -2,50 +2,44 @@ package org.isite.commons.lang;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.schedule.Model;
+import org.isite.commons.lang.json.Comment;
+import org.isite.commons.lang.schedule.ProbabilityScheduler;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.isite.commons.lang.Reflection.toJsonFields;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 public class ReflectionTest {
 
+    @Comment("运营任务奖励列表")
     private Reward[] rewards;
 
     public static void main(String[] args) {
         System.out.println(toJsonString(toJsonFields(ReflectionTest.class)));
-        System.out.println(toJsonString(toJsonFields(WelfareTaskProperty.class)));
+        System.out.println(toJsonString(toJsonFields(PrizeTaskProperty.class)));
 
-        WelfareTaskProperty property = new WelfareTaskProperty();
-        property.setCumulateAmount(1000);
-        property.setStartTime(new Date(System.currentTimeMillis()));
+        PrizeTaskProperty property = new PrizeTaskProperty();
         List<PrizeReward> rewards = new ArrayList<>();
         PrizeReward reward = new PrizeReward();
         reward.setPrizeId(1);
+        reward.setWeight(90);
         rewards.add(reward);
         reward = new PrizeReward();
         reward.setPrizeId(2);
+        reward.setWeight(10);
         rewards.add(reward);
         property.setRewards(rewards);
         System.out.println(toJsonString(toJsonFields(property)));
     }
 
-    @Getter
-    @Setter
-    public static class WelfareTaskProperty extends PrizeTaskProperty {
-        private Date startTime;
-        private Integer cumulateAmount;
-    }
-
     public static class PrizeTaskProperty extends TaskProperty<PrizeReward> {
+        @Comment("运营任务奖品列表")
         @Override
         public List<PrizeReward> getRewards() {
             return super.getRewards();
@@ -55,18 +49,23 @@ public class ReflectionTest {
     @Getter
     @Setter
     public static class PrizeReward extends Reward {
+
+        @Comment("奖品ID")
         private Integer prizeId;
     }
 
-    public static class Reward extends Model implements Serializable {
+    public static class Reward extends ProbabilityScheduler.Model {
+
+        @Override
+        @Comment("奖品权重")
+        public Integer getWeight() {
+            return super.getWeight();
+        }
     }
 
     @Getter
     @Setter
-    public static class TaskProperty<T extends Reward> implements Serializable {
-        /**
-         * 运营任务奖励列表
-         */
+    public static class TaskProperty<T extends Reward> {
         private List<T> rewards;
     }
 }
