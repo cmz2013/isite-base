@@ -33,8 +33,8 @@ import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.lang.utils.TypeUtils.castArray;
 
 /**
- * 反射工具类
- * @author <font color='blue'>zhangcm</font>
+ * @Description 反射工具类
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class Reflection {
     /**

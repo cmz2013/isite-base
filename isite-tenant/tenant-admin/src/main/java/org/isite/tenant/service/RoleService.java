@@ -114,7 +114,7 @@ public class RoleService extends PoService<RolePo, Integer> {
     @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
     public int updateRole(RolePo rolePo, List<Integer> resourceIds) {
         checkResources(rolePo.getTenantId(), resourceIds);
-        return roleResourceService.deleteAndInsert(RoleResourcePo::getRoleId,rolePo.getId(),
+        return roleResourceService.deleteAndInsert(RoleResourcePo::getRoleId, rolePo.getId(),
                 toRoleResourcePos(rolePo.getId(), resourceIds));
     }
 }
