@@ -381,8 +381,10 @@ public class Reflection {
             }
             return dataFields;
         } else if (returnType.isArray()) {
-            return toJsonFields(returnType, castArray(returnValue, Object.class));
+            //处理数组类型,getComponentType()返回数组元素的类型
+            return toJsonFields(returnType.getComponentType(), castArray(returnValue, Object.class));
         } else if (ARRAY.equals(jsonField.getType())) {
+            //处理集合类型
             Collection<?> collections = cast(returnValue);
             //method.getGenericReturnType：返回带有泛型参数的返回类
             return toJsonFields(getGenericParameter(method.getGenericReturnType()), collections);

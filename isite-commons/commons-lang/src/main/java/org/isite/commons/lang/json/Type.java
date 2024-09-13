@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * JSON字段类型
- * @author <font color='blue'>zhangcm</font>
+ * @Description JSON字段类型
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum Type {
     /**

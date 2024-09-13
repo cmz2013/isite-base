@@ -15,13 +15,13 @@ import static org.isite.commons.lang.json.Jackson.toJsonString;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
-public class ReflectionTest {
+public class JsonFieldTest {
 
     @Comment("运营任务奖励列表")
     private Reward[] rewards;
 
     public static void main(String[] args) {
-        System.out.println(toJsonString(toJsonFields(ReflectionTest.class)));
+        System.out.println(toJsonString(toJsonFields(JsonFieldTest.class)));
         System.out.println(toJsonString(toJsonFields(PrizeTaskProperty.class)));
 
         PrizeTaskProperty property = new PrizeTaskProperty();
@@ -36,9 +36,10 @@ public class ReflectionTest {
         rewards.add(reward);
         property.setRewards(rewards);
         System.out.println(toJsonString(toJsonFields(property)));
+        System.out.println(new GetterFieldNameTest().test(GetterFieldNameTest::getData));
     }
 
-    public static class PrizeTaskProperty extends TaskProperty<PrizeReward> {
+    public static class PrizeTaskProperty extends TaskPropertyTest<PrizeReward> {
         @Comment("运营任务奖品列表")
         @Override
         public List<PrizeReward> getRewards() {
@@ -48,10 +49,8 @@ public class ReflectionTest {
 
     @Getter
     @Setter
-    public static class PrizeReward extends Reward {
-
-        @Comment("奖品ID")
-        private Integer prizeId;
+    public static class TaskPropertyTest<T extends Reward> {
+        private List<T> rewards;
     }
 
     public static class Reward extends ProbabilityScheduler.Model {
@@ -65,7 +64,9 @@ public class ReflectionTest {
 
     @Getter
     @Setter
-    public static class TaskProperty<T extends Reward> {
-        private List<T> rewards;
+    public static class PrizeReward extends Reward {
+
+        @Comment("奖品ID")
+        private Integer prizeId;
     }
 }
