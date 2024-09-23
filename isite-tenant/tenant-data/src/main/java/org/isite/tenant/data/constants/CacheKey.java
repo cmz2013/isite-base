@@ -9,6 +9,6 @@ public class CacheKey {
     private CacheKey() {
     }
 
-    public static final String LOCK_TENANT_PREFIX = "LOCK:TENANT:";
+    public static final String LOCK_TENANT = "LOCK:TENANT";
 
 }

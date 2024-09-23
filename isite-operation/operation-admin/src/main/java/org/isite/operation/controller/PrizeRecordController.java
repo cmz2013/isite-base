@@ -41,7 +41,7 @@ import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
@@ -58,10 +58,10 @@ public class PrizeRecordController extends BaseController {
      * 管理员给用户赠送领奖记录，设置必中奖品。prizeId=0时不设置必中
      */
     @PostMapping(URL_OPERATION + "/activity/{activityId}/prize/{prizeId}/user/{userId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
-    public Result<Integer> addPrizeRecord(
-            @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId,
-            @PathVariable("userId") long userId) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    public Result<Integer> addPrizeRecord(@PathVariable("activityId") Integer activityId,
+                                          @PathVariable("prizeId") Integer prizeId,
+                                          @PathVariable("userId") long userId) {
         ActivityPo activityPo = activityService.get(activityId);
         notOnline(activityPo.getStatus());
         return toResult(prizeRecordService.addPrizeRecord(activityPo, prizeId, userId, getEmployeeId()));
@@ -71,7 +71,7 @@ public class PrizeRecordController extends BaseController {
      * 管理员删除给用户赠送的领奖记录
      */
     @DeleteMapping(URL_OPERATION + "/activity/{activityId}/prize/record/{recordId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> deletePrizeRecord(
             @PathVariable("activityId") Integer activityId, @PathVariable("recordId") Long recordId) {
         notOnline(activityService.get(activityId).getStatus());

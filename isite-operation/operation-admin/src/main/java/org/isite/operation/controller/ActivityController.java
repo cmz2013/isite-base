@@ -50,7 +50,7 @@ import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.ActivityConverter.toActivityPo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.support.enums.ActivityTheme.values;
 
@@ -86,14 +86,14 @@ public class ActivityController extends BaseController {
     }
 
     @PutMapping(URL_OPERATION + "/activity")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityDto.id}", keys = "#activityDto.id"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityDto.id"))
     public Result<Integer> editActivity(@Validated(Update.class) @RequestBody ActivityDto activityDto) {
         notOnline(activityService.get(activityDto.getId()).getStatus());
         return toResult(activityService.updateById(convert(activityDto, ActivityPo::new)));
     }
 
     @DeleteMapping(URL_OPERATION + "/activity/{activityId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> deleteActivity(@PathVariable("activityId") Integer activityId) {
         ActivityPo activityPo = activityService.get(activityId);
         notOnline(activityPo.getStatus());
@@ -145,8 +145,7 @@ public class ActivityController extends BaseController {
      * 活动上下架操作。上架的活动个数不能超过1000
      */
     @PutMapping(URL_OPERATION + "/activity/{activityId}/status/{status}")
-    @Synchronized(locks = {
-            @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId", condition = "#status.code==1")})
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1"))
     public Result<Integer> updateStatus(@PathVariable("activityId") Integer activityId,
                                         @PathVariable("status") SwitchStatus status) {
         if (DISABLED.equals(status)) {

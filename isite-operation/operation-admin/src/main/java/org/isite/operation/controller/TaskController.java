@@ -36,7 +36,7 @@ import static org.isite.commons.lang.Reflection.toJsonFields;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.TaskConverter.toTaskPo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.support.enums.TaskType.values;
 
@@ -78,9 +78,9 @@ public class TaskController extends BaseController {
      * 更新运营任务，不能变更活动ID
      */
     @PutMapping(URL_OPERATION + "/activity/{activityId}/task")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
-    public Result<Integer> updateTask(
-            @PathVariable("activityId") Integer activityId, @Validated @RequestBody TaskPutDto taskPutDto) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    public Result<Integer> updateTask(@PathVariable("activityId") Integer activityId,
+                                      @Validated @RequestBody TaskPutDto taskPutDto) {
         notOnline(activityService.get(activityId).getStatus());
         isTrue(taskService.get(taskPutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
         isTrue(THOUSAND > taskService.count(TaskPo::getActivityId, activityId),
@@ -100,8 +100,9 @@ public class TaskController extends BaseController {
      * 删除运营任务
      */
     @DeleteMapping(URL_OPERATION + "/activity/{activityId}/task/{taskId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
-    public Result<Long> deleteTask(@PathVariable("activityId") Integer activityId, @PathVariable("taskId") Integer taskId) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    public Result<Long> deleteTask(@PathVariable("activityId") Integer activityId,
+                                   @PathVariable("taskId") Integer taskId) {
         notOnline(activityService.get(activityId).getStatus());
         isTrue(taskService.get(taskId).getActivityId().equals(activityId), new IllegalParameterError());
         return toResult(taskService.deleteTask(taskId));
@@ -111,9 +112,8 @@ public class TaskController extends BaseController {
      * 新增运营任务
      */
     @PostMapping(URL_OPERATION + "/task")
-    @Synchronized(locks = {
-            @Lock(name = LOCK_ACTIVITY_PREFIX + "${taskPostDto.activityId}", keys = "#taskPostDto.activityId")})
-    public Result<Integer> addTask(@RequestBody @Validated TaskPostDto taskPostDto) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#taskPostDto.activityId"))
+    public Result<Integer> addTask(@Validated @RequestBody TaskPostDto taskPostDto) {
         notOnline(activityService.get(taskPostDto.getActivityId()).getStatus());
         return toResult(taskService.insert(toTaskPo(taskPostDto)));
     }

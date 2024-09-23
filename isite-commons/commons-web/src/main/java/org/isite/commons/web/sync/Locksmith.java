@@ -1,15 +1,10 @@
 package org.isite.commons.web.sync;
 
-import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -20,16 +15,18 @@ import static java.lang.System.currentTimeMillis;
 import static java.time.Duration.ofMillis;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.isite.commons.cloud.spel.VariableExpression.getValue;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
+import static org.isite.commons.lang.Assert.notBlank;
+import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.template.FreeMarker.process;
+import static org.isite.commons.lang.utils.StringUtils.join;
 
 /**
  * @Description 锁匠：构造锁、加锁、释放锁
@@ -74,20 +71,18 @@ public class Locksmith {
      * @param parameterNames 参数名
      * @param args 参数
      */
-    public LockCylinder getLockCylinder(Lock lock, String[] parameterNames, Object[] args)
-            throws TemplateException, IOException {
+    public LockCylinder getLockCylinder(Lock lock, String[] parameterNames, Object[] args) {
         if (isEmpty(lock.keys())) {
+            notBlank(lock.name(), "name and keys cannot be empty at the same time");
             return new LockCylinder(lock.name(), lock.reentry());
         }
-        Map<String, Object> valueMap = new HashMap<>();
+        Object[] values = new Object[lock.keys().length];
         for (int i = ZERO; i < lock.keys().length; i++) {
-            Object value = getValue(lock.keys()[i], parameterNames, args);
-            notNull(value, "the value of the expression is null: " + lock.keys()[i]);
-            isFalse(value instanceof Collection<?>, "the value of the expression is collection: " + lock.keys()[i]);
-            isFalse(value.getClass().isArray(), "the value of the expression is array: " + lock.keys()[i]);
-            valueMap.put(lock.keys()[i].substring(ONE), value);
+            values[i] = getValue(lock.keys()[i], parameterNames, args);
         }
-        return new LockCylinder(process(lock.name(), valueMap), lock.reentry());
+        String keys = join(lock.delimiter(), values);
+        return new LockCylinder(isBlank(lock.name()) ? keys :
+                join(lock.delimiter(), lock.name(), keys), lock.reentry());
     }
 
     /**
@@ -95,10 +90,8 @@ public class Locksmith {
      */
     public boolean tryLock(List<LockCylinder> lockCylinders, long time) {
         isFalse(isLocked(), "already locked");
+        notEmpty(lockCylinders, "lockCylinders cannot be empty");
         isTrue(time >= MINUTE_SECONDS, "time must be greater than or equal to 1 minute");
-        if (isEmpty(lockCylinders)) {
-            return FALSE;
-        }
 
         this.expire = currentTimeMillis() + time * THOUSAND;
         if (tryAcquire(lockCylinders)) {

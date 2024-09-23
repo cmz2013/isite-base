@@ -36,7 +36,7 @@ public class PrizeGiver implements Strategy<PrizeType> {
      */
     @Synchronized(locks = {
             //总库存小于等于0时，不做库存校验，不需要加分布式锁
-            @Lock(name = LOCK_PRIZE, keys = "#prize", condition = "#prize.totalInventory > 0")})
+            @Lock(name = LOCK_PRIZE, keys = "#prize.id", condition = "#prize.totalInventory > 0")})
     @Transactional(rollbackFor = Exception.class)
     public void execute(Activity activity, Prize prize, PrizeRecordPo recordPo) {
         prizeRecordService.updateReceiveStatus(recordPo, prize);

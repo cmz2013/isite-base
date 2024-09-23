@@ -3,6 +3,8 @@ package org.isite.commons.web.sync;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static java.lang.Thread.sleep;
 import static org.isite.commons.lang.Constants.ZERO;
 
@@ -18,24 +20,24 @@ public class BusyTimer {
     /**
      * 忙时等待时间（毫秒）。默认不等待，即并发冲突时立即中断请求
      */
-    private final long waiting;
+    private final long wait;
     /**
-     * 忙时重试次数，waiting > 0 时该配置生效
+     * 忙时重试次数，wait > 0 时该配置生效
      */
     private int retry;
 
-    public BusyTimer(long waiting, int retry) {
-        this.waiting = waiting;
+    public BusyTimer(long wait, int retry) {
+        this.wait = wait;
         this.retry = retry;
     }
 
     @SneakyThrows
     public boolean run() {
-        if (this.waiting > ZERO && this.retry > ZERO) {
-            sleep(waiting);
+        if (this.wait > ZERO && this.retry > ZERO) {
+            sleep(wait);
             this.retry--;
-            return false;
+            return TRUE;
         }
-        return true;
+        return FALSE;
     }
 }

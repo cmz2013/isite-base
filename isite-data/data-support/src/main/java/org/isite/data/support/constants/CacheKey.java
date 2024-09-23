@@ -30,5 +30,5 @@ public class CacheKey {
      */
     public static final String DATA_CALL_FAILURE = "FAILURE";
 
-    public static final String LOCK_DATA_LOG = "LOCK:DATA:LOG:${dataLogPo.id}";
+    public static final String LOCK_DATA_LOG = "LOCK:DATA:LOG";
 }

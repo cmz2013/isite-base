@@ -2,11 +2,11 @@ package org.isite.operation.service;
 
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
+import org.isite.operation.po.PrizeRecordPo;
+import org.isite.operation.prize.PrizeGiverFactory;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.PrizeWheelProperty;
-import org.isite.operation.po.PrizeRecordPo;
-import org.isite.operation.prize.PrizeGiverFactory;
 import org.isite.operation.task.PrizeTaskExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ import static java.lang.String.valueOf;
 import static java.lang.System.currentTimeMillis;
 import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.misc.data.enums.ObjectType.OPERATION_ACTIVITY;
-import static org.isite.operation.support.constants.CacheKey.LOCK_WHEEL_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_USER;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**
@@ -43,7 +43,7 @@ public class PrizeWheelService {
     /**
      * 抽取奖品
      */
-    @Synchronized(locks = @Lock(name = LOCK_WHEEL_USER, keys = {"#activity", "#userId"}))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_USER, keys = {"#activity.id", "#userId"}))
     public Prize drawPrize(Activity activity, long userId) {
         PrizeRecordPo recordPo = prizeRecordService.getNotReceive(activity.getId(), null, userId);
         if (null == recordPo) {

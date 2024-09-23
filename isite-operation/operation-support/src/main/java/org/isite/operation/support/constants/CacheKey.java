@@ -25,26 +25,22 @@ public class CacheKey {
      * 活动并发锁KEY。活动上架后不能编辑活动信息，防止并发造成数据错误
      * 活动并发锁用于防止多个用户，在编辑活动信息的时候同时上架；也可以防止多个用户同时编辑活动信息，并发场景导致数据异常
      */
-    public static final String LOCK_ACTIVITY_PREFIX = "LOCK:ACTIVITY:";
+    public static final String LOCK_ACTIVITY = "LOCK:ACTIVITY";
     /**
      * 运营活动奖品并发锁KEY
      */
-    public static final String LOCK_PRIZE = "LOCK:PRIZE:${prize.id}";
+    public static final String LOCK_PRIZE = "LOCK:PRIZE";
     /**
      * 用户抽奖并发锁KEY
      */
-    public static final String LOCK_WHEEL_USER = "LOCK:WHEEL:${activity.id}:USER:${userId}";
+    public static final String LOCK_ACTIVITY_USER = "LOCK:ACTIVITY:USER";
     /**
      * 用户使用VIP积分并发锁KEY
      */
-    public static final String LOCK_VIP_SCORE_USER = "LOCK:VIP:SCORE:USER:${userId}";
-    /**
-     * 用户使用活动积分并发锁KEY
-     */
-    public static final String LOCK_ACTIVITY_SCORE_USER = "LOCK:ACTIVITY:${activityId}:SCORE:USER:${userId}";
+    public static final String LOCK_USER_VIP_SCORE = "LOCK:USER:VIP:SCORE";
     /**
      * 用户签到并发锁KEY
      */
-    public static final String LOCK_SIGN_USER = "LOCK:SIGN:USER:${userId}";
+    public static final String LOCK_USER_SIGN = "LOCK:USER:SIGN";
 
 }

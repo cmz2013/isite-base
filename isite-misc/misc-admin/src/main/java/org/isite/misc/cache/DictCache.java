@@ -30,9 +30,8 @@ public class DictCache {
     private DictDataService dictDataService;
 
     /**
-     * 根据字典类型查询字典数据，启用二级（远程+本地）缓存
-     * name会被用于缓存key的前缀
-     * 使用SpEL指定key
+     * 根据字典类型查询字典数据，启用二级（远程+本地）缓存。
+     * 注解@Cached的name和key属性不能同时为空，name会被用于缓存key的前缀，使用SpEL指定key
      */
     @Cached(name = DICT_TYPE_PREFIX, key = "#type", cacheType = BOTH, expire = DAY_SECONDS, localExpire = MINUTE_SECONDS)
     public List<DictData> findByType(String type) {

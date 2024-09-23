@@ -18,7 +18,7 @@ import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
 import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
-import static org.isite.operation.support.constants.CacheKey.LOCK_SIGN_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_USER_SIGN;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -42,7 +42,7 @@ public class SignLogService extends PoService<SignLogPo, Long> {
      * 完成每日签到
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = {@Lock(name = LOCK_SIGN_USER, keys = "#userId")})
+    @Synchronized(locks = {@Lock(name = LOCK_USER_SIGN, keys = "#userId")})
     public SignLogPo saveSignLog(long userId) {
         int totalCount =  ONE;
         int continuousCount =  ONE;

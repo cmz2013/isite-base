@@ -44,7 +44,7 @@ import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.converter.WebpageConverter.toWebpagePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
@@ -107,9 +107,9 @@ public class WebpageController extends BaseController {
      * 更新活动页面，活动ID不能变更
      */
     @PutMapping(URL_OPERATION + "/webpage/{activityId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
-    public Result<Integer> updateWebpage(
-            @PathVariable("activityId") Integer activityId, @Validated @RequestBody WebpagePutDto webpagePutDto) {
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    public Result<Integer> updateWebpage(@PathVariable("activityId") Integer activityId,
+                                         @Validated @RequestBody WebpagePutDto webpagePutDto) {
         notOnline(activityService.get(activityId).getStatus());
         isTrue(webpageService.get(webpagePutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
         return toResult(webpageService.updateSelectiveById(convert(webpagePutDto, WebpagePo::new)));

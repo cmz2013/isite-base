@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(FtpProperties.class)
-@ConditionalOnProperty({"ftp.host", "ftp.port", "ftp.userName", "ftp.password"})
+@ConditionalOnProperty({"ftp.host", "ftp.port"})
 public class FtpConfig {
 
     @Bean

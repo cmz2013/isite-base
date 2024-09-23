@@ -22,8 +22,8 @@ import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeMonth;
 import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_SCORE_USER;
-import static org.isite.operation.support.constants.CacheKey.LOCK_VIP_SCORE_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_USER;
+import static org.isite.operation.support.constants.CacheKey.LOCK_USER_VIP_SCORE;
 import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
 import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 import static tk.mybatis.mapper.weekend.Weekend.of;
@@ -84,7 +84,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_SCORE_USER, keys = {"#activityId", "#userId"}))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_USER, keys = {"#activityId", "#userId"}))
     public void useActivityScore(int activityId, long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
         ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ACTIVITY_SCORE, null);
@@ -108,7 +108,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_VIP_SCORE_USER, keys = "#userId"))
+    @Synchronized(locks = @Lock(name = LOCK_USER_VIP_SCORE, keys = "#userId"))
     public void useVipScore(long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
         Date startTime = getTimeBeforeYear(ONE);

@@ -34,7 +34,7 @@ import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
@@ -63,7 +63,7 @@ public class PrizeCodeController extends BaseController {
      * 添加兑奖码
      */
     @PostMapping(URL_OPERATION + "/activity/{activityId}/prize/{prizeId}/codes")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> addPrizeCodes(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId,
             @Validated @RequestBody @NotEmpty Set<String> codes) {
@@ -77,7 +77,7 @@ public class PrizeCodeController extends BaseController {
      * 删除兑奖码
      */
     @DeleteMapping(URL_OPERATION + "/activity/{activityId}/prize/{prizeId}/codes")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> deletePrizeCodes(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId,
             @Validated @RequestParam("ids") @NotEmpty List<Integer> ids) {
