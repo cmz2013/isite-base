@@ -1,8 +1,8 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.web.http;
 
 /**
- * http Content-Type
- * @author <font color='blue'>zhangcm</font>
+ * @Description http Content-Type
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class ContentType {
 

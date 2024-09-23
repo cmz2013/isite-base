@@ -1,4 +1,4 @@
-package org.isite.commons.lang.ftp;
+package org.isite.commons.web.ftp;
 
 import org.apache.commons.net.ftp.FTPClient;
 

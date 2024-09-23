@@ -5,7 +5,6 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.isite.commons.lang.Assert;
 import org.isite.commons.lang.Error;
 import org.isite.commons.lang.utils.IoUtils;
 
@@ -28,7 +27,7 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.DOT;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
+import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -230,7 +229,7 @@ public class FileUtils {
 	public static File save(String pathname, String... contents) throws IOException {
 		File file = new File(pathname);
 		if (!file.getParentFile().exists()) {
-			Assert.isTrue(file.getParentFile().mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+			isTrue(file.getParentFile().mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
 					FAILED_CREATE_DIRECTORY + file.getParentFile().getAbsolutePath()));
 		}
 		try (PrintWriter writer = new PrintWriter(file)) {

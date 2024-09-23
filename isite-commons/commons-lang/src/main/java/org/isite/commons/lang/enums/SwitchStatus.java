@@ -3,9 +3,8 @@ package org.isite.commons.lang.enums;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * 开关状态枚举类
- *
- * @author <font color='blue'>zhangcm</font>
+ * @Description 开关状态
+ * @Author <font color='blue'>zhangcm</font>
  */
 @JsonDeserialize(using = SwitchDeserializer.class)
 public enum SwitchStatus implements Enumerable<Integer> {

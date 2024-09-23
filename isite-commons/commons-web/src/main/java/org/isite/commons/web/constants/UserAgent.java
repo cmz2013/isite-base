@@ -5,7 +5,7 @@ import org.isite.commons.cloud.enums.TerminalType;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.enums.TerminalType.APP;
 import static org.isite.commons.cloud.enums.TerminalType.WEB;
-import static org.isite.commons.lang.http.HttpHeaders.USER_AGENT;
+import static org.isite.commons.cloud.constants.HttpHeaders.USER_AGENT;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
 
 /**

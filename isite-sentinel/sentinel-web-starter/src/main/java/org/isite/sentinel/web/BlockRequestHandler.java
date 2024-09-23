@@ -8,7 +8,7 @@ import org.isite.sentinel.support.FallbackProvider;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.isite.commons.lang.http.HttpStatus.OK;
+import static org.isite.commons.lang.enums.ResultStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**

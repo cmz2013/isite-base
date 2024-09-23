@@ -1,6 +1,6 @@
 package org.isite.data.client;
 
-import org.isite.commons.lang.http.HttpClient;
+import org.isite.commons.web.http.HttpClient;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.vo.DataApi;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.http.ContentType.APPLICATION_JSON;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.lang.http.HttpMethod.valueOf;
-import static org.isite.commons.lang.http.HttpUtils.toFormData;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.enums.HttpMethod.valueOf;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
+import static org.isite.commons.web.http.ContentType.APPLICATION_JSON;
+import static org.isite.commons.web.http.HttpUtils.toFormData;
 import static org.isite.data.support.enums.WsProtocol.REST;
 
 /**

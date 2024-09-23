@@ -3,7 +3,7 @@ package org.isite.tenant.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.Vo;
-import org.isite.commons.lang.http.HttpMethod;
+import org.isite.commons.cloud.enums.HttpMethod;
 
 import static java.util.Objects.hash;
 

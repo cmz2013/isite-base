@@ -1,7 +1,8 @@
-package org.isite.commons.lang.ftp;
+package org.isite.commons.web.ftp;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @Description FTP配置
@@ -9,6 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ConfigurationProperties(prefix = "ftp")
 public class FtpProperties {
     private String host;
     private int port;

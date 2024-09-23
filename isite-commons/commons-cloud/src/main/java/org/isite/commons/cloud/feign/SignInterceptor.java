@@ -15,10 +15,10 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWORD;
-import static org.isite.commons.cloud.constants.CloudConstants.X_APP_CODE;
-import static org.isite.commons.cloud.constants.CloudConstants.X_SIGNATURE;
-import static org.isite.commons.cloud.constants.CloudConstants.X_TIMESTAMP;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_APP_CODE;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_SIGNATURE;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_TIMESTAMP;
 import static org.isite.commons.cloud.sign.SignUtils.getSignature;
 import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameter;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
@@ -29,7 +29,6 @@ import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TYPE;
 import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -43,6 +42,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SignInterceptor implements RequestInterceptor {
 
     private static final String JSON_OBJECT_PREFIX = "{";
+    /**
+     * 如果在请求头设置feign-sign-password，该拦截器自动设置签名信息。
+     */
+    public static final String FEIGN_SIGN_PASSWORD = "feign-sign-password";
     
     /**
      * @Description 添加签名信息

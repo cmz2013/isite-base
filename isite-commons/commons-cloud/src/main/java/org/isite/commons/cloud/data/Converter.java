@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
+import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**

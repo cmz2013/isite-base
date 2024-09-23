@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.CloudConstants.X_APP_CODE;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_APP_CODE;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.data.support.constants.UrlConstants.API_GET_RPC;
 

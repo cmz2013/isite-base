@@ -10,8 +10,8 @@ import java.io.IOException;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Constants.SLASH;
 import static org.isite.commons.lang.Constants.THREE;
-import static org.isite.commons.lang.http.HttpHeaders.X_FORWARDED_HOST;
-import static org.isite.commons.lang.http.HttpHeaders.X_FORWARDED_PROTO;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_FORWARDED_HOST;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_FORWARDED_PROTO;
 import static org.springframework.security.web.util.UrlUtils.isAbsoluteUrl;
 
 /**

@@ -1,4 +1,4 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.web.http;
 
 import java.util.Map;
 

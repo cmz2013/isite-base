@@ -21,7 +21,7 @@ import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameters;
 import static org.isite.commons.cloud.sign.SignUtils.verifySignature;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.http.HttpHeaders.X_FORWARDED_PREFIX;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_FORWARDED_PREFIX;
 import static org.isite.commons.lang.utils.TypeUtils.isBasic;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
 

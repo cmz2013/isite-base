@@ -1,6 +1,7 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.web.http;
 
 import lombok.Setter;
+import org.isite.commons.cloud.enums.HttpMethod;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.DataOutputStream;
@@ -17,15 +18,15 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.isite.commons.lang.Constants.CHARSET;
-import static org.isite.commons.lang.http.HttpHeaders.CONNECTION;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_DISPOSITION;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TRANSFER_ENCODING;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.lang.http.HttpMethod.GET;
-import static org.isite.commons.lang.http.HttpMethod.POST;
-import static org.isite.commons.lang.http.TrustHttps.isHttps;
-import static org.isite.commons.lang.http.TrustHttps.trustAllHosts;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONNECTION;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_DISPOSITION;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TRANSFER_ENCODING;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.enums.HttpMethod.GET;
+import static org.isite.commons.cloud.enums.HttpMethod.POST;
 import static org.isite.commons.lang.utils.IoUtils.copy;
+import static org.isite.commons.web.http.TrustHttps.isHttps;
+import static org.isite.commons.web.http.TrustHttps.trustAllHosts;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -1,6 +1,6 @@
 package org.isite.misc.file;
 
-import org.isite.commons.lang.http.FileClient;
+import org.isite.commons.web.http.FileClient;
 import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;

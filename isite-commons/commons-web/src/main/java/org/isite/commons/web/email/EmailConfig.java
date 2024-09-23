@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(EmailProperties.class)
-@ConditionalOnProperty({"email.smtp.host", "email.smtp.port", "email.from.authentication.userName",
-        "email.from.authentication.password", "email.from.address"})
+@ConditionalOnProperty({"email.smtp.host", "email.smtp.port", "email.from.address",
+        "email.from.authentication.userName", "email.from.authentication.password"})
 public class EmailConfig {
 
     @Bean

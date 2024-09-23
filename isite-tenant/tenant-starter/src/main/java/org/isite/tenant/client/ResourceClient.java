@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWORD;
+import static org.isite.commons.cloud.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
 import static org.isite.tenant.data.constants.UrlConstants.API_GET_CLIENT_RESOURCES;
 
 /**

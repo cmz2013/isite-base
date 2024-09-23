@@ -3,7 +3,7 @@ package org.isite.commons.cloud.data;
 import lombok.Getter;
 import lombok.Setter;
 
-import static org.isite.commons.lang.http.HttpStatus.OK;
+import static org.isite.commons.lang.enums.ResultStatus.OK;
 
 /**
  * @Description 定义接口返回数据的统一格式

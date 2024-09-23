@@ -20,7 +20,7 @@ import static org.isite.commons.lang.Constants.RESULT_MESSAGE;
 import static org.isite.commons.lang.Constants.SPACE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
-import static org.isite.commons.lang.http.HttpStatus.OK;
+import static org.isite.commons.lang.enums.ResultStatus.OK;
 
 /**
  * @Description 自定义接口 /oauth/token 返回的数据

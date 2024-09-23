@@ -1,10 +1,10 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.cloud.enums;
 
 import org.isite.commons.lang.enums.Enumerable;
 
 /**
- * Http Method
- * @author <font color='blue'>zhangcm</font>
+ * @Description Http Method
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum HttpMethod implements Enumerable<String> {
 

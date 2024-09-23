@@ -11,7 +11,7 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.BooleanUtils.isNotFalse;
 import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
+import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.isite.commons.cloud.constants.CloudConstants.FEIGN_SIGN_PASSWORD;
+import static org.isite.commons.cloud.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;

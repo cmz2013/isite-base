@@ -1,12 +1,12 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.lang.enums;
 
-import org.isite.commons.lang.enums.Enumerable;
+import lombok.Getter;
 
 /**
- * http status
- * @author <font color='blue'>zhangcm</font>
+ * @Description http status
+ * @Author <font color='blue'>zhangcm</font>
  */
-public enum HttpStatus implements Enumerable<Integer> {
+public enum ResultStatus implements Enumerable<Integer> {
     /**
      * 成功
      */
@@ -21,9 +21,10 @@ public enum HttpStatus implements Enumerable<Integer> {
     FORBIDDEN(403, "Forbidden");
 
     private final int code;
+    @Getter
     private final String reasonPhrase;
 
-    HttpStatus(int code, String reasonPhrase) {
+    ResultStatus(int code, String reasonPhrase) {
         this.code = code;
         this.reasonPhrase = reasonPhrase;
     }
@@ -31,9 +32,5 @@ public enum HttpStatus implements Enumerable<Integer> {
     @Override
     public Integer getCode() {
         return code;
-    }
-
-    public String getReasonPhrase() {
-        return reasonPhrase;
     }
 }

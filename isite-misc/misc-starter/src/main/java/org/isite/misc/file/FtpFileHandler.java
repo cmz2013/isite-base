@@ -1,7 +1,7 @@
 package org.isite.misc.file;
 
 import lombok.Setter;
-import org.isite.commons.lang.ftp.FtpClient;
+import org.isite.commons.web.ftp.FtpClient;
 import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;

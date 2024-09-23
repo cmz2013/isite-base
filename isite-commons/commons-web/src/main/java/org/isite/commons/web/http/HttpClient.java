@@ -1,6 +1,7 @@
-package org.isite.commons.lang.http;
+package org.isite.commons.web.http;
 
 import lombok.Setter;
+import org.isite.commons.cloud.enums.HttpMethod;
 import org.isite.commons.lang.json.Jackson;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -20,15 +21,15 @@ import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.utils.IoUtils.close;
-import static org.isite.commons.lang.utils.IoUtils.getString;
 import static org.isite.commons.lang.Constants.AMPERSAND;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
-import static org.isite.commons.lang.http.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.lang.http.HttpMethod.DELETE;
-import static org.isite.commons.lang.http.HttpMethod.GET;
-import static org.isite.commons.lang.http.HttpMethod.POST;
+import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.enums.HttpMethod.DELETE;
+import static org.isite.commons.cloud.enums.HttpMethod.GET;
+import static org.isite.commons.cloud.enums.HttpMethod.POST;
+import static org.isite.commons.lang.utils.IoUtils.close;
+import static org.isite.commons.lang.utils.IoUtils.getString;
 
 /**
  * @Description HTTP Client

@@ -1,7 +1,7 @@
 package org.isite.security.data.vo;
 
 import lombok.Getter;
-import org.isite.commons.lang.http.HttpMethod;
+import org.isite.commons.cloud.enums.HttpMethod;
 import org.springframework.security.core.GrantedAuthority;
 
 import static java.util.Objects.hash;

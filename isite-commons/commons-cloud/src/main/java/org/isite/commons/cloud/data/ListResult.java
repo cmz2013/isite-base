@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static org.isite.commons.lang.http.HttpStatus.OK;
+import static org.isite.commons.lang.enums.ResultStatus.OK;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

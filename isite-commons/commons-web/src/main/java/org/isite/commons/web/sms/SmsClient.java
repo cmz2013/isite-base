@@ -2,7 +2,7 @@ package org.isite.commons.web.sms;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.lang.http.HttpClient;
+import org.isite.commons.web.http.HttpClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

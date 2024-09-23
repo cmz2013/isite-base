@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.constants.CloudConstants.X_CLIENT_ID;
-import static org.isite.commons.cloud.constants.CloudConstants.X_EMPLOYEE_ID;
-import static org.isite.commons.cloud.constants.CloudConstants.X_TENANT_ID;
-import static org.isite.commons.cloud.constants.CloudConstants.X_USER_ID;
-import static org.isite.commons.cloud.constants.CloudConstants.X_VERSION;
+import static org.isite.commons.cloud.constants.HttpHeaders.AUTHORIZATION;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_CLIENT_ID;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_EMPLOYEE_ID;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_TENANT_ID;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_USER_ID;
+import static org.isite.commons.cloud.constants.HttpHeaders.X_VERSION;
 import static org.isite.commons.lang.enums.Enumerable.getByCode;
-import static org.isite.commons.lang.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * @Description 保存请求头数据（敏感信息），用于后续请求使用。

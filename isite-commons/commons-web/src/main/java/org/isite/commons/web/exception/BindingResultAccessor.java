@@ -5,7 +5,7 @@ import org.springframework.validation.BindingResult;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.SEMICOLON;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.http.HttpStatus.EXPECTATION_FAILED;
+import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 
 /**
  * BindingResult辅助类
