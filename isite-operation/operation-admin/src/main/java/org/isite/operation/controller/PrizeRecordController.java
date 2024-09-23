@@ -8,15 +8,15 @@ import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.support.dto.PrizeRecordDto;
-import org.isite.operation.support.vo.Activity;
-import org.isite.operation.support.vo.Prize;
-import org.isite.operation.support.vo.PrizeRecord;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.OngoingActivityService;
 import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.support.dto.PrizeRecordDto;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
+import org.isite.operation.support.vo.PrizeRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +32,16 @@ import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.data.Converter.convert;
 import static org.isite.commons.cloud.data.Converter.toPageQuery;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
 /**
@@ -58,7 +58,7 @@ public class PrizeRecordController extends BaseController {
      * 管理员给用户赠送领奖记录，设置必中奖品。prizeId=0时不设置必中
      */
     @PostMapping(URL_OPERATION + "/activity/{activityId}/prize/{prizeId}/user/{userId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
     public Result<Integer> addPrizeRecord(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId,
             @PathVariable("userId") long userId) {
@@ -71,7 +71,7 @@ public class PrizeRecordController extends BaseController {
      * 管理员删除给用户赠送的领奖记录
      */
     @DeleteMapping(URL_OPERATION + "/activity/{activityId}/prize/record/{recordId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
     public Result<Integer> deletePrizeRecord(
             @PathVariable("activityId") Integer activityId, @PathVariable("recordId") Long recordId) {
         notOnline(activityService.get(activityId).getStatus());
@@ -79,7 +79,7 @@ public class PrizeRecordController extends BaseController {
         isTrue(prizeRecordPo.getActivityId().equals(activityId) &&
                 prizeRecordPo.getObjectType().equals(TENANT_EMPLOYEE), new IllegalParameterError());
         isTrue(isNotTrue(prizeRecordPo.getReceiveStatus()), getMessage("received.notDelete",
-                "It cannot be deleted if it has already been received"));
+                "prize record has been received, cannot delete"));
         return toResult(prizeRecordService.deletePrizeRecord(prizeRecordPo));
     }
 

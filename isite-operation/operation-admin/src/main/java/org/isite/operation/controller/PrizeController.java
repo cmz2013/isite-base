@@ -1,20 +1,20 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
-import org.isite.operation.support.dto.PrizePostDto;
-import org.isite.operation.support.dto.PrizePutDto;
-import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeCodeService;
 import org.isite.operation.service.PrizeRecordService;
 import org.isite.operation.service.PrizeService;
+import org.isite.operation.support.dto.PrizePostDto;
+import org.isite.operation.support.dto.PrizePutDto;
+import org.isite.operation.support.vo.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +35,7 @@ import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeConverter.toPrizePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_PREFIX;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_TOTAL_INVENTORY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
@@ -63,7 +63,7 @@ public class PrizeController extends BaseController {
      * 添加活动奖品，一个活动的奖品个数不能超过1000
      */
     @PostMapping(URL_OPERATION + "/prize")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#prizePostDto.activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${prizePostDto.activityId}", keys = "#prizePostDto.activityId"))
     public Result<Integer> addPrize(@Validated @RequestBody PrizePostDto prizePostDto) {
         notOnline(activityService.get(prizePostDto.getActivityId()).getStatus());
         isTrue(THOUSAND > prizeService.count(PrizePo::getActivityId, prizePostDto.getActivityId()),
@@ -76,7 +76,7 @@ public class PrizeController extends BaseController {
      * 兑奖码类型的奖品，总库存在导出和删除兑奖码时自动维护
      */
     @PutMapping("/activity/{activityId}/prize")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
     public Result<Integer> editPrize(
             @PathVariable("activityId") Integer activityId,
             @Validated(Update.class) @RequestBody PrizePutDto prizePutDto) {
@@ -95,7 +95,7 @@ public class PrizeController extends BaseController {
      * 删除活动奖品
      */
     @DeleteMapping("/activity/{activityId}/prize/{prizeId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_PREFIX + "${activityId}", keys = "#activityId"))
     public Result<Integer> deletePrize(
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
         notOnline(activityService.get(activityId).getStatus());

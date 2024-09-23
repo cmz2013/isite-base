@@ -11,17 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.core.Ordered;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Arrays.stream;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.isite.commons.cloud.spel.VariableExpression.getValue;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
 
 /**
  * @Description 分布式并发锁切面编程。
@@ -37,7 +34,7 @@ import static org.isite.commons.lang.utils.TypeUtils.cast;
 @ConditionalOnClass(value = RedisAutoConfiguration.class)
 public class SyncAspect implements Ordered {
 
-    private RedisTemplate<String, Long> redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 在方法上面标注 @Pointcut 注解，用来定义切入点
@@ -53,21 +50,16 @@ public class SyncAspect implements Ordered {
     public Object doBefore(ProceedingJoinPoint point, Synchronized sync) {
         Locksmith locksmith = new Locksmith(redisTemplate, new BusyTimer(sync.waiting(), sync.retry()));
         locksmith.setPrefix(sync.prefix());
-        locksmith.setTime(sync.time());
 
         List<LockCylinder> lockCylinders = new ArrayList<>(sync.locks().length);
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        stream(sync.locks()).forEach(lock -> {
-            if (TRUE.equals(getValue(lock.condition(), signature.getParameterNames(), point.getArgs()))) {
-                if (isEmpty(lock.keys())) {
-                    lockCylinders.add(new LockCylinder(lock.name(), lock.reentry()));
-                } else {
-                    lockCylinders.addAll(locksmith.getLockCylinder(lock, signature.getParameterNames(), point.getArgs()));
-                }
+        String[] parameterNames = ((MethodSignature) point.getSignature()).getParameterNames();
+        Object[] args = point.getArgs();
+        for (Lock lock : sync.locks()) {
+            if (TRUE.equals(getValue(lock.condition(), parameterNames, args))) {
+                lockCylinders.add(locksmith.getLockCylinder(lock, parameterNames, args));
             }
-        });
-
-        if (!locksmith.tryLock(lockCylinders)) {
+        }
+        if (!locksmith.tryLock(lockCylinders, sync.time())) {
             throw new ConcurrentError();
         }
         try {
@@ -78,8 +70,8 @@ public class SyncAspect implements Ordered {
     }
 
     @Autowired
-    public void setRedisTemplate(RedisTemplate<?, ?> redisTemplate) {
-        this.redisTemplate = cast(redisTemplate);
+    public void setRedisTemplate(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
     @Override

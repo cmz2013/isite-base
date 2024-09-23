@@ -37,7 +37,7 @@ public class DataLogService extends PoService<DataLogPo, String> {
      * @Description 执行完数据补偿，返回日志信息，如果返回空即为清除日志
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_DATA_LOG, keys = "#logPo.id"))
+    @Synchronized(locks = @Lock(name = LOCK_DATA_LOG, keys = "#dataLogPo.id"))
     public DataLogDto retry(DataLogPo dataLogPo) {
         //根据DataLog中的appCode设置FeignClient的name（value）
         DataCompensateClient dataCompensateClient = feignClientFactory.getFeignClient(DataCompensateClient.class, dataLogPo.getAppCode());

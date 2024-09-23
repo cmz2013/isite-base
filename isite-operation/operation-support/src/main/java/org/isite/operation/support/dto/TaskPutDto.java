@@ -3,7 +3,6 @@ package org.isite.operation.support.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.Dto;
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.TaskPeriod;
 
@@ -19,12 +18,12 @@ public class TaskPutDto extends Dto<Integer> {
     /**
      * 活动标题
      */
-    @NotBlank(groups = Update.class)
+    @NotBlank
     private String title;
     /**
      * 任务类型
      */
-    @NotNull(groups = Update.class)
+    @NotNull
     private TaskType taskType;
     /**
      * @see TaskPeriod

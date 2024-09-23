@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toSet;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.tenant.converter.RoleResourceConverter.toRoleResourcePos;
-import static org.isite.tenant.data.constants.CacheKey.LOCK_TENANT;
+import static org.isite.tenant.data.constants.CacheKey.LOCK_TENANT_PREFIX;
 import static org.isite.tenant.data.constants.TenantConstants.ROLE_ADMINISTRATOR;
 
 /**
@@ -62,7 +62,7 @@ public class RoleService extends PoService<RolePo, Integer> {
      * 运营管理员修改租户Administrator 角色权限时，租户不能新增或修改角色权限。
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
+    @Synchronized(locks = @Lock(name = LOCK_TENANT_PREFIX + "${tenantId}", keys = "#tenantId"))
     public void updateAdminRole(int tenantId, List<Integer> resourceIds) {
         RolePo adminRole = getAdminRole(tenantId);
         List<Integer> oldResourceIds = roleResourceService.findRoleResourceIds(adminRole.getId());
@@ -89,7 +89,7 @@ public class RoleService extends PoService<RolePo, Integer> {
      * @Description 租户自己新增角色
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
+    @Synchronized(locks = @Lock(name = LOCK_TENANT_PREFIX + "${rolePo.tenantId}", keys = "#rolePo.tenantId"))
     public int addRole(RolePo rolePo, List<Integer> resourceIds) {
         checkResources(rolePo.getTenantId(), resourceIds);
         this.insert(rolePo);
@@ -111,7 +111,7 @@ public class RoleService extends PoService<RolePo, Integer> {
      * @Description 租户自己修改角色，先删除原有权限，再添加新权限
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_TENANT, keys = "#tenantId"))
+    @Synchronized(locks = @Lock(name = LOCK_TENANT_PREFIX + "${rolePo.tenantId}", keys = "#rolePo.tenantId"))
     public int updateRole(RolePo rolePo, List<Integer> resourceIds) {
         checkResources(rolePo.getTenantId(), resourceIds);
         return roleResourceService.deleteAndInsert(RoleResourcePo::getRoleId, rolePo.getId(),

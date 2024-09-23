@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.web.sync.Locksmith.DEFAULT_PREFIX;
 
 /**
  * @Description 申明方法执行前使用分布式并发锁控制。
@@ -39,7 +39,7 @@ public @interface Synchronized {
     /**
      * KEY的前缀
      */
-    String prefix() default DEFAULT_PREFIX;
+    String prefix() default BLANK_STRING;
     /**
      * 设置锁的有效时间（秒），防止死锁
      */
