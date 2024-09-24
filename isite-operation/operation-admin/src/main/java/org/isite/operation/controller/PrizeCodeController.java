@@ -1,9 +1,9 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.cloud.data.PageRequest;
-import org.isite.commons.cloud.data.PageResult;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.PageResult;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
@@ -29,8 +29,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Set;
 
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodePo;

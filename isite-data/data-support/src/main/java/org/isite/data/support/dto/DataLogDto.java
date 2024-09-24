@@ -2,7 +2,7 @@ package org.isite.data.support.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Dto;
+import org.isite.commons.cloud.data.dto.Dto;
 
 /**
  * @Description 接口日志DTO

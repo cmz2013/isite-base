@@ -6,7 +6,7 @@ import org.isite.misc.data.vo.Region;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.TWO;
 import static org.isite.commons.lang.Constants.ZERO;

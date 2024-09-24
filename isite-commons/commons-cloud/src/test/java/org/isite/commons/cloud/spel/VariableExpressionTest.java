@@ -2,6 +2,7 @@ package org.isite.commons.cloud.spel;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.commons.cloud.utils.SpelExpressionUtils;
 
 /**
  * @author <font color='blue'>zhangcm</font>
@@ -14,7 +15,8 @@ public class VariableExpressionTest {
     public static void main(String[] args) {
         Prize prize = new Prize();
         prize.setTotalInventory(0);
-        System.out.println(VariableExpression.getValue("#prize.totalInventory >= 0", new String[]{"prize"}, new Object[]{prize}));
+        SpelExpressionUtils spelExpressionUtils = new SpelExpressionUtils(new String[]{"prize"}, new Object[]{prize});
+        System.out.println(spelExpressionUtils.getValue("#prize.totalInventory >= 0"));
     }
 
     @Getter

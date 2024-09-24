@@ -1,6 +1,6 @@
 package org.isite.commons.web.config;
 
-import org.isite.commons.cloud.data.EnumConverter;
+import org.isite.commons.cloud.converter.EnumConverter;
 import org.isite.commons.cloud.utils.RequestPathMatcher;
 import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.springframework.context.ApplicationContext;

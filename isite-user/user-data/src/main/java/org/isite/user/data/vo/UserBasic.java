@@ -3,7 +3,7 @@ package org.isite.user.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.jpa.data.BuiltIn;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.commons.lang.enums.SwitchStatus;
 
 /**

@@ -1,6 +1,6 @@
 package org.isite.operation.client;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.feign.FeignClientFactory;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;

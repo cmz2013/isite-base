@@ -1,7 +1,7 @@
 package org.isite.operation.controller;
 
 import org.isite.commons.cloud.data.op.Add;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.operation.support.dto.PrizeDeliverDto;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;

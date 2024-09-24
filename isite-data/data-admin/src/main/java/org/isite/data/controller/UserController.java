@@ -1,8 +1,8 @@
 package org.isite.data.controller;
 
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.cloud.data.PageRequest;
-import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.tenant.data.dto.EmployeeDto;
 import org.isite.tenant.data.vo.Employee;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import static com.alicp.jetcache.anno.CacheType.BOTH;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.lang.Constants.DAY_SECONDS;
 import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
 import static org.isite.misc.converter.DictDataConverter.toDictDataPo;

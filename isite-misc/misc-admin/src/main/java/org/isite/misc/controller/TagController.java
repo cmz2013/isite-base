@@ -2,8 +2,8 @@ package org.isite.misc.controller;
 
 import com.github.pagehelper.Page;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.commons.cloud.data.PageRequest;
-import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.misc.data.dto.TagDto;
 import org.isite.misc.data.vo.Tag;
 import org.isite.misc.po.TagPo;
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.misc.data.constants.UrlConstants.URL_MISC;
 
 /**

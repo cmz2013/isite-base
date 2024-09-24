@@ -1,6 +1,6 @@
 package org.isite.misc.data.dto;
 
-import org.isite.commons.cloud.data.TreeDto;
+import org.isite.commons.cloud.data.dto.TreeDto;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

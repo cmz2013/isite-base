@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.constants;
+package org.isite.commons.cloud.data.constants;
 
 /**
  * @Description URL常量类

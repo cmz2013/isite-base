@@ -1,6 +1,6 @@
 package org.isite.user.client;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.user.data.dto.UserDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.isite.commons.cloud.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
+import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;

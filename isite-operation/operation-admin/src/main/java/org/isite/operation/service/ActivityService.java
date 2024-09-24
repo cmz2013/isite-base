@@ -1,7 +1,7 @@
 package org.isite.operation.service;
 
 import lombok.SneakyThrows;
-import org.isite.commons.cloud.enums.TerminalType;
+import org.isite.commons.cloud.data.enums.TerminalType;
 import org.isite.commons.lang.enums.SwitchStatus;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.ActivityMapper;
@@ -20,8 +20,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.isite.commons.cloud.enums.TerminalType.APP;
-import static org.isite.commons.cloud.enums.TerminalType.WEB;
+import static org.isite.commons.cloud.data.enums.TerminalType.APP;
+import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.utils.IoUtils.getString;
 

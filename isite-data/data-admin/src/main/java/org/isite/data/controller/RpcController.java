@@ -1,6 +1,6 @@
 package org.isite.data.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sign.Signed;
 import org.isite.data.service.ExecutorSignSecret;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.data.support.constants.UrlConstants.API_GET_RPC;
 
 /**

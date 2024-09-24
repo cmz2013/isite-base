@@ -2,7 +2,7 @@ package org.isite.data.handler;
 
 import lombok.SneakyThrows;
 import org.apache.commons.digester3.xmlrules.FromXmlRulesModule;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;

@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.data;
+package org.isite.commons.cloud.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class OrderRequest {
+public class OrderDto {
     /**
      * 排序字段
      */

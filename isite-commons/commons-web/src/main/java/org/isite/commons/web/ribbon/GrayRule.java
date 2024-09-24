@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_VERSION;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getVersion;
 

@@ -2,7 +2,7 @@ package org.isite.operation.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.enums.TerminalType;
+import org.isite.commons.cloud.data.enums.TerminalType;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;

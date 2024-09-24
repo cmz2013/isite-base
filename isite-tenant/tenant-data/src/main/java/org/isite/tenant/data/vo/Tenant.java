@@ -2,7 +2,7 @@ package org.isite.tenant.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.commons.lang.enums.SwitchStatus;
 
 import java.util.Date;

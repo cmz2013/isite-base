@@ -1,6 +1,5 @@
-package org.isite.commons.cloud.spel;
+package org.isite.commons.cloud.utils;
 
-import lombok.Getter;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -10,33 +9,32 @@ import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Constants.ZERO;
 
 /**
- * @Description SpEL变量表达式
+ * @Description SpEL变量表达式工具类
  * @Author <font color='blue'>zhangcm</font>
  */
-@Getter
-public class VariableExpression {
+public class SpelExpressionUtils {
 
     private final StandardEvaluationContext evaluationContext;
-    private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
+    private final ExpressionParser expressionParser;
 
     /**
      * 使用参数名和参数值构造实例
      */
-    public VariableExpression(String[] parameterNames, Object[] args) {
+    public SpelExpressionUtils(String[] parameterNames, Object[] args) {
         this.evaluationContext = new StandardEvaluationContext(args);
         if (isNotEmpty(args)) {
             for (int i = ZERO; i < args.length; i++) {
                 this.evaluationContext.setVariable(parameterNames[i], args[i]);
             }
         }
+        this.expressionParser = new SpelExpressionParser();
     }
 
     /**
      * 解析SpEL表达式返回值
      */
-    public static Object getValue(String expression, String[] parameterNames, Object[] args) {
+    public Object getValue(String expression) {
         notBlank(expression, "expression cannot be empty");
-        return EXPRESSION_PARSER.parseExpression(expression)
-                .getValue(new VariableExpression(parameterNames, args).getEvaluationContext());
+        return expressionParser.parseExpression(expression).getValue(this.evaluationContext);
     }
 }

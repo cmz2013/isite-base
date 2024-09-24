@@ -1,7 +1,8 @@
-package org.isite.commons.cloud.data;
+package org.isite.commons.cloud.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.commons.cloud.data.dto.OrderDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -39,7 +40,7 @@ public class PageRequest<Q> {
      * {pageSize:10,pageNum:1,'orders[0].field':'create_time', 'orders[0].direction':'DESC'}
      */
     @Valid
-    private List<OrderRequest> orders;
+    private List<OrderDto> orders;
     /**
      * 查询条件
      */

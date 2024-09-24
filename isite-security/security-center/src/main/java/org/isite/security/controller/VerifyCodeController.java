@@ -1,6 +1,6 @@
 package org.isite.security.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.security.code.VerifyCodeHandler;
 import org.isite.security.code.VerifyCodeHandlerFactory;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.cloud.data.Result.success;
+import static org.isite.commons.cloud.data.vo.Result.success;
 import static org.isite.security.data.constants.UrlConstants.API_GET_VERIFY_CODE;
 import static org.isite.security.data.constants.UrlConstants.DELETE_VERIFY_CODE;
 

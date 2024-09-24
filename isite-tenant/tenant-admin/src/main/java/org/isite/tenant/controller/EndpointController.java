@@ -1,6 +1,6 @@
 package org.isite.tenant.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.security.data.vo.OauthClient;
 import org.isite.tenant.po.ResourcePo;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.security.client.EndpointAccessor.findOauthClients;
 import static org.isite.tenant.data.constants.UrlConstants.GET_OAUTH_CLIENTS;

@@ -1,10 +1,10 @@
-package org.isite.commons.cloud.enums;
+package org.isite.commons.cloud.data.enums;
 
 import lombok.Getter;
 import org.isite.commons.lang.enums.Enumerable;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_HTML_PC_PATTERN;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_HTML_APP_PATTERN;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_HTML_PC_PATTERN;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_HTML_APP_PATTERN;
 
 /**
  * @Description 用户终端类型

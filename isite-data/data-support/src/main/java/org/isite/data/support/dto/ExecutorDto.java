@@ -2,7 +2,7 @@ package org.isite.data.support.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Dto;
+import org.isite.commons.cloud.data.dto.Dto;
 
 import javax.validation.constraints.NotNull;
 

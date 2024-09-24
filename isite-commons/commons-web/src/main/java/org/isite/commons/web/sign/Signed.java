@@ -5,9 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.isite.commons.cloud.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_SIGNATURE;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_TIMESTAMP;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_SIGNATURE;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 
 /**

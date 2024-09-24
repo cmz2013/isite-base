@@ -1,6 +1,6 @@
 package org.isite.tenant.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.tenant.po.EmployeeRolePo;

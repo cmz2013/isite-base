@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_CLIENT_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_EMPLOYEE_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_TENANT_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_USER_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_VERSION;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_CLIENT_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
 import static org.isite.commons.lang.enums.Enumerable.getByCode;
 
 /**

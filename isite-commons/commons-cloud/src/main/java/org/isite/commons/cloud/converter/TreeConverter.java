@@ -1,5 +1,6 @@
-package org.isite.commons.cloud.data;
+package org.isite.commons.cloud.converter;
 
+import org.isite.commons.cloud.data.vo.Tree;
 import org.isite.jpa.data.TreeModel;
 
 import java.util.ArrayList;

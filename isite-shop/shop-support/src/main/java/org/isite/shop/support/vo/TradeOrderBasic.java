@@ -2,7 +2,7 @@ package org.isite.shop.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.shop.support.enums.TradeStatus;
 
 import java.util.Date;

@@ -1,6 +1,6 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.service.OngoingActivityService;
 import org.isite.operation.service.ScoreRecordService;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.notNull;

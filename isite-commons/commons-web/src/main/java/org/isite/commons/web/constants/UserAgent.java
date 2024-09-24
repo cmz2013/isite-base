@@ -1,11 +1,11 @@
 package org.isite.commons.web.constants;
 
-import org.isite.commons.cloud.enums.TerminalType;
+import org.isite.commons.cloud.data.enums.TerminalType;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.enums.TerminalType.APP;
-import static org.isite.commons.cloud.enums.TerminalType.WEB;
-import static org.isite.commons.cloud.constants.HttpHeaders.USER_AGENT;
+import static org.isite.commons.cloud.data.enums.TerminalType.APP;
+import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.USER_AGENT;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
 
 /**

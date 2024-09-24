@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 import static com.alipay.api.internal.util.AlipaySignature.rsaCheckV1;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_API;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
 import static org.isite.commons.lang.Constants.FAILURE;
 import static org.isite.commons.lang.Constants.SUCCESS;
 import static org.isite.commons.lang.json.Jackson.toJsonString;

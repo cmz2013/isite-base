@@ -2,7 +2,7 @@ package org.isite.misc.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Dto;
+import org.isite.commons.cloud.data.dto.Dto;
 
 /**
  * @Description 标签，主要用于用户画像

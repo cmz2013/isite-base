@@ -2,7 +2,7 @@ package org.isite.tenant.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.TreeDto;
+import org.isite.commons.cloud.data.dto.TreeDto;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 

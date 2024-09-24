@@ -2,7 +2,6 @@ package org.isite.commons.web.sign;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.isite.commons.cloud.sign.SignField;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -17,11 +16,11 @@ import java.util.Map;
 import static java.lang.Long.parseLong;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameters;
-import static org.isite.commons.cloud.sign.SignUtils.verifySignature;
+import static org.isite.commons.web.sign.SignUtils.getSignatureParameters;
+import static org.isite.commons.web.sign.SignUtils.verifySignature;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_FORWARDED_PREFIX;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_FORWARDED_PREFIX;
 import static org.isite.commons.lang.utils.TypeUtils.isBasic;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
 

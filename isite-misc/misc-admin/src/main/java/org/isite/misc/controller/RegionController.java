@@ -1,6 +1,6 @@
 package org.isite.misc.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.cache.RegionCache;
 import org.isite.misc.data.vo.Region;

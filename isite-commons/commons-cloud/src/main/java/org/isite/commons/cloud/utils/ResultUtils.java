@@ -1,6 +1,6 @@
 package org.isite.commons.cloud.utils;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.Error;
 
 import static org.isite.commons.lang.Assert.isTrue;

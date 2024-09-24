@@ -1,15 +1,15 @@
 package org.isite.commons.web.controller;
 
-import org.isite.commons.cloud.data.ListRequest;
-import org.isite.commons.cloud.data.ListResult;
-import org.isite.commons.cloud.data.PageRequest;
-import org.isite.commons.cloud.data.PageResult;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.dto.ListRequest;
+import org.isite.commons.cloud.data.vo.ListResult;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.PageResult;
+import org.isite.commons.cloud.data.vo.Result;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.data.ListResult.success;
-import static org.isite.commons.cloud.data.PageResult.success;
+import static org.isite.commons.cloud.data.vo.ListResult.success;
+import static org.isite.commons.cloud.data.vo.PageResult.success;
 
 /**
  * @Description Controller公共方法

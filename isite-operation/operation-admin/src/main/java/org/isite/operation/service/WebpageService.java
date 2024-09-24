@@ -1,6 +1,6 @@
 package org.isite.operation.service;
 
-import org.isite.commons.cloud.enums.TerminalType;
+import org.isite.commons.cloud.data.enums.TerminalType;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.mapper.WebpageMapper;

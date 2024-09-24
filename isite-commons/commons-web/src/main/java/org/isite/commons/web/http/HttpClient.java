@@ -1,7 +1,7 @@
 package org.isite.commons.web.http;
 
 import lombok.Setter;
-import org.isite.commons.cloud.enums.HttpMethod;
+import org.isite.commons.cloud.data.enums.HttpMethod;
 import org.isite.commons.lang.json.Jackson;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -24,10 +24,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Constants.AMPERSAND;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
-import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.cloud.enums.HttpMethod.DELETE;
-import static org.isite.commons.cloud.enums.HttpMethod.GET;
-import static org.isite.commons.cloud.enums.HttpMethod.POST;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.data.enums.HttpMethod.DELETE;
+import static org.isite.commons.cloud.data.enums.HttpMethod.GET;
+import static org.isite.commons.cloud.data.enums.HttpMethod.POST;
 import static org.isite.commons.lang.utils.IoUtils.close;
 import static org.isite.commons.lang.utils.IoUtils.getString;
 

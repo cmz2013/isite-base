@@ -32,9 +32,9 @@ public class ListQuery<P extends Model<?>> {
     /**
      * 有序索引字段排序
      */
-    private final OrderQuery order;
+    private final Order order;
 
-    public ListQuery(OrderQuery order) {
+    public ListQuery(Order order) {
         notNull(order, "order cannot be null");
         this.order = order;
     }

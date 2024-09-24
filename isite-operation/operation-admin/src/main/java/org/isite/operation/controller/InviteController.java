@@ -1,11 +1,11 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.commons.lang.encoder.NumberEncoder.encode;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;

@@ -2,7 +2,7 @@ package org.isite.operation.cache;
 
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
-import org.isite.commons.cloud.enums.TerminalType;
+import org.isite.commons.cloud.data.enums.TerminalType;
 import org.isite.operation.support.enums.EventType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.alicp.jetcache.anno.CacheType.BOTH;
-import static org.isite.commons.cloud.enums.TerminalType.APP;
-import static org.isite.commons.cloud.enums.TerminalType.WEB;
+import static org.isite.commons.cloud.data.enums.TerminalType.APP;
+import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.COLON;

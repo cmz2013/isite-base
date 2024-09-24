@@ -1,10 +1,13 @@
-package org.isite.commons.cloud.data;
+package org.isite.commons.cloud.converter;
 
 import lombok.SneakyThrows;
+import org.isite.commons.cloud.data.dto.ListRequest;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.Error;
 import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.data.Model;
-import org.isite.jpa.data.OrderQuery;
+import org.isite.jpa.data.Order;
 import org.isite.jpa.data.PageQuery;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -97,7 +100,7 @@ public class Converter {
 
     public static <Q, P extends Model<?>> ListQuery<P> toListQuery(ListRequest<Q> request, Supplier<P> constructor) {
         ListQuery<P> listQuery = new ListQuery<>(
-                new OrderQuery(request.getOrder().getField(), request.getOrder().getDirection()));
+                new Order(request.getOrder().getField(), request.getOrder().getDirection()));
         listQuery.setIndex(request.getIndex());
         listQuery.setPageSize(request.getPageSize());
         listQuery.setPo(convert(request.getQuery(), constructor));
@@ -113,7 +116,7 @@ public class Converter {
         }
         if (isNotEmpty(request.getOrders())) {
             pageQuery.setOrders(request.getOrders().stream().map(
-                    order -> new OrderQuery(order.getField(), order.getDirection())).collect(toList()));
+                    dto -> new Order(dto.getField(), dto.getDirection())).collect(toList()));
         }
         return pageQuery;
     }

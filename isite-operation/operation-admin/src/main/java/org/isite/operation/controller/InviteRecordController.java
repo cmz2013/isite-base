@@ -1,8 +1,8 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
-import org.isite.commons.cloud.data.PageRequest;
-import org.isite.commons.cloud.data.PageResult;
+import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.support.dto.InviteRecordDto;
 import org.isite.operation.support.vo.InviteRecord;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.operation.converter.InviteRecordConverter.toInviteRecordPo;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 

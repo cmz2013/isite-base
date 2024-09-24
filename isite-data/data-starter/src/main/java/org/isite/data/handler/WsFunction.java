@@ -1,6 +1,6 @@
 package org.isite.data.handler;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

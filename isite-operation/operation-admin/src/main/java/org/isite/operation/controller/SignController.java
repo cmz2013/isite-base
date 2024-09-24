@@ -1,6 +1,6 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.mq.Message;
 import org.isite.commons.web.mq.Publisher;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;

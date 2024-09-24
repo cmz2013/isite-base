@@ -2,7 +2,7 @@ package org.isite.shop.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.vo.Vo;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

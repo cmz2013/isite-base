@@ -2,7 +2,7 @@ package org.isite.commons.web.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.lang.Error;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

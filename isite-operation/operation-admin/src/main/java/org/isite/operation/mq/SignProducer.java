@@ -1,6 +1,6 @@
 package org.isite.operation.mq;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.mq.Producer;
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.vo.SignLog;

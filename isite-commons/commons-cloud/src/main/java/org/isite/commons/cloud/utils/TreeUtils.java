@@ -1,6 +1,6 @@
 package org.isite.commons.cloud.utils;
 
-import org.isite.commons.cloud.data.Tree;
+import org.isite.commons.cloud.data.vo.Tree;
 
 import java.util.List;
 

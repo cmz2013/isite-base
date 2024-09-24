@@ -35,14 +35,14 @@ public class PageQuery<P extends Model<?>> {
     /**
      * 排序
      */
-    private List<OrderQuery> orders;
+    private List<Order> orders;
 
     public int getOffset() {
         return (this.pageNum - ONE) * this.pageSize;
     }
 
     public String orderBy() {
-        return isEmpty(orders) ? null : orders.stream().map(OrderQuery::orderBy).collect(joining(COMMA));
+        return isEmpty(orders) ? null : orders.stream().map(Order::orderBy).collect(joining(COMMA));
     }
 
     public void setPageSize(int pageSize) {

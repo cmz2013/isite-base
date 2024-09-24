@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.enums;
+package org.isite.commons.cloud.data.enums;
 
 import org.isite.commons.lang.enums.Enumerable;
 

@@ -1,6 +1,6 @@
 package org.isite.data.handler;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.sign.SignSecret;
 import org.isite.data.exception.ServerException;
 import org.isite.data.log.LogHandler;

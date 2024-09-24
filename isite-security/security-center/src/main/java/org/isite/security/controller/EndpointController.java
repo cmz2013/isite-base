@@ -1,6 +1,6 @@
 package org.isite.security.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.security.config.EndpointConfig;
 import org.isite.security.data.vo.OauthClient;

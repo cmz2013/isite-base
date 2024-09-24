@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.feign;
+package org.isite.commons.web.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -15,12 +15,12 @@ import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.constants.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_SIGNATURE;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_TIMESTAMP;
-import static org.isite.commons.cloud.sign.SignUtils.getSignature;
-import static org.isite.commons.cloud.sign.SignUtils.getSignatureParameter;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_SIGNATURE;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
+import static org.isite.commons.web.sign.SignUtils.getSignature;
+import static org.isite.commons.web.sign.SignUtils.getSignatureParameter;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
 import static org.isite.commons.lang.Constants.AMPERSAND;
 import static org.isite.commons.lang.Constants.BLANK_STRING;

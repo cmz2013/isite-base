@@ -1,9 +1,9 @@
 package org.isite.shop.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.cloud.data.ListRequest;
-import org.isite.commons.cloud.data.ListResult;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.dto.ListRequest;
+import org.isite.commons.cloud.data.vo.ListResult;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.shop.po.CouponRecordPo;
@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toListQuery;
-import static org.isite.commons.cloud.data.Converter.toMap;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.toListQuery;
+import static org.isite.commons.cloud.converter.Converter.toMap;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getClientIdentifier;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;

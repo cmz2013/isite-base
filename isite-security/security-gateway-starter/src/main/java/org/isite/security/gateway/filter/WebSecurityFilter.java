@@ -1,7 +1,7 @@
 package org.isite.security.gateway.filter;
 
 import lombok.Setter;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.Error;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
@@ -24,12 +24,12 @@ import static java.lang.String.valueOf;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_CLIENT_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_EMPLOYEE_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_TENANT_ID;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_USER_ID;
-import static org.isite.commons.cloud.data.Converter.toResult;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_CLIENT_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
+import static org.isite.commons.cloud.converter.Converter.toResult;
 import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.COMMA;

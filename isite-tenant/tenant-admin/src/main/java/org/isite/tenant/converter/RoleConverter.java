@@ -1,6 +1,6 @@
 package org.isite.tenant.converter;
 
-import org.isite.commons.cloud.data.PageRequest;
+import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.jpa.data.PageQuery;
 import org.isite.tenant.data.dto.RoleDto;
 import org.isite.tenant.data.dto.RoleGetDto;
@@ -10,8 +10,8 @@ import org.isite.tenant.po.RolePo;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.data.Converter.convert;
-import static org.isite.commons.cloud.data.Converter.toPageQuery;
+import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 

@@ -3,7 +3,7 @@ package org.isite.mongo.service;
 import lombok.Getter;
 import org.isite.commons.lang.Functions;
 import org.isite.jpa.data.ListQuery;
-import org.isite.jpa.data.OrderQuery;
+import org.isite.jpa.data.Order;
 import org.isite.jpa.data.Page;
 import org.isite.jpa.data.PageQuery;
 import org.isite.jpa.service.ModelService;
@@ -169,7 +169,7 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Long> {
 
     @Override
     public List<P> findList(ListQuery<P> listQuery) {
-        OrderQuery order = listQuery.getOrder();
+        Order order = listQuery.getOrder();
         Query query = null != listQuery.getPo() ?
                 toQuerySelective(listQuery.getPo(), order.getField()) : new Query();
         if (null != listQuery.getIndex()) {

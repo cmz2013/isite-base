@@ -1,6 +1,6 @@
 package org.isite.misc.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.misc.data.constants.UrlConstants.URL_MISC;
 
 /**

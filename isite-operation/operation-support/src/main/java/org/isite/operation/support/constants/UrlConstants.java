@@ -1,6 +1,6 @@
 package org.isite.operation.support.constants;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 
 /**
  * @Description URL常量

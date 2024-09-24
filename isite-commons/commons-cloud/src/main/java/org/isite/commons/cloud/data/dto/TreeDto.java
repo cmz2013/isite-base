@@ -1,11 +1,10 @@
-package org.isite.commons.cloud.data;
+package org.isite.commons.cloud.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 树 DTO。pids由后端负责设置，接口不传参
- *
+ * @Description 树 DTO。pids由后端负责设置，接口不传参
  * @author <font color='blue'>zhangcm</font>
  */
 @Getter

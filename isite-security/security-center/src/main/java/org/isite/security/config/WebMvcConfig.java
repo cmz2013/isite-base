@@ -5,12 +5,12 @@ import org.isite.imports.EnableWeb;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_CSS_PREFIX;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_IMAGES_PREFIX;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_JS_PREFIX;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_STATIC_CSS;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_STATIC_IMAGES;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_STATIC_JS;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_CSS_PREFIX;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_IMAGES_PREFIX;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_JS_PREFIX;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_CSS;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_IMAGES;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_JS;
 import static org.isite.security.data.constants.UrlConstants.URL_OAUTH;
 
 /**

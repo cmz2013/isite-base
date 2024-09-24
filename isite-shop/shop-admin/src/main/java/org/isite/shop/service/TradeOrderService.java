@@ -1,6 +1,6 @@
 package org.isite.shop.service;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.Error;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.mybatis.service.PoService;

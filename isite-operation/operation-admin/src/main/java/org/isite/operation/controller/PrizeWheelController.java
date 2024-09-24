@@ -1,6 +1,6 @@
 package org.isite.operation.controller;
 
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;

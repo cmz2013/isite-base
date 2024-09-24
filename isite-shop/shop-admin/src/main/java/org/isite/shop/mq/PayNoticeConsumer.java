@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 
 import static java.lang.Boolean.TRUE;
-import static org.isite.commons.cloud.data.Converter.groupBy;
+import static org.isite.commons.cloud.converter.Converter.groupBy;
 import static org.isite.commons.lang.Constants.NEW_LINE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.json.Jackson.toJsonString;

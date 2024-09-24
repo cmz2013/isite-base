@@ -1,7 +1,7 @@
 package org.isite.misc.data.constants;
 
-import static org.isite.commons.cloud.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.constants.UrlConstants.URL_PUBLIC;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
+import static org.isite.commons.cloud.data.constants.UrlConstants.URL_PUBLIC;
 
 /**
  * @Description URL常量

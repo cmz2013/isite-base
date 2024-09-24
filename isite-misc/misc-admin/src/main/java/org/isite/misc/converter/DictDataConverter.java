@@ -3,7 +3,7 @@ package org.isite.misc.converter;
 import org.isite.misc.data.dto.DictDataDto;
 import org.isite.misc.po.DictDataPo;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.ZERO;
 

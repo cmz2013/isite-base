@@ -1,6 +1,8 @@
 package org.isite.commons.web.sync;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.cloud.utils.SpelExpressionUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import static java.time.Duration.ofMillis;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.cloud.spel.VariableExpression.getValue;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
@@ -45,7 +46,8 @@ public class Locksmith {
     /**
      * 忙时等待定时器
      */
-    private final BusyTimer busyTimer;
+    @Setter
+    private BusyTimer busyTimer;
     /**
      * KEY的前缀
      */
@@ -55,9 +57,11 @@ public class Locksmith {
      */
     private long expire;
 
-    public Locksmith(StringRedisTemplate redisTemplate, BusyTimer busyTimer) {
+    @Setter
+    private SpelExpressionUtils spelExpressionUtils;
+
+    public Locksmith(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
-        this.busyTimer = busyTimer;
         this.locks = new ArrayList<>();
     }
 
@@ -68,17 +72,15 @@ public class Locksmith {
     /**
      * @Description 构造锁芯。读取参数值，替换lock#name中的占位符
      * @param lock 锁注解
-     * @param parameterNames 参数名
-     * @param args 参数
      */
-    public LockCylinder getLockCylinder(Lock lock, String[] parameterNames, Object[] args) {
+    public LockCylinder getLockCylinder(Lock lock) {
         if (isEmpty(lock.keys())) {
             notBlank(lock.name(), "name and keys cannot be empty at the same time");
             return new LockCylinder(lock.name(), lock.reentry());
         }
         Object[] values = new Object[lock.keys().length];
         for (int i = ZERO; i < lock.keys().length; i++) {
-            values[i] = getValue(lock.keys()[i], parameterNames, args);
+            values[i] = spelExpressionUtils.getValue(lock.keys()[i]);
         }
         String keys = join(lock.delimiter(), values);
         return new LockCylinder(isBlank(lock.name()) ? keys :

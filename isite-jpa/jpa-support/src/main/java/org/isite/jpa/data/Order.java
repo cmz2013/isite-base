@@ -12,16 +12,16 @@ import static org.isite.jpa.data.Direction.ASC;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
-public class OrderQuery {
+public class Order {
 
     private String field;
     private Direction direction = ASC;
 
-    public OrderQuery(String field) {
+    public Order(String field) {
         this.setField(field);
     }
 
-    public OrderQuery(String field, Direction direction) {
+    public Order(String field, Direction direction) {
         this.setField(field);
         this.setDirection(direction);
     }

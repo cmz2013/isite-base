@@ -1,4 +1,4 @@
-package org.isite.commons.cloud.sign;
+package org.isite.commons.web.sign;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.cloud.constants.HttpHeaders.X_TIMESTAMP;
+import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Constants.AMPERSAND;

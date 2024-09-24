@@ -1,7 +1,7 @@
 package org.isite.misc.controller;
 
 import org.isite.commons.cloud.data.op.Update;
-import org.isite.commons.cloud.data.Result;
+import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.data.dto.FileRecordPostDto;
 import org.isite.misc.data.dto.FileRecordPutDto;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.misc.converter.FileRecordConverter.toFileRecordPo;
 import static org.isite.misc.data.constants.UrlConstants.MY_POST_FILE_RECORD;
 import static org.isite.misc.data.constants.UrlConstants.PUT_FILE_RECORD;

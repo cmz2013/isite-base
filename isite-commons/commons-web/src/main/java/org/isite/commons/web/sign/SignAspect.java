@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.isite.commons.cloud.utils.SpelExpressionUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.spel.VariableExpression.getValue;
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.utils.RequestUtils.getRequest;
@@ -41,9 +41,10 @@ public class SignAspect {
     @Around("@annotation(signed)")
     public Object doBefore(ProceedingJoinPoint point, Signed signed) throws Throwable {
         HttpServletRequest request = getRequest();
+        SpelExpressionUtils spelExpressionUtils = new SpelExpressionUtils(
+                ((MethodSignature) point).getParameterNames(), point.getArgs());
         String signature = isNotBlank(signed.signature()) ?
-                (String) getValue(signed.signature(), ((MethodSignature) point).getParameterNames(), point.getArgs()) :
-                request.getHeader(signed.signatureHeader());
+                (String) spelExpressionUtils.getValue(signed.signature()) : request.getHeader(signed.signatureHeader());
         SignSecret secret = getBean(signed.secret());
         String appCode = isNotBlank(signed.appCode()) ?
                 signed.appCode() : request.getHeader(signed.appCodeHeader());

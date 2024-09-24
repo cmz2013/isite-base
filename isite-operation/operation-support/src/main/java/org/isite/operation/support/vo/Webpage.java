@@ -2,8 +2,8 @@ package org.isite.operation.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.enums.TerminalType;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.enums.TerminalType;
+import org.isite.commons.cloud.data.vo.Vo;
 
 /**
  * @Description 活动网页模板

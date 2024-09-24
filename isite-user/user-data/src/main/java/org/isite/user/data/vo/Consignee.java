@@ -2,7 +2,7 @@ package org.isite.user.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.Vo;
+import org.isite.commons.cloud.data.vo.Vo;
 
 /**
  * @Description 收件人

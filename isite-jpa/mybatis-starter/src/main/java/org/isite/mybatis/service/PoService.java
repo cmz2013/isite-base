@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.session.RowBounds;
 import org.isite.commons.lang.Functions;
 import org.isite.jpa.data.ListQuery;
-import org.isite.jpa.data.OrderQuery;
+import org.isite.jpa.data.Order;
 import org.isite.jpa.data.PageQuery;
 import org.isite.jpa.service.ModelService;
 import org.isite.mybatis.data.Po;
@@ -194,7 +194,7 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
     @Override
     public List<P> findList(ListQuery<P> listQuery) {
         Weekend<P> weekend = of(this.getPoClass());
-        OrderQuery order = listQuery.getOrder();
+        Order order = listQuery.getOrder();
         WeekendCriteria<P, Object> criteria = weekend.weekendCriteria();
         if (null != listQuery.getPo()) {
             getFields(getPoClass()).forEach(field -> {

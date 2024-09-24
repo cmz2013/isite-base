@@ -3,7 +3,7 @@ package org.isite.operation.converter;
 import org.isite.operation.support.dto.PrizePostDto;
 import org.isite.operation.po.PrizePo;
 
-import static org.isite.commons.cloud.data.Converter.convert;
+import static org.isite.commons.cloud.converter.Converter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.ZERO;
 
