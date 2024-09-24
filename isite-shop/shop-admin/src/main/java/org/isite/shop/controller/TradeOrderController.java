@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.ListQueryConverter.toListQuery;
+import static org.isite.commons.cloud.converter.MapConverter.toMap;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.converter.Converter.convert;
-import static org.isite.commons.cloud.converter.Converter.toListQuery;
-import static org.isite.commons.cloud.converter.Converter.toMap;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getClientIdentifier;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
@@ -96,9 +96,9 @@ public class TradeOrderController extends BaseController {
         List<SpuPo> spuPos = spuService.findIn(SpuPo::getId, convert(skuPos, SkuPo::getSpuId));
         List<Integer> couponRecordIds = convert(orderItemPostDtos, TradeOrderItemPostDto::getCouponRecordId);
         Map<Integer, CouponRecordPo> couponRecordPos = isEmpty(couponRecordIds) ? null :
-                toMap(couponRecordService.findIn(CouponRecordPo::getId, couponRecordIds), CouponRecordPo::getId);
+                toMap(CouponRecordPo::getId, couponRecordService.findIn(CouponRecordPo::getId, couponRecordIds));
         List<TradeOrderItemPo> orderItemPos = toTradeOrderItemSelectivePos(getUserDetails(getUserId()),
-                orderItemPostDtos, toMap(spuPos, SpuPo::getId), toMap(skuPos, SkuPo::getId), couponRecordPos);
+                orderItemPostDtos, toMap(SpuPo::getId, spuPos), toMap(SkuPo::getId, skuPos), couponRecordPos);
         TradeOrderPo tradeOrderPo = toTradeOrderPo(getUserId(), getClientIdentifier(), tradeOrderService.generateOrderNumber(),
                 orderItemPos.stream().mapToInt(TradeOrderItemPo::getPayPrice).sum());
         return toResult(tradeOrderService.addOrder(tradeOrderPo, orderItemPos, couponRecordIds));

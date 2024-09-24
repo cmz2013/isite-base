@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.security.client.EndpointAccessor.findOauthClients;
 import static org.isite.tenant.data.constants.UrlConstants.GET_OAUTH_CLIENTS;

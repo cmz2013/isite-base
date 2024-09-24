@@ -50,7 +50,7 @@ public class PrizeWheelService {
             recordPo = addPrizeRecord(userId, activity);
         }
         notNull(recordPo, getMessage("draws.number.zero", "the number of draws is 0"));
-        Prize prize = get(activity.getPrizes(), recordPo.getPrizeId());
+        Prize prize = get(recordPo.getPrizeId(), activity.getPrizes());
         if (null == prize) {
             List<Prize> prizes = prizeService.filterPrizes(activity.getPrizes());
             notEmpty(prizes, getMessage("prize.notInventory", "there are no more prizes"));

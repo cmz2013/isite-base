@@ -29,11 +29,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Set;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
-import static org.isite.commons.cloud.converter.Converter.toPageQuery;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
-import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodePo;
+import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodeSelectivePo;
 import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 
@@ -54,7 +54,7 @@ public class PrizeCodeController extends BaseController {
     public PageResult<PrizeCode> findPage(
             @PathVariable("prizeId") Integer prizeId, PageRequest<PrizeCodeDto> request) {
         try (Page<PrizeCodePo> page = prizeCodeService.findPage(
-                toPageQuery(request, () -> toPrizeCodePo(prizeId, request.getQuery())))) {
+                toPageQuery(request, () -> toPrizeCodeSelectivePo(prizeId, request.getQuery())))) {
             return toPageResult(request, convert(page.getResult(), PrizeCode::new), page.getTotal());
         }
     }

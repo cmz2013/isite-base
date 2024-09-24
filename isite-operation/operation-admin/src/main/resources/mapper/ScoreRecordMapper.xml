@@ -29,9 +29,13 @@
         limit 1
     </select>
 
-    <select id="selectVipScoreRecord" resultType="ScoreRecordPo">
+    <select id="selectScoreRecord" resultType="ScoreRecordPo">
         select id, user_id, score_type, score_value, used_score, create_time
         from score_record
-        where user_id = #{userId} and score_type = 1 and create_time <![CDATA[>=]]> #{startTime}
+        where user_id = #{scoreRecordPo.userId}
+          and score_type = #{scoreRecordPo.scoreType.code}
+        <if test="startTime!= null">
+            and create_time <![CDATA[>=]]> #{startTime}
+        </if>
     </select>
 </mapper>

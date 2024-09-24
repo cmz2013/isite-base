@@ -21,10 +21,10 @@ import java.util.Date;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.support.enums.TaskType.OPERATION_WEBPAGE_INVITE;
 import static org.isite.operation.support.enums.TaskType.QUESTION_REPLY_INVITE;
@@ -84,10 +84,10 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
             return;
         }
         int prizeId = ((PrizeReward) reward).getPrizeId();
-        Prize prize = get(activity.getPrizes(), prizeId);
+        Prize prize = get(prizeId, activity.getPrizes());
         notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
         prizeRecordService.insert(toPrizeRecordPo(
-                get(activity.getTasks(), inviteRecordPo.getTaskId()), inviteRecordPo, prize));
+                get(inviteRecordPo.getTaskId(), activity.getTasks()), inviteRecordPo, prize));
     }
 
     @Autowired

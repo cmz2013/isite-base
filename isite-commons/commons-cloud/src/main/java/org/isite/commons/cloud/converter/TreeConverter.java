@@ -14,7 +14,7 @@ import java.util.function.Function;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.TreeUtils.get;
-import static org.isite.commons.cloud.utils.VoUtils.notContain;
+import static org.isite.commons.cloud.utils.VoUtils.contain;
 import static org.isite.commons.lang.Constants.ZERO;
 
 
@@ -73,7 +73,7 @@ public class TreeConverter {
     void toTree(T tree, List<T> trees, List<P> nodes, Function<P, T> converter, Set<I> pids) {
         //根节点
         if (tree.isRoot()) {
-            if (notContain(trees, tree.getId())) {
+            if (!contain(tree.getId(), trees)) {
                 trees.add(tree);
             }
             return;

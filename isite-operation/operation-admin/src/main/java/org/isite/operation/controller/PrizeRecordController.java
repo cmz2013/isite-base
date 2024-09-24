@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static org.apache.commons.lang.BooleanUtils.isNotTrue;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.converter.Converter.convert;
-import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.isTrue;
@@ -92,7 +92,7 @@ public class PrizeRecordController extends BaseController {
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
         Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
-        Prize prize = get(activity.getPrizes(), prizeId);
+        Prize prize = get(prizeId, activity.getPrizes());
         notNull(prize, getMessage("prize.notFound", "prize not found"));
         return toResult(prizeRecordService.receivePrize(activity, prize, getUserId()));
     }

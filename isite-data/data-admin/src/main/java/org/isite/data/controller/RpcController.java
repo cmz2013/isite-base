@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.data.support.constants.UrlConstants.API_GET_RPC;
 
 /**

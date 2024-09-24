@@ -32,7 +32,7 @@ public class OngoingActivityService {
         if (null == activity) {
             return null;
         }
-        return get(activity.getPrizes(), prizeId);
+        return get(prizeId, activity.getPrizes());
     }
 
     /**

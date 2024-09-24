@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;

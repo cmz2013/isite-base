@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.stream.Collectors.toList;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;

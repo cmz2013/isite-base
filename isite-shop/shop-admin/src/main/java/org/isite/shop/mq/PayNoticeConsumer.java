@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 
 import static java.lang.Boolean.TRUE;
-import static org.isite.commons.cloud.converter.Converter.groupBy;
+import static org.isite.commons.cloud.converter.MapConverter.groupBy;
 import static org.isite.commons.lang.Constants.NEW_LINE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
@@ -90,7 +90,7 @@ public class PayNoticeConsumer implements Consumer<PayNoticeDto> {
                 toTradeOrderItemSelectivePos(tradeOrderPo.getPayPrice(), orderItemPos, payNoticeDto.getServiceCharge())
                         .forEach(tradeOrderItemService::updateSelectiveById);
             }
-            groupBy(orderItemPos, TradeOrderItemPo::getSupplier).forEach((supplier, pos) -> rabbitTemplate.convertAndSend(
+            groupBy(TradeOrderItemPo::getSupplier, orderItemPos).forEach((supplier, pos) -> rabbitTemplate.convertAndSend(
                     EXCHANGE_TRADE_ORDER_SUCCESS, supplier.getCode(), toTradeOrderSupplierDto(tradeOrderPo, pos)));
             return new Basic.Ack();
         } catch (Exception e) {

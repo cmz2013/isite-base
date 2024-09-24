@@ -4,7 +4,7 @@ import org.isite.user.data.dto.ConsigneeDto;
 import org.isite.user.po.ConsigneePo;
 
 import static java.lang.Boolean.FALSE;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 
 /**

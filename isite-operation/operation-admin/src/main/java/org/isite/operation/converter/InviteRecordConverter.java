@@ -12,7 +12,7 @@ public class InviteRecordConverter {
     private InviteRecordConverter() {
     }
 
-    public static InviteRecordPo toInviteRecordPo(int activityId) {
+    public static InviteRecordPo toInviteRecordSelectivePo(int activityId) {
         InviteRecordPo inviteRecordPo = new InviteRecordPo();
         inviteRecordPo.setUserId(getUserId());
         inviteRecordPo.setActivityId(activityId);

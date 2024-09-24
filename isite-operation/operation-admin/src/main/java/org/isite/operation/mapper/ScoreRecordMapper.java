@@ -35,9 +35,9 @@ public interface ScoreRecordMapper extends PoMapper<ScoreRecordPo, Long> {
             @Nullable @Param("startTime") Date startTime);
 
     /**
-     * 查询用户VIP积分记录，VIP积分有效期为1年
+     * 查询积分记录
      */
-    List<ScoreRecordPo> selectVipScoreRecord(
-            @Param("userId") long userId,
-            @Param("startTime") Date startTime);
+    List<ScoreRecordPo> selectScoreRecord(
+            @Param("scoreRecordPo") ScoreRecordPo scoreRecordPo,
+            @Nullable @Param("startTime") Date startTime);
 }

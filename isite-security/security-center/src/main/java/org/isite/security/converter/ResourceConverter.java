@@ -12,10 +12,10 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.Constants.FIELD_NAME;
-import static org.isite.commons.lang.Constants.SEVEN;
 import static org.isite.commons.cloud.utils.TreeUtils.merge;
 import static org.isite.commons.cloud.utils.VoUtils.get;
+import static org.isite.commons.lang.Constants.FIELD_NAME;
+import static org.isite.commons.lang.Constants.SEVEN;
 import static org.isite.jpa.data.JpaConstants.FIELD_ID;
 
 /**
@@ -59,7 +59,7 @@ public class ResourceConverter {
         }
         List<Resource> resources = new ArrayList<>();
         roles.forEach(role -> role.getResources().forEach(item -> {
-            Resource resource = get(resources, item.getId());
+            Resource resource = get(item.getId(), resources);
             if (null == resource) {
                 resources.add(item);
             } else {

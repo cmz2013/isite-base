@@ -1,17 +1,13 @@
 package org.isite.tenant.converter;
 
-import org.isite.commons.cloud.data.dto.PageRequest;
-import org.isite.jpa.data.PageQuery;
 import org.isite.tenant.data.dto.RoleDto;
-import org.isite.tenant.data.dto.RoleGetDto;
 import org.isite.tenant.data.vo.Resource;
 import org.isite.tenant.data.vo.Role;
 import org.isite.tenant.po.RolePo;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
-import static org.isite.commons.cloud.converter.Converter.toPageQuery;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 
@@ -51,14 +47,5 @@ public class RoleConverter {
         Role role = convert(rolePo, Role::new);
         role.setResources(resources);
         return role;
-    }
-
-    public static PageQuery<RolePo> toRoleQuery(PageRequest<RoleGetDto> request) {
-        PageQuery<RolePo> pageQuery = toPageQuery(request, RolePo::new);
-        if (null == pageQuery.getPo()) {
-            pageQuery.setPo(new RolePo());
-        }
-        pageQuery.getPo().setTenantId(getTenantId());
-        return pageQuery;
     }
 }

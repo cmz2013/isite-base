@@ -10,7 +10,7 @@ import org.isite.operation.po.TaskPo;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;

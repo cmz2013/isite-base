@@ -3,7 +3,7 @@ package org.isite.misc.converter;
 import org.isite.misc.data.dto.FileRecordPostDto;
 import org.isite.misc.po.FileRecordPo;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 

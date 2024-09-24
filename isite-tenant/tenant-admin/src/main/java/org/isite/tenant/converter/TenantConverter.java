@@ -6,7 +6,7 @@ import org.isite.user.data.vo.UserDetails;
 
 import java.util.Date;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STRING;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 

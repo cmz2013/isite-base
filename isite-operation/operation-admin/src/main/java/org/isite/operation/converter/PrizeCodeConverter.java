@@ -11,7 +11,7 @@ public class PrizeCodeConverter {
     private PrizeCodeConverter() {
     }
 
-    public static PrizeCodePo toPrizeCodePo(Integer prizeId, PrizeCodeDto prizeCodeDto) {
+    public static PrizeCodePo toPrizeCodeSelectivePo(Integer prizeId, PrizeCodeDto prizeCodeDto) {
         PrizeCodePo prizeCodePo = new PrizeCodePo();
         prizeCodePo.setUserId(prizeCodeDto.getUserId());
         prizeCodePo.setPrizeId(prizeId);

@@ -44,7 +44,7 @@ public class TreeUtils {
             target.setChildren(source.getChildren());
         } else {
             source.getChildren().forEach(child -> {
-                T node = VoUtils.get(target.getChildren(), child.getId());
+                T node = get(child.getId(), target.getChildren());
                 if (null == node) {
                     target.getChildren().add(child);
                 } else {

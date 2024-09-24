@@ -19,16 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 
+import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.converter.Converter.convert;
-import static org.isite.commons.cloud.converter.Converter.toPageQuery;
 import static org.isite.commons.lang.Assert.isTrue;
+import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.ScoreRecordConverter.toScoreRecordSelectivePo;
 import static org.isite.operation.support.constants.UrlConstants.PUT_USE_VIP_SCORE;
 import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
 import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
+import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -71,7 +74,12 @@ public class ScoreRecordController extends BaseController {
      */
     @GetMapping(URL_MY + URL_OPERATION + "/score/records")
     public PageResult<ScoreRecord> findPage(PageRequest<?> request) {
-        try (Page<ScoreRecordPo> page = scoreRecordService.findVipScoreRecords(getUserId(), toPageQuery(request, null))) {
+        try (Page<ScoreRecordPo> page = scoreRecordService.findScoreRecords(toPageQuery(request, () -> {
+                    ScoreRecordPo scoreRecordPo = new ScoreRecordPo();
+                    scoreRecordPo.setScoreType(VIP_SCORE);
+                    scoreRecordPo.setUserId(getUserId());
+                    return scoreRecordPo;
+                }), getTimeBeforeYear(ONE))) {
             return toPageResult(request, convert(page.getResult(), ScoreRecord::new), page.getTotal());
         }
     }

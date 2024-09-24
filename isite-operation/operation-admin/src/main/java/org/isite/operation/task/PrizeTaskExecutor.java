@@ -1,5 +1,8 @@
 package org.isite.operation.task;
 
+import org.isite.operation.po.PrizeRecordPo;
+import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.service.PrizeTaskService;
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
@@ -7,9 +10,6 @@ import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.PrizeReward;
 import org.isite.operation.support.vo.Reward;
 import org.isite.operation.support.vo.Task;
-import org.isite.operation.po.PrizeRecordPo;
-import org.isite.operation.service.PrizeRecordService;
-import org.isite.operation.service.PrizeTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -18,9 +18,9 @@ import java.util.Date;
 
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
+import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.cloud.utils.VoUtils.get;
 import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
 import static org.isite.operation.support.enums.TaskType.QUESTION_PRIZE;
 
@@ -64,7 +64,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
             return;
         }
         int prizeId = ((PrizeReward) reward).getPrizeId();
-        Prize prize = get(activity.getPrizes(), prizeId);
+        Prize prize = get(prizeId, activity.getPrizes());
         notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
         toPrizeRecordPo(taskRecord, prize);
         prizeRecordService.insert(taskRecord);

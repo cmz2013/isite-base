@@ -2,9 +2,9 @@ package org.isite.tenant.controller;
 
 import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.dto.PageRequest;
-import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
+import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
@@ -29,15 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
+import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
-import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.converter.RoleConverter.toRolePo;
-import static org.isite.tenant.converter.RoleConverter.toRoleQuery;
 import static org.isite.tenant.converter.RoleConverter.toRoleSelectivePo;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
 
@@ -72,16 +72,20 @@ public class RoleController extends BaseController {
      */
     @GetMapping(URL_TENANT + "/roles")
     public PageResult<Role> findPage(PageRequest<RoleGetDto> request) {
-        try (Page<RolePo> page = roleService.findPage(toRoleQuery(request))) {
+        try (Page<RolePo> page = roleService.findPage(toPageQuery(request, () -> {
+            RolePo rolePo = new RolePo();
+            rolePo.setTenantId(getTenantId());
+            return rolePo;
+        }))) {
             return toPageResult(request, convert(page.getResult(), Role::new), page.getTotal());
         }
     }
 
     /**
-     * 租户查询角色详情
+     * 租户根据角色ID和客户端ID查询角色详情
      */
     @GetMapping(URL_TENANT + "/role/{id}/client/{clientId}")
-    public Result<Role> findById(@PathVariable("id") Integer id,
+    public Result<Role> getRole(@PathVariable("id") Integer id,
                                  @PathVariable("clientId") String clientId) {
         RolePo rolePo = roleService.get(id);
         isTrue(rolePo.getTenantId().equals(getTenantId()), new OverstepAccessError());

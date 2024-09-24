@@ -9,7 +9,7 @@ import org.isite.data.support.dto.DataLogDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 
 /**
  * @Description 保存数据日志

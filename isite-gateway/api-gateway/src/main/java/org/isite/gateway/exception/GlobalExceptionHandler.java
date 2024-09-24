@@ -6,7 +6,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import static org.isite.commons.cloud.converter.Converter.toResult;
+import static org.isite.commons.cloud.converter.ResultConverter.toResult;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;

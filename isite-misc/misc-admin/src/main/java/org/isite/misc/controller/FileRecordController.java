@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.misc.converter.FileRecordConverter.toFileRecordPo;
 import static org.isite.misc.data.constants.UrlConstants.MY_POST_FILE_RECORD;
 import static org.isite.misc.data.constants.UrlConstants.PUT_FILE_RECORD;

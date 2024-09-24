@@ -19,7 +19,7 @@ import java.util.List;
 import static java.lang.System.currentTimeMillis;
 import static java.util.List.of;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.cloud.converter.Converter.convert;
+import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.tenant.converter.RoleConverter.toRole;

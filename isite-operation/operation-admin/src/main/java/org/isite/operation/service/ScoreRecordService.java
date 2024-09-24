@@ -127,7 +127,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
         isTrue(ZERO == score, "Not enough vip score");
     }
 
-    public Page<ScoreRecordPo> findVipScoreRecords(long userId, PageQuery<?> pageQuery) {
+    public Page<ScoreRecordPo> findScoreRecords(PageQuery<ScoreRecordPo> pageQuery, @Nullable Date startTime) {
         //当前线程紧跟着的第一个select方法会被分页
         Page<ScoreRecordPo> page = offsetPage(pageQuery.getOffset(), pageQuery.getPageSize());
         String orderBy = pageQuery.orderBy();
@@ -135,6 +135,6 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
             page.setOrderBy(orderBy);
         }
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
-        return (Page<ScoreRecordPo>) mapper.selectVipScoreRecord(userId, getTimeBeforeYear(ONE));
+        return (Page<ScoreRecordPo>) mapper.selectScoreRecord(pageQuery.getPo(), startTime);
     }
 }
