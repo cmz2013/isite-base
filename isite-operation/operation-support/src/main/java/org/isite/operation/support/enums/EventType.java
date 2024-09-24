@@ -2,7 +2,6 @@ package org.isite.operation.support.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import org.isite.commons.lang.Functions;
 import org.isite.commons.lang.enums.Enumerable;
 import org.isite.commons.lang.json.Jackson;
 import org.isite.misc.data.enums.AppModule;
@@ -89,9 +88,9 @@ public enum EventType implements Enumerable<Integer> {
      * 在EventConsumer执行任务之前，需要根据行为类型进行解析和转换行为参数。
      */
     @Getter
-    private final Function<Object, Object> converter;
+    private final Function<Object, ?> converter;
 
-    EventType(Integer code, String label, ObjectType objectType, AppModule appModule, Functions<Object, Object> converter) {
+    EventType(Integer code, String label, ObjectType objectType, AppModule appModule, Function<Object, ?> converter) {
         this.code = code;
         this.label = label;
         this.objectType = objectType;
