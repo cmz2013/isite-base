@@ -37,8 +37,8 @@ public class TaskService extends PoService<TaskPo, Integer> {
      * 有任务记录的任务不能删除
      */
     @Transactional(rollbackFor = Exception.class)
-    public <R extends TaskRecordPo> long deleteTask(Integer taskId) {
-        for (TaskRecordService<R> recordService : getBeans(TaskRecordService.class).values()) {
+    public long deleteTask(Integer taskId) {
+        for (TaskRecordService<?> recordService : getBeans(TaskRecordService.class).values()) {
             notExistTaskRecord(recordService.exists(TaskRecordPo::getTaskId, taskId));
         }
         return this.delete(taskId);
