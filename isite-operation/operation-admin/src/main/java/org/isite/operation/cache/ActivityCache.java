@@ -27,8 +27,8 @@ import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.COLON;
-import static org.isite.commons.lang.Constants.DAY_SECONDS;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.DAY_SECOND;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
@@ -67,12 +67,12 @@ public class ActivityCache {
     /**
      * 根据行为类型查询已上架的运营活动ID
      */
-    @Cached(name = ACTIVITY_IDS_EVENT_PREFIX, key = "#eventType.code", expire = DAY_SECONDS)
+    @Cached(name = ACTIVITY_IDS_EVENT_PREFIX, key = "#eventType.code", expire = DAY_SECOND)
     public List<Integer> findActivityIds(EventType eventType) {
         return activityService.findEnabledActivityIds(eventType);
     }
 
-    @Cached(name = ACTIVITY_PREFIX, key = "#activityId", cacheType = BOTH, expire = DAY_SECONDS, localExpire = MINUTE_SECONDS)
+    @Cached(name = ACTIVITY_PREFIX, key = "#activityId", cacheType = BOTH, expire = DAY_SECOND, localExpire = MINUTE_SECOND)
     public Activity getActivity(int activityId) {
         ActivityPo activityPo = activityService.getActivity(activityId, ENABLED);
         notNull(activityPo, getMessage("activity.notFound", "activity not found"));
@@ -95,7 +95,7 @@ public class ActivityCache {
      * @param terminalType 用户终端类型
      * @return 活动网页html代码
      */
-    @Cached(name = WEBPAGE_ACTIVITY_TERMINAL_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECONDS)
+    @Cached(name = WEBPAGE_ACTIVITY_TERMINAL_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECOND)
     public String getWebpage(Activity activity, TerminalType terminalType) {
         return webpageService.getWebpage(activity, terminalType);
     }

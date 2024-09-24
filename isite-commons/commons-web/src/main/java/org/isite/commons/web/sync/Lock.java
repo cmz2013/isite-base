@@ -1,6 +1,6 @@
 package org.isite.commons.web.sync;
 
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.COLON;
 import static org.isite.commons.lang.Constants.ONE;
 
@@ -12,7 +12,7 @@ public @interface Lock {
     /**
      * 锁的名称。name用于keys的前缀，name和keys至少要有一个不为空。
      */
-    String name() default BLANK_STRING;
+    String name() default BLANK_STR;
     /**
      * 从接口参数列表读取条件的SpEL表达式，true：加锁，false：不加锁
      */

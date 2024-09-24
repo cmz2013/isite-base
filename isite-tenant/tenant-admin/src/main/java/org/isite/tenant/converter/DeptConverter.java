@@ -4,7 +4,7 @@ import org.isite.tenant.data.dto.DepartmentDto;
 import org.isite.tenant.po.DepartmentPo;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 
@@ -21,7 +21,7 @@ public class DeptConverter {
         departmentPo.setTenantId(tenantId);
         departmentPo.setStatus(ENABLED);
         if (null == departmentPo.getRemark()) {
-            departmentPo.setRemark(BLANK_STRING);
+            departmentPo.setRemark(BLANK_STR);
         }
         if (null == departmentPo.getPid()) {
             departmentPo.setPid(ZERO);
@@ -32,7 +32,7 @@ public class DeptConverter {
     public static DepartmentPo toDeptSelectivePo(DepartmentDto departmentDto) {
         DepartmentPo departmentPo = convert(departmentDto, DepartmentPo::new);
         if (null == departmentPo.getRemark()) {
-            departmentPo.setRemark(BLANK_STRING);
+            departmentPo.setRemark(BLANK_STR);
         }
         if (null == departmentPo.getPid()) {
             departmentPo.setPid(ZERO);

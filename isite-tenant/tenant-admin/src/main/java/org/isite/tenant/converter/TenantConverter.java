@@ -7,7 +7,7 @@ import org.isite.user.data.vo.UserDetails;
 import java.util.Date;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 
 /**
@@ -22,7 +22,7 @@ public class TenantConverter {
         TenantPo tenantPo = convert(tenantDto, TenantPo::new);
         tenantPo.setStatus(ENABLED);
         if (null == tenantPo.getRemark()) {
-            tenantPo.setRemark(BLANK_STRING);
+            tenantPo.setRemark(BLANK_STR);
         }
         return tenantPo;
     }
@@ -40,7 +40,7 @@ public class TenantConverter {
     public static TenantPo toTenantSelectivePo(TenantDto tenantDto) {
         TenantPo tenantPo = convert(tenantDto, TenantPo::new);
         if (null == tenantPo.getRemark()) {
-            tenantPo.setRemark(BLANK_STRING);
+            tenantPo.setRemark(BLANK_STR);
         }
         return tenantPo;
     }

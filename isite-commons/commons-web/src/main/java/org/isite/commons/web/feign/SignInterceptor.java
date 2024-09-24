@@ -19,17 +19,17 @@ import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_SIGNATURE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
-import static org.isite.commons.web.sign.SignUtils.getSignature;
-import static org.isite.commons.web.sign.SignUtils.getSignatureParameter;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
 import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.BLANK_STR;
+import static org.isite.commons.lang.Constants.EQUAL_SIGN;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.QUESTION_MARK;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
 import static org.isite.commons.lang.json.Jackson.parseObject;
+import static org.isite.commons.web.sign.SignUtils.getSignature;
+import static org.isite.commons.web.sign.SignUtils.getSignatureParameter;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -79,7 +79,7 @@ public class SignInterceptor implements RequestInterceptor {
     @SuppressWarnings("unchecked")
     private Map<String, Object> getRequestData(RequestTemplate template) {
         byte[] bytes = template.body();
-        String body = isEmpty(bytes) ? BLANK_STRING : new String(bytes, template.requestCharset());
+        String body = isEmpty(bytes) ? BLANK_STR : new String(bytes, template.requestCharset());
         if (isJson(template.headers().get(CONTENT_TYPE))) {
             //数组不参与签名
             return body.startsWith(JSON_OBJECT_PREFIX) ?
@@ -119,7 +119,7 @@ public class SignInterceptor implements RequestInterceptor {
             if (isBlank(pairs)) {
                 continue;
             }
-            int index = pairs.indexOf(EQUALS_SIGN);
+            int index = pairs.indexOf(EQUAL_SIGN);
             if (index > ZERO) {
                 data.put(pairs.substring(ZERO, index), pairs.substring(index + ONE));
             }

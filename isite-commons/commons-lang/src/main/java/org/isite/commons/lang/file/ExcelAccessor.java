@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.math.BigDecimal.valueOf;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.EXTENSION_XLS;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.file.FileUtils.EXTENSION_XLS;
 import static org.isite.commons.lang.file.FileUtils.getExtension;
 import static org.isite.commons.lang.utils.IoUtils.close;
 
@@ -77,7 +77,7 @@ public class ExcelAccessor {
 			return null;
 		}
 		switch (cell.getCellType()) {
-			case BOOLEAN: return cell.getBooleanCellValue() + BLANK_STRING;
+			case BOOLEAN: return cell.getBooleanCellValue() + BLANK_STR;
 			//返回不带指数字段的字符串表示形式
 			case NUMERIC: return valueOf(cell.getNumericCellValue()).toPlainString();
 			case STRING: return cell.getStringCellValue();

@@ -17,7 +17,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.tenant.converter.RoleResourceConverter.toRoleResourcePos;
 import static org.isite.tenant.data.constants.CacheKey.LOCK_TENANT;
 import static org.isite.tenant.data.constants.TenantConstants.ROLE_ADMINISTRATOR;
@@ -50,7 +50,7 @@ public class RoleService extends PoService<RolePo, Integer> {
         RolePo rolePo = new RolePo();
         rolePo.setTenantId(tenantId);
         rolePo.setRoleName(ROLE_ADMINISTRATOR);
-        rolePo.setRemark(BLANK_STRING);
+        rolePo.setRemark(BLANK_STR);
         this.insert(rolePo);
         int roleId = rolePo.getId();
         roleResourceService.insert(toRoleResourcePos(roleId, resourceIds));

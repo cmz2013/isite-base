@@ -8,7 +8,7 @@ import java.util.Date;
 
 import static java.lang.System.currentTimeMillis;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 
 /**
@@ -23,7 +23,7 @@ public class PrizeDeliverConverter {
         PrizeDeliverPo deliverPo = convert(consigneeDto, PrizeDeliverPo::new);
         deliverPo.setPrizeRecordId(prizeRecordId);
         deliverPo.setFrId((long) ZERO);
-        deliverPo.setOrderNum(BLANK_STRING);
+        deliverPo.setOrderNum(BLANK_STR);
         return deliverPo;
     }
 

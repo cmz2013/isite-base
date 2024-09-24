@@ -22,8 +22,8 @@ import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Assert.notEmpty;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.BLANK_STR;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.Constants.ZERO;
@@ -51,7 +51,7 @@ public class Locksmith {
     /**
      * KEY的前缀
      */
-    private String prefix = BLANK_STRING;
+    private String prefix = BLANK_STR;
     /**
      * 锁的过期时间（毫秒）
      */
@@ -66,7 +66,7 @@ public class Locksmith {
     }
 
     public void setPrefix(String prefix) {
-        this.prefix = null == prefix ? BLANK_STRING : prefix;
+        this.prefix = null == prefix ? BLANK_STR : prefix;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Locksmith {
     public boolean tryLock(List<LockCylinder> lockCylinders, long time) {
         isFalse(isLocked(), "already locked");
         notEmpty(lockCylinders, "lockCylinders cannot be empty");
-        isTrue(time >= MINUTE_SECONDS, "time must be greater than or equal to 1 minute");
+        isTrue(time >= MINUTE_SECOND, "time must be greater than or equal to 1 minute");
 
         this.expire = currentTimeMillis() + time * THOUSAND;
         if (tryAcquire(lockCylinders)) {

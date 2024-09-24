@@ -79,15 +79,15 @@ public class Constants {
     /**
      * 一分钟秒数
      */
-    public static final int MINUTE_SECONDS = 60;
+    public static final int MINUTE_SECOND = 60;
     /**
      * 一天秒数
      */
-    public static final int DAY_SECONDS = 86400;
+    public static final int DAY_SECOND = 86400;
     /**
      * 空字符串
      */
-    public static final String BLANK_STRING = "";
+    public static final String BLANK_STR = "";
     /**
      * 空格
      */
@@ -123,7 +123,7 @@ public class Constants {
     /**
      * 等号
      */
-    public static final String EQUALS_SIGN = "=";
+    public static final String EQUAL_SIGN = "=";
     /**
      * and符号
      */
@@ -144,23 +144,4 @@ public class Constants {
      * 分号
      */
     public static final String SEMICOLON = ";";
-
-    public static final String FIELD_NAME = "name";
-
-    /**
-     * XML文件扩展名
-     */
-    public static final String EXTENSION_XML = ".xml";
-    /**
-     * Excel文件扩展名
-     */
-    public static final String EXTENSION_XLSX = ".xlsx";
-    /**
-     * Excel文件扩展名
-     */
-    public static final String EXTENSION_XLS = ".xls";
-    /**
-     * 模板文件扩展名
-     */
-    public static final String EXTENSION_FTL = ".ftl";
 }

@@ -4,8 +4,8 @@ import java.util.Map;
 
 import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.BLANK_STR;
+import static org.isite.commons.lang.Constants.EQUAL_SIGN;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 
@@ -23,7 +23,7 @@ public class HttpUtils {
      */
     public static String toFormData(Map<String, Object> params) {
         if (isEmpty(params)) {
-            return BLANK_STRING;
+            return BLANK_STR;
         }
         StringBuilder results = new StringBuilder();
         /*
@@ -34,7 +34,7 @@ public class HttpUtils {
          */
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             results.append(entry.getKey());
-            results.append(EQUALS_SIGN);
+            results.append(EQUAL_SIGN);
             results.append(entry.getValue());
             results.append(AMPERSAND);
         }

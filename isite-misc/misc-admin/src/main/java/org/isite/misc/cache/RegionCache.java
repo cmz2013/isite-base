@@ -10,8 +10,8 @@ import java.util.List;
 
 import static com.alicp.jetcache.anno.CacheType.BOTH;
 import static java.util.stream.Collectors.toList;
-import static org.isite.commons.lang.Constants.DAY_SECONDS;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.DAY_SECOND;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
 import static org.isite.misc.converter.RegionConverter.toRegion;
 import static org.isite.misc.data.constants.CacheKey.REGION_LIST_PREFIX;
@@ -34,7 +34,7 @@ public class RegionCache {
      * 使用两级缓存（远程+本地），避免高频率访问redis
      * 修改地区的时候，需要根据pid删除缓存
      */
-    @Cached(name = REGION_LIST_PREFIX, key = "#pid", cacheType = BOTH, expire = DAY_SECONDS, localExpire = MINUTE_SECONDS)
+    @Cached(name = REGION_LIST_PREFIX, key = "#pid", cacheType = BOTH, expire = DAY_SECOND, localExpire = MINUTE_SECOND)
     public List<Region> getRegionByPid(int pid) {
         String fullName = regionService.getFullName(pid);
         return regionService.findByPid(pid, ENABLED).stream().map(regionPo ->

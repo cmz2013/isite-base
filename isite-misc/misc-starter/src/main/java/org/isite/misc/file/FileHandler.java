@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.concurrent.Executor;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.misc.client.FileRecordAccessor.addFileRecord;
 import static org.isite.misc.client.FileRecordAccessor.updateFileRecord;
 import static org.isite.misc.data.enums.FileStatus.EXPORT_FAILURE;
@@ -75,7 +75,7 @@ public abstract class FileHandler {
      * @param fileRecord 文件记录
      */
     private void parseFile(FileRecord fileRecord, Parser<?> parser) {
-        updateFileStatus(fileRecord.getId(), PARSE_PROCESS, BLANK_STRING);
+        updateFileStatus(fileRecord.getId(), PARSE_PROCESS, BLANK_STR);
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             downloadFile(fileRecord, output);
             try(InputStream input = new ByteArrayInputStream(output.toByteArray());) {
@@ -125,9 +125,9 @@ public abstract class FileHandler {
      */
     private void exportFile(FileRecord fileRecord, StreamProvider provider) {
         try {
-            updateFileStatus(fileRecord.getId(), EXPORT_PROCESS, BLANK_STRING);
+            updateFileStatus(fileRecord.getId(), EXPORT_PROCESS, BLANK_STR);
             storeFile(fileRecord.getFileName(), provider.stream(), fileRecord.getTarget());
-            updateFileStatus(fileRecord.getId(), EXPORT_SUCCESS, BLANK_STRING);
+            updateFileStatus(fileRecord.getId(), EXPORT_SUCCESS, BLANK_STR);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             updateFileStatus(fileRecord.getId(), EXPORT_FAILURE, e.getMessage());

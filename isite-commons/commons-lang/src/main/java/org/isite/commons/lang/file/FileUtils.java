@@ -24,7 +24,7 @@ import static java.io.File.separator;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.DOT;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
@@ -35,6 +35,22 @@ import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 public class FileUtils {
 
 	private static final String FAILED_CREATE_DIRECTORY = "failed to create directory: ";
+	/**
+	 * XML文件扩展名
+	 */
+	public static final String EXTENSION_XML = ".xml";
+	/**
+	 * Excel文件扩展名
+	 */
+	public static final String EXTENSION_XLSX = ".xlsx";
+	/**
+	 * Excel文件扩展名
+	 */
+	public static final String EXTENSION_XLS = ".xls";
+	/**
+	 * 模板文件扩展名
+	 */
+	public static final String EXTENSION_FTL = ".ftl";
 
 	private FileUtils() {
 	}
@@ -430,6 +446,6 @@ public class FileUtils {
 	 */
 	public static String getExtension(String name) {
 		int index = name.lastIndexOf(DOT);
-		return index > ZERO ? name.substring(index).toLowerCase() : BLANK_STRING;
+		return index > ZERO ? name.substring(index).toLowerCase() : BLANK_STR;
 	}
 }

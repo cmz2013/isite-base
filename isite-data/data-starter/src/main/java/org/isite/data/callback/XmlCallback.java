@@ -8,13 +8,13 @@ import java.io.ByteArrayInputStream;
 import java.util.function.Predicate;
 
 import static org.apache.commons.digester3.binder.DigesterLoader.newLoader;
-import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.Constants.EXTENSION_FTL;
-import static org.isite.commons.lang.Constants.EXTENSION_XML;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
+import static org.isite.commons.lang.Reflection.getGenericParameters;
+import static org.isite.commons.lang.file.FileUtils.EXTENSION_FTL;
+import static org.isite.commons.lang.file.FileUtils.EXTENSION_XML;
 import static org.isite.commons.lang.template.xml.Thymeleaf.process;
+import static org.isite.commons.lang.utils.TypeUtils.cast;
 
 /**
  * @Description 回调接口处理过程抽象类

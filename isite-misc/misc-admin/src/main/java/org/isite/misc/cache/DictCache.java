@@ -15,8 +15,8 @@ import java.util.List;
 
 import static com.alicp.jetcache.anno.CacheType.BOTH;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.DAY_SECONDS;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.DAY_SECOND;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.misc.converter.DictDataConverter.toDictDataPo;
 import static org.isite.misc.data.constants.CacheKey.DICT_TYPE_PREFIX;
 
@@ -33,7 +33,7 @@ public class DictCache {
      * 根据字典类型查询字典数据，启用二级（远程+本地）缓存。
      * 注解@Cached的name和key属性不能同时为空，name会被用于缓存key的前缀，使用SpEL指定key
      */
-    @Cached(name = DICT_TYPE_PREFIX, key = "#type", cacheType = BOTH, expire = DAY_SECONDS, localExpire = MINUTE_SECONDS)
+    @Cached(name = DICT_TYPE_PREFIX, key = "#type", cacheType = BOTH, expire = DAY_SECOND, localExpire = MINUTE_SECOND)
     public List<DictData> findByType(String type) {
         return convert(dictDataService.findList(DictDataPo::getType, type), DictData::new);
     }

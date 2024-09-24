@@ -6,7 +6,7 @@ import java.util.Map;
 
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.EQUAL_SIGN;
 import static org.isite.shop.support.constants.WxpayConstants.FIELD_KEY;
 import static org.isite.shop.support.constants.WxpayConstants.FIELD_SIGN;
 
@@ -28,9 +28,9 @@ public class WxpayNoticeService {
             if (entry.getKey().equals(FIELD_SIGN) || entry.getValue() == null || entry.getValue().isEmpty()) {
                 continue;
             }
-            plaintext.append(entry.getKey()).append(EQUALS_SIGN).append(entry.getValue()).append(AMPERSAND);
+            plaintext.append(entry.getKey()).append(EQUAL_SIGN).append(entry.getValue()).append(AMPERSAND);
         }
-        plaintext.append(FIELD_KEY).append(EQUALS_SIGN).append(key);
+        plaintext.append(FIELD_KEY).append(EQUAL_SIGN).append(key);
         return md5Hex(plaintext.toString()).toUpperCase();
     }
 }

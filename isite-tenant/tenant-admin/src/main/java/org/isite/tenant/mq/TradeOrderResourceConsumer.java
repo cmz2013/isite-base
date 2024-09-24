@@ -19,7 +19,7 @@ import static java.lang.Long.max;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.UNDERLINE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
@@ -45,7 +45,7 @@ public class TradeOrderResourceConsumer implements Consumer<TradeOrderSupplierDt
                 ResourceSaleParam saleParam = parseObject(tradeOrderItemDto.getSupplierParam(), ResourceSaleParam.class);
                 if (null == saleParam.getTenantId()) {
                     for (int i = ZERO; i < tradeOrderItemDto.getSkuCount(); i++) {
-                        addTenant(tradeOrderItemDto.getSpuName() + (i == ZERO ? BLANK_STRING : UNDERLINE + i),
+                        addTenant(tradeOrderItemDto.getSpuName() + (i == ZERO ? BLANK_STR : UNDERLINE + i),
                                 orderSupplierDto.getUserId(), saleParam);
                     }
                 } else {

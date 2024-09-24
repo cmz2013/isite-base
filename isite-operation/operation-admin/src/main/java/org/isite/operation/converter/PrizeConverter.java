@@ -1,10 +1,10 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.support.dto.PrizePostDto;
 import org.isite.operation.po.PrizePo;
+import org.isite.operation.support.dto.PrizePostDto;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 
 /**
@@ -24,13 +24,13 @@ public class PrizeConverter {
             prizePo.setSort(ZERO);
         }
         if (null == prizePo.getThirdPrizeValue()) {
-            prizePo.setThirdPrizeValue(BLANK_STRING);
+            prizePo.setThirdPrizeValue(BLANK_STR);
         }
         if (null == prizePo.getPrizeImage()) {
-            prizePo.setPrizeImage(BLANK_STRING);
+            prizePo.setPrizeImage(BLANK_STR);
         }
         if (null == prizePo.getRemark()) {
-            prizePo.setRemark(BLANK_STRING);
+            prizePo.setRemark(BLANK_STR);
         }
         return prizePo;
     }

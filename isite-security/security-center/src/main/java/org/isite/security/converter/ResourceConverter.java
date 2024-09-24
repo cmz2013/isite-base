@@ -14,7 +14,6 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.isite.commons.cloud.utils.TreeUtils.merge;
 import static org.isite.commons.cloud.utils.VoUtils.get;
-import static org.isite.commons.lang.Constants.FIELD_NAME;
 import static org.isite.commons.lang.Constants.SEVEN;
 import static org.isite.jpa.data.JpaConstants.FIELD_ID;
 
@@ -27,6 +26,7 @@ public class ResourceConverter {
     private static final String TYPE = "type";
     private static final String HREF = "href";
     private static final String ICON = "icon";
+    private static final String RESOURCE_NAME = "resourceName";
 
     private ResourceConverter() {
     }
@@ -42,7 +42,7 @@ public class ResourceConverter {
         result.put(TYPE, resource.getType());
         result.put(HREF, resource.getHref());
         result.put(ICON, resource.getIcon());
-        result.put(FIELD_NAME, resource.getResourceName());
+        result.put(RESOURCE_NAME, resource.getResourceName());
         if (isNotEmpty(resource.getChildren())) {
             List<Resource> resources = resource.getChildren();
             result.put(CHILDREN, resources.stream().map(ResourceConverter::toResourceMap).collect(toList()));

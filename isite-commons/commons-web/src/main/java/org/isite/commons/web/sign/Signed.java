@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_SIGNATURE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 
 /**
  * @Description 标记方法在执行前，执行签名验证
@@ -20,11 +20,11 @@ public @interface Signed {
     /**
      * 从请求参数获取签名的SpEL表达式，主要用于第三方接口签名验证。如果signature为空则默认从请求头获取签名。
      */
-    String signature() default BLANK_STRING;
+    String signature() default BLANK_STR;
     /**
      * 获取appCode，主要用于第三方接口签名验证。如果appCode为空则默认从请求头获取。
      */
-    String appCode() default BLANK_STRING;
+    String appCode() default BLANK_STR;
     /**
      * 指定用于生成签名的字段，如果空则默认为全部字段。
      */

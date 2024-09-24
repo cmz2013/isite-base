@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.isite.commons.lang.Reflection.getFields;
 import static org.isite.commons.lang.Reflection.getValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
@@ -55,7 +55,7 @@ public class QueryConverter {
                     return;
                 }
                 Object value = getValue(object, field.getName());
-                if (null == value || BLANK_STRING.equals(value)) {
+                if (null == value || BLANK_STR.equals(value)) {
                     return;
                 }
                 criteria.and(field.getName()).is(value);

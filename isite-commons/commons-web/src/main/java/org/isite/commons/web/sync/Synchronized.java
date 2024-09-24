@@ -5,8 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.BLANK_STR;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
 
@@ -39,11 +39,11 @@ public @interface Synchronized {
     /**
      * KEY的前缀
      */
-    String prefix() default BLANK_STRING;
+    String prefix() default BLANK_STR;
     /**
      * 设置锁的有效时间（秒），防止死锁
      */
-    long time() default MINUTE_SECONDS;
+    long time() default MINUTE_SECOND;
     /**
      * 忙时等待时间（毫秒）。默认不等待，即并发冲突时立即中断请求
      */

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 
 /**
@@ -29,6 +29,6 @@ public class Tree<T extends Tree<T,  I>, I> extends Vo<I> {
      * 根据pid是判断该节点是否为根节点
      */
     public boolean isRoot() {
-        return null == pid || pid.equals(ZERO) || BLANK_STRING.equals(pid);
+        return null == pid || pid.equals(ZERO) || BLANK_STR.equals(pid);
     }
 }

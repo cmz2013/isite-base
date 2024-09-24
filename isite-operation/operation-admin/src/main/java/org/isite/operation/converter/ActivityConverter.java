@@ -1,17 +1,17 @@
 package org.isite.operation.converter;
 
-import org.isite.operation.support.dto.ActivityDto;
-import org.isite.operation.support.vo.Activity;
-import org.isite.operation.support.vo.Prize;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
+import org.isite.operation.support.dto.ActivityDto;
+import org.isite.operation.support.vo.Activity;
+import org.isite.operation.support.vo.Prize;
 
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
 import static org.isite.commons.lang.json.Jackson.parseObject;
@@ -32,10 +32,10 @@ public class ActivityConverter {
             activityPo.setPid(ZERO);
         }
         if (null == activityPo.getProperty()) {
-            activityPo.setProperty(BLANK_STRING);
+            activityPo.setProperty(BLANK_STR);
         }
         if (null == activityPo.getRemark()) {
-            activityPo.setRemark(BLANK_STRING);
+            activityPo.setRemark(BLANK_STR);
         }
         return activityPo;
     }

@@ -22,8 +22,8 @@ import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
-import static org.isite.commons.lang.Constants.EQUALS_SIGN;
+import static org.isite.commons.lang.Constants.BLANK_STR;
+import static org.isite.commons.lang.Constants.EQUAL_SIGN;
 import static org.isite.commons.lang.Constants.THREE;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.Reflection.getValue;
@@ -72,13 +72,13 @@ public class SignUtils {
         StringBuilder context = new StringBuilder(api).append(AMPERSAND);
         keys.forEach(key -> {
             if (X_TIMESTAMP.equals(key)) {
-                context.append(key).append(EQUALS_SIGN).append(timestamp).append(AMPERSAND);
+                context.append(key).append(EQUAL_SIGN).append(timestamp).append(AMPERSAND);
             } else {
-                context.append(key).append(EQUALS_SIGN)
-                        .append(null == data.get(key) ? BLANK_STRING : data.get(key)).append(AMPERSAND);
+                context.append(key).append(EQUAL_SIGN)
+                        .append(null == data.get(key) ? BLANK_STR : data.get(key)).append(AMPERSAND);
             }
         });
-        context.append(PASSWORD).append(EQUALS_SIGN).append(password);
+        context.append(PASSWORD).append(EQUAL_SIGN).append(password);
         return context.toString();
     }
 

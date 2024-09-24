@@ -4,7 +4,7 @@ import org.isite.misc.data.dto.FileRecordPostDto;
 import org.isite.misc.po.FileRecordPo;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 
 /**
@@ -19,7 +19,7 @@ public class FileRecordConverter {
         FileRecordPo fileRecordPo = convert(fileRecordPostDto, FileRecordPo::new);
         fileRecordPo.setUserId(getUserId());
         if (null == fileRecordPo.getRemark()) {
-            fileRecordPo.setRemark(BLANK_STRING);
+            fileRecordPo.setRemark(BLANK_STR);
         }
         return fileRecordPo;
     }

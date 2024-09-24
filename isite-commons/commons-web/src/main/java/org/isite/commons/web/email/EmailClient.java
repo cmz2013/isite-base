@@ -11,7 +11,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.time.Duration.of;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
-import static org.isite.commons.lang.Constants.MINUTE_SECONDS;
+import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -49,7 +49,7 @@ public class EmailClient {
 		email.setSubject(subject);
 
 		if (null == timeout) {
-			timeout = MINUTE_SECONDS;
+			timeout = MINUTE_SECOND;
 		}
 		Duration duration = of(timeout, SECONDS);
 		email.setSocketConnectionTimeout(duration);

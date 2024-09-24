@@ -4,7 +4,7 @@ import org.isite.misc.data.dto.DictDataDto;
 import org.isite.misc.po.DictDataPo;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
 
 /**
@@ -18,7 +18,7 @@ public class DictDataConverter {
     public static DictDataPo toDictDataPo(DictDataDto dictDataDto) {
         DictDataPo dictDataPo = convert(dictDataDto, DictDataPo::new);
         if (null == dictDataPo.getRemark()) {
-            dictDataPo.setRemark(BLANK_STRING);
+            dictDataPo.setRemark(BLANK_STR);
         }
         if (null == dictDataPo.getSort()) {
             dictDataPo.setSort(ZERO);

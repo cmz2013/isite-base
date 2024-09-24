@@ -8,7 +8,7 @@ import org.isite.tenant.po.RolePo;
 import java.util.List;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STRING;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 
 /**
@@ -23,7 +23,7 @@ public class RoleConverter {
         RolePo rolePo = convert(roleDto, RolePo::new);
         rolePo.setTenantId(getTenantId());
         if (null == rolePo.getRemark()) {
-            rolePo.setRemark(BLANK_STRING);
+            rolePo.setRemark(BLANK_STR);
         }
         return rolePo;
     }
@@ -31,7 +31,7 @@ public class RoleConverter {
     public static RolePo toRoleSelectivePo(RoleDto roleDto) {
         RolePo rolePo = convert(roleDto, RolePo::new);
         if (null == rolePo.getRemark()) {
-            rolePo.setRemark(BLANK_STRING);
+            rolePo.setRemark(BLANK_STR);
         }
         return rolePo;
     }
