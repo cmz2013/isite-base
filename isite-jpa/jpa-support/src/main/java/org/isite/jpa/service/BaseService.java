@@ -76,6 +76,7 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
             BuiltIn builtIn = (BuiltIn) po;
             if (null != builtIn.getInternal()) {
                 checkBuiltInData(po.getId(), builtIn.getInternal());
+                builtIn.setInternal(null);
             }
         }
         return doUpdateSelectiveById(po);
