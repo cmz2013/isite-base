@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.lang.Assert.isTrue;
@@ -59,8 +60,7 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
     @Transactional(rollbackFor = Exception.class)
     public N updateById(P po) {
         if (po instanceof BuiltIn) {
-            checkBuiltInData((BuiltIn) po);
-            checkBuiltInData(po.getId());
+            checkBuiltInData(po.getId(), ((BuiltIn) po).getInternal());
         }
         return doUpdateById(po);
     }
@@ -73,10 +73,21 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
     @Transactional(rollbackFor = Exception.class)
     public N updateSelectiveById(P po) {
         if (po instanceof BuiltIn) {
-            checkBuiltInData((BuiltIn) po);
-            checkBuiltInData(po.getId());
+            BuiltIn builtIn = (BuiltIn) po;
+            if (null != builtIn.getInternal()) {
+                checkBuiltInData(po.getId(), builtIn.getInternal());
+            }
         }
         return doUpdateSelectiveById(po);
+    }
+
+    /**
+     * 根据id查询数据，检查internal字段是否被更新
+     */
+    protected void checkBuiltInData(I id, Boolean internal) {
+        BuiltIn oldPo = cast(this.get(id));
+        notNull(oldPo, "id not found: " + id);
+        isTrue(Objects.equals(oldPo.getInternal(), internal), INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     /**

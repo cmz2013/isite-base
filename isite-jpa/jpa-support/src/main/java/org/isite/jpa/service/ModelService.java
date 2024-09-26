@@ -44,7 +44,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
         if (BuiltIn.class.isAssignableFrom(getPoClass())) {
             pos.forEach(po -> checkBuiltInData((BuiltIn) po));
         }
-        return doInsert(pos);
+        return this.doInsert(pos);
     }
 
     protected abstract N doInsert(List<P> pos);
@@ -58,11 +58,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
         P po = getPoClass().getConstructor().newInstance();
         po.setId(id);
         setValue(po, toFieldName(getter), value);
-        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
-            checkBuiltInData((BuiltIn) po);
-            checkBuiltInData(id);
-        }
-        return doUpdateSelectiveById(po);
+        return this.updateSelectiveById(po);
     }
 
     /**
@@ -78,7 +74,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
                 builtIn.setInternal(FALSE);
             }
         }
-        return doDelete(po);
+        return this.doDelete(po);
     }
 
     protected abstract N doDelete(P po);
