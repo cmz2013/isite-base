@@ -82,13 +82,6 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
     }
 
     @Override
-    protected Integer doDelete(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
-        return mapper.deleteByExample(weekend);
-    }
-
-    @Override
     protected Integer doDelete(I id) {
         return mapper.deleteByPrimaryKey(id);
     }

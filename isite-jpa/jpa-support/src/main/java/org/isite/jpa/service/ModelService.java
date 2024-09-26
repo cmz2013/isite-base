@@ -11,15 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static org.isite.commons.lang.Assert.isFalse;
-import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notEmpty;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Reflection.setValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_INSERTED;
 
 /**
  * @Description 返回结果集不超过1000条
@@ -45,16 +41,10 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @Transactional(rollbackFor = Exception.class)
     public N insert(List<P> pos) {
         notEmpty(pos, "list cannot be empty");
-        checkBuiltInData(pos);
-        return doInsert(pos);
-    }
-
-    protected void checkBuiltInData(List<P> pos) {
         if (BuiltIn.class.isAssignableFrom(getPoClass())) {
-            List<BuiltIn> builtInPos = cast(pos);
-            builtInPos.forEach(po -> isTrue(null == po.getInternal() || FALSE.equals(po.getInternal()),
-                        INTERNAL_DATA_ILLEGAL_INSERTED));
+            pos.forEach(po -> checkBuiltInData((BuiltIn) po));
         }
+        return doInsert(pos);
     }
 
     protected abstract N doInsert(List<P> pos);
@@ -65,10 +55,13 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public N updateById(I id, Functions<P, Object> getter, Object value) {
-        checkBuiltInData(id);
         P po = getPoClass().getConstructor().newInstance();
         po.setId(id);
         setValue(po, toFieldName(getter), value);
+        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
+            checkBuiltInData((BuiltIn) po);
+            checkBuiltInData(id);
+        }
         return doUpdateSelectiveById(po);
     }
 
@@ -78,7 +71,13 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @Transactional(rollbackFor = Exception.class)
     public N delete(P po) {
         // 系统内置数据禁止删除
-        checkBuiltInData(po);
+        if (po instanceof BuiltIn) {
+            BuiltIn builtIn = (BuiltIn) po;
+            checkBuiltInData(builtIn);
+            if (null == builtIn.getInternal()) {
+                builtIn.setInternal(FALSE);
+            }
+        }
         return doDelete(po);
     }
 
@@ -87,27 +86,13 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     /**
      * 删除数据
      */
+    @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public N delete(Functions<P, Object> getter, Object value) {
-        checkBuiltInData(getter, value);
-        return doDelete(getter, value);
+        P po = getPoClass().getConstructor().newInstance();
+        setValue(po, toFieldName(getter), value);
+        return this.delete(po);
     }
-
-    /**
-     * @Description 根据getter字段检查是否存在内置数据。
-     * 注解@SneakyThrows用于简化异常处理。它可以让方法在抛出受检异常时不需要显式地声明或捕获这些异常。
-     */
-    @SneakyThrows
-    protected void checkBuiltInData(Functions<P, Object> getter, Object value) {
-        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
-            P po = cast(getPoClass().getDeclaredConstructor().newInstance());
-            ((BuiltIn) po).setInternal(TRUE);
-            setValue(po, toFieldName(getter), value);
-            isFalse(exists(po), INTERNAL_DATA_ILLEGAL_INSERTED);
-        }
-    }
-
-    protected abstract N doDelete(Functions<P, Object> getter, Object value);
 
     /**
      * @Description 删除历史数据，插入新数据

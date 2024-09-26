@@ -14,7 +14,5 @@ public class JpaConstants {
     public static final String FIELD_UPDATE_TIME = "updateTime";
     public static final String FIELD_INTERNAL = "internal";
 
-    public static final String INTERNAL_DATA_ILLEGAL_DELETE = "internal data can not be deleted";
-    public static final String INTERNAL_DATA_ILLEGAL_UPDATE = "internal data can not be updated";
-    public static final String INTERNAL_DATA_ILLEGAL_INSERTED = "internal data can not be inserted";
+    public static final String INTERNAL_DATA_ILLEGAL_OPERATE = "internal data can not be operated";
 }

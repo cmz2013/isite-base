@@ -222,11 +222,6 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Long> {
     }
 
     @Override
-    protected Long doDelete(Functions<P, Object> getter, Object value) {
-        return mongoTemplate.remove(toQuery(getter, value), getPoClass()).getDeletedCount();
-    }
-
-    @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
         return mongoTemplate.find(query(new Criteria().and(toFieldName(getter)).in(values)), getPoClass());
     }

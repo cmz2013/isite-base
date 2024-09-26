@@ -14,8 +14,7 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_DELETE;
-import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_UPDATE;
+import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_OPERATE;
 
 /**
  * @Description 在增删改操作时，是否开启事务取决于数据库的默认行为和当前的会话设置。
@@ -46,7 +45,9 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     @Transactional(rollbackFor = Exception.class)
     public N insert(P po) {
-        checkBuiltInData(po);
+        if (po instanceof BuiltIn) {
+            checkBuiltInData((BuiltIn) po);
+        }
         return doInsert(po);
     }
 
@@ -57,8 +58,10 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     @Transactional(rollbackFor = Exception.class)
     public N updateById(P po) {
-        checkBuiltInData(po);
-        checkBuiltInData(po.getId());
+        if (po instanceof BuiltIn) {
+            checkBuiltInData((BuiltIn) po);
+            checkBuiltInData(po.getId());
+        }
         return doUpdateById(po);
     }
 
@@ -69,32 +72,29 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     @Transactional(rollbackFor = Exception.class)
     public N updateSelectiveById(P po) {
-        checkBuiltInData(po);
-        checkBuiltInData(po.getId());
+        if (po instanceof BuiltIn) {
+            checkBuiltInData((BuiltIn) po);
+            checkBuiltInData(po.getId());
+        }
         return doUpdateSelectiveById(po);
     }
 
     /**
      * 检查po是否为内置数据
      */
-    protected void checkBuiltInData(P po) {
-        if (po instanceof BuiltIn) {
-            BuiltIn builtIn = (BuiltIn) po;
-            isTrue(null == builtIn.getInternal() || FALSE.equals(builtIn.getInternal()),
-                    INTERNAL_DATA_ILLEGAL_UPDATE);
-        }
+    protected void checkBuiltInData(BuiltIn builtIn) {
+        isTrue(null == builtIn.getInternal() || FALSE.equals(builtIn.getInternal()),
+                INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     /**
      * 根据id查询数据，并检查是否为内置数据
      */
     protected void checkBuiltInData(I id) {
-        if (BuiltIn.class.isAssignableFrom(poClass)) {
-            BuiltIn oldPo = cast(this.get(id));
-            notNull(oldPo, "id not found: " + id);
-            isTrue(null == oldPo.getInternal() || FALSE.equals(oldPo.getInternal()),
-                    INTERNAL_DATA_ILLEGAL_DELETE);
-        }
+        BuiltIn oldPo = cast(this.get(id));
+        notNull(oldPo, "id not found: " + id);
+        isTrue(null == oldPo.getInternal() || FALSE.equals(oldPo.getInternal()),
+                INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     protected abstract N doUpdateSelectiveById(P po);
@@ -169,7 +169,9 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     @Transactional(rollbackFor = Exception.class)
     public N delete(I id) {
-        checkBuiltInData(id);
+        if (BuiltIn.class.isAssignableFrom(getPoClass())) {
+            checkBuiltInData(id);
+        }
         return doDelete(id);
     }
 
