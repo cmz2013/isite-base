@@ -3,7 +3,6 @@ package org.isite.operation.support.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.Dto;
-import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotBlank;
 
@@ -18,7 +17,7 @@ public class PrizePutDto extends Dto<Integer> {
     /**
      * 奖品名称
      */
-    @NotBlank(groups = Update.class)
+    @NotBlank
     private String prizeName;
     /**
      * 第三方奖品值

@@ -1,6 +1,5 @@
 package org.isite.misc.controller;
 
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.misc.data.dto.FileRecordPostDto;
@@ -27,7 +26,7 @@ public class FileRecordController extends BaseController {
     private FileRecordService fileRecordService;
 
     @PostMapping(PUT_FILE_RECORD)
-    public Result<Integer> updateFileRecord(@Validated(Update.class) @RequestBody FileRecordPutDto fileRecordPutDto) {
+    public Result<Integer> updateFileRecord(@Validated @RequestBody FileRecordPutDto fileRecordPutDto) {
         return toResult(fileRecordService.updateSelectiveById(convert(fileRecordPutDto, FileRecordPo::new)));
     }
 

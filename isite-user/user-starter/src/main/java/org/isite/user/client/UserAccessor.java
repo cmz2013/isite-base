@@ -1,7 +1,7 @@
 package org.isite.user.client;
 
 import org.isite.commons.web.feign.FeignClientFactory;
-import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.dto.UserPostDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 
@@ -47,9 +47,9 @@ public class UserAccessor {
     /**
      * @Description (用于认证鉴权中心)注册用户信息
      */
-    public static Integer addUser(UserDto userDto, String signPassword) {
+    public static Integer addUser(UserPostDto userPostDto, String signPassword) {
         UserClient userClient = getBean(FeignClientFactory.class).getFeignClient(UserClient.class, SERVICE_ID);
-        return getData(userClient.addUser(userDto, signPassword));
+        return getData(userClient.addUser(userPostDto, signPassword));
     }
 
     /**

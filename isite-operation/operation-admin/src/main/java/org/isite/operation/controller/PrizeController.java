@@ -1,7 +1,6 @@
 package org.isite.operation.controller;
 
 import org.isite.commons.cloud.data.vo.Result;
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.Lock;
@@ -79,7 +78,7 @@ public class PrizeController extends BaseController {
     @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> editPrize(
             @PathVariable("activityId") Integer activityId,
-            @Validated(Update.class) @RequestBody PrizePutDto prizePutDto) {
+            @Validated @RequestBody PrizePutDto prizePutDto) {
         notOnline(activityService.get(activityId).getStatus());
         PrizePo prizePo = prizeService.get(prizePutDto.getId());
         isTrue(prizePo.getActivityId().equals(activityId), new IllegalParameterError());

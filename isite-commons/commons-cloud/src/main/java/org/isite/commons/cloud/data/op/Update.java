@@ -1,9 +1,8 @@
 package org.isite.commons.cloud.data.op;
 
 /**
- * 更新操作
- * @author <font color='blue'>zhangcm</font>
- * @date 9:41 2021/12/6
+ * @Description 更新操作
+ * @Author <font color='blue'>zhangcm</font>
  */
 public interface Update {
 }

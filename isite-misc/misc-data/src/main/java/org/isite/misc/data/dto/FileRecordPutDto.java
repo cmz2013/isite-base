@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.Dto;
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.misc.data.enums.FileStatus;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,7 @@ public class FileRecordPutDto extends Dto<Integer> {
     /**
      * 状态
      */
-    @NotNull(groups = Update.class)
+    @NotNull
     private FileStatus status;
     /**
      * 备注

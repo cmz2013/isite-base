@@ -2,7 +2,7 @@ package org.isite.security.controller;
 
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.security.data.dto.UserPostDto;
+import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.dto.UserSecretDto;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
@@ -54,16 +54,16 @@ public class UserLoginController extends BaseController {
      */
     @ResponseBody
     @PutMapping(API_PUT_USER_PASSWORD)
-    public Result<Integer> updatePassword(@RequestBody @Validated UserSecretDto secret) {
-        return toResult(userLoginService.updatePassword(secret));
+    public Result<Integer> updatePassword(@RequestBody @Validated UserSecretDto userSecretDto) {
+        return toResult(userLoginService.updatePassword(userSecretDto));
     }
 
     /**
      * 校验验证码，注册用户信息
      */
     @PostMapping(API_POST_USER)
-    public Result<Integer> registUser(@Validated @RequestBody UserPostDto userPostDto) {
-        return toResult(userLoginService.registUser(userPostDto));
+    public Result<Integer> registUser(@Validated @RequestBody UserRegistDto userRegistDto) {
+        return toResult(userLoginService.registUser(userRegistDto));
     }
 
     /**

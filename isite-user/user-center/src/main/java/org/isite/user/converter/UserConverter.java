@@ -1,6 +1,7 @@
 package org.isite.user.converter;
 
-import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.dto.UserPutDto;
+import org.isite.user.data.dto.UserPostDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.po.UserPo;
 
@@ -36,20 +37,19 @@ public class UserConverter {
         return userDetails;
     }
 
-    public static UserPo toUserPo(UserDto userDto) {
-        UserPo userPo = convert(userDto, UserPo::new);
+    public static UserPo toUserPo(UserPostDto userPostDto) {
+        UserPo userPo = convert(userPostDto, UserPo::new);
         userPo.setStatus(ENABLED);
         userPo.setInternal(FALSE);
-        userPo.setRemark(BLANK_STR);
-        userPo.setPassword(BLANK_STR);
         if (null == userPo.getEmail()) {
             userPo.setEmail(BLANK_STR);
         }
+        userPo.setRemark(BLANK_STR);
         return userPo;
     }
 
-    public static UserPo toUserSelectivePo(UserDto userDto) {
-        UserPo userPo = convert(userDto, UserPo::new);
+    public static UserPo toUserSelectivePo(UserPutDto userPutDto) {
+        UserPo userPo = convert(userPutDto, UserPo::new);
         if (null == userPo.getEmail()) {
             userPo.setEmail(BLANK_STR);
         }

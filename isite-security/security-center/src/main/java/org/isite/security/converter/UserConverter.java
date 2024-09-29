@@ -1,8 +1,8 @@
 package org.isite.security.converter;
 
-import org.isite.security.data.dto.UserPostDto;
+import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.vo.OauthUser;
-import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.dto.UserPostDto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,12 +27,13 @@ public class UserConverter {
         return data;
     }
 
-    public static UserDto toUserDto(UserPostDto userPostDto) {
-        UserDto userDto = new UserDto();
-        userDto.setUserName(userPostDto.getUserName());
-        userDto.setRealName(userPostDto.getRealName());
-        userDto.setEmail(userPostDto.getEmail());
-        userDto.setPhone(userPostDto.getPhone());
-        return userDto;
+    public static UserPostDto toUserPostDto(UserRegistDto userRegistDto) {
+        UserPostDto userPostDto = new UserPostDto();
+        userPostDto.setUserName(userRegistDto.getUserName());
+        userPostDto.setRealName(userRegistDto.getRealName());
+        userPostDto.setEmail(userRegistDto.getEmail());
+        userPostDto.setPhone(userRegistDto.getPhone());
+        userPostDto.setPassword(userRegistDto.getPassword());
+        return userPostDto;
     }
 }

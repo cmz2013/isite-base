@@ -3,13 +3,13 @@ package org.isite.security.oauth;
 import org.isite.commons.web.sign.SignSecret;
 import org.isite.security.code.VerifyCodeHandler;
 import org.isite.security.code.VerifyCodeHandlerFactory;
-import org.isite.security.data.dto.UserPostDto;
+import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.dto.UserSecretDto;
 import org.isite.security.data.enums.VerifyCodeMode;
+import org.isite.security.login.BCryptMatcher;
 import org.isite.user.client.UserAccessor;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static java.lang.String.format;
@@ -17,7 +17,7 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Assert.notBlank;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.security.converter.UserConverter.toUserDto;
+import static org.isite.security.converter.UserConverter.toUserPostDto;
 import static org.isite.security.data.enums.VerifyCodeMode.EMAIL;
 import static org.isite.user.client.UserAccessor.addUser;
 import static org.isite.user.client.UserAccessor.getUserSecret;
@@ -33,20 +33,22 @@ public class UserLoginService {
     private SignSecret signSecret;
     private VerifyCodeHandlerFactory verifyCodeHandlerFactory;
     private TokenService tokenService;
+    private BCryptMatcher passwordMatcher;
 
     /**
      * 校验验证码，注册用户信息
      */
-    public Integer registUser(UserPostDto userPostDto) {
-        String agent = userPostDto.getPhone();
-        if (EMAIL.equals(userPostDto.getVerifyCodeMode())) {
-            notBlank(userPostDto.getEmail(), "email cannot be null");
-            agent = userPostDto.getEmail();
+    public Integer registUser(UserRegistDto userRegistDto) {
+        String agent = userRegistDto.getPhone();
+        if (EMAIL.equals(userRegistDto.getVerifyCodeMode())) {
+            notBlank(userRegistDto.getEmail(), "email cannot be null");
+            agent = userRegistDto.getEmail();
         }
-        VerifyCodeHandler verifyCodeHandler = verifyCodeHandlerFactory.get(userPostDto.getVerifyCodeMode());
-        isTrue(verifyCodeHandler.checkCode(agent, userPostDto.getCode()),
+        VerifyCodeHandler verifyCodeHandler = verifyCodeHandlerFactory.get(userRegistDto.getVerifyCodeMode());
+        isTrue(verifyCodeHandler.checkCode(agent, userRegistDto.getCode()),
                 getMessage("VerifyCode.invalid", "the verification code is invalid"));
-        return addUser(toUserDto(userPostDto), signSecret.password(SERVICE_ID));
+        userRegistDto.setPassword(passwordMatcher.encode(userRegistDto.getPassword()));
+        return addUser(toUserPostDto(userRegistDto), signSecret.password(SERVICE_ID));
     }
 
     /**
@@ -66,7 +68,7 @@ public class UserLoginService {
                 getMessage("VerifyCode.invalid", "the verification code is invalid"));
         tokenService.revokeTokensByUser(userSecret.getUserName());
         return UserAccessor.updatePassword(userSecret.getUserId(),
-                new BCryptPasswordEncoder().encode(userSecretDto.getPassword()),
+                passwordMatcher.encode(userSecretDto.getPassword()),
                 signSecret.password(SERVICE_ID));
     }
 
@@ -83,5 +85,10 @@ public class UserLoginService {
     @Autowired
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;
+    }
+
+    @Autowired
+    public void setPasswordMatcher(BCryptMatcher passwordMatcher) {
+        this.passwordMatcher = passwordMatcher;
     }
 }

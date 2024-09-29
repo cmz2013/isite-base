@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class UserPostDto {
+public class UserRegistDto {
     /**
      * 用户名
      */
@@ -33,6 +33,11 @@ public class UserPostDto {
      */
     @NotBlank
     private String phone;
+    /**
+     * 密码
+     */
+    @NotBlank
+    private String password;
     /**
      * 发送验证码的方式
      */

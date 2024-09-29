@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
 import java.io.Serializable;
 
 /**
@@ -17,6 +18,6 @@ public class Dto<I> implements Serializable {
     /**
      * @Description 唯一标识，在执行指定操作时，SpringMVC自动完成参数绑定校验
      */
-    @NotNull(groups = Update.class)
+    @NotNull(groups = {Default.class, Update.class})
     private I id;
 }

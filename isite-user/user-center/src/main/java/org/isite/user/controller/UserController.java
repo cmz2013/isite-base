@@ -2,13 +2,13 @@ package org.isite.user.controller;
 
 import com.github.pagehelper.Page;
 import org.isite.commons.cloud.data.dto.PageRequest;
-import org.isite.commons.cloud.data.op.Add;
-import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sign.Signed;
-import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.dto.UserGetDto;
+import org.isite.user.data.dto.UserPostDto;
+import org.isite.user.data.dto.UserPutDto;
 import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
@@ -64,7 +64,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(GET_USERS)
-    public PageResult<UserBasic> findPage(PageRequest<UserDto> request) {
+    public PageResult<UserBasic> findPage(PageRequest<UserGetDto> request) {
         try (Page<UserPo> page = userService.findPage(toPageQuery(request, UserPo::new))) {
             return toPageResult(request, convert(page.getResult(), UserBasic::new), page.getTotal());
         }
@@ -74,7 +74,7 @@ public class UserController extends BaseController {
      * @Description 根据唯一标识（username、phone、email）获取用户信息
      */
     @GetMapping(GET_USER_DETAILS)
-    public Result<UserDetails> getUser(@PathVariable("identifier") String identifier) {
+    public Result<UserDetails> getUserDetails(@PathVariable("identifier") String identifier) {
         UserPo userPo = userService.getByIdentifier(identifier);
         notNull(userPo, getMessage("user.not.found", "user not found"));
         return toResult(toUserDetails(userPo, vipService.isVip(userPo.getId())));
@@ -85,16 +85,16 @@ public class UserController extends BaseController {
      */
     @Signed
     @PostMapping(API_POST_USER)
-    public Result<Integer> addUser(@RequestBody @Validated(Add.class) UserDto userDto) {
-        isFalse(userService.exists(UserPo::getUserName, userDto.getUserName()),
+    public Result<Integer> addUser(@RequestBody @Validated UserPostDto userPostDto) {
+        isFalse(userService.exists(UserPo::getUserName, userPostDto.getUserName()),
                 getMessage("userName.exists",  "username already exists"));
-        isFalse(userService.exists(UserPo::getPhone, userDto.getPhone()),
+        isFalse(userService.exists(UserPo::getPhone, userPostDto.getPhone()),
                 getMessage("phone.exists", "phone number already exists"));
-        if (isNotBlank(userDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()),
+        if (isNotBlank(userPostDto.getEmail())) {
+            isFalse(userService.exists(UserPo::getEmail, userPostDto.getEmail()),
                     getMessage("email.exists", "email already exists"));
         }
-        return toResult(userService.insert(toUserPo(userDto)));
+        return toResult(userService.insert(toUserPo(userPostDto)));
     }
 
     @PostMapping(POST_USER_IF_ABSENT)
@@ -108,16 +108,16 @@ public class UserController extends BaseController {
     }
 
     @PutMapping(URL_USER)
-    public Result<Integer> updateUser(@RequestBody @Validated(Update.class) UserDto userDto) {
-        isFalse(userService.exists(UserPo::getUserName, userDto.getUserName(), userDto.getId()),
+    public Result<Integer> updateUser(@RequestBody @Validated UserPutDto userPutDto) {
+        isFalse(userService.exists(UserPo::getUserName, userPutDto.getUserName(), userPutDto.getId()),
                 getMessage("userName.exists",  "username already exists"));
-        isFalse(userService.exists(UserPo::getPhone, userDto.getPhone(), userDto.getId()),
+        isFalse(userService.exists(UserPo::getPhone, userPutDto.getPhone(), userPutDto.getId()),
                 getMessage("phone.exists", "phone number already exists"));
-        if (isNotBlank(userDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail(), userDto.getId()),
+        if (isNotBlank(userPutDto.getEmail())) {
+            isFalse(userService.exists(UserPo::getEmail, userPutDto.getEmail(), userPutDto.getId()),
                     getMessage("email.exists", "email already exists"));
         }
-        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
+        return toResult(userService.updateSelectiveById(toUserSelectivePo(userPutDto)));
     }
 
     @Signed

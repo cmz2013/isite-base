@@ -1,7 +1,7 @@
 package org.isite.user.client;
 
 import org.isite.commons.cloud.data.vo.Result;
-import org.isite.user.data.dto.UserDto;
+import org.isite.user.data.dto.UserPostDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +47,7 @@ public interface UserClient {
      * @Description (用于认证鉴权中心)注册用户信息
      */
     @PostMapping(API_POST_USER)
-    Result<Integer> addUser(@RequestBody UserDto userDto,
+    Result<Integer> addUser(@RequestBody UserPostDto userPostDto,
                             @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
 
     @PostMapping(POST_USER_IF_ABSENT)
