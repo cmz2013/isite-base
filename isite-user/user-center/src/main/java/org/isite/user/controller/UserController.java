@@ -39,7 +39,7 @@ import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.GET_USERS;
-import static org.isite.user.data.constants.UrlConstants.GET_USER_BY_IDENTIFIER;
+import static org.isite.user.data.constants.UrlConstants.GET_USER_DETAILS;
 import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
 import static org.isite.user.data.constants.UrlConstants.URL_USER;
 
@@ -73,7 +73,7 @@ public class UserController extends BaseController {
     /**
      * @Description 根据唯一标识（username、phone、email）获取用户信息
      */
-    @GetMapping(GET_USER_BY_IDENTIFIER)
+    @GetMapping(GET_USER_DETAILS)
     public Result<UserDetails> getUser(@PathVariable("identifier") String identifier) {
         UserPo userPo = userService.getByIdentifier(identifier);
         notNull(userPo, getMessage("user.not.found", "user not found"));
@@ -86,7 +86,14 @@ public class UserController extends BaseController {
     @Signed
     @PostMapping(API_POST_USER)
     public Result<Integer> addUser(@RequestBody @Validated(Add.class) UserDto userDto) {
-        checkUserIdentifier(userDto);
+        isFalse(userService.exists(UserPo::getUserName, userDto.getUserName()),
+                getMessage("userName.exists",  "username already exists"));
+        isFalse(userService.exists(UserPo::getPhone, userDto.getPhone()),
+                getMessage("phone.exists", "phone number already exists"));
+        if (isNotBlank(userDto.getEmail())) {
+            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()),
+                    getMessage("email.exists", "email already exists"));
+        }
         return toResult(userService.insert(toUserPo(userDto)));
     }
 
@@ -102,23 +109,15 @@ public class UserController extends BaseController {
 
     @PutMapping(URL_USER)
     public Result<Integer> updateUser(@RequestBody @Validated(Update.class) UserDto userDto) {
-        checkUserIdentifier(userDto);
-        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
-    }
-
-    private void checkUserIdentifier(UserDto userDto) {
-        if (isNotBlank(userDto.getUserName())) {
-            isFalse(userService.exists(UserPo::getUserName, userDto.getUserName()),
-                    getMessage("userName.exists",  "username already exists"));
-        }
-        if (isNotBlank(userDto.getPhone())) {
-            isFalse(userService.exists(UserPo::getPhone, userDto.getPhone()),
-                    getMessage("phone.exists", "phone number already exists"));
-        }
+        isFalse(userService.exists(UserPo::getUserName, userDto.getUserName(), userDto.getId()),
+                getMessage("userName.exists",  "username already exists"));
+        isFalse(userService.exists(UserPo::getPhone, userDto.getPhone(), userDto.getId()),
+                getMessage("phone.exists", "phone number already exists"));
         if (isNotBlank(userDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail()),
+            isFalse(userService.exists(UserPo::getEmail, userDto.getEmail(), userDto.getId()),
                     getMessage("email.exists", "email already exists"));
         }
+        return toResult(userService.updateSelectiveById(toUserSelectivePo(userDto)));
     }
 
     @Signed
@@ -128,7 +127,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 用于认证鉴权中心更新用户密码
+     * 通过认证鉴权中心不登录更新用户密码
      */
     @Signed
     @PutMapping(API_PUT_USER_PASSWORD)

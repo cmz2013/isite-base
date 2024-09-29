@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserLoginHandler implements LoginHandler {
 
-    private OauthUserService oauthUserService;
     private BCryptMatcher passwordMatcher;
+    private OauthUserService oauthUserService;
 
     @Override
     public UserDetailsService getUserDetailsService() {

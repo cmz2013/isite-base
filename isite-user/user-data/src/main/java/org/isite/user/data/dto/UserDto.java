@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.Dto;
 import org.isite.commons.cloud.data.op.Add;
+import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,12 +18,12 @@ public class UserDto extends Dto<Long> {
     /**
      * 用户名
      */
-    @NotBlank(groups = Add.class)
+    @NotBlank(groups = {Add.class, Update.class})
     private String userName;
     /**
      * 真实姓名
      */
-    @NotBlank(groups = Add.class)
+    @NotBlank(groups = {Add.class, Update.class})
     private String realName;
     /**
      * 电子邮箱
@@ -31,6 +32,6 @@ public class UserDto extends Dto<Long> {
     /**
      * 手机号
      */
-    @NotBlank(groups = Add.class)
+    @NotBlank(groups = {Add.class, Update.class})
     private String phone;
 }

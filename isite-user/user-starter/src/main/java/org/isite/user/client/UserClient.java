@@ -16,7 +16,7 @@ import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
-import static org.isite.user.data.constants.UrlConstants.GET_USER_BY_IDENTIFIER;
+import static org.isite.user.data.constants.UrlConstants.GET_USER_DETAILS;
 import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
 
 /**
@@ -27,7 +27,7 @@ public interface UserClient {
     /**
      * @Description 根据唯一标识（id、username、phone）获取用户信息
      */
-    @GetMapping(value = GET_USER_BY_IDENTIFIER)
+    @GetMapping(value = GET_USER_DETAILS)
     Result<UserDetails> getUserDetails(@PathVariable("identifier") String identifier);
     /**
      * @Description 查询用户秘钥
