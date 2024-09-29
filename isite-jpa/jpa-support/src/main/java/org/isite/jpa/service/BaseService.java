@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.lang.Assert.isTrue;
@@ -60,7 +59,7 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
     @Transactional(rollbackFor = Exception.class)
     public N updateById(P po) {
         if (po instanceof BuiltIn) {
-            checkBuiltInData(po.getId(), ((BuiltIn) po).getInternal());
+            checkBuiltInData(po.getId(), ((BuiltIn) po));
         }
         return doUpdateById(po);
     }
@@ -75,7 +74,7 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
         if (po instanceof BuiltIn) {
             BuiltIn builtIn = (BuiltIn) po;
             if (null != builtIn.getInternal()) {
-                checkBuiltInData(po.getId(), builtIn.getInternal());
+                checkBuiltInData(po.getId(), builtIn);
                 builtIn.setInternal(null);
             }
         }
@@ -85,18 +84,24 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
     /**
      * 根据id查询数据，检查internal字段是否被更新
      */
-    protected void checkBuiltInData(I id, Boolean internal) {
+    protected void checkBuiltInData(I id, BuiltIn builtIn) {
+        if (null == builtIn.getInternal()) {
+            builtIn.setInternal(FALSE);
+        }
         BuiltIn oldPo = cast(this.get(id));
         notNull(oldPo, "id not found: " + id);
-        isTrue(Objects.equals(oldPo.getInternal(), internal), INTERNAL_DATA_ILLEGAL_OPERATE);
+        isTrue(builtIn.getInternal().equals(oldPo.getInternal()), INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     /**
      * 检查po是否为内置数据
      */
     protected void checkBuiltInData(BuiltIn builtIn) {
-        isTrue(null == builtIn.getInternal() || FALSE.equals(builtIn.getInternal()),
-                INTERNAL_DATA_ILLEGAL_OPERATE);
+        if (null == builtIn.getInternal()) {
+            builtIn.setInternal(FALSE);
+        } else {
+            isTrue(FALSE.equals(builtIn.getInternal()), INTERNAL_DATA_ILLEGAL_OPERATE);
+        }
     }
 
     /**
