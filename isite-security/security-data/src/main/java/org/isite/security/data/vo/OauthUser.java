@@ -6,6 +6,7 @@ import org.isite.jpa.data.BuiltIn;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import static java.lang.Boolean.TRUE;
@@ -14,7 +15,7 @@ import static java.lang.Boolean.TRUE;
  * @Description 用户认证授权信息
  * @Author <font color='blue'>zhangcm</font>
  */
-public class OauthUser implements UserDetails, BuiltIn {
+public class OauthUser implements UserDetails, BuiltIn, Serializable {
     /**
      * 用户ID
      */

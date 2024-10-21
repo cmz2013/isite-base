@@ -18,14 +18,14 @@ public class CacheKey {
     /**
      * 用户登录失败次数key: login:times:{username}。不区分端信息
      */
-    public static final String LOGIN_TIMES_FORMAT = SECURITY_PREFIX + "login:times:%s";
+    public static final String LOGIN_TIMES_FORMAT = SECURITY_PREFIX + "LOGIN:TIMES:%s";
     /**
      * 验证码缓存key: code:{终端类型}:{终端标识}
      */
-    public static final String VERIFY_CODE_FORMAT = SECURITY_PREFIX + "verifyCode:%s:%s";
+    public static final String VERIFY_CODE_FORMAT = SECURITY_PREFIX + "VERIFY_CODE:%s:%s";
     /**
      * 账号被锁key：login:locked:{username}。不区分端信息
      */
-    public static final String LOGIN_LOCKED_FORMAT = SECURITY_PREFIX + "login:locked:%s";
+    public static final String LOGIN_LOCKED_FORMAT = SECURITY_PREFIX + "LOGIN:LOCKED:%s";
 
 }

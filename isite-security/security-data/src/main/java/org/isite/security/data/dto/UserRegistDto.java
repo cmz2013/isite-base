@@ -2,7 +2,7 @@ package org.isite.security.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.security.data.enums.VerifyCodeMode;
+import org.isite.security.data.enums.CodeMode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class UserRegistDto {
      * 发送验证码的方式
      */
     @NotNull
-    private VerifyCodeMode verifyCodeMode;
+    private CodeMode codeMode;
     /**
      * 验证码
      */

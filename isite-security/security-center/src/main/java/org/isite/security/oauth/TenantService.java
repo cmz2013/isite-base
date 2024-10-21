@@ -33,7 +33,7 @@ public class TenantService {
         Rbac rbac = getRbac(
                 new LoginDto(tenantId, employee.getUserId(), employee.getClientId()),
                 signSecret.password(SERVICE_ID));
-        notNull(rbac, getMessage("Tenant.unavailable", "tenant unavailable"));
+        notNull(rbac, getMessage("tenant.unavailable", "tenant unavailable"));
         employee.setTenant(rbac.getTenant());
         employee.setEmployeeId(rbac.getEmployeeId());
         employee.setAuthorities(toDataAuthority(rbac.getDataApis()));

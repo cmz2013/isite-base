@@ -18,7 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @SessionAttributes(AUTHORIZATION_REQUEST)
 public class AccessConfirmController {
-    private UserLoginController userLoginController;
+    private LoginController loginController;
 
     /**
      * 授权码模式，用户登录以后批准授权
@@ -26,13 +26,13 @@ public class AccessConfirmController {
     @RequestMapping(value = URL_OAUTH_APPROVAL, method = { POST, GET })
     public String getApproval(Model model) {
         if (null == model.getAttribute(AUTHORIZATION_REQUEST)){
-            return userLoginController.getLoginForm(null, model);
+            return loginController.getLoginForm(null, model);
         }
         return "approval";
     }
 
     @Autowired
-    public void setLoginController(UserLoginController userLoginController) {
-        this.userLoginController = userLoginController;
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
     }
 }

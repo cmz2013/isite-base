@@ -26,8 +26,7 @@ public abstract class UserDetailsService {
      * 判断账号没有被锁定
      */
     public boolean isNonLocked(String username) {
-        String lockValue = redisTemplate.opsForValue().get(format(LOGIN_LOCKED_FORMAT, username));
-        return isBlank(lockValue) ? TRUE : FALSE;
+        return isBlank(redisTemplate.opsForValue().get(format(LOGIN_LOCKED_FORMAT, username))) ? TRUE : FALSE;
     }
 
     @Autowired

@@ -6,7 +6,7 @@ import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.dto.UserSecretDto;
 import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
-import org.isite.security.oauth.UserLoginService;
+import org.isite.security.oauth.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +36,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Controller
-public class UserLoginController extends BaseController {
+public class LoginController extends BaseController {
 
-    private UserLoginService userLoginService;
+    private LoginService loginService;
     /**
      * 授权码模式用户登录页面
      */
@@ -55,7 +55,7 @@ public class UserLoginController extends BaseController {
     @ResponseBody
     @PutMapping(API_PUT_USER_PASSWORD)
     public Result<Integer> updatePassword(@RequestBody @Validated UserSecretDto userSecretDto) {
-        return toResult(userLoginService.updatePassword(userSecretDto));
+        return toResult(loginService.updatePassword(userSecretDto));
     }
 
     /**
@@ -63,7 +63,7 @@ public class UserLoginController extends BaseController {
      */
     @PostMapping(API_POST_USER)
     public Result<Integer> registUser(@Validated @RequestBody UserRegistDto userRegistDto) {
-        return toResult(userLoginService.registUser(userRegistDto));
+        return toResult(loginService.registUser(userRegistDto));
     }
 
     /**
@@ -78,7 +78,7 @@ public class UserLoginController extends BaseController {
     }
 
     @Autowired
-    public void setUserLoginService(UserLoginService userLoginService) {
-        this.userLoginService = userLoginService;
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
     }
 }

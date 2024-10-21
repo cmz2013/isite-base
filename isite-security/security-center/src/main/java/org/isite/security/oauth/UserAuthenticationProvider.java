@@ -1,5 +1,7 @@
 package org.isite.security.oauth;
 
+import org.isite.security.code.CodeHandler;
+import org.isite.security.code.CodeHandlerFactory;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.login.LoginHandlerFactory;
 import org.isite.security.login.UserDetailsService;
@@ -23,9 +25,12 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
+import static org.isite.commons.lang.utils.TypeUtils.cast;
+import static org.isite.commons.web.utils.RequestUtils.getRequest;
 import static org.isite.security.constants.SecurityConstants.LOGIN_FAILURE_TIMES_MAX;
 import static org.isite.security.data.constants.CacheKey.LOGIN_LOCKED_FORMAT;
 import static org.isite.security.data.constants.CacheKey.LOGIN_TIMES_FORMAT;
+import static org.isite.security.data.constants.SecurityConstants.BAD_CREDENTIALS;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 /**
@@ -37,21 +42,33 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
 
     private StringRedisTemplate redisTemplate;
     private LoginHandlerFactory loginHandlerFactory;
+    private CodeHandlerFactory codeHandlerFactory;
 
     /**
-     * @Description 校验密码有效性
+     * @Description 验证用户身份
      * spring security异常消息默认是英文的，通过MessageSourceConfigurer配置成中文的且可以自定义异常消息。
      */
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken token) {
+    protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) {
         if (token.getCredentials() == null) {
-            throw new BadCredentialsException(getMessage("User.badCredentials", "Bad credentials"));
+            throw new BadCredentialsException(getMessage("user.badCredentials", BAD_CREDENTIALS));
         }
-        OauthUser oauthUser = (OauthUser) userDetails;
-        if (!loginHandlerFactory.getLoginHandler(oauthUser.getClientId()).getPasswordMatcher()
-                .matches(token.getCredentials().toString(), oauthUser)) {
-            checkFailureTimes(oauthUser.getUsername());
-            throw new BadCredentialsException(getMessage("User.badCredentials", "Bad credentials"));
+        OauthUser oauthUser = cast(user);
+        String credentials = token.getCredentials().toString();
+        /*
+         * 如果code_mode不为空，则username为手机号或邮箱，password为验证码
+         */
+        CodeHandler codeHandler = codeHandlerFactory.get(getRequest().getParameter("code_mode"));
+        if (null != codeHandler) {
+            if (!codeHandler.checkCode(getRequest().getParameter("username"), credentials)) {
+                checkFailureTimes(oauthUser.getUsername());
+                throw new BadCredentialsException(getMessage("code.invalid", BAD_CREDENTIALS));
+            }
+        } else {
+            if (!loginHandlerFactory.getLoginHandler(oauthUser.getClientId()).getPasswordMatcher().matches(credentials, oauthUser)) {
+                checkFailureTimes(oauthUser.getUsername());
+                throw new BadCredentialsException(getMessage("user.badCredentials", BAD_CREDENTIALS));
+            }
         }
     }
 
@@ -91,7 +108,7 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
             }
             return oauthUser;
         }
-        throw new LockedException(getMessage("User.locked", "User account is locked"));
+        throw new LockedException(getMessage("user.locked", "User account is locked"));
     }
 
     /**
@@ -106,7 +123,6 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
         if (token.getDetails() instanceof AuthenticationDetails) {
             return ((AuthenticationDetails) token.getDetails()).getClientId();
         }
-
         //客户端http basic认证方式获取clientId
         return ((User) getContext().getAuthentication().getPrincipal()).getUsername();
     }
@@ -119,5 +135,10 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
     @Autowired
     public void setRedisTemplate(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
+    }
+
+    @Autowired
+    public void setCodeHandlerFactory(CodeHandlerFactory codeHandlerFactory) {
+        this.codeHandlerFactory = codeHandlerFactory;
     }
 }

@@ -2,8 +2,8 @@ package org.isite.security.controller;
 
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
-import org.isite.security.code.VerifyCodeHandler;
-import org.isite.security.code.VerifyCodeHandlerFactory;
+import org.isite.security.code.CodeHandler;
+import org.isite.security.code.CodeHandlerFactory;
 import org.isite.security.data.dto.VerifyCodeDto;
 import org.isite.security.data.dto.VerifyCodeGetDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +23,16 @@ import static org.isite.security.data.constants.UrlConstants.DELETE_VERIFY_CODE;
  * @Author <font color='blue'>zhangcm</font>
  */
 @RestController
-public class VerifyCodeController extends BaseController {
+public class CodeController extends BaseController {
 
-    private VerifyCodeHandlerFactory verifyCodeHandlerFactory;
+    private CodeHandlerFactory codeHandlerFactory;
 
     /**
      * 主要用于前端不登录调用，不需要签名验证
      */
     @GetMapping(API_GET_VERIFY_CODE)
     public Result<Object> sendCode(@Validated VerifyCodeGetDto verifyCodeGetDto) {
-        return toResult(() -> verifyCodeHandlerFactory.get(verifyCodeGetDto.getVerifyCodeMode()).sendCode(verifyCodeGetDto.getAgent()));
+        return toResult(() -> codeHandlerFactory.get(verifyCodeGetDto.getCodeMode()).sendCode(verifyCodeGetDto.getAgent()));
     }
 
     /**
@@ -40,14 +40,14 @@ public class VerifyCodeController extends BaseController {
      */
     @DeleteMapping(DELETE_VERIFY_CODE)
     public Result<?> checkCode(@Validated VerifyCodeDto verifyCodeDto) {
-        VerifyCodeHandler verifyCodeHandler = verifyCodeHandlerFactory.get(verifyCodeDto.getVerifyCodeMode());
-        isTrue(verifyCodeHandler.checkCode(verifyCodeDto.getAgent(), verifyCodeDto.getCode()),
-                getMessage("VerifyCode.invalid", "the verification code is invalid"));
+        CodeHandler codeHandler = codeHandlerFactory.get(verifyCodeDto.getCodeMode());
+        isTrue(codeHandler.checkCode(verifyCodeDto.getAgent(), verifyCodeDto.getCode()),
+                getMessage("code.invalid", "the verification code is invalid"));
         return success();
     }
 
     @Autowired
-    public void setVerifyCodeHandlerFactory(VerifyCodeHandlerFactory verifyCodeHandlerFactory) {
-        this.verifyCodeHandlerFactory = verifyCodeHandlerFactory;
+    public void setCodeHandlerFactory(CodeHandlerFactory codeHandlerFactory) {
+        this.codeHandlerFactory = codeHandlerFactory;
     }
 }

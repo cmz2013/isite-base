@@ -3,6 +3,7 @@ package org.isite.commons.cloud.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class Vo<I> {
+public class Vo<I> implements Serializable {
     /**
      * 唯一标识
      */

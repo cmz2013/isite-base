@@ -1,7 +1,7 @@
 package org.isite.security.code;
 
 import org.isite.commons.cloud.factory.Strategy;
-import org.isite.security.data.enums.VerifyCodeMode;
+import org.isite.security.data.enums.CodeMode;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,24 +17,24 @@ import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_LENGTH;
  * @Description 验证码操作接口
  * @Author <font color='blue'>zhangcm</font>
  */
-public abstract class VerifyCodeHandler implements Strategy<VerifyCodeMode> {
+public abstract class CodeHandler implements Strategy<CodeMode> {
     protected static final String FIELD_CODE = "code";
     protected static final String FIELD_VALIDITY = "validity";
-    private final VerifyCodeMode verifyCodeMode;
-    private VerifyCodeCache verifyCodeCache;
+    private final CodeMode mode;
+    private CodeCache codeCache;
 
-    protected VerifyCodeHandler(VerifyCodeMode verifyCodeMode) {
-        this.verifyCodeMode = verifyCodeMode;
+    protected CodeHandler(CodeMode mode) {
+        this.mode = mode;
     }
 
     /**
      * 校验验证码
      */
     public boolean checkCode(String agent, String code) {
-        String cacheCode = verifyCodeCache.getCode(verifyCodeMode, agent);
-        if (code.equals(cacheCode)) {
+        String cacheCode = codeCache.getCode(mode, agent);
+        if (isNotBlank(code) && code.equals(cacheCode)) {
             //验证码只能使用一次
-            verifyCodeCache.deleteCode(verifyCodeMode, agent);
+            codeCache.deleteCode(mode, agent);
             return TRUE;
         }
         return FALSE;
@@ -45,13 +45,13 @@ public abstract class VerifyCodeHandler implements Strategy<VerifyCodeMode> {
      * @param agent 手机号或email地址等
      */
     public void sendCode(String agent) {
-        String code = verifyCodeCache.getCode(verifyCodeMode, agent);
+        String code = codeCache.getCode(mode, agent);
         if (isNotBlank(code)) {
             return;
         }
         code = generateCode();
         if (sendCode(agent, code)) {
-            verifyCodeCache.saveCode(verifyCodeMode, agent, code);
+            codeCache.saveCode(mode, agent, code);
         }
     }
 
@@ -82,7 +82,7 @@ public abstract class VerifyCodeHandler implements Strategy<VerifyCodeMode> {
     }
 
     @Autowired
-    public void setVerifyCodeCache(VerifyCodeCache verifyCodeCache) {
-        this.verifyCodeCache = verifyCodeCache;
+    public void setCodeCache(CodeCache codeCache) {
+        this.codeCache = codeCache;
     }
 }
