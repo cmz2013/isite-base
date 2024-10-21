@@ -6,7 +6,6 @@ import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
-import java.io.Serializable;
 
 /**
  * @Description DTO父类，用于Controller接口传参
@@ -14,7 +13,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class Dto<I> implements Serializable {
+public class Dto<I> {
     /**
      * @Description 唯一标识，在执行指定操作时，SpringMVC自动完成参数绑定校验
      */
