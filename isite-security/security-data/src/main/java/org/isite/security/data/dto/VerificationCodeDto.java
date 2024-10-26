@@ -2,7 +2,7 @@ package org.isite.security.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.security.data.enums.CodeMode;
+import org.isite.security.data.enums.VerificationCodeType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,12 +12,17 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class VerifyCodeGetDto {
+public class VerificationCodeDto {
+    /**
+     * 验证码
+     */
+    @NotBlank
+    private String code;
     /**
      * 发送验证码的方式
      */
     @NotNull
-    private CodeMode codeMode;
+    private VerificationCodeType codeType;
     /**
      * 密保终端：email或手机号等
      */

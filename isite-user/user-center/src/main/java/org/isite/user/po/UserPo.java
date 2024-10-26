@@ -2,10 +2,11 @@ package org.isite.user.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.jpa.data.BuiltIn;
 import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.jpa.data.BuiltIn;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
+import org.isite.user.data.enums.Sex;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
@@ -21,11 +22,20 @@ public class UserPo extends Po<Long> implements BuiltIn {
     /**
      * 登录名
      */
-    private String userName;
+    private String username;
     /**
      * 真实姓名
      */
     private String realName;
+    /**
+     * 头像url
+     */
+    private String headImg;
+    /**
+     * 性别
+     */
+    @ColumnType(typeHandler = EnumTypeHandler.class)
+    private Sex sex;
     /**
      * 用户状态
      */

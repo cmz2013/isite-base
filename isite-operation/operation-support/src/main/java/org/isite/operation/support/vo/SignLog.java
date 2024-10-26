@@ -19,7 +19,7 @@ public class SignLog extends Vo<Long> {
     /**
      * 用户名
      */
-    private String userName;
+    private String username;
     /**
      * 连续签到天数
      */

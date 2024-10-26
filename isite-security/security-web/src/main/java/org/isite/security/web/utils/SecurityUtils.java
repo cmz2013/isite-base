@@ -1,6 +1,5 @@
 package org.isite.security.web.utils;
 
-import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -50,18 +49,6 @@ public class SecurityUtils {
         Object principal = context.getAuthentication().getPrincipal();
         if (principal instanceof OauthUser) {
             return (OauthUser) principal;
-        }
-        return null;
-    }
-
-    /**
-     * @Description 获取当前登录的企业员工
-     * 注意：如果只查询当前登录用户数据，接口路径约定/my/**，数据接口授权拦截器自动放行
-     */
-    public static OauthEmployee getOauthEmployee() {
-        OauthUser oauthUser = getOauthUser();
-        if (oauthUser instanceof OauthEmployee) {
-            return (OauthEmployee) oauthUser;
         }
         return null;
     }

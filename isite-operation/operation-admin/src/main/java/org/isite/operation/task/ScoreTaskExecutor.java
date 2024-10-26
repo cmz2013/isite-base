@@ -65,6 +65,6 @@ public class ScoreTaskExecutor extends TaskExecutor<ScoreRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {USER_SCORE};
+        return new TaskType[] { USER_SCORE };
     }
 }

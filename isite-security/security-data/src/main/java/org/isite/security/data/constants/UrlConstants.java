@@ -39,7 +39,7 @@ public class UrlConstants {
      */
     public static final String GET_OAUTH_PRINCIPAL = URL_OAUTH + "/principal";
     /**
-     * 获取当前登录的用户信息（用于网关校验token，并获取用户信息）
+     * 获取当前登录的用户信息
      */
     public static final String GET_OAUTH_USER = URL_OAUTH + "/user";
     /**
@@ -57,11 +57,11 @@ public class UrlConstants {
     /**
      * 获取验证码（不需要登录）
      */
-    public static final String API_GET_VERIFY_CODE = URL_API + URL_OAUTH + "/verify/code";
+    public static final String API_GET_VERIFICATION_CODE = URL_API + URL_OAUTH + "/verificationCode";
     /**
      * 校验验证码
      */
-    public static final String DELETE_VERIFY_CODE = URL_OAUTH + "/verify/code";
+    public static final String DELETE_VERIFICATION_CODE = URL_OAUTH + "/verificationCode";
     /**
      * 授权码模式，用户登录以后批准授权
      * 用于替换框架（spring-cloud-starter-oauth2）内置的接口路径 /oauth/confirm_access

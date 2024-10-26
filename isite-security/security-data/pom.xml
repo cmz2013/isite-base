@@ -21,6 +21,11 @@
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
+            <artifactId>user-data</artifactId>
+            <version>${isite.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
             <artifactId>tenant-data</artifactId>
             <version>${isite.version}</version>
         </dependency>

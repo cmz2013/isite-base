@@ -27,7 +27,6 @@ public class RbacController extends BaseController {
         return toResult(rbacService.getRbac(loginDto));
     }
 
-
     @Autowired
     public void setRbacService(RbacService rbacService) {
         this.rbacService = rbacService;

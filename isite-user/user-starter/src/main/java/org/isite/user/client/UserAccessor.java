@@ -2,6 +2,7 @@ package org.isite.user.client;
 
 import org.isite.commons.web.feign.FeignClientFactory;
 import org.isite.user.data.dto.UserPostDto;
+import org.isite.user.data.dto.WechatPostDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 
@@ -31,8 +32,7 @@ public class UserAccessor {
      * @Description 查询用户秘钥
      */
     public static UserSecret getUserSecret(String identifier, String signPassword) {
-        FeignClientFactory feignClientFactory = getBean(FeignClientFactory.class);
-        UserClient userClient = feignClientFactory.getFeignClient(UserClient.class, SERVICE_ID);
+        UserClient userClient = getBean(FeignClientFactory.class).getFeignClient(UserClient.class, SERVICE_ID);
         return getData(userClient.getUserSecret(identifier, signPassword));
     }
 
@@ -47,9 +47,17 @@ public class UserAccessor {
     /**
      * @Description (用于认证鉴权中心)注册用户信息
      */
-    public static Integer addUser(UserPostDto userPostDto, String signPassword) {
+    public static Long addUser(UserPostDto userPostDto, String signPassword) {
         UserClient userClient = getBean(FeignClientFactory.class).getFeignClient(UserClient.class, SERVICE_ID);
         return getData(userClient.addUser(userPostDto, signPassword));
+    }
+
+    /**
+     * @Description 注册微信用户信息
+     */
+    public static Long addWechat(WechatPostDto wechatPostDto, String signPassword) {
+        UserClient userClient = getBean(FeignClientFactory.class).getFeignClient(UserClient.class, SERVICE_ID);
+        return getData(userClient.addWechat(wechatPostDto, signPassword));
     }
 
     /**
@@ -57,8 +65,8 @@ public class UserAccessor {
      * @param phone 手机号
      * @return 用户ID
      */
-    public static long addUserIfAbsent(String phone) {
+    public static long addPhoneIfAbsent(String phone) {
         UserClient userClient = getBean(FeignClientFactory.class).getFeignClient(UserClient.class, SERVICE_ID);
-        return getData(userClient.addUserIfAbsent(phone));
+        return getData(userClient.addPhoneIfAbsent(phone));
     }
 }

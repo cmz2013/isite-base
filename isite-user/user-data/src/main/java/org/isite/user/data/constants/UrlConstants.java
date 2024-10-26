@@ -17,7 +17,7 @@ public class UrlConstants {
     /**
      * 根据唯一标识（id、username、phone）获取用户信息
      */
-    public static final String GET_USER_DETAILS = URL_USER + "/identifier/{identifier}";
+    public static final String GET_USER_DETAILS = URL_USER + "/{identifier}/details";
     /**
      * 分页查询用户列表
      */
@@ -26,6 +26,10 @@ public class UrlConstants {
      * 根据唯一标识（username、phone、email）查询用户秘钥
      */
     public static final String API_GET_USER_SECRET = URL_API + URL_USER + "/{identifier}/secret";
+    /**
+     * 注册微信用户信息
+     */
+    public static final String API_POST_USER_WECHAT = URL_API + URL_USER + "/wechat";
     /**
      * 用户鉴权中心注册用户信息
      */
@@ -37,5 +41,5 @@ public class UrlConstants {
     /**
      *
      */
-    public static final String POST_USER_IF_ABSENT = URL_USER + "/phone/{phone}";
+    public static final String POST_USER_PHONE_IF_ABSENT = URL_USER + "/phone/{phone}";
 }

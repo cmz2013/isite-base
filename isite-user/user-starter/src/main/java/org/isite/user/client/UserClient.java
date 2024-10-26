@@ -2,6 +2,7 @@ package org.isite.user.client;
 
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.user.data.dto.UserPostDto;
+import org.isite.user.data.dto.WechatPostDto;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
+import static org.isite.user.data.constants.UrlConstants.API_POST_USER_WECHAT;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.GET_USER_DETAILS;
-import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
+import static org.isite.user.data.constants.UrlConstants.POST_USER_PHONE_IF_ABSENT;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -36,6 +38,12 @@ public interface UserClient {
     Result<UserSecret> getUserSecret(@PathVariable("identifier") String identifier,
                                      @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
     /**
+     * @Description 使用微信openId查询用户信息
+     */
+    @PostMapping(value = API_POST_USER_WECHAT)
+    Result<Long> addWechat(@RequestBody WechatPostDto wechatPostDto,
+                           @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+    /**
      * @Description (用于认证鉴权中心)更新/设置用户密码，密码已加密
      */
     @PutMapping(value = API_PUT_USER_PASSWORD)
@@ -47,9 +55,9 @@ public interface UserClient {
      * @Description (用于认证鉴权中心)注册用户信息
      */
     @PostMapping(API_POST_USER)
-    Result<Integer> addUser(@RequestBody UserPostDto userPostDto,
-                            @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+    Result<Long> addUser(@RequestBody UserPostDto userPostDto,
+                         @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
 
-    @PostMapping(POST_USER_IF_ABSENT)
-    Result<Long> addUserIfAbsent(@PathVariable("phone") String phone);
+    @PostMapping(POST_USER_PHONE_IF_ABSENT)
+    Result<Long> addPhoneIfAbsent(@PathVariable("phone") String phone);
 }

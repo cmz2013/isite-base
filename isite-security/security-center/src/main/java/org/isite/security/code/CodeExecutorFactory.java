@@ -1,7 +1,7 @@
 package org.isite.security.code;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.security.data.enums.CodeMode;
+import org.isite.security.data.enums.VerificationCodeType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class CodeHandlerFactory extends AbstractFactory<CodeHandler, CodeMode, String> {
+public class CodeExecutorFactory extends AbstractFactory<CodeExecutor, VerificationCodeType, String> {
 }

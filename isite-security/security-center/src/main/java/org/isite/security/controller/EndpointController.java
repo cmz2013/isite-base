@@ -32,7 +32,7 @@ public class EndpointController extends BaseController {
     @Validated
     @GetMapping(GET_OAUTH_CLIENTS)
     public Result<List<OauthClient>> findOauthClients(@NotEmpty @RequestParam("clientIds") List<String> clientIds) {
-        //filter方法会返回一个新的流，其中包含符合过滤条件的元素，但原始集合保持不变。
+        // filter方法会返回一个新的流，其中包含符合过滤条件的元素，但原始集合保持不变。
         return toResult(endpointConfig.getClients().stream().filter(client -> clientIds.contains(client.getClientId()))
                 .map(client -> new OauthClient(client.getClientId(), client.getClientName())).collect(toList()));
     }

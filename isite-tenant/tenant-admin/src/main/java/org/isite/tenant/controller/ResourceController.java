@@ -19,17 +19,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
-import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
 import static org.isite.tenant.data.constants.UrlConstants.API_GET_CLIENT_RESOURCES;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
@@ -50,23 +51,22 @@ public class ResourceController extends BaseController {
      */
     @Signed
     @GetMapping(API_GET_CLIENT_RESOURCES)
-    public Result<List<Resource>> getResources(@PathVariable("clientId") String clientId) {
+    public Result<List<Resource>> getResources(@RequestParam("clientId") String clientId) {
         return toResult(toTree(resourceService.findList(ResourcePo::getClientId, clientId),
                 po -> convert(po, Resource::new)));
     }
 
     /**
-     * 根据客户端ID和父节点ID查询资源。如果不是内置用户 tenantId = 0，则只能查询租户自己的资源
+     * 根据客户端ID和父节点ID查询资源。如果不是内置用户(tenantId = 0)，则只能查询租户自己的资源
      */
-    @GetMapping(URL_TENANT + "/resources/{clientId}/{pid}")
-    public Result<List<Resource>> findResources(
-            @PathVariable("clientId") String clientId, @PathVariable("pid") Integer pid) {
+    @GetMapping(URL_TENANT + "/resources/{pid}")
+    public Result<List<Resource>> findResources(@PathVariable("pid") Integer pid) {
         List<Integer> resourceIds = null;
         if (ZERO != getTenantId()) {
             resourceIds = roleResourceService.findList(RoleResourcePo::getRoleId, roleService.getAdminRole(
                     getTenantId()).getId()).stream().map(RoleResourcePo::getResourceId).collect(toList());
         }
-        return toResult(toTree(resourceService.findResources(clientId, pid, resourceIds),
+        return toResult(toTree(resourceService.findResources(pid, resourceIds),
                 po -> convert(po, Resource::new)));
     }
 

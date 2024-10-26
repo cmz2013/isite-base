@@ -1,6 +1,5 @@
 package org.isite.data.client;
 
-import org.isite.commons.web.http.HttpClient;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.vo.DataApi;
 import org.springframework.stereotype.Component;
@@ -9,12 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
 import static org.isite.commons.cloud.data.enums.HttpMethod.valueOf;
+import static org.isite.commons.lang.Constants.ONE;
+import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.commons.web.http.ContentType.APPLICATION_JSON;
+import static org.isite.commons.web.http.HttpClient.request;
 import static org.isite.commons.web.http.HttpUtils.toFormData;
 import static org.isite.data.support.enums.WsProtocol.REST;
 
@@ -31,17 +32,16 @@ public class RestClient extends WsClient {
 
 	@Override
 	public String[] call(DataApi api, Map<String, String> headers, Object... data) throws Exception {
-		HttpClient httpClient = new HttpClient();
-		if (null != api.getTimeout() && api.getTimeout() > ZERO) {
-			httpClient.setTimeout(api.getTimeout());
-		}
 		if (null == headers) {
 			headers = new HashMap<>(ONE);
 		}
 		headers.put(CONTENT_TYPE, api.getContentType());
-		String results = httpClient.request(
-				valueOf(api.getMethod()), api.getServerUrl(), headers, formatParams(api, data));
-		return null != results ? new String[]{results} : null;
+		long timeout = MINUTE.getMillis();
+		if (null != api.getTimeout() && api.getTimeout() > ZERO) {
+			timeout = api.getTimeout();
+		}
+		String results = request(valueOf(api.getMethod()), api.getServerUrl(), headers, formatParams(api, data), timeout);
+		return isNotBlank(results) ? new String[] { results } : null;
 	}
 
 	/**
@@ -59,6 +59,6 @@ public class RestClient extends WsClient {
 
 	@Override
 	public WsProtocol[] getIdentities() {
-		return new WsProtocol[] {REST};
+		return new WsProtocol[] { REST };
 	}
 }

@@ -29,7 +29,7 @@ import static org.isite.tenant.converter.TenantConverter.toTenantPo;
 import static org.isite.tenant.converter.TenantConverter.toTenantSelectivePo;
 import static org.isite.tenant.data.constants.UrlConstants.PUT_TENANT_STATUS;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
-import static org.isite.user.client.UserAccessor.addUserIfAbsent;
+import static org.isite.user.client.UserAccessor.addPhoneIfAbsent;
 
 /**
  * @Description 租户信息 Controller
@@ -59,7 +59,7 @@ public class TenantController extends BaseController {
      */
     @PostMapping(URL_TENANT)
     public Result<Integer> addTenant(@RequestBody @Validated(Add.class) TenantDto tenantDto) {
-        return toResult(tenantService.addTenant(addUserIfAbsent(tenantDto.getPhone()),
+        return toResult(tenantService.addTenant(addPhoneIfAbsent(tenantDto.getPhone()),
                 toTenantPo(tenantDto), tenantDto.getResourceIds()));
     }
 

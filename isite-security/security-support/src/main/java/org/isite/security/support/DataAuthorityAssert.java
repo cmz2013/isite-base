@@ -1,7 +1,7 @@
 package org.isite.security.support;
 
 import org.isite.security.data.vo.DataAuthority;
-import org.isite.security.data.vo.OauthEmployee;
+import org.isite.security.data.vo.OauthUser;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;
@@ -10,7 +10,6 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Constants.COMMA;
 
@@ -76,20 +75,20 @@ public class DataAuthorityAssert {
      * 校验当前登录用户的数据（接口）权限
      */
     public boolean isAuthorized(
-            OauthEmployee employee, String serviceId, String method, String requestPath) {
+            OauthUser oauthUser, String serviceId, String method, String requestPath) {
         if (isOauthPermits(requestPath)) {
             return TRUE;
         }
         if (isDataPermits(requestPath)) {
             return TRUE;
         }
-        if (null == employee) {
+        if (null == oauthUser) {
             return FALSE;
         }
-        if (TRUE.equals(employee.getInternal())) {
+        if (TRUE.equals(oauthUser.getInternal())) {
             return TRUE;
         }
-        Set<DataAuthority> authorities = isBlank(serviceId) ? null : employee.getAuthorities(serviceId);
+        Set<DataAuthority> authorities = oauthUser.getAuthorities(serviceId);
         if (isEmpty(authorities)) {
             return FALSE;
         }

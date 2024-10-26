@@ -3,7 +3,8 @@ package org.isite.security.code;
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.web.email.EmailClient;
 import org.isite.commons.web.email.EmailConfig;
-import org.isite.security.data.enums.CodeMode;
+import org.isite.security.data.enums.VerificationCodeType;
+import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -15,8 +16,9 @@ import java.util.Map;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Constants.SPACE;
 import static org.isite.commons.lang.template.FreeMarker.process;
-import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_VALIDITY;
-import static org.isite.security.data.enums.CodeMode.EMAIL;
+import static org.isite.security.constants.SecurityConstants.VERIFICATION_CODE_INFO;
+import static org.isite.security.constants.SecurityConstants.VERIFICATION_CODE_VALIDITY;
+import static org.isite.security.data.enums.VerificationCodeType.EMAIL;
 
 /**
  * @Description 发送验证码
@@ -25,12 +27,12 @@ import static org.isite.security.data.enums.CodeMode.EMAIL;
 @Slf4j
 @Component
 @ConditionalOnBean(value = EmailConfig.class)
-public class EmailCodeHandler extends CodeHandler {
+public class EmailCodeExecutor extends CodeExecutor {
 
     private final EmailClient emailClient;
 
     @Autowired
-    public EmailCodeHandler(EmailClient emailClient) {
+    public EmailCodeExecutor(EmailClient emailClient) {
         super(EMAIL);
         this.emailClient = emailClient;
     }
@@ -40,14 +42,10 @@ public class EmailCodeHandler extends CodeHandler {
         try {
             Map<String, Object> data = new HashMap<>();
             data.put(FIELD_CODE, code);
-            data.put(FIELD_VALIDITY, VERIFY_CODE_VALIDITY);
-            this.emailClient.sendEmail(agent,
-                    emailClient.getFromName() + SPACE + getMessage("code.subject", "Verification Code"),
-                    process(getMessage("code.info",
-                            "${code} is your verification code, " +
-                                    "please complete the verification within ${validity} minutes. " +
-                                    "For your safety, do not leak easily."),
-                            data));
+            data.put(FIELD_VALIDITY, VERIFICATION_CODE_VALIDITY);
+            this.emailClient.sendEmail(agent, emailClient.getFromName() + SPACE +
+                    getMessage("verificationCode.subject", "Verification Code"),
+                    process(getMessage("verificationCode.info", VERIFICATION_CODE_INFO), data));
             return true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -56,12 +54,12 @@ public class EmailCodeHandler extends CodeHandler {
     }
 
     @Override
-    public String getAgent(UserSecret userSecret) {
-        return userSecret.getEmail();
+    public String getAgent(UserBasic userBasic) {
+        return userBasic.getEmail();
     }
 
     @Override
-    public CodeMode[] getIdentities() {
-        return new CodeMode[] {EMAIL};
+    public VerificationCodeType[] getIdentities() {
+        return new VerificationCodeType[] {EMAIL};
     }
 }

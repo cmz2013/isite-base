@@ -2,7 +2,7 @@
 <mapper namespace="org.isite.user.mapper.ConsigneeMapper">
 
     <select id="selectOneConsignee" resultType="ConsigneePo">
-        select `id`, `create_time`, `update_time`, `user_id`, `user_name`, `phone`, `region_code`, `address`, `defaults`
+        select `id`, `create_time`, `update_time`, `user_id`, `username`, `phone`, `region_code`, `address`, `defaults`
         from `consignee`
         where `used_id` = #{userId}
         limit 1

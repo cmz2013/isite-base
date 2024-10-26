@@ -10,8 +10,8 @@ import tk.mybatis.mapper.annotation.ColumnType;
 import javax.persistence.Table;
 
 /**
- * 供租户使用的资源PO。租户资源由管理员基于RBAC进行分配
- * @author <font color='blue'>zhangcm</font>
+ * @Description 供租户使用的资源PO。租户资源由管理员基于RBAC进行分配
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

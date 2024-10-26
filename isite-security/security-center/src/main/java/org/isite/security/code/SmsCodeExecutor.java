@@ -3,7 +3,8 @@ package org.isite.security.code;
 import lombok.extern.slf4j.Slf4j;
 import org.isite.commons.web.sms.SmsClient;
 import org.isite.commons.web.sms.SmsConfig;
-import org.isite.security.data.enums.CodeMode;
+import org.isite.security.data.enums.VerificationCodeType;
+import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -14,8 +15,9 @@ import java.util.Map;
 
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.template.FreeMarker.process;
-import static org.isite.security.constants.SecurityConstants.VERIFY_CODE_VALIDITY;
-import static org.isite.security.data.enums.CodeMode.SMS;
+import static org.isite.security.constants.SecurityConstants.VERIFICATION_CODE_INFO;
+import static org.isite.security.constants.SecurityConstants.VERIFICATION_CODE_VALIDITY;
+import static org.isite.security.data.enums.VerificationCodeType.SMS;
 
 /**
  * @Description 发送验证码
@@ -24,12 +26,12 @@ import static org.isite.security.data.enums.CodeMode.SMS;
 @Slf4j
 @Component
 @ConditionalOnBean(value = SmsConfig.class)
-public class SmsCodeHandler extends CodeHandler {
+public class SmsCodeExecutor extends CodeExecutor {
 
     private final SmsClient smsClient;
 
     @Autowired
-    public SmsCodeHandler(SmsClient smsClient) {
+    public SmsCodeExecutor(SmsClient smsClient) {
         super(SMS);
         this.smsClient = smsClient;
     }
@@ -39,11 +41,8 @@ public class SmsCodeHandler extends CodeHandler {
         try {
             Map<String, Object> data = new HashMap<>();
             data.put(FIELD_CODE, code);
-            data.put(FIELD_VALIDITY, VERIFY_CODE_VALIDITY);
-            this.smsClient.send(agent, process(getMessage("code.info",
-                            "${code} is your verification code, " +
-                                    "please complete the verification within ${validity} minutes. " +
-                                    "For your safety, do not leak easily."), data));
+            data.put(FIELD_VALIDITY, VERIFICATION_CODE_VALIDITY);
+            this.smsClient.send(agent, process(getMessage("verificationCode.info", VERIFICATION_CODE_INFO), data));
             return true;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -52,12 +51,12 @@ public class SmsCodeHandler extends CodeHandler {
     }
 
     @Override
-    public String getAgent(UserSecret userSecret) {
-        return userSecret.getPhone();
+    public String getAgent(UserBasic userBasic) {
+        return userBasic.getPhone();
     }
 
     @Override
-    public CodeMode[] getIdentities() {
-        return new CodeMode[] {SMS};
+    public VerificationCodeType[] getIdentities() {
+        return new VerificationCodeType[] {SMS};
     }
 }

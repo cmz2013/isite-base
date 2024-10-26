@@ -28,7 +28,7 @@ import static org.isite.tenant.converter.EmployeeConverter.toEmployeePo;
 import static org.isite.tenant.converter.EmployeeConverter.toEmployeeSelectivePo;
 import static org.isite.tenant.data.constants.UrlConstants.GET_EMPLOYEE;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
-import static org.isite.user.client.UserAccessor.addUserIfAbsent;
+import static org.isite.user.client.UserAccessor.addPhoneIfAbsent;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -52,7 +52,7 @@ public class EmployeeController extends BaseController {
         isTrue(departmentService.get(employeeDto.getDeptId()).getTenantId().equals(tenantId), new OverstepAccessError());
         isFalse(employeeService.exists(toEmployeeSelectivePo(tenantId, employeeDto.getDomainAccount())),
                 getMessage("employee.domainAccount.exists", "The domain account already exists"));
-        long userId = addUserIfAbsent(employeeDto.getPhone());
+        long userId = addPhoneIfAbsent(employeeDto.getPhone());
         isFalse(employeeService.exists(toEmployeeSelectivePo(tenantId, userId)),
                 getMessage("employee.exists", "The employee already exists"));
         return toResult(employeeService.insert(toEmployeePo(tenantId, employeeDto, userId)));
@@ -68,7 +68,7 @@ public class EmployeeController extends BaseController {
         isTrue(employeePo.getDomainAccount().equals(employeeDto.getDomainAccount()) ||
                         !employeeService.exists(toEmployeeSelectivePo(tenantId, employeeDto.getDomainAccount())),
                 getMessage("employee.domainAccount.exists", "The domain account already exists"));
-        long userId = addUserIfAbsent(employeeDto.getPhone());
+        long userId = addPhoneIfAbsent(employeeDto.getPhone());
         isTrue(employeePo.getUserId().equals(userId) ||
                         !employeeService.exists(toEmployeeSelectivePo(tenantId, userId)),
                 getMessage("employee.exists", "The employee already exists"));

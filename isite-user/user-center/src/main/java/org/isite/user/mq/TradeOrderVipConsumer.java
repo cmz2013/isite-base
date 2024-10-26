@@ -30,19 +30,19 @@ public class TradeOrderVipConsumer implements Consumer<TradeOrderSupplierDto> {
 
     @Override
     @Validated
-    public Basic handle(TradeOrderSupplierDto orderSupplierDto) {
+    public Basic handle(TradeOrderSupplierDto supplierDto) {
         try {
-            VipPo vipPo = vipService.findOne(VipPo::getUserId, orderSupplierDto.getUserId());
+            VipPo vipPo = vipService.findOne(VipPo::getUserId, supplierDto.getUserId());
             long expireTimeMillis = currentTimeMillis();
             if (null == vipPo) {
-                vipPo = new VipPo(orderSupplierDto.getUserId(), new Date(expireTimeMillis));
+                vipPo = new VipPo(supplierDto.getUserId(), new Date(expireTimeMillis));
             } else if (vipPo.getExpireTime().getTime() < expireTimeMillis) {
                 vipPo.setExpireTime(new Date(expireTimeMillis));
             }
-            for (TradeOrderSkuDto orderItem : orderSupplierDto.getSkus()) {
-                VipSaleParam vipSaleParam = parseObject(orderItem.getSupplierParam(), VipSaleParam.class);
+            for (TradeOrderSkuDto skuDto : supplierDto.getSkuDtos()) {
+                VipSaleParam vipSaleParam = parseObject(skuDto.getSupplierParam(), VipSaleParam.class);
                 vipPo.setExpireTime(new Date(vipPo.getExpireTime().getTime() +
-                        vipSaleParam.getExpireDays() * orderItem.getSkuCount() * DAY.getMillis()));
+                        vipSaleParam.getExpireDays() * skuDto.getSkuCount() * DAY.getMillis()));
             }
             if (null == vipPo.getId()) {
                 vipService.insert(vipPo);

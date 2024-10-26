@@ -5,12 +5,14 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumMap;
 
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.isite.commons.lang.Reflection.getGenericParameters;
+import static org.apache.commons.lang.ArrayUtils.isNotEmpty;
+import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.Reflection.getGenericParameter;
+import static org.isite.commons.lang.Reflection.getGenericParameters;
+import static org.isite.commons.lang.enums.Enumerable.getByCode;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 
 /**
@@ -22,37 +24,34 @@ import static org.isite.commons.lang.utils.TypeUtils.cast;
 public abstract class AbstractFactory<S extends Strategy<E>, E extends Enum<E> & Enumerable<T>, T>
         implements ApplicationContextAware {
 
-    private List<S> strategies;
+    private EnumMap<E, S> strategies;
 
     /**
      * 根据枚举code返回Bean
      */
     public S get(T code) {
-        for (S strategy : strategies) {
-            for (E identity : strategy.getIdentities()) {
-                if (identity.getCode().equals(code)) {
-                    return strategy;
-                }
-            }
-        }
-        return null;
+        E constant = getByCode(cast(getGenericParameter(this.getClass(), AbstractFactory.class, ONE)), code);
+        return null == constant? null : get(constant);
     }
 
     /**
      * 根据枚举常量返回Bean
      */
     public S get(E constant) {
-        return get(constant.getCode());
+        return strategies.get(constant);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         Class<?>[] classes = getGenericParameters(this.getClass(), AbstractFactory.class);
         Class<S> strategyClass = cast(classes[ZERO]);
-        strategies = new ArrayList<>();
+        Class<E> identityClass = cast(classes[ONE]);
+        strategies = new EnumMap<>(identityClass);
         context.getBeansOfType(strategyClass).values().forEach(strategy -> {
             if (isNotEmpty(strategy.getIdentities())) {
-                strategies.add(strategy);
+                for (E identity : strategy.getIdentities()) {
+                    strategies.put(identity, strategy);
+                }
             }
         });
     }

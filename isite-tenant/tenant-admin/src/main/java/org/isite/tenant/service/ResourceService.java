@@ -27,11 +27,10 @@ public class ResourceService extends TreePoService<ResourcePo, Integer> {
     /**
      * 根据客户端ID和pid查询资源
      */
-    public List<ResourcePo> findResources(String clientId, Integer pid, List<Integer> resourceIds) {
+    public List<ResourcePo> findResources(Integer pid, List<Integer> resourceIds) {
         Weekend<ResourcePo> weekend = of(ResourcePo.class);
         weekend.orderBy(ResourcePo::getSort);
-        weekend.weekendCriteria().andEqualTo(ResourcePo::getPid, pid)
-                .andEqualTo(ResourcePo::getClientId, clientId);
+        weekend.weekendCriteria().andEqualTo(ResourcePo::getPid, pid);
         if (isNotEmpty(resourceIds)) {
             weekend.weekendCriteria().andIn(ResourcePo::getId, resourceIds);
         }

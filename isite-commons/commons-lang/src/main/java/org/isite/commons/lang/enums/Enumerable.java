@@ -1,5 +1,7 @@
 package org.isite.commons.lang.enums;
 
+import javax.annotation.Nullable;
+
 import static org.isite.commons.lang.Assert.isTrue;
 
 /**
@@ -26,7 +28,7 @@ public interface Enumerable<T> {
      * @param eClass 枚举类
      * @param code 编码
      */
-    static <E extends Enumerable<?>> E getByCode(Class<E> eClass, Object code) {
+    static <E extends Enumerable<?>> @Nullable E getByCode(Class<E> eClass, Object code) {
         isTrue(eClass.isEnum(), "not an enum class: " + eClass.getName());
         // getEnumConstants()方法用于返回枚举常量数组,当此类对象不表示枚举类型时，它返回null
         for (E constant : eClass.getEnumConstants()) {
@@ -34,7 +36,7 @@ public interface Enumerable<T> {
                 return constant;
             }
         }
-        throw new EnumConstantNotFound(eClass, code);
+        return null;
     }
 
     /**
@@ -42,12 +44,12 @@ public interface Enumerable<T> {
      * @param eClass 枚举类
      * @param name 常量名
      */
-    static <E extends Enum<?>> E getByName(Class<E> eClass, String name) {
+    static <E extends Enum<?>> @Nullable E getByName(Class<E> eClass, String name) {
         for (E constant : eClass.getEnumConstants()) {
             if (constant.name().equals(name)) {
                 return constant;
             }
         }
-        throw new EnumConstantNotFound(eClass, name);
+        return null;
     }
 }

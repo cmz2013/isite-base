@@ -25,7 +25,7 @@ function queryData() {
                     let user = result.data[i];
                     str+=`
                 <div class="table-row1">
-                     <div class="table-block1 width25">${user.userName}</div>
+                     <div class="table-block1 width25">${user.username}</div>
                      <div class="table-block1 width25">查看权限：项目管理系统</div>
                      <div class="table-block1 width25">管理员</div>
                      <div class="table-block1 width25 color-blue change-hand flex-row2"> 

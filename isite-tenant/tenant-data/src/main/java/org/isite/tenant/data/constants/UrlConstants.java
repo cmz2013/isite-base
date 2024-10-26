@@ -28,7 +28,7 @@ public class UrlConstants {
     /**
      * 内置用户登录时获取客户端所有资源
      */
-    public static final String API_GET_CLIENT_RESOURCES = URL_API + URL_TENANT + "/resources/{clientId}";
+    public static final String API_GET_CLIENT_RESOURCES = URL_API + URL_TENANT + "/resources";
     /**
      * 租户查询可以访问的客户端
      */

@@ -1,7 +1,6 @@
 package org.isite.commons.web.interceptor;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import org.isite.security.data.enums.ClientIdentifier;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +10,10 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_CLIENT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
-import static org.isite.commons.lang.enums.Enumerable.getByCode;
 
 /**
  * @Description 保存请求头数据（敏感信息），用于后续请求使用。
@@ -32,7 +29,6 @@ public class TransmittableHeaders implements HandlerInterceptor {
     private static final ThreadLocal<Long> TRANSMITTABLE_USER_ID = new TransmittableThreadLocal<>();
     private static final ThreadLocal<Long> TRANSMITTABLE_EMPLOYEE_ID = new TransmittableThreadLocal<>();
     private static final ThreadLocal<Integer> TRANSMITTABLE_TENANT_ID = new TransmittableThreadLocal<>();
-    private static final ThreadLocal<ClientIdentifier> TRANSMITTABLE_CLIENT_IDENTIFIER = new TransmittableThreadLocal<>();
 
     /**
      * 获取当前请求的授权信息（Bearer Token等）
@@ -77,14 +73,6 @@ public class TransmittableHeaders implements HandlerInterceptor {
     }
 
     /**
-     * @Description 获取当前登录的客户端ID。网关校验token通过后，会在请求头添加当前登录的客户端ID。
-     * 调用该方法时需要注意：如果后端服务接入认证鉴权中心校验token，可以调用SecurityUtils从SecurityContext中获取用户信息，该方法返回null
-     */
-    public static ClientIdentifier getClientIdentifier() {
-        return TRANSMITTABLE_CLIENT_IDENTIFIER.get();
-    }
-
-    /**
      * @Description 在请求处理之前进行调用
      */
     @Override
@@ -109,10 +97,6 @@ public class TransmittableHeaders implements HandlerInterceptor {
         if (isNotBlank(tenantId)) {
             TRANSMITTABLE_TENANT_ID.set(parseInt(tenantId));
         }
-        String clientId = request.getHeader(X_CLIENT_ID);
-        if (isNotBlank(clientId)) {
-            TRANSMITTABLE_CLIENT_IDENTIFIER.set(getByCode(ClientIdentifier.class, clientId));
-        }
         //如果false，停止流程，api被拦截
         return true;
     }
@@ -133,6 +117,5 @@ public class TransmittableHeaders implements HandlerInterceptor {
         TRANSMITTABLE_USER_ID.remove();
         TRANSMITTABLE_EMPLOYEE_ID.remove();
         TRANSMITTABLE_TENANT_ID.remove();
-        TRANSMITTABLE_CLIENT_IDENTIFIER.remove();
     }
 }

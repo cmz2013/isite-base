@@ -16,6 +16,7 @@ import java.util.Date;
 //@AllArgsConstructor 不建议使用，因为字段顺序一旦调整，构造函数传参就会错误，如果类型匹配很容易忽略该错误
 @Table(name = "vip")
 public class VipPo extends Po<Long> {
+
     private Long userId;
     private Date expireTime;
 

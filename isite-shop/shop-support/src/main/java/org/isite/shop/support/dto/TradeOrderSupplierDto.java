@@ -27,5 +27,5 @@ public class TradeOrderSupplierDto {
      */
     @Valid
     @Size(min = ONE, max = THOUSAND)
-    private List<TradeOrderSkuDto> skus;
+    private List<TradeOrderSkuDto> skuDtos;
 }

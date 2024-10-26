@@ -2,17 +2,14 @@ package org.isite.commons.web.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.isite.security.data.enums.ClientIdentifier;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_CLIENT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getAuthorization;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getClientIdentifier;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployeeId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
@@ -45,10 +42,6 @@ public class HeaderEnhancer implements RequestInterceptor {
         Integer tenantId = getTenantId();
         if (null!= tenantId) {
             template.header(X_TENANT_ID, tenantId.toString());
-        }
-        ClientIdentifier clientIdentifier = getClientIdentifier();
-        if (null != clientIdentifier) {
-            template.header(X_CLIENT_ID, clientIdentifier.getCode());
         }
     }
 }

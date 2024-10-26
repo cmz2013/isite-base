@@ -102,6 +102,6 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE};
+        return new TaskType[] { OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE };
     }
 }

@@ -20,7 +20,7 @@ public class PrizeDeliver extends Vo<Integer> {
     /**
      * 用户名
      */
-    private String userName;
+    private String username;
     /**
      * 联系电话
      */

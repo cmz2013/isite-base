@@ -1,9 +1,7 @@
 package org.isite.security.gateway.filter;
 
 import lombok.Setter;
-import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.Error;
-import org.isite.security.data.vo.OauthEmployee;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.gateway.client.OauthUserClient;
 import org.isite.security.support.DataAuthorityAssert;
@@ -26,11 +24,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.converter.ResultConverter.toResult;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_CLIENT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
-import static org.isite.commons.cloud.utils.ResultUtils.isOk;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.lang.Constants.COMMA;
 import static org.isite.commons.lang.json.Jackson.toJsonString;
@@ -81,22 +77,15 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
         if (isBlank(headers.getFirst(AUTHORIZATION))) {
             return doResponse(exchange, new Error(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase()));
         }
-        Result<OauthUser> result = oauthUserClient.getUser(headers.toSingleValueMap());
-        if (!isOk(result)) {
-            return doResponse(exchange, new Error(result.getCode(), result.getMessage()));
-        }
-        OauthUser oauthUser = result.getData();
-        OauthEmployee oauthEmployee = oauthUser instanceof OauthEmployee ? (OauthEmployee) oauthUser : null;
         String serviceId = getServiceId(exchange);
-
+        OauthUser oauthUser = oauthUserClient.getUserDetails(headers.toSingleValueMap());
         if (null == dataAuthorityAssert || dataAuthorityAssert.isAuthorized(
-                oauthEmployee, serviceId, request.getMethodValue(), requestPath)) {
+                oauthUser, serviceId, request.getMethodValue(), requestPath)) {
             headers.add(X_USER_ID, valueOf(oauthUser.getUserId()));
-            if (null != oauthEmployee) {
-                headers.add(X_EMPLOYEE_ID, valueOf((oauthEmployee.getEmployeeId())));
-                headers.add(X_TENANT_ID, valueOf(oauthEmployee.getTenant().getId()));
+            if (null != oauthUser.getTenant()) {
+                headers.add(X_TENANT_ID, valueOf(oauthUser.getTenant().getId()));
+                headers.add(X_EMPLOYEE_ID, valueOf((oauthUser.getEmployeeId())));
             }
-            headers.add(X_CLIENT_ID, oauthUser.getClientId());
             return chain.filter(exchange);
         }
         return doResponse(exchange, new Error(FORBIDDEN.value(),

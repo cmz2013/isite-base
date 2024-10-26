@@ -46,7 +46,7 @@ public class ClientProperties implements Serializable {
     @Getter
     private String secret;
     /**
-     * 允许的授权范围，逗号分隔。permit：(DataAuthorityFilter)白名单所有功能；rbac：基于角色的授权访问控制
+     * 允许的授权范围，逗号分隔。
      */
     private String scopes;
     /**

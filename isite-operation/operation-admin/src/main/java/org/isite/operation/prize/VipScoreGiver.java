@@ -4,6 +4,7 @@ import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
 import org.isite.operation.support.enums.PrizeType;
+import org.isite.operation.support.enums.ScoreType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,6 @@ import java.util.Date;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.System.currentTimeMillis;
-import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 
 /**
  * @Description VIP积分发放接口（不区分用户是否为会员）。
@@ -26,7 +26,7 @@ public class VipScoreGiver extends PrizeGiver {
     @Override
     protected void grantPrize(PrizeRecordPo prizeRecordPo) {
         ScoreRecordPo scoreRecordPo = new ScoreRecordPo();
-        scoreRecordPo.setScoreType(VIP_SCORE);
+        scoreRecordPo.setScoreType(ScoreType.VIP_SCORE);
         scoreRecordPo.setScoreValue(parseInt(prizeRecordPo.getThirdPrizeValue()));
         scoreRecordPo.setTaskId(prizeRecordPo.getTaskId());
         scoreRecordPo.setActivityPid(prizeRecordPo.getActivityPid());
@@ -47,6 +47,6 @@ public class VipScoreGiver extends PrizeGiver {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[]{PrizeType.VIP_SCORE};
+        return new PrizeType[]{ PrizeType.VIP_SCORE };
     }
 }

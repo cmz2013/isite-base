@@ -51,7 +51,7 @@ public class EmailProperties {
         @Getter
         @Setter
         public static class Authentication {
-            private String userName;
+            private String username;
             private String password;
         }
     }

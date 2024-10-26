@@ -14,6 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class FtpProperties {
     private String host;
     private int port;
-    private String userName;
+    private String username;
     private String password;
 }

@@ -9,8 +9,8 @@ function showLoginBox() {
 }
 
 function getAccessToken() {
-    let userName = $('#userName').val();
-    if (!userName) {
+    let username = $('#username').val();
+    if (!username) {
         showToast('请输入用户名');
         return
     }
@@ -27,7 +27,7 @@ function getAccessToken() {
         url: "/oauth/token",
         data: {
             "grant_type": "password",
-            "username": userName,
+            "username": username,
             "password": userPsw
         },
         success: function(data) {

@@ -75,7 +75,7 @@ public class TradeOrderConverter {
             TradeOrderPo tradeOrderPo, List<TradeOrderItemPo> orderItemPos) {
         TradeOrderSupplierDto tradeOrderSupplierDto = new TradeOrderSupplierDto();
         tradeOrderSupplierDto.setUserId(tradeOrderPo.getUserId());
-        tradeOrderSupplierDto.setSkus(orderItemPos.stream().map(TradeOrderConverter::toTradeOrderSkuDto).collect(toList()));
+        tradeOrderSupplierDto.setSkuDtos(orderItemPos.stream().map(TradeOrderConverter::toTradeOrderSkuDto).collect(toList()));
         return tradeOrderSupplierDto;
     }
 

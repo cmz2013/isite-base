@@ -9,6 +9,7 @@ import org.isite.commons.web.sign.Signed;
 import org.isite.user.data.dto.UserGetDto;
 import org.isite.user.data.dto.UserPostDto;
 import org.isite.user.data.dto.UserPutDto;
+import org.isite.user.data.dto.WechatPostDto;
 import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
@@ -33,14 +34,15 @@ import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.user.converter.UserConverter.toUserDetails;
 import static org.isite.user.converter.UserConverter.toUserPo;
+import static org.isite.user.converter.UserConverter.toUserSecret;
 import static org.isite.user.converter.UserConverter.toUserSelectivePo;
-import static org.isite.user.converter.UserSecretConverter.toUserSecret;
 import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
 import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
+import static org.isite.user.data.constants.UrlConstants.API_POST_USER_WECHAT;
 import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
 import static org.isite.user.data.constants.UrlConstants.GET_USERS;
 import static org.isite.user.data.constants.UrlConstants.GET_USER_DETAILS;
-import static org.isite.user.data.constants.UrlConstants.POST_USER_IF_ABSENT;
+import static org.isite.user.data.constants.UrlConstants.POST_USER_PHONE_IF_ABSENT;
 import static org.isite.user.data.constants.UrlConstants.URL_USER;
 
 /**
@@ -54,13 +56,13 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @Autowired
-    public void setVipService(VipService vipService) {
-        this.vipService = vipService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setVipService(VipService vipService) {
+        this.vipService = vipService;
     }
 
     @GetMapping(GET_USERS)
@@ -85,20 +87,18 @@ public class UserController extends BaseController {
      */
     @Signed
     @PostMapping(API_POST_USER)
-    public Result<Integer> addUser(@RequestBody @Validated UserPostDto userPostDto) {
-        isFalse(userService.exists(UserPo::getUserName, userPostDto.getUserName()),
-                getMessage("userName.exists",  "username already exists"));
-        isFalse(userService.exists(UserPo::getPhone, userPostDto.getPhone()),
-                getMessage("phone.exists", "phone number already exists"));
-        if (isNotBlank(userPostDto.getEmail())) {
-            isFalse(userService.exists(UserPo::getEmail, userPostDto.getEmail()),
-                    getMessage("email.exists", "email already exists"));
-        }
-        return toResult(userService.insert(toUserPo(userPostDto)));
+    public Result<Long> addUser(@Validated @RequestBody UserPostDto userPostDto) {
+        return toResult(userService.addUser(userPostDto));
     }
 
-    @PostMapping(POST_USER_IF_ABSENT)
-    public Result<Long> addUserIfAbsent(@PathVariable("phone") String phone) {
+    @Signed
+    @PostMapping(value = API_POST_USER_WECHAT)
+    public Result<Long> addWechat(@Validated @RequestBody WechatPostDto wechatPostDto) {
+        return toResult(userService.addWechat(wechatPostDto));
+    }
+
+    @PostMapping(POST_USER_PHONE_IF_ABSENT)
+    public Result<Long> addPhoneIfAbsent(@PathVariable("phone") String phone) {
         UserPo userPo = userService.getByIdentifier(phone);
         if (userPo == null) {
             userPo = toUserPo(phone);
@@ -108,9 +108,9 @@ public class UserController extends BaseController {
     }
 
     @PutMapping(URL_USER)
-    public Result<Integer> updateUser(@RequestBody @Validated UserPutDto userPutDto) {
-        isFalse(userService.exists(UserPo::getUserName, userPutDto.getUserName(), userPutDto.getId()),
-                getMessage("userName.exists",  "username already exists"));
+    public Result<Integer> updateUser(@Validated @RequestBody UserPutDto userPutDto) {
+        isFalse(userService.exists(UserPo::getUsername, userPutDto.getUsername(), userPutDto.getId()),
+                getMessage("username.exists",  "username already exists"));
         isFalse(userService.exists(UserPo::getPhone, userPutDto.getPhone(), userPutDto.getId()),
                 getMessage("phone.exists", "phone number already exists"));
         if (isNotBlank(userPutDto.getEmail())) {

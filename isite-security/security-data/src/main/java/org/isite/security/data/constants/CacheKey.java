@@ -22,7 +22,7 @@ public class CacheKey {
     /**
      * 验证码缓存key: code:{终端类型}:{终端标识}
      */
-    public static final String VERIFY_CODE_FORMAT = SECURITY_PREFIX + "VERIFY_CODE:%s:%s";
+    public static final String VERIFICATION_CODE_FORMAT = SECURITY_PREFIX + "VERIFICATION:CODE:%s:%s";
     /**
      * 账号被锁key：login:locked:{username}。不区分端信息
      */

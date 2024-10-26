@@ -134,6 +134,6 @@ public class SoapClient extends WsClient {
 
 	@Override
 	public WsProtocol[] getIdentities() {
-		return new WsProtocol[] {SOAP};
+		return new WsProtocol[] { SOAP };
 	}
 }

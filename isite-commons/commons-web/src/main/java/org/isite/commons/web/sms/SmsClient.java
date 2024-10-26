@@ -2,7 +2,6 @@ package org.isite.commons.web.sms;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.isite.commons.web.http.HttpClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.isite.commons.lang.Constants.THREE;
+import static org.isite.commons.web.http.HttpClient.post;
 
 /**
  * @Description 发送短信的客户端
@@ -54,7 +54,6 @@ public class SmsClient {
         params.put(fieldMobile, mobile);
         params.put(fieldContent, content);
         params.put(fieldKey, apiKey);
-        HttpClient httpClient = new HttpClient();
-        httpClient.post(apiUrl, params);
+        post(apiUrl, params);
     }
 }

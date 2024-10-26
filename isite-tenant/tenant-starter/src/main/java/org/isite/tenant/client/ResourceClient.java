@@ -3,8 +3,8 @@ package org.isite.tenant.client;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.tenant.data.vo.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ public interface ResourceClient {
      */
     @GetMapping(value = API_GET_CLIENT_RESOURCES)
     Result<List<Resource>> getResources(
-            @PathVariable("clientId") String clientId,
+            @RequestParam("clientId") String clientId,
             @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
 }

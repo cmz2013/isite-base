@@ -24,16 +24,16 @@ public class EmailClient {
 	private Integer smtpPort;
 	private String fromAddress;
 	private String fromName;
-	private String authUserName;
+	private String authUsername;
 	private String authPassword;
 	private Boolean ssl;
 	private Integer timeout;
 
-	public EmailClient(String smtpHost, int smtpPort, String authUserName,
+	public EmailClient(String smtpHost, int smtpPort, String authUsername,
 					   String authPassword, String fromAddress, String fromName) {
 		this.smtpHost = smtpHost;
 		this.smtpPort = smtpPort;
-		this.authUserName = authUserName;
+		this.authUsername = authUsername;
 		this.authPassword = authPassword;
 		this.fromAddress = fromAddress;
 		this.fromName = fromName;
@@ -45,7 +45,7 @@ public class EmailClient {
 		email.setCharset(UTF_8.name());
 		email.addTo(toAddress);
 		email.setFrom(fromAddress, fromName);
-		email.setAuthentication(authUserName, authPassword);
+		email.setAuthentication(authUsername, authPassword);
 		email.setSubject(subject);
 
 		if (null == timeout) {

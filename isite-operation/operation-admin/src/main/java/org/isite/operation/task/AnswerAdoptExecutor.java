@@ -29,6 +29,6 @@ public class AnswerAdoptExecutor extends PrizeTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {QUESTION_REPLY_ADOPT_PRIZE};
+        return new TaskType[] { QUESTION_REPLY_ADOPT_PRIZE };
     }
 }

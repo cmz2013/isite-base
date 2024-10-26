@@ -82,6 +82,6 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {QUESTION_PRIZE};
+        return new TaskType[] { QUESTION_PRIZE };
     }
 }

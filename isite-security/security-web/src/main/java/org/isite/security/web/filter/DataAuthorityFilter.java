@@ -20,7 +20,7 @@ import java.io.IOException;
 import static java.lang.String.format;
 import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.security.web.utils.SecurityUtils.getOauthEmployee;
+import static org.isite.security.web.utils.SecurityUtils.getOauthUser;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 /**
@@ -56,7 +56,7 @@ public class DataAuthorityFilter implements Filter {
          * 4、request.getRealPath("/")：F:\Tomcat 6.0\webapps\news\test
          */
         String serviceId = getApplicationName();
-        if (dataAuthorityAssert.isAuthorized(getOauthEmployee(), serviceId, httpRequest.getMethod(), httpRequest.getServletPath())) {
+        if (dataAuthorityAssert.isAuthorized(getOauthUser(), serviceId, httpRequest.getMethod(), httpRequest.getServletPath())) {
             chain.doFilter(request, response);
             return;
         }

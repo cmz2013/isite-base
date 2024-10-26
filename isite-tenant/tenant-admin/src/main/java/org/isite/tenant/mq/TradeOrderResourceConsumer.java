@@ -41,15 +41,15 @@ public class TradeOrderResourceConsumer implements Consumer<TradeOrderSupplierDt
     @Validated
     public Basic handle(TradeOrderSupplierDto orderSupplierDto) {
         try {
-            orderSupplierDto.getSkus().forEach(tradeOrderItemDto -> {
-                ResourceSaleParam saleParam = parseObject(tradeOrderItemDto.getSupplierParam(), ResourceSaleParam.class);
+            orderSupplierDto.getSkuDtos().forEach(skuDto -> {
+                ResourceSaleParam saleParam = parseObject(skuDto.getSupplierParam(), ResourceSaleParam.class);
                 if (null == saleParam.getTenantId()) {
-                    for (int i = ZERO; i < tradeOrderItemDto.getSkuCount(); i++) {
-                        addTenant(tradeOrderItemDto.getSpuName() + (i == ZERO ? BLANK_STR : UNDERLINE + i),
+                    for (int i = ZERO; i < skuDto.getSkuCount(); i++) {
+                        addTenant(skuDto.getSpuName() + (i == ZERO ? BLANK_STR : UNDERLINE + i),
                                 orderSupplierDto.getUserId(), saleParam);
                     }
                 } else {
-                    updateTenant(tradeOrderItemDto.getSkuCount(), saleParam);
+                    updateTenant(skuDto.getSkuCount(), saleParam);
                 }
             });
             return new Basic.Ack();

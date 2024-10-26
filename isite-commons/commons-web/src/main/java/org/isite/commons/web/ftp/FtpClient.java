@@ -28,7 +28,7 @@ public class FtpClient {
     private FTPClient initFtpClient() throws IOException {
         FTPClient client = new FTPClient();
         client.connect(properties.getHost(), properties.getPort());
-        client.login(properties.getUserName(), properties.getPassword());
+        client.login(properties.getUsername(), properties.getPassword());
         client.enterLocalPassiveMode();
         if (!isPositiveCompletion(client.getReplyCode())) {
             client.disconnect();

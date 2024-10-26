@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.user.data.enums.Sex;
 
 /**
  * @Description 用户信息
@@ -16,11 +17,19 @@ public class UserBasic extends Vo<Long> implements BuiltIn {
     /**
      * 用户名
      */
-    private String userName;
+    private String username;
     /**
      * 真实姓名
      */
     private String realName;
+    /**
+     * 头像url
+     */
+    private String headImg;
+    /**
+     * 性别
+     */
+    private Sex sex;
     /**
      * 用户状态
      */

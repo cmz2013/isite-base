@@ -31,6 +31,6 @@ public class WishPrizeMonitor implements ActivityMonitor {
 
     @Override
     public ActivityTheme[] getIdentities() {
-        return new ActivityTheme[] {WISH_PRIZE};
+        return new ActivityTheme[] { WISH_PRIZE };
     }
 }

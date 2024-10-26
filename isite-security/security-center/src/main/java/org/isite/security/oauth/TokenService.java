@@ -1,8 +1,8 @@
 package org.isite.security.oauth;
 
-import org.isite.security.config.EndpointConfig;
 import org.isite.security.config.ClientProperties;
-import org.isite.security.login.LoginHandlerFactory;
+import org.isite.security.config.EndpointConfig;
+import org.isite.security.login.ClientLoginFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -29,7 +29,7 @@ public class TokenService extends DefaultTokenServices {
 
     private TokenStore tokenStore;
     private TokenRenewer tokenRenewer;
-    private LoginHandlerFactory loginHandlerFactory;
+    private ClientLoginFactory clientLoginFactory;
     private EndpointConfig endpointConfig;
 
     public TokenService() {
@@ -56,7 +56,7 @@ public class TokenService extends DefaultTokenServices {
     @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
-        notNull(this.loginHandlerFactory, "loginHandlerFactory must be set");
+        notNull(this.clientLoginFactory, "loginHandlerFactory must be set");
         notNull(this.endpointConfig, "clientConfig must be set");
     }
 
@@ -96,9 +96,9 @@ public class TokenService extends DefaultTokenServices {
     /**
      * 注销当前用户在所有端的token
      */
-    public void revokeTokensByUser(String userName) {
+    public void revokeTokensByUser(String username) {
         for (ClientProperties client : endpointConfig.getClients()) {
-            Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(client.getClientId(), userName);
+            Collection<OAuth2AccessToken> tokens = tokenStore.findTokensByClientIdAndUserName(client.getClientId(), username);
             if (isNotEmpty(tokens)) {
                 tokens.forEach(this::revokeToken);
             }
@@ -139,7 +139,15 @@ public class TokenService extends DefaultTokenServices {
     }
 
     @Autowired
-    public void setLoginHandlerFactory(LoginHandlerFactory loginHandlerFactory) {
-        this.loginHandlerFactory = loginHandlerFactory;
+    public void setClientLoginFactory(ClientLoginFactory clientLoginFactory) {
+        this.clientLoginFactory = clientLoginFactory;
+    }
+
+    public OAuth2Authentication readAuthentication(OAuth2AccessToken accessToken) {
+        return this.tokenStore.readAuthentication(accessToken);
+    }
+
+    public void storeAccessToken(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+        this.tokenStore.storeAccessToken(accessToken, authentication);
     }
 }

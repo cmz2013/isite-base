@@ -20,7 +20,7 @@ public class EmailConfig {
     public EmailClient emailClient(EmailProperties emailProperties) {
         EmailClient emailClient = new EmailClient(
                 emailProperties.getSmtp().getHost(), emailProperties.getSmtp().getPort(),
-                emailProperties.getFrom().getAuthentication().getUserName(),
+                emailProperties.getFrom().getAuthentication().getUsername(),
                 emailProperties.getFrom().getAuthentication().getPassword(),
                 emailProperties.getFrom().getAddress(), emailProperties.getFrom().getName());
 

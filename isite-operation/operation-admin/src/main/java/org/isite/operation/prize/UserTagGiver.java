@@ -29,7 +29,7 @@ public class UserTagGiver extends PrizeGiver {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[] {USER_TAG};
+        return new PrizeType[] { USER_TAG };
     }
 
 }

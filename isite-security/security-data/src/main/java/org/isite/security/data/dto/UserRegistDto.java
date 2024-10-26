@@ -2,10 +2,9 @@ package org.isite.security.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.security.data.enums.CodeMode;
+import org.isite.user.data.enums.Sex;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * @Description 用户注册信息
@@ -18,12 +17,20 @@ public class UserRegistDto {
      * 用户名
      */
     @NotBlank
-    private String userName;
+    private String username;
     /**
      * 真实姓名
      */
     @NotBlank
     private String realName;
+    /**
+     * 头像url
+     */
+    private String headImg;
+    /**
+     * 性别
+     */
+    private Sex sex;
     /**
      * 电子邮箱
      */
@@ -39,12 +46,7 @@ public class UserRegistDto {
     @NotBlank
     private String password;
     /**
-     * 发送验证码的方式
-     */
-    @NotNull
-    private CodeMode codeMode;
-    /**
-     * 验证码
+     * 短信验证码
      */
     @NotBlank
     private String code;

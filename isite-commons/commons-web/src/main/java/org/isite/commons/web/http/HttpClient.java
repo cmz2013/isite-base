@@ -1,8 +1,6 @@
 package org.isite.commons.web.http;
 
-import lombok.Setter;
 import org.isite.commons.cloud.data.enums.HttpMethod;
-import org.isite.commons.lang.json.Jackson;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
@@ -21,73 +19,74 @@ import static org.apache.commons.collections4.MapUtils.isEmpty;
 import static org.apache.commons.collections4.MapUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.QUESTION_MARK;
-import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
 import static org.isite.commons.cloud.data.enums.HttpMethod.DELETE;
 import static org.isite.commons.cloud.data.enums.HttpMethod.GET;
 import static org.isite.commons.cloud.data.enums.HttpMethod.POST;
+import static org.isite.commons.lang.Constants.AMPERSAND;
+import static org.isite.commons.lang.Constants.QUESTION_MARK;
+import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
+import static org.isite.commons.lang.json.Jackson.toJsonString;
 import static org.isite.commons.lang.utils.IoUtils.close;
 import static org.isite.commons.lang.utils.IoUtils.getString;
+import static org.isite.commons.web.http.ContentType.APPLICATION_JSON;
+import static org.isite.commons.web.http.HttpUtils.toFormData;
 
 /**
  * @Description HTTP Client
  * @Author <font color='blue'>zhangcm</font>
  */
-@Setter
 public class HttpClient {
-    /**
-     * 毫秒
-     */
-    private int timeout = (int) MINUTE.getMillis();
 
-    public String post(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(POST, uri, null, params);
+    private HttpClient() {
     }
 
-    public String post(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(POST, uri, headers, params);
+    public static String post(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
+        return request(POST, uri, null, params, MINUTE.getMillis());
     }
 
-    public String post(String uri, String params) throws IOException, URISyntaxException {
-        return request(POST, uri, null, params);
+    public static String post(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
+        return request(POST, uri, headers, params, MINUTE.getMillis());
     }
 
-    public String post(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
-        return request(POST, uri, headers, params);
+    public static String post(String uri, String params) throws IOException, URISyntaxException {
+        return request(POST, uri, null, params, MINUTE.getMillis());
     }
 
-    public String get(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(GET, uri, null, params);
+    public static String post(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
+        return request(POST, uri, headers, params, MINUTE.getMillis());
     }
 
-    public String get(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(GET, uri, headers, params);
+    public static String get(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
+        return request(GET, uri, null, params, MINUTE.getMillis());
     }
 
-    public String get(String uri, String params) throws IOException, URISyntaxException {
-        return request(GET, uri, null, params);
+    public static String get(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
+        return request(GET, uri, headers, params, MINUTE.getMillis());
     }
 
-    public String get(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
-        return request(GET, uri, headers, params);
+    public static String get(String uri, String params) throws IOException, URISyntaxException {
+        return request(GET, uri, null, params, MINUTE.getMillis());
+    }
+
+    public static String get(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
+        return request(GET, uri, headers, params, MINUTE.getMillis());
     }
 
     /**
      * 格式化接口参数
      */
-    private String formatParams(String contentType, Map<String, Object> params) {
-        if (isNotBlank(contentType) && contentType.contains(ContentType.APPLICATION_JSON)) {
-            return Jackson.toJsonString(params);
+    private static String formatParams(String contentType, Map<String, Object> params) {
+        if (isNotBlank(contentType) && contentType.contains(APPLICATION_JSON)) {
+            return toJsonString(params);
         }
-        return HttpUtils.toFormData(params);
+        return toFormData(params);
     }
 
     /**
      * url追加查询参数
      */
-    private String appendQueryParams(String url, String params) {
+    private static String appendQueryParams(String url, String params) {
         if (isBlank(params)) {
             return url;
         }
@@ -97,19 +96,23 @@ public class HttpClient {
     /**
      * DELETE不支持body传参，GET也按习惯URL方式传参
      */
-    private boolean isQueryParams(HttpMethod method) {
+    private static boolean isQueryParams(HttpMethod method) {
        return DELETE == method || GET == method;
     }
 
-    public String request(HttpMethod method, String url, Map<String, String> headers, Map<String, Object> params)
+    public static String request(
+            HttpMethod method, String url, Map<String, String> headers, Map<String, Object> params, long timeout)
             throws IOException, URISyntaxException {
-        return request(method, url, headers, formatParams(isEmpty(headers) ? null : headers.get(CONTENT_TYPE), params));
+        return request(method, url, headers,
+                formatParams(isEmpty(headers) ? null : headers.get(CONTENT_TYPE), params), timeout);
     }
 
     /**
      * params格式：key1=val1&key2=val2
+     * @param timeout 超时时间，单位：毫秒
      */
-    public String request(HttpMethod method, String url, Map<String, String> headers, String params)
+    public static String request(
+            HttpMethod method, String url, Map<String, String> headers, String params, long timeout)
             throws IOException, URISyntaxException {
         OutputStream output = null;
         HttpURLConnection connection = null;
@@ -133,8 +136,8 @@ public class HttpClient {
              * HTTP method DELETE doesn't support output
              */
             connection.setDoOutput(!queryParams);
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
+            connection.setConnectTimeout((int) timeout);
+            connection.setReadTimeout((int) timeout);
             if (isNotEmpty(headers)) {
                 /*
                  * 在Http Header中添加属性
