@@ -3,22 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>web-starter-parent</artifactId>
+        <artifactId>isite-web-starter-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>tenant-admin</artifactId>
+    <artifactId>isite-tenant-admin</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>commons-web</artifactId>
+            <artifactId>isite-commons-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>sentinel-web-starter</artifactId>
+            <artifactId>isite-sentinel-web-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alicp.jetcache</groupId>
@@ -34,23 +34,23 @@
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>mybatis-starter</artifactId>
+            <artifactId>isite-mybatis-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>tenant-data</artifactId>
+            <artifactId>isite-tenant-data</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>shop-starter</artifactId>
+            <artifactId>isite-shop-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>user-starter</artifactId>
+            <artifactId>isite-user-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>security-client</artifactId>
+            <artifactId>isite-security-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

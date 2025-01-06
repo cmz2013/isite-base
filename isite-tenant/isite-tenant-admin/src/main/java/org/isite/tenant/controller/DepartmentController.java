@@ -25,12 +25,12 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
+import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
-import static org.isite.commons.cloud.converter.TreeConverter.toTree;
 import static org.isite.tenant.converter.DeptConverter.toDeptPo;
 import static org.isite.tenant.converter.DeptConverter.toDeptSelectivePo;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;

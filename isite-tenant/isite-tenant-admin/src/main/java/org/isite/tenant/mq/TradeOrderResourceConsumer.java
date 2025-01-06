@@ -44,12 +44,12 @@ public class TradeOrderResourceConsumer implements Consumer<TradeOrderSupplierDt
             orderSupplierDto.getSkuDtos().forEach(skuDto -> {
                 ResourceSaleParam saleParam = parseObject(skuDto.getSupplierParam(), ResourceSaleParam.class);
                 if (null == saleParam.getTenantId()) {
-                    for (int i = ZERO; i < skuDto.getSkuCount(); i++) {
+                    for (int i = ZERO; i < skuDto.getSkuNum(); i++) {
                         addTenant(skuDto.getSpuName() + (i == ZERO ? BLANK_STR : UNDERLINE + i),
                                 orderSupplierDto.getUserId(), saleParam);
                     }
                 } else {
-                    updateTenant(skuDto.getSkuCount(), saleParam);
+                    updateTenant(skuDto.getSkuNum(), saleParam);
                 }
             });
             return new Basic.Ack();
@@ -75,11 +75,11 @@ public class TradeOrderResourceConsumer implements Consumer<TradeOrderSupplierDt
         }
     }
 
-    private void updateTenant(int skuCount, ResourceSaleParam saleParam) {
+    private void updateTenant(int skuNum, ResourceSaleParam saleParam) {
         TenantPo tenantPo = new TenantPo();
         tenantPo.setId(saleParam.getTenantId());
         tenantPo.setExpireTime(new Date(max(tenantPo.getExpireTime().getTime(), currentTimeMillis()) +
-                skuCount * saleParam.getExpireDays() * DAY.getMillis()));
+                skuNum * saleParam.getExpireDays() * DAY.getMillis()));
         tenantService.updateTenant(tenantPo, saleParam.getResourceIds());
     }
 
