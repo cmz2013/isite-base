@@ -4,22 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>web-parent</artifactId>
+        <artifactId>isite-cloud-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>log-starter</artifactId>
+    <artifactId>isite-log-data</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>log-data</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.isite</groupId>
-            <artifactId>commons-web</artifactId>
+            <artifactId>isite-commons-cloud</artifactId>
             <version>${isite.version}</version>
             <scope>compile</scope>
         </dependency>
