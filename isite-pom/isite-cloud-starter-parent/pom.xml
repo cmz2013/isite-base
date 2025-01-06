@@ -4,35 +4,35 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>cloud-parent</artifactId>
+        <artifactId>isite-cloud-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-starter-parent</artifactId>
+    <artifactId>isite-cloud-starter-parent</artifactId>
     <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>commons-cloud</artifactId>
+                <artifactId>isite-commons-cloud</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>gateway-support</artifactId>
+                <artifactId>isite-gateway-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>sentinel-gateway-starter</artifactId>
+                <artifactId>isite-sentinel-gateway-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-gateway-starter</artifactId>
+                <artifactId>isite-security-gateway-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
         </dependencies>

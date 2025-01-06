@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>cloud-parent</artifactId>
+        <artifactId>isite-cloud-parent</artifactId>
         <version>2.0.0</version>
         <!--
         relativePath的作用是为了找到父级工程的pom.xml
@@ -14,79 +14,79 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-parent</artifactId>
+    <artifactId>isite-web-parent</artifactId>
     <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>commons-cloud</artifactId>
+                <artifactId>isite-commons-cloud</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>jpa-support</artifactId>
+                <artifactId>isite-jpa-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>user-data</artifactId>
+                <artifactId>isite-user-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>tenant-data</artifactId>
+                <artifactId>isite-tenant-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>data-support</artifactId>
+                <artifactId>isite-data-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>misc-data</artifactId>
+                <artifactId>isite-misc-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>shop-support</artifactId>
+                <artifactId>isite-shop-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-data</artifactId>
+                <artifactId>isite-security-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-support</artifactId>
+                <artifactId>isite-security-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>operation-support</artifactId>
+                <artifactId>isite-operation-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>log-data</artifactId>
+                <artifactId>isite-log-data</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>mybatis-starter</artifactId>
+                <artifactId>isite-mybatis-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>mongo-starter</artifactId>
+                <artifactId>isite-mongo-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>sentinel-support</artifactId>
+                <artifactId>isite-sentinel-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>

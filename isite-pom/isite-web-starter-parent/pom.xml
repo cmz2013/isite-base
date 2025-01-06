@@ -4,75 +4,75 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>web-parent</artifactId>
+        <artifactId>isite-web-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-starter-parent</artifactId>
+    <artifactId>isite-web-starter-parent</artifactId>
     <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>commons-web</artifactId>
+                <artifactId>isite-commons-web</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>misc-starter</artifactId>
+                <artifactId>isite-misc-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>tenant-starter</artifactId>
+                <artifactId>isite-tenant-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>user-starter</artifactId>
+                <artifactId>isite-user-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>data-starter</artifactId>
+                <artifactId>isite-data-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-web</artifactId>
+                <artifactId>isite-security-web</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-client</artifactId>
+                <artifactId>isite-security-client</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>security-web-starter</artifactId>
+                <artifactId>isite-security-web-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>log-starter</artifactId>
+                <artifactId>isite-log-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>shop-starter</artifactId>
+                <artifactId>isite-shop-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>operation-starter</artifactId>
+                <artifactId>isite-operation-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
-                <artifactId>sentinel-web-starter</artifactId>
+                <artifactId>isite-sentinel-web-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>
         </dependencies>
