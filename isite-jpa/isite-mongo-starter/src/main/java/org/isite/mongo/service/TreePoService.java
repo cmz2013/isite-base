@@ -16,11 +16,11 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.regex;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.Constants.DOLLAR;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.Constants.ZERO;
+import static org.isite.commons.lang.Reflection.getGenericParameter;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.jpa.data.JpaConstants.FIELD_CREATE_TIME;
 import static org.isite.jpa.data.JpaConstants.FIELD_ID;

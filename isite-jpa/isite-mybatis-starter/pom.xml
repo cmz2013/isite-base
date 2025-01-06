@@ -4,23 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>cloud-parent</artifactId>
+        <artifactId>isite-cloud-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mongo-starter</artifactId>
+    <artifactId>isite-mybatis-starter</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-jpa-support</artifactId>
+            <version>${isite.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.isite</groupId>
-            <artifactId>jpa-support</artifactId>
-            <version>${isite.version}</version>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 </project>

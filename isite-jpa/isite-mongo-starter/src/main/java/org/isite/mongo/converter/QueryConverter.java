@@ -12,10 +12,10 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
+import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Reflection.getFields;
 import static org.isite.commons.lang.Reflection.getValue;
 import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
