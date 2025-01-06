@@ -4,18 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>cloud-starter-parent</artifactId>
+        <artifactId>isite-cloud-starter-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api-gateway</artifactId>
+    <artifactId>isite-api-gateway</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>commons-cloud</artifactId>
+            <artifactId>isite-commons-cloud</artifactId>
         </dependency>
         <!--Spring Cloud Gateway是使用 netty+webflux 实现，使用非阻塞式 I/O，适用于高并发和低延迟的场景。 不能再引入 web 模块（spring-boot-starter-web）-->
         <dependency>
@@ -24,11 +24,11 @@
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>security-gateway-starter</artifactId>
+            <artifactId>isite-security-gateway-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>sentinel-gateway-starter</artifactId>
+            <artifactId>isite-sentinel-gateway-starter</artifactId>
         </dependency>
     </dependencies>
 </project>
