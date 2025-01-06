@@ -42,7 +42,7 @@ public class TradeOrderVipConsumer implements Consumer<TradeOrderSupplierDto> {
             for (TradeOrderSkuDto skuDto : supplierDto.getSkuDtos()) {
                 VipSaleParam vipSaleParam = parseObject(skuDto.getSupplierParam(), VipSaleParam.class);
                 vipPo.setExpireTime(new Date(vipPo.getExpireTime().getTime() +
-                        vipSaleParam.getExpireDays() * skuDto.getSkuCount() * DAY.getMillis()));
+                        vipSaleParam.getExpireDays() * skuDto.getSkuNum() * DAY.getMillis()));
             }
             if (null == vipPo.getId()) {
                 vipService.insert(vipPo);
