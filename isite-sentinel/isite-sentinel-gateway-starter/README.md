@@ -17,10 +17,10 @@
           config:
             extension-configs:
               -  group: DEFAULT_GROUP
-                 data‐id: sentinel-gateway.yml
+                 data‐id: isite-sentinel-gateway.yml
 
 
-3、sentinel-gateway.yml 配置文件内容
+3、isite-sentinel-gateway.yml 配置文件内容
 
     feign:
       sentinel:

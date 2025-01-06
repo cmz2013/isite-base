@@ -26,9 +26,9 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: sentinel-gateway.yml
+            data-id: isite-sentinel-gateway.yml
 ---
 spring:
   profiles: test
@@ -48,9 +48,9 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: sentinel-gateway.yml
+            data-id: isite-sentinel-gateway.yml
 ---
 spring:
   profiles: pro
@@ -71,6 +71,6 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: sentinel-gateway.yml
+            data-id: isite-sentinel-gateway.yml

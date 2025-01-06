@@ -29,7 +29,7 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
 
 ---
 server :
@@ -53,7 +53,7 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
 
 ---
 server :
@@ -78,4 +78,4 @@ spring:
         file-extension: yml
         extension-configs:
           - group: ${spring.cloud.nacos.discovery.group}
-            data-id: cloud.yml
+            data-id: isite-cloud.yml
