@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.isite</groupId>
+        <artifactId>isite-web-starter-parent</artifactId>
+        <version>2.0.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>isite-data-admin</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-commons-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-data-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-mongo-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-starter-redis-lettuce</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-tenant-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
