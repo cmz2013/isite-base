@@ -4,20 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.isite</groupId>
-        <artifactId>cloud-parent</artifactId>
+        <artifactId>isite-web-parent</artifactId>
         <version>2.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>misc-data</artifactId>
+    <artifactId>isite-misc-starter</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.isite</groupId>
-            <artifactId>commons-cloud</artifactId>
+            <artifactId>isite-commons-web</artifactId>
             <version>${isite.version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-misc-data</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-digester3</artifactId>
         </dependency>
     </dependencies>
 </project>

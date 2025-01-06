@@ -1,7 +1,7 @@
 package org.isite.misc.converter;
 
-import org.isite.misc.po.RegionPo;
 import org.isite.misc.data.vo.Region;
+import org.isite.misc.po.RegionPo;
 
 import java.util.ArrayList;
 import java.util.List;

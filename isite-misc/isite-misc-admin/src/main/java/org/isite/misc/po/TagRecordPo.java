@@ -2,9 +2,9 @@ package org.isite.misc.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.misc.data.enums.ObjectType;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
-import org.isite.misc.data.enums.ObjectType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;

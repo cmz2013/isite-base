@@ -1,8 +1,8 @@
 package org.isite.misc.cache;
 
 import com.alicp.jetcache.anno.Cached;
-import org.isite.misc.service.RegionService;
 import org.isite.misc.data.vo.Region;
+import org.isite.misc.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
