@@ -10,7 +10,7 @@ import org.isite.user.po.UserPo;
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.user.data.enums.Sex.UNKNOWN;
 
 /**

@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STR;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
 import static org.isite.commons.lang.json.Jackson.parseObject;
 import static org.isite.operation.converter.TaskConverter.toTasks;
 

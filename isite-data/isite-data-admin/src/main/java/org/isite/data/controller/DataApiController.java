@@ -5,7 +5,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.data.po.DataApiPo;
 import org.isite.data.service.DataApiService;
@@ -64,7 +64,7 @@ public class DataApiController extends BaseController {
      */
     @PutMapping(URL_DATA + "/api/{id}/status/{status}")
     public Result<Long> updateDataApi(
-            @PathVariable("id") String id, @PathVariable("status") SwitchStatus status) {
+            @PathVariable("id") String id, @PathVariable("status") ActiveStatus status) {
         return toResult(dataApiService.updateById(id, DataApiPo::getStatus, status));
     }
 

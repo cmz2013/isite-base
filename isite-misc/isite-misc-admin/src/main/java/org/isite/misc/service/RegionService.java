@@ -1,6 +1,6 @@
 package org.isite.misc.service;
 
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.misc.mapper.RegionMapper;
 import org.isite.misc.po.RegionPo;
 import org.isite.mybatis.service.TreePoService;
@@ -28,7 +28,7 @@ public class RegionService extends TreePoService<RegionPo, Integer> {
     /**
      * 根据父节点ID查询地区
      */
-    public List<RegionPo> findByPid(int pid, SwitchStatus status) {
+    public List<RegionPo> findByPid(int pid, ActiveStatus status) {
         RegionPo regionPo = new RegionPo();
         regionPo.setPid(pid);
         regionPo.setStatus(status);

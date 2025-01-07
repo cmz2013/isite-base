@@ -2,7 +2,7 @@ package org.isite.data.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.enums.WsType;
 import org.isite.mongo.data.Po;
@@ -59,7 +59,7 @@ public class DataApiPo extends Po<String> {
 	/**
 	 * 启用/停用
 	 */
-	private SwitchStatus status;
+	private ActiveStatus status;
 	/**
 	 * 用于接收告警信息的电子邮箱，多个邮箱因为逗号号隔开
 	 */

@@ -21,7 +21,7 @@ import static java.util.List.of;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.TreeConverter.toTree;
-import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
 import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.data.enums.OfficeStatus.DIMISSION;
 

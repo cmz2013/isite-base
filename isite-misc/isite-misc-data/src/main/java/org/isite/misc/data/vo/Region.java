@@ -3,7 +3,7 @@ package org.isite.misc.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Tree;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 
 /**
  * @Description 地区(Region)
@@ -36,6 +36,6 @@ public class Region extends Tree<Region, Integer> {
     /**
      * 状态
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
 }
 

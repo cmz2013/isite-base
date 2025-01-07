@@ -2,7 +2,7 @@ package org.isite.tenant.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 
 /**
  * @Description 租户信息
@@ -18,7 +18,7 @@ public class TenantGetDto {
     /**
      * 启用/停用
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 联系人
      */

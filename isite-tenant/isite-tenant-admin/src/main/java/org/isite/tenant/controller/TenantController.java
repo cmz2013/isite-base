@@ -6,7 +6,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.tenant.data.dto.TenantDto;
 import org.isite.tenant.data.dto.TenantGetDto;
@@ -70,7 +70,7 @@ public class TenantController extends BaseController {
 
     @PutMapping(PUT_TENANT_STATUS)
     public Result<Integer> updateStatus(
-            @PathVariable("id") int tenantId, @PathVariable("status") SwitchStatus status) {
+            @PathVariable("id") int tenantId, @PathVariable("status") ActiveStatus status) {
         return toResult(tenantService.updateById(tenantId, TenantPo::getStatus, status));
     }
 

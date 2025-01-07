@@ -2,7 +2,7 @@ package org.isite.misc.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.mybatis.data.TreePo;
 import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
@@ -34,6 +34,6 @@ public class RegionPo extends TreePo<Integer> {
      * 状态
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SwitchStatus status;
+    private ActiveStatus status;
 }
 

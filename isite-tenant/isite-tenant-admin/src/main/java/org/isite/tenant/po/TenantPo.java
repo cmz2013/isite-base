@@ -2,7 +2,7 @@ package org.isite.tenant.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
@@ -26,7 +26,7 @@ public class TenantPo extends Po<Integer> {
      * 启用/停用
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 联系人
      */

@@ -2,7 +2,7 @@ package org.isite.operation.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
 import org.isite.operation.support.enums.ActivityTheme;
@@ -50,7 +50,7 @@ public class ActivityPo extends Po<Integer> {
      * 上架状态
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 备注
      */

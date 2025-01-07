@@ -8,7 +8,7 @@ import java.util.Date;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

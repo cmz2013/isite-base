@@ -26,7 +26,7 @@ class SecurityApplicationTest {
 
     @Test
     void testBCryptEncoder() {
-        System.out.println(new BCryptPasswordEncoder().encode("admin"));
+        System.out.println(new BCryptPasswordEncoder().encode("zhangcm"));
     }
 
     @Test

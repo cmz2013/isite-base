@@ -2,7 +2,7 @@ package org.isite.user.po;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
@@ -40,7 +40,7 @@ public class UserPo extends Po<Long> implements BuiltIn {
      * 用户状态
      */
     @ColumnType(typeHandler = EnumTypeHandler.class)
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 手机号
      */

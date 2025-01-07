@@ -2,6 +2,7 @@ package org.isite.operation.support.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import org.isite.commons.lang.enums.Enumerable;
 import org.isite.operation.support.vo.ActivityProperty;
 import org.isite.operation.support.vo.PrizeWheelProperty;
@@ -10,9 +11,10 @@ import org.isite.operation.support.vo.WishPrizeProperty;
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
 
 /**
- * 活动主题
- * @author <font color='blue'>zhangcm</font>
+ * @Description 活动主题
+ * @Author <font color='blue'>zhangcm</font>
  */
+@Getter
 @JsonFormat(shape = OBJECT)
 public enum ActivityTheme implements Enumerable<Integer> {
     /**
@@ -42,15 +44,6 @@ public enum ActivityTheme implements Enumerable<Integer> {
         this.label = label;
         this.webpage = webpage;
         this.propertyClass = propertyClass;
-    }
-
-    @Override
-    public Integer getCode() {
-        return this.code;
-    }
-
-    public String getLabel() {
-        return label;
     }
 
     @JsonIgnore

@@ -3,7 +3,7 @@ package org.isite.tenant.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 
 import java.util.Date;
 
@@ -31,7 +31,7 @@ public class Tenant extends Vo<Integer> {
     /**
      * 启用/停用
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 备注
      */

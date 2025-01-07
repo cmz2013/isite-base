@@ -3,11 +3,11 @@ package org.isite.commons.lang.enums;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * @Description 开关状态
+ * @Description : 启用状态
  * @Author <font color='blue'>zhangcm</font>
  */
 @JsonDeserialize(using = SwitchDeserializer.class)
-public enum SwitchStatus implements Enumerable<Integer> {
+public enum ActiveStatus implements Enumerable<Integer> {
     /**
      * 禁用的
      */
@@ -19,7 +19,7 @@ public enum SwitchStatus implements Enumerable<Integer> {
 
     private final Integer code;
 
-    SwitchStatus(Integer code) {
+    ActiveStatus(Integer code) {
         this.code = code;
     }
 

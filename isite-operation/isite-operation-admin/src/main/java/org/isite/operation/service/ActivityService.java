@@ -2,7 +2,7 @@ package org.isite.operation.service;
 
 import lombok.SneakyThrows;
 import org.isite.commons.cloud.data.enums.TerminalType;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.ActivityMapper;
 import org.isite.operation.po.ActivityPo;
@@ -58,7 +58,7 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
     /**
      * 根据活动ID和上下架状态查询活动信息
      */
-    public ActivityPo getActivity(int activityId, SwitchStatus status) {
+    public ActivityPo getActivity(int activityId, ActiveStatus status) {
         ActivityPo query = new ActivityPo();
         query.setId(activityId);
         query.setStatus(status);
@@ -71,7 +71,7 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
      * @param status 活动上下架状态
      * @return 子活动列表
      */
-    public List<ActivityPo> findActivities(Integer pid, SwitchStatus status) {
+    public List<ActivityPo> findActivities(Integer pid, ActiveStatus status) {
         ActivityPo activityPo = new ActivityPo();
         activityPo.setPid(pid);
         activityPo.setStatus(status);

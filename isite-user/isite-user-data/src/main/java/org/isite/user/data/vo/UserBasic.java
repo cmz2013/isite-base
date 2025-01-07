@@ -3,7 +3,7 @@ package org.isite.user.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.user.data.enums.Sex;
 
@@ -33,7 +33,7 @@ public class UserBasic extends Vo<Long> implements BuiltIn {
     /**
      * 用户状态
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 手机号
      */

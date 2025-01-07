@@ -1,6 +1,6 @@
 package org.isite.mongo.converter;
 
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
@@ -12,30 +12,30 @@ import static org.isite.commons.lang.enums.Enumerable.getByCode;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class SwitchStatusConverter extends MongoConverter<SwitchStatus, Integer> {
+public class SwitchStatusConverter extends MongoConverter<ActiveStatus, Integer> {
 
     @Override
-    protected Converter<Integer, SwitchStatus> createReadingConverter() {
+    protected Converter<Integer, ActiveStatus> createReadingConverter() {
         return new SwitchStatusReading();
     }
 
     @Override
-    protected Converter<SwitchStatus, Integer> createWritingConverter() {
+    protected Converter<ActiveStatus, Integer> createWritingConverter() {
         return new SwitchStatusWriting();
     }
 
     @ReadingConverter
-    public static class SwitchStatusReading implements Converter<Integer, SwitchStatus> {
+    public static class SwitchStatusReading implements Converter<Integer, ActiveStatus> {
         @Override
-        public SwitchStatus convert(Integer code) {
-            return getByCode(SwitchStatus.class, code);
+        public ActiveStatus convert(Integer code) {
+            return getByCode(ActiveStatus.class, code);
         }
     }
 
     @WritingConverter
-    public static class SwitchStatusWriting implements Converter<SwitchStatus, Integer> {
+    public static class SwitchStatusWriting implements Converter<ActiveStatus, Integer> {
         @Override
-        public Integer convert(SwitchStatus status) {
+        public Integer convert(ActiveStatus status) {
             return status.getCode();
         }
     }

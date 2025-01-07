@@ -6,7 +6,7 @@ import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.commons.lang.json.JsonField;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sync.Lock;
@@ -45,8 +45,8 @@ import static org.isite.commons.lang.Assert.isFalse;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.enums.SwitchStatus.DISABLED;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.ActivityConverter.toActivityPo;
@@ -147,7 +147,7 @@ public class ActivityController extends BaseController {
     @PutMapping(URL_OPERATION + "/activity/{activityId}/status/{status}")
     @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1"))
     public Result<Integer> updateStatus(@PathVariable("activityId") Integer activityId,
-                                        @PathVariable("status") SwitchStatus status) {
+                                        @PathVariable("status") ActiveStatus status) {
         if (DISABLED.equals(status)) {
             return toResult(activityCache.disableActivity(activityCache.getActivity(activityId)));
         } else {

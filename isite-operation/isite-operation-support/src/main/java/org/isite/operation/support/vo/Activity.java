@@ -3,7 +3,7 @@ package org.isite.operation.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.operation.support.enums.ActivityTheme;
 
 import java.util.Date;
@@ -55,7 +55,7 @@ public class Activity extends Vo<Integer> {
     /**
      * 上架状态
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
     /**
      * 备注
      */

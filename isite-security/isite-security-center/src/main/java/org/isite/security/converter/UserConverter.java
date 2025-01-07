@@ -15,7 +15,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
 import static org.isite.commons.lang.Constants.TWO;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.security.converter.ResourceConverter.toResourceMaps;
 import static org.isite.security.converter.ResourceConverter.toResources;
 import static org.isite.security.converter.RoleConverter.toRoleMaps;

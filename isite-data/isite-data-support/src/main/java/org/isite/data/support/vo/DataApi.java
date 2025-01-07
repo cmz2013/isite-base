@@ -3,7 +3,7 @@ package org.isite.data.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.enums.WsType;
 
@@ -57,7 +57,7 @@ public class DataApi extends Vo<String> {
 	/**
 	 * 启用/停用
 	 */
-	private SwitchStatus status;
+	private ActiveStatus status;
 	/**
 	 * 用于接收告警信息的电子邮箱，多个邮箱因为逗号号隔开
 	 */

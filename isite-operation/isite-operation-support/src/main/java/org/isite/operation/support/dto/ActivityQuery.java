@@ -2,7 +2,7 @@ package org.isite.operation.support.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.lang.enums.SwitchStatus;
+import org.isite.commons.lang.enums.ActiveStatus;
 
 /**
  * @author <font color='blue'>zhangcm</font>
@@ -17,5 +17,5 @@ public class ActivityQuery {
     /**
      * 上架状态
      */
-    private SwitchStatus status;
+    private ActiveStatus status;
 }

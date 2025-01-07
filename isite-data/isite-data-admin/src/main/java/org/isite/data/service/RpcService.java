@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import static java.lang.String.format;
 import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.enums.SwitchStatus.ENABLED;
+import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.data.support.constants.CacheKey.DATA_CALL_LATEST;
 
 /**
