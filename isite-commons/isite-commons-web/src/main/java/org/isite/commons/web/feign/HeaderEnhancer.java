@@ -35,7 +35,7 @@ public class HeaderEnhancer implements RequestInterceptor {
         if (null!= userId) {
             template.header(X_USER_ID, userId.toString());
         }
-        Long employeeId = getEmployeeId();
+        Integer employeeId = getEmployeeId();
         if (null!= employeeId) {
             template.header(X_EMPLOYEE_ID, employeeId.toString());
         }

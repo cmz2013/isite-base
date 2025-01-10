@@ -20,7 +20,7 @@ public class Rbac {
     /**
      * 员工ID
      */
-    private Long employeeId;
+    private Integer employeeId;
     /**
      * 角色功能权限列表
      */

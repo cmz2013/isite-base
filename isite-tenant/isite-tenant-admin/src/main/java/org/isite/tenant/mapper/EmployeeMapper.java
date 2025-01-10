@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Repository
-public interface EmployeeMapper extends PoMapper<EmployeePo, Long> {
+public interface EmployeeMapper extends PoMapper<EmployeePo, Integer> {
 }

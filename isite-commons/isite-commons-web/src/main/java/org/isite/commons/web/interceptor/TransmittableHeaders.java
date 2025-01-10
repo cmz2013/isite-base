@@ -27,7 +27,7 @@ public class TransmittableHeaders implements HandlerInterceptor {
     private static final ThreadLocal<String> TRANSMITTABLE_VERSION = new TransmittableThreadLocal<>();
     private static final ThreadLocal<String> TRANSMITTABLE_AUTHORIZATION = new TransmittableThreadLocal<>();
     private static final ThreadLocal<Long> TRANSMITTABLE_USER_ID = new TransmittableThreadLocal<>();
-    private static final ThreadLocal<Long> TRANSMITTABLE_EMPLOYEE_ID = new TransmittableThreadLocal<>();
+    private static final ThreadLocal<Integer> TRANSMITTABLE_EMPLOYEE_ID = new TransmittableThreadLocal<>();
     private static final ThreadLocal<Integer> TRANSMITTABLE_TENANT_ID = new TransmittableThreadLocal<>();
 
     /**
@@ -60,7 +60,7 @@ public class TransmittableHeaders implements HandlerInterceptor {
      * 1）如果后端服务接入认证鉴权中心校验token，可以调用SecurityUtils从SecurityContext中获取用户信息，该方法返回null
      * 2）如果只查询当前登录用户数据，接口路径约定/my/**，数据接口授权拦截器自动放行。
      */
-    public static Long getEmployeeId() {
+    public static Integer getEmployeeId() {
         return TRANSMITTABLE_EMPLOYEE_ID.get();
     }
 
@@ -91,7 +91,7 @@ public class TransmittableHeaders implements HandlerInterceptor {
         }
         String employeeId = request.getHeader(X_EMPLOYEE_ID);
         if (isNotBlank(employeeId)) {
-            TRANSMITTABLE_EMPLOYEE_ID.set(parseLong(employeeId));
+            TRANSMITTABLE_EMPLOYEE_ID.set(parseInt(employeeId));
         }
         String tenantId = request.getHeader(X_TENANT_ID);
         if (isNotBlank(tenantId)) {

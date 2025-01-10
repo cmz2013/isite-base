@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class EmployeeDto extends Dto<Long> {
+public class EmployeeDto extends Dto<Integer> {
     /**
      * 手机号, 用于关联userId
      */

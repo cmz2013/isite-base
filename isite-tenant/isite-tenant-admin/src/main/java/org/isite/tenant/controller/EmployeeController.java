@@ -40,7 +40,7 @@ public class EmployeeController extends BaseController {
     private EmployeeService employeeService;
 
     @GetMapping(GET_EMPLOYEE)
-    public Result<Employee> getEmployee(@PathVariable("id") long id) {
+    public Result<Employee> getEmployee(@PathVariable("id") Integer id) {
         EmployeePo employeePo = employeeService.get(id);
         isTrue(employeePo.getTenantId().equals(getTenantId()), new OverstepAccessError());
         return toResult(convert(employeePo, Employee::new));
