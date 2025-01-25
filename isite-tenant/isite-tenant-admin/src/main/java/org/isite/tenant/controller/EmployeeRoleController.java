@@ -42,7 +42,7 @@ public class EmployeeRoleController extends BaseController {
      */
     @Validated
     @PostMapping(URL_TENANT + "/employee/{employeeId}/roles")
-    public Result<Integer> addEmployeeRoles(@PathVariable("employeeId") Integer employeeId,
+    public Result<Integer> addEmployeeRoles(@PathVariable("employeeId") long employeeId,
                                             @Size(min = ONE, max = THOUSAND) @RequestBody List<Integer> roleIds) {
         int tenantId = getTenantId();
         isTrue(employeeService.get(employeeId).getTenantId().equals(tenantId), new OverstepAccessError());
@@ -58,7 +58,7 @@ public class EmployeeRoleController extends BaseController {
      */
     @DeleteMapping(URL_TENANT + "/employee/{employeeId}/role/{roleId}")
     public Result<Integer> deleteEmployeeRoles(
-            @PathVariable("employeeId") Integer employeeId, @PathVariable("roleId") int roleId) {
+            @PathVariable("employeeId") long employeeId, @PathVariable("roleId") int roleId) {
         int tenantId = getTenantId();
         isTrue(employeeService.get(employeeId).getTenantId().equals(tenantId), new OverstepAccessError());
         int adminRoleId = roleService.getAdminRole(tenantId).getId();

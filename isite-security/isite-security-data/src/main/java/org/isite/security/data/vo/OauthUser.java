@@ -67,7 +67,7 @@ public class OauthUser implements UserDetails, BuiltIn, Serializable {
      */
     @Setter
     @Getter
-    private Integer employeeId;
+    private Long employeeId;
     /**
      * 数据接口权限。key：serviceId, value: Set集合自动去重
      */

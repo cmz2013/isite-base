@@ -17,7 +17,7 @@ public class EmployeeRolePo extends Po<Integer> {
     /**
      * 员工ID
      */
-    private Integer employeeId;
+    private Long employeeId;
     /**
      * 角色ID
      */
@@ -31,7 +31,7 @@ public class EmployeeRolePo extends Po<Integer> {
         super();
     }
 
-    public EmployeeRolePo(Integer employeeId, Integer roleId, Integer tenantId) {
+    public EmployeeRolePo(Long employeeId, Integer roleId, Integer tenantId) {
         super();
         this.employeeId = employeeId;
         this.roleId = roleId;

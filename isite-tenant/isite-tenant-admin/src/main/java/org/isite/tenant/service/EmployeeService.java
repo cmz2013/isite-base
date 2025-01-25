@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
-public class EmployeeService extends PoService<EmployeePo, Integer> {
+public class EmployeeService extends PoService<EmployeePo, Long> {
 
     @Autowired
     public EmployeeService(EmployeeMapper employeeMapper) {

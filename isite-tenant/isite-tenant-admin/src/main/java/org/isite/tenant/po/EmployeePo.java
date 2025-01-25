@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Table(name = "employee")
-public class EmployeePo extends Po<Integer> {
+public class EmployeePo extends Po<Long> {
     /**
      * 用户ID
      */
