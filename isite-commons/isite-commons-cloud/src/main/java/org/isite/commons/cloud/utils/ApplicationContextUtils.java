@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * @Description ApplicationContext工具类，Bean加载完以后才可以使用，不能在配置类中使用
+ * @Description ApplicationContext工具类，Bean加载完以后才可以使用，不能在配置类中使用，否则会报错。
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component

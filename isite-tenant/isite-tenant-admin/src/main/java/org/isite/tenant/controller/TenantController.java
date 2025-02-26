@@ -70,7 +70,7 @@ public class TenantController extends BaseController {
 
     @PutMapping(PUT_TENANT_STATUS)
     public Result<Integer> updateStatus(
-            @PathVariable("id") int tenantId, @PathVariable("status") ActiveStatus status) {
+            @PathVariable("tenantId") int tenantId, @PathVariable("status") ActiveStatus status) {
         return toResult(tenantService.updateById(tenantId, TenantPo::getStatus, status));
     }
 

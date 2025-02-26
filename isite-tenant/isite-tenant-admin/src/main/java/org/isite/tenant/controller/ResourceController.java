@@ -32,7 +32,7 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.tenant.converter.ResourceConverter.toResourcePo;
-import static org.isite.tenant.data.constants.UrlConstants.API_GET_CLIENT_RESOURCES;
+import static org.isite.tenant.data.constants.UrlConstants.API_GET_RESOURCES;
 import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
 
 /**
@@ -50,7 +50,7 @@ public class ResourceController extends BaseController {
      * 内置用户登录时获取客户端所有资源
      */
     @Signed
-    @GetMapping(API_GET_CLIENT_RESOURCES)
+    @GetMapping(API_GET_RESOURCES)
     public Result<List<Resource>> getResources(@RequestParam("clientId") String clientId) {
         return toResult(toTree(resourceService.findList(ResourcePo::getClientId, clientId),
                 po -> convert(po, Resource::new)));

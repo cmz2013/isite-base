@@ -1,24 +1,22 @@
-package org.isite.tenant.data.vo;
+package org.isite.tenant.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.commons.cloud.data.vo.Vo;
+import org.isite.commons.cloud.data.dto.Dto;
 import org.isite.tenant.data.enums.OfficeStatus;
-
-import java.util.Date;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class Employee extends Vo<Long> {
+public class EmployeeGetDto extends Dto<Long> {
     /**
-     * 用户ID
+     * 手机号
      */
-    private Long userId;
+    private String phone;
     /**
-     * 员工域账号
+     * 员工域账号, 唯一
      */
     private String domainAccount;
     /**
@@ -29,12 +27,4 @@ public class Employee extends Vo<Long> {
      * 员工岗位状态
      */
     private OfficeStatus officeStatus;
-    /**
-     * 入职日期
-     */
-    private Date hireDate;
-    /**
-     * 试用期（月）
-     */
-    private Integer trialPeriod;
 }

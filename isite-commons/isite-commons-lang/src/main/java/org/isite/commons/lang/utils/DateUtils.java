@@ -10,6 +10,7 @@ import static java.lang.System.currentTimeMillis;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.DAY_OF_WEEK;
+import static java.util.Calendar.HOUR;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MILLISECOND;
 import static java.util.Calendar.MINUTE;
@@ -511,7 +512,7 @@ public class DateUtils {
 
 	public static Date getTimeBeforeHour(Date date, int n) {
 		Calendar calendar = getCalendar(date);
-		calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) - n);
+		calendar.set(HOUR, calendar.get(HOUR) - n);
 		return calendar.getTime();
 	}
 

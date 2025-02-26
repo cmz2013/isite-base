@@ -8,13 +8,14 @@ import org.isite.commons.cloud.data.op.Update;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class EmployeeDto extends Dto<Integer> {
+public class EmployeeDto extends Dto<Long> {
     /**
      * 手机号, 用于关联userId
      */
@@ -30,5 +31,9 @@ public class EmployeeDto extends Dto<Integer> {
      */
     @NotNull(groups = {Add.class, Update.class})
     private Integer deptId;
-
+    /**
+     * 试用期（月）
+     */
+    @NotNull(groups = {Add.class, Update.class})
+    private Integer trialPeriod;
 }
