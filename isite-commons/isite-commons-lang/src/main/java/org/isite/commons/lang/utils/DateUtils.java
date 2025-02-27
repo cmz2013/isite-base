@@ -120,14 +120,14 @@ public class DateUtils {
 	/**
 	 * 获取当前月的总天数
 	 */
-	public static int getMaximumOfMonth() {
-		return getMaximumOfMonth(null);
+	public static int getMaxDayOfMonth() {
+		return getMaxDayOfMonth(null);
 	}
 
 	/**
 	 * 获取日期所在月的总天数
 	 */
-	public static int getMaximumOfMonth(Date date) {
+	public static int getMaxDayOfMonth(Date date) {
 		return getCalendar(date).getActualMaximum(DAY_OF_MONTH);
 	}
 
