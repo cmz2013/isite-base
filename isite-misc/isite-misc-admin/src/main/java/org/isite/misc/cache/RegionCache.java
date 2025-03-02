@@ -14,7 +14,7 @@ import static org.isite.commons.lang.Constants.DAY_SECOND;
 import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.misc.converter.RegionConverter.toRegion;
-import static org.isite.misc.data.constants.CacheKey.REGION_LIST_PREFIX;
+import static org.isite.misc.data.constants.CacheKeys.REGION_LIST_PREFIX;
 
 /**
  * @author <font color='blue'>zhangcm</font>

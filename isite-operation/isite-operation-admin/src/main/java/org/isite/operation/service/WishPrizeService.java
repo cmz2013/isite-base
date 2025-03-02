@@ -80,7 +80,7 @@ public class WishPrizeService {
      */
     @Transactional(rollbackFor = Exception.class)
     public PrizeRecordPo receiveWishPrize(Activity activity, int prizeId, long userId) {
-        Prize prize = get(prizeId, activity.getPrizes());
+        Prize prize = get(activity.getPrizes(), prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found"));
         PrizeRecordPo recordPo = prizeRecordService.getNotReceive(activity.getId(), prizeId, userId);
         notNull(recordPo, getMessage("wish.notFound", "wish not found"));

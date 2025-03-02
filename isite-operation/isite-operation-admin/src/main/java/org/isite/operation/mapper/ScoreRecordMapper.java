@@ -7,7 +7,7 @@ import org.isite.operation.support.enums.ScoreType;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,8 +22,8 @@ public interface ScoreRecordMapper extends PoMapper<ScoreRecordPo, Long> {
             @Nullable @Param("activityId") Integer activityId,
             @Param("userId") long userId,
             @Param("scoreType") ScoreType scoreType,
-            @Nullable @Param("startTime") Date startTime,
-            @Nullable @Param("endTime") Date endTime);
+            @Nullable @Param("startTime") LocalDateTime startTime,
+            @Nullable @Param("endTime") LocalDateTime endTime);
 
     /**
      * 按顺序查询一条可用的积分
@@ -32,12 +32,12 @@ public interface ScoreRecordMapper extends PoMapper<ScoreRecordPo, Long> {
             @Nullable @Param("activityId") Integer activityId,
             @Param("userId") long userId,
             @Param("scoreType") ScoreType scoreType,
-            @Nullable @Param("startTime") Date startTime);
+            @Nullable @Param("startTime") LocalDateTime startTime);
 
     /**
      * 查询积分记录
      */
     List<ScoreRecordPo> selectScoreRecord(
             @Param("scoreRecordPo") ScoreRecordPo scoreRecordPo,
-            @Nullable @Param("startTime") Date startTime);
+            @Nullable @Param("startTime") LocalDateTime startTime);
 }

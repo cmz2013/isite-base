@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import static org.isite.security.constants.SecurityConstants.AUTHORIZATION_REQUEST;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH_APPROVAL;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH_APPROVAL;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 

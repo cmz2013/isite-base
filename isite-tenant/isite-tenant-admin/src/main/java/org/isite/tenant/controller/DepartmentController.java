@@ -33,7 +33,7 @@ import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.tenant.converter.DeptConverter.toDeptPo;
 import static org.isite.tenant.converter.DeptConverter.toDeptSelectivePo;
-import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.TenantUrls.URL_TENANT;
 
 /**
  * @Description 部门 Controller

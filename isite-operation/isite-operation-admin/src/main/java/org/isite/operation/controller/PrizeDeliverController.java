@@ -26,7 +26,7 @@ import static org.isite.commons.web.interceptor.TransmittableHeaders.getEmployee
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverPo;
 import static org.isite.operation.converter.PrizeDeliverConverter.toPrizeDeliverSelectivePo;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**

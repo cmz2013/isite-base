@@ -4,7 +4,7 @@ import org.isite.commons.cloud.data.vo.Result;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.isite.operation.support.constants.UrlConstants.PUT_USE_VIP_SCORE;
+import static org.isite.operation.support.constants.OperationUrls.PUT_USE_VIP_SCORE;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

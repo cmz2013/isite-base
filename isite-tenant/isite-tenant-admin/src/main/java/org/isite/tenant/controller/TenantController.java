@@ -27,8 +27,8 @@ import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.tenant.converter.TenantConverter.toTenantPo;
 import static org.isite.tenant.converter.TenantConverter.toTenantSelectivePo;
-import static org.isite.tenant.data.constants.UrlConstants.PUT_TENANT_STATUS;
-import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.TenantUrls.PUT_TENANT_STATUS;
+import static org.isite.tenant.data.constants.TenantUrls.URL_TENANT;
 import static org.isite.user.client.UserAccessor.addPhoneIfAbsent;
 
 /**

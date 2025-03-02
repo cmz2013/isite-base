@@ -1,12 +1,11 @@
 package org.isite.commons.cloud.config;
 
+import org.apache.commons.codec.CharEncoding;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ResourceBundleMessageSource;
-
-import static org.apache.commons.lang.CharEncoding.UTF_8;
 
 /**
  * @Description 在项目类路径（resource目录）下建立i18n文件夹，用于存放国际化messages文件。
@@ -24,7 +23,7 @@ public class MessageSourceConfig {
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.addBasenames("i18n/messages", "i18n-cloud/messages");
-        messageSource.setDefaultEncoding(UTF_8);
+        messageSource.setDefaultEncoding(CharEncoding.UTF_8);
         return messageSource;
     }
 

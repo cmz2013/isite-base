@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.misc.data.constants.UrlConstants.URL_MISC;
+import static org.isite.misc.data.constants.MiscUrls.URL_MISC;
 
 /**
  * @Description 标签Controller

@@ -26,7 +26,7 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.user.converter.ConsigneeConverter.toConsigneePo;
-import static org.isite.user.data.constants.UrlConstants.URL_USER;
+import static org.isite.user.data.constants.UserUrls.URL_USER;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

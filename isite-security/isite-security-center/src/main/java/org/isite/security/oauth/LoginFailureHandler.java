@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.isite.security.data.constants.UrlConstants.URL_LOGIN_FORM;
+import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
 
 /**
  * @Description 定义授权码模式下，用户登录成功失败之后的操作

@@ -1,16 +1,15 @@
 package org.isite.commons.cloud.converter;
 
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.springframework.beans.BeanUtils.copyProperties;
+import java.util.stream.Collectors;
 
 /**
  * @Description 数据转换器，用于防腐层转换模型
@@ -34,7 +33,7 @@ public class DataConverter {
     public static <S, D> D convert(S source, Supplier<D> constructor, String... ignoreProperties) {
         D target = constructor.get();
         if (null != source && null != target) {
-            copyProperties(source, target, ignoreProperties);
+            BeanUtils.copyProperties(source, target, ignoreProperties);
         }
         return target;
     }
@@ -47,8 +46,8 @@ public class DataConverter {
      * @param <D> 目标数据类
      */
     public static <S, D> List<D> convert(List<S> sources, Supplier<D> constructor, String... ignoreProperties) {
-        return isEmpty(sources) ? emptyList() : sources.stream()
-                .map(source -> convert(source, constructor, ignoreProperties)).collect(toList());
+        return CollectionUtils.isEmpty(sources) ? Collections.emptyList() : sources.stream()
+                .map(source -> convert(source, constructor, ignoreProperties)).collect(Collectors.toList());
     }
 
     /**
@@ -57,7 +56,7 @@ public class DataConverter {
      * @param getter getter方法
      */
     public static <T, I> List<I> convert(List<T> srcList, Function<T, I> getter) {
-        return isEmpty(srcList) ? emptyList() : srcList.stream().map(getter).filter(Objects::nonNull)
-                .distinct().collect(toList());
+        return CollectionUtils.isEmpty(srcList) ? Collections.emptyList() : srcList.stream().map(getter).filter(Objects::nonNull)
+                .distinct().collect(Collectors.toList());
     }
 }

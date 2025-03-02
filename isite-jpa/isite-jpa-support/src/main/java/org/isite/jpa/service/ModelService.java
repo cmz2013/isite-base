@@ -1,7 +1,10 @@
 package org.isite.jpa.service;
 
 import lombok.SneakyThrows;
+import org.isite.commons.lang.Assert;
 import org.isite.commons.lang.Functions;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.data.Model;
@@ -9,13 +12,6 @@ import org.isite.jpa.data.PageQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static java.lang.Boolean.FALSE;
-import static org.isite.commons.lang.Assert.notEmpty;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.Reflection.setValue;
-import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
 
 /**
  * @Description 返回结果集不超过1000条
@@ -32,7 +28,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
      */
     @Override
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(this.getClass(), ModelService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(this.getClass(), ModelService.class));
     }
 
     /**
@@ -40,7 +36,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
      */
     @Transactional(rollbackFor = Exception.class)
     public N insert(List<P> pos) {
-        notEmpty(pos, "list cannot be empty");
+        Assert.notEmpty(pos, "list cannot be empty");
         if (BuiltIn.class.isAssignableFrom(getPoClass())) {
             pos.forEach(po -> checkBuiltInData((BuiltIn) po));
         }
@@ -57,7 +53,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     public N updateById(I id, Functions<P, Object> getter, Object value) {
         P po = getPoClass().getConstructor().newInstance();
         po.setId(id);
-        setValue(po, toFieldName(getter), value);
+        Reflection.setValue(po, Reflection.toFieldName(getter), value);
         return this.updateSelectiveById(po);
     }
 
@@ -71,7 +67,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
             BuiltIn builtIn = (BuiltIn) po;
             checkBuiltInData(builtIn);
             if (null == builtIn.getInternal()) {
-                builtIn.setInternal(FALSE);
+                builtIn.setInternal(Boolean.FALSE);
             }
         }
         return this.doDelete(po);
@@ -86,7 +82,7 @@ public abstract class ModelService<P extends Model<I>, I, N extends Number> exte
     @Transactional(rollbackFor = Exception.class)
     public N delete(Functions<P, Object> getter, Object value) {
         P po = getPoClass().getConstructor().newInstance();
-        setValue(po, toFieldName(getter), value);
+        Reflection.setValue(po, Reflection.toFieldName(getter), value);
         return this.delete(po);
     }
 

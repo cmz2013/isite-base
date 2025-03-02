@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
-import static org.isite.tenant.data.constants.UrlConstants.API_GET_RESOURCES;
+import static org.isite.tenant.data.constants.TenantUrls.API_GET_RESOURCES;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

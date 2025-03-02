@@ -8,7 +8,7 @@ import org.isite.tenant.data.enums.OfficeStatus;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @Description 员工信息
@@ -38,7 +38,7 @@ public class EmployeePo extends Po<Long> {
     /**
      * 入职日期
      */
-    private Date hireDate;
+    private LocalDate hireDate;
     /**
      * 试用期（月）
      */

@@ -1,6 +1,6 @@
 package org.isite.user.data.constants;
 
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 
 /**
  * @Description URL常量
@@ -8,9 +8,9 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
  * 2、user-center在数据接口权限白名单中可以用 /user/**，所以不需要PUBLIC_和MY_前缀
  * @Author <font color='blue'>zhangcm</font>
  */
-public class UrlConstants {
+public class UserUrls {
 
-    private UrlConstants() {
+    private UserUrls() {
     }
 
     public static final String URL_USER = "/user";
@@ -25,19 +25,19 @@ public class UrlConstants {
     /**
      * 根据唯一标识（username、phone、email）查询用户秘钥
      */
-    public static final String API_GET_USER_SECRET = URL_API + URL_USER + "/{identifier}/secret";
+    public static final String API_GET_USER_SECRET = UrlConstants.URL_API + URL_USER + "/{identifier}/secret";
     /**
      * 注册微信用户信息
      */
-    public static final String API_POST_USER_WECHAT = URL_API + URL_USER + "/wechat";
+    public static final String API_POST_USER_WECHAT = UrlConstants.URL_API + URL_USER + "/wechat";
     /**
      * 用户鉴权中心注册用户信息
      */
-    public static final String API_POST_USER = URL_API + URL_USER;
+    public static final String API_POST_USER = UrlConstants.URL_API + URL_USER;
     /**
      * 用户鉴权中心更新/设置用户密码
      */
-    public static final String API_PUT_USER_PASSWORD = URL_API + URL_USER + "/{userId}/password";
+    public static final String API_PUT_USER_PASSWORD = UrlConstants.URL_API + URL_USER + "/{userId}/password";
     /**
      *
      */

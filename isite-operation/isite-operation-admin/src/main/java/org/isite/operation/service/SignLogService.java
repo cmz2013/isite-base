@@ -1,24 +1,20 @@
 package org.isite.operation.service;
 
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.DateUtils;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.SignLogMapper;
 import org.isite.operation.po.SignLogPo;
+import org.isite.operation.support.constants.CacheKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
-import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ChronoUnit.DAY;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
-import static org.isite.operation.support.constants.CacheKey.LOCK_USER_SIGN;
+import java.time.LocalDateTime;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -42,20 +38,20 @@ public class SignLogService extends PoService<SignLogPo, Long> {
      * 完成每日签到
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = {@Lock(name = LOCK_USER_SIGN, keys = "#userId")})
+    @Synchronized(locks = {@Lock(name = CacheKeys.LOCK_USER_SIGN, keys = "#userId")})
     public SignLogPo saveSignLog(long userId) {
-        int totalCount =  ONE;
-        int continuousCount =  ONE;
+        int totalCount = Constants.ONE;
+        int continuousCount = Constants.ONE;
         SignLogPo lastSignLog = getLastSignLog(userId);
         if (null != lastSignLog) {
-            isTrue(getStartTimeOfDay().getTime() > lastSignLog.getSignTime().getTime(),
-                    getMessage("signed.inToday", "you has been signed in today"));
+            Assert.isTrue(DateUtils.startOfDay().isAfter(lastSignLog.getSignTime()),
+                    MessageUtils.getMessage("signed.inToday", "you has been signed in today"));
             continuousCount += getContinuousCount(lastSignLog);
             totalCount += lastSignLog.getTotalCount();
         }
         SignLogPo signLogPo = new SignLogPo();
         signLogPo.setUserId(userId);
-        signLogPo.setSignTime(new Date(currentTimeMillis()));
+        signLogPo.setSignTime(LocalDateTime.now());
         signLogPo.setContinuousCount(continuousCount);
         signLogPo.setTotalCount(totalCount);
         this.insert(signLogPo);
@@ -63,13 +59,12 @@ public class SignLogService extends PoService<SignLogPo, Long> {
     }
 
     /**
-     * 获取已连续签到天数
+     * 根据最近一次签到信息获取已连续签到天数
      */
     private int getContinuousCount(SignLogPo latestSignLog) {
-        if (latestSignLog.getSignTime().getTime() >=
-                getStartTimeOfDay(new Date(currentTimeMillis() - DAY.getMillis())).getTime()) {
+        if (latestSignLog.getSignTime().isAfter(DateUtils.startOfDay(LocalDateTime.now().minusDays(Constants.ONE)))) {
             return latestSignLog.getContinuousCount();
         }
-        return ZERO;
+        return Constants.ZERO;
     }
 }

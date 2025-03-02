@@ -17,9 +17,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
-import static org.isite.security.data.constants.CacheKey.SECURITY_PREFIX;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH_APPROVAL;
+import static org.isite.security.data.constants.CacheKeys.SECURITY_PREFIX;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH_APPROVAL;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 

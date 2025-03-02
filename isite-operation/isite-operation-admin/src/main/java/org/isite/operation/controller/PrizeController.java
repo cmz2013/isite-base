@@ -34,9 +34,9 @@ import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeConverter.toPrizePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.OperationConstants.FIELD_TOTAL_INVENTORY;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
 
 /**

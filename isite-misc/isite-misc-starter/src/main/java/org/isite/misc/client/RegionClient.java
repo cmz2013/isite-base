@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-import static org.isite.misc.data.constants.UrlConstants.PUBLIC_GET_PROVINCES;
-import static org.isite.misc.data.constants.UrlConstants.PUBLIC_GET_REGIONS;
+import static org.isite.misc.data.constants.MiscUrls.PUBLIC_GET_PROVINCES;
+import static org.isite.misc.data.constants.MiscUrls.PUBLIC_GET_REGIONS;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

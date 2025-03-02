@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
-import static org.isite.data.support.constants.UrlConstants.URL_DATA;
+import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 用户管理Controller

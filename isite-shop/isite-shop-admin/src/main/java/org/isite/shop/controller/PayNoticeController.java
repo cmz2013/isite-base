@@ -26,7 +26,7 @@ import static org.isite.shop.support.constants.AlipayConstants.FIELD_TRADE_STATU
 import static org.isite.shop.support.constants.AlipayConstants.TRADE_STATUS_FINISHED;
 import static org.isite.shop.support.constants.AlipayConstants.TRADE_STATUS_SUCCESS;
 import static org.isite.shop.support.constants.ShopConstants.QUEUE_TRADE_ORDER_SUCCESS;
-import static org.isite.shop.support.constants.UrlConstants.URL_SHOP;
+import static org.isite.shop.support.constants.ShopUrls.URL_SHOP;
 import static org.isite.shop.support.constants.WxpayConstants.FIELD_TRADE_STATE;
 import static org.isite.shop.support.constants.WxpayConstants.TRADE_STATE_SUCCESS;
 import static org.isite.shop.support.constants.WxpayConstants.XML_FAIL;

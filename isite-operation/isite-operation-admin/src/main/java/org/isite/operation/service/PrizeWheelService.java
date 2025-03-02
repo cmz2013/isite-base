@@ -26,7 +26,7 @@ import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.schedule.ProbabilityScheduler.choose;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.misc.data.enums.ObjectType.OPERATION_ACTIVITY;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_USER;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY_USER;
 import static org.isite.operation.task.IdempotentKey.toValue;
 
 /**
@@ -50,7 +50,7 @@ public class PrizeWheelService {
             recordPo = addPrizeRecord(userId, activity);
         }
         notNull(recordPo, getMessage("draws.number.zero", "the number of draws is 0"));
-        Prize prize = get(recordPo.getPrizeId(), activity.getPrizes());
+        Prize prize = get(activity.getPrizes(), recordPo.getPrizeId());
         if (null == prize) {
             List<Prize> prizes = prizeService.filterPrizes(activity.getPrizes());
             notEmpty(prizes, getMessage("prize.notInventory", "there are no more prizes"));

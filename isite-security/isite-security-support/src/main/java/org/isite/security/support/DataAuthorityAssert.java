@@ -1,17 +1,14 @@
 package org.isite.security.support;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Constants;
 import org.isite.security.data.vo.DataAuthority;
 import org.isite.security.data.vo.OauthUser;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.COMMA;
 
 /**
  * @Description 检查用户数据接口权限
@@ -33,11 +30,11 @@ public class DataAuthorityAssert {
 
     public DataAuthorityAssert(PathMatcher pathMatcher, String oauthPermits, String dataPermits) {
         this.pathMatcher = pathMatcher;
-        if (isNotBlank(oauthPermits)) {
-            this.oauthPermits = oauthPermits.split(COMMA);
+        if (StringUtils.isNotBlank(oauthPermits)) {
+            this.oauthPermits = oauthPermits.split(Constants.COMMA);
         }
-        if (isNotBlank(dataPermits)) {
-            this.dataPermits = dataPermits.split(COMMA);
+        if (StringUtils.isNotBlank(dataPermits)) {
+            this.dataPermits = dataPermits.split(Constants.COMMA);
         }
     }
 
@@ -45,7 +42,7 @@ public class DataAuthorityAssert {
      * 不需要登录认证就可以访问的接口
      */
     private boolean isOauthPermits(String requestPath) {
-        if (isEmpty(this.oauthPermits)) {
+        if (ArrayUtils.isEmpty(this.oauthPermits)) {
             return false;
         }
         for (String permit : this.oauthPermits) {
@@ -60,7 +57,7 @@ public class DataAuthorityAssert {
      * 只要通过登录认证就可以访问的接口
      */
     private boolean isDataPermits(String requestPath) {
-        if (isEmpty(this.dataPermits)) {
+        if (ArrayUtils.isEmpty(this.dataPermits)) {
             return false;
         }
         for (String permit : this.dataPermits) {
@@ -77,28 +74,28 @@ public class DataAuthorityAssert {
     public boolean isAuthorized(
             OauthUser oauthUser, String serviceId, String method, String requestPath) {
         if (isOauthPermits(requestPath)) {
-            return TRUE;
+            return Boolean.TRUE;
         }
         if (isDataPermits(requestPath)) {
-            return TRUE;
+            return Boolean.TRUE;
         }
         if (null == oauthUser) {
-            return FALSE;
+            return Boolean.FALSE;
         }
-        if (TRUE.equals(oauthUser.getInternal())) {
-            return TRUE;
+        if (Boolean.TRUE.equals(oauthUser.getInternal())) {
+            return Boolean.TRUE;
         }
         Set<DataAuthority> authorities = oauthUser.getAuthorities(serviceId);
-        if (isEmpty(authorities)) {
-            return FALSE;
+        if (CollectionUtils.isEmpty(authorities)) {
+            return Boolean.FALSE;
         }
         for (DataAuthority authority : authorities) {
             if (checkHttpMethod(authority, method) &&
                     this.pathMatcher.match(authority.getAuthority(), requestPath)) {
-                return TRUE;
+                return Boolean.TRUE;
             }
         }
-        return FALSE;
+        return Boolean.FALSE;
     }
 
     /**

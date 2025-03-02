@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-import static org.isite.security.data.constants.UrlConstants.URL_LOGIN_FORM;
+import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
 
 /**
  * @Description 授权码模式下，用户退出登录之后的操作

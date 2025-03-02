@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description 优惠券，一个订单条目只能使用一个优惠券，且优惠券金额必须小于等于订单条目金额才能使用。
@@ -38,7 +38,7 @@ public class CouponRecordPo extends Po<Integer> {
     /**
      * 过期时间
      */
-    private Date expireTime;
+    private LocalDateTime expireTime;
     /**
      * 优惠券使用状态
      */

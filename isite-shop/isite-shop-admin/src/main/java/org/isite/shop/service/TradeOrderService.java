@@ -1,40 +1,33 @@
 package org.isite.shop.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.cloud.converter.MapConverter;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.cloud.utils.ResultUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Error;
+import org.isite.commons.lang.utils.DateUtils;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.mybatis.service.PoService;
+import org.isite.operation.client.VipScoreAccessor;
+import org.isite.shop.converter.TradeOrderConverter;
 import org.isite.shop.mapper.TradeOrderMapper;
 import org.isite.shop.po.TradeOrderItemPo;
 import org.isite.shop.po.TradeOrderPo;
+import org.isite.shop.support.constants.CacheKeys;
+import org.isite.shop.support.constants.ShopConstants;
+import org.isite.shop.support.enums.TradeStatus;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
-
-import static java.lang.Long.parseLong;
-import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
-import static java.time.Duration.ofDays;
-import static org.isite.commons.cloud.converter.MapConverter.groupBy;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.cloud.utils.ResultUtils.isOk;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.DateUtils.PATTERN_DATE;
-import static org.isite.commons.lang.utils.DateUtils.formatDate;
-import static org.isite.operation.client.VipScoreAccessor.useVipScore;
-import static org.isite.shop.converter.TradeOrderConverter.toTradeOrderSupplierDto;
-import static org.isite.shop.support.constants.CacheKey.ORDER_NUMBER_DAY_COUNT_PREFIX;
-import static org.isite.shop.support.constants.ShopConstants.EXCHANGE_TRADE_ORDER_SUCCESS;
-import static org.isite.shop.support.enums.TradeStatus.CLOSED;
-import static org.isite.shop.support.enums.TradeStatus.SUCCESS;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -83,15 +76,15 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
      * 基于时间戳生成订单号
      */
     public long generateOrderNo() {
-        String date = formatDate(new Date(currentTimeMillis()), PATTERN_DATE);
-        String countKey = ORDER_NUMBER_DAY_COUNT_PREFIX + date;
+        String date = DateUtils.format(LocalDate.now(), DateUtils.PATTERN_DATE);
+        String countKey = CacheKeys.ORDER_NUMBER_DAY_COUNT_PREFIX + date;
         Long count = redisTemplate.opsForValue().increment(countKey);
         if (null != count) {
-            if (count.intValue() == ONE) {
-                redisTemplate.expire(countKey, ofDays(ONE));
+            if (count.intValue() == Constants.ONE) {
+                redisTemplate.expire(countKey, Duration.ofDays(Constants.ONE));
             }
             //确保数字至少有 3 位，不足的部分用 0 填充。如果你传入的数字大于 3 位，会根据数字的实际位数显示
-            return parseLong(date + format("%03d", count));
+            return Long.parseLong(date + String.format("%03d", count));
         }
         throw new RuntimeException("Failed to generate an order number");
     }
@@ -100,7 +93,7 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
      */
     @Transactional(rollbackFor = Exception.class)
     public Integer deleteOrder(TradeOrderPo tradeOrderPo) {
-        isTrue(CLOSED.equals(tradeOrderPo.getStatus()), new IllegalParameterError());
+        Assert.isTrue(TradeStatus.CLOSED.equals(tradeOrderPo.getStatus()), new IllegalParameterError());
         itemService.delete(TradeOrderItemPo::getOrderId, tradeOrderPo.getId());
         return this.delete(tradeOrderPo.getId());
     }
@@ -116,8 +109,9 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
         orderItemPos.forEach(orderItemPo -> {
             orderItemPo.setOrderId(tradeOrderPo.getId());
             //更新商品已售出数量
-            isTrue(skuService.updateSoldNum(orderItemPo.getSkuId(), orderItemPo.getSkuNum()) > ZERO,
-                    getMessage("sku.stock.notEnough", "The item you ordered is out of stock"));
+            Assert.isTrue(
+                    skuService.updateSoldNum(orderItemPo.getSkuId(), orderItemPo.getSkuNum()) > Constants.ZERO,
+                    MessageUtils.getMessage("sku.stock.notEnough", "The item you ordered is out of stock"));
         });
         //保存订单条目明细
         itemService.insert(orderItemPos);
@@ -125,22 +119,25 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
         couponRecordService.updateCouponUsed(couponRecordIds);
         //会员积分抵扣
         int payScore = orderItemPos.stream().mapToInt(TradeOrderItemPo::getPayScore).sum();
-        if (payScore > ZERO) {
-            Result<?> result = useVipScore(payScore);
-            isTrue(isOk(result), new Error(result.getCode(), result.getMessage()));
+        if (payScore > Constants.ZERO) {
+            Result<?> result = VipScoreAccessor.useVipScore(payScore);
+            Assert.isTrue(ResultUtils.isOk(result),
+                    new Error(result.getCode(), result.getMessage()));
         }
-        if (SUCCESS.equals(tradeOrderPo.getStatus())) {
+        if (TradeStatus.SUCCESS.equals(tradeOrderPo.getStatus())) {
             sendOrderSuccessMessage(tradeOrderPo, orderItemPos);
         }
         return tradeOrderPo.getId();
     }
 
-    public void sendOrderSuccessMessage(TradeOrderPo tradeOrderPo, List<TradeOrderItemPo> orderItemPos) {
+    public void sendOrderSuccessMessage(TradeOrderPo tradeOrderPo, List<TradeOrderItemPo> tradeOrderItemPos) {
         try {
-            groupBy(TradeOrderItemPo::getSupplier, orderItemPos).forEach((supplier, pos) -> rabbitTemplate.convertAndSend(
-                    EXCHANGE_TRADE_ORDER_SUCCESS, supplier.getCode(), toTradeOrderSupplierDto(tradeOrderPo, pos)));
+            MapConverter.groupBy(TradeOrderItemPo::getSupplier, tradeOrderItemPos).forEach(
+                    (supplier, pos) -> rabbitTemplate.convertAndSend(
+                            ShopConstants.EXCHANGE_TRADE_ORDER_SUCCESS, supplier.getCode(),
+                            TradeOrderConverter.toTradeOrderSupplierDto(tradeOrderPo, pos)));
         } catch (Exception e) {
-            log.error("send order success message error: " + tradeOrderPo.getOrderNo(), e);
+            log.error("sendOrderSuccessMessage error: " + tradeOrderPo.getOrderNo(), e);
         }
     }
 }

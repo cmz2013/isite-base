@@ -18,7 +18,7 @@ import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.lang.Constants.DAY_SECOND;
 import static org.isite.commons.lang.Constants.MINUTE_SECOND;
 import static org.isite.misc.converter.DictDataConverter.toDictDataPo;
-import static org.isite.misc.data.constants.CacheKey.DICT_TYPE_PREFIX;
+import static org.isite.misc.data.constants.CacheKeys.DICT_TYPE_PREFIX;
 
 /**
  * @author <font color='blue'>zhangcm</font>

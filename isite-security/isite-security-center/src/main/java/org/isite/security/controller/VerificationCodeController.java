@@ -19,8 +19,8 @@ import javax.validation.constraints.NotNull;
 import static org.isite.commons.cloud.data.vo.Result.success;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.security.data.constants.UrlConstants.API_GET_VERIFICATION_CODE;
-import static org.isite.security.data.constants.UrlConstants.DELETE_VERIFICATION_CODE;
+import static org.isite.security.data.constants.SecurityUrls.API_GET_VERIFICATION_CODE;
+import static org.isite.security.data.constants.SecurityUrls.DELETE_VERIFICATION_CODE;
 
 /**
  * @Description 短信/邮件验证码 Controller

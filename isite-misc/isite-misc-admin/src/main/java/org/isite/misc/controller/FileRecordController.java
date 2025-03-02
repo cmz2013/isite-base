@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.misc.converter.FileRecordConverter.toFileRecordPo;
-import static org.isite.misc.data.constants.UrlConstants.MY_POST_FILE_RECORD;
-import static org.isite.misc.data.constants.UrlConstants.PUT_FILE_RECORD;
+import static org.isite.misc.data.constants.MiscUrls.MY_POST_FILE_RECORD;
+import static org.isite.misc.data.constants.MiscUrls.PUT_FILE_RECORD;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

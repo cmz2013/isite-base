@@ -7,8 +7,6 @@ import org.isite.jpa.data.Order;
 
 import java.util.function.Supplier;
 
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -22,7 +20,7 @@ public class ListQueryConverter {
                 new Order(request.getOrder().getField(), request.getOrder().getDirection()));
         listQuery.setIndex(request.getIndex());
         listQuery.setPageSize(request.getPageSize());
-        listQuery.setPo(convert(request.getQuery(), constructor));
+        listQuery.setPo(DataConverter.convert(request.getQuery(), constructor));
         return listQuery;
     }
 }

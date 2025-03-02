@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
@@ -25,11 +26,10 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.converter.ScoreRecordConverter.toScoreRecordSelectivePo;
-import static org.isite.operation.support.constants.UrlConstants.PUT_USE_VIP_SCORE;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.PUT_USE_VIP_SCORE;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
 import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 
@@ -79,7 +79,7 @@ public class ScoreRecordController extends BaseController {
                     scoreRecordPo.setScoreType(VIP_SCORE);
                     scoreRecordPo.setUserId(getUserId());
                     return scoreRecordPo;
-                }), getTimeBeforeYear(ONE))) {
+                }), LocalDateTime.now().minusYears(ONE))) {
             return toPageResult(request, convert(page.getResult(), ScoreRecord::new), page.getTotal());
         }
     }

@@ -18,7 +18,7 @@ public class VoUtils {
     /**
      * 根据id筛选VO
      */
-    public static <V extends Vo<I>, I> V get(I id, List<V> vos) {
+    public static <V extends Vo<I>, I> V get(List<V> vos, I id) {
         if (null == id) {
             return null;
         }
@@ -30,7 +30,7 @@ public class VoUtils {
         return null;
     }
 
-    public static <V extends Vo<I>, I> boolean contain(I id, List<V> vos) {
+    public static <V extends Vo<I>, I> boolean contain(List<V> vos, I id) {
         if (null == id) {
             return FALSE;
         }

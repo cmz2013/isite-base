@@ -4,9 +4,9 @@ package org.isite.log.data.constants;
  * @Description 缓存KEY
  * @Author <font color='blue'>zhangcm</font>
  */
-public class CacheKey {
+public class CacheKeys {
 
-    private CacheKey() {
+    private CacheKeys() {
     }
 
 }

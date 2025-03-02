@@ -34,8 +34,8 @@ import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.PrizeCodeConverter.toPrizeCodeSelectivePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

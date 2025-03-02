@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
-import static org.isite.data.support.constants.UrlConstants.API_GET_RPC;
+import static org.isite.data.support.constants.DataUrls.API_GET_RPC;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

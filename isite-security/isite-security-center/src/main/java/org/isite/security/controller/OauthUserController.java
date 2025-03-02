@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.security.data.constants.UrlConstants.DELETE_OAUTH_USER;
-import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_PRINCIPAL;
-import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_USER;
+import static org.isite.security.data.constants.SecurityUrls.DELETE_OAUTH_USER;
+import static org.isite.security.data.constants.SecurityUrls.GET_OAUTH_PRINCIPAL;
+import static org.isite.security.data.constants.SecurityUrls.GET_OAUTH_USER;
 import static org.isite.security.web.utils.SecurityUtils.getOauthUser;
 import static org.isite.security.web.utils.SecurityUtils.getTokenValue;
 

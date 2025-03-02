@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
@@ -20,10 +21,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeMonth;
-import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeYear;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY_USER;
-import static org.isite.operation.support.constants.CacheKey.LOCK_USER_VIP_SCORE;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY_USER;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_USER_VIP_SCORE;
 import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
 import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
 import static tk.mybatis.mapper.weekend.Weekend.of;
@@ -59,7 +58,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      */
     public int sumVipScore(long userId) {
         return ((ScoreRecordMapper) getMapper()).sumAvailableScore(
-                null, userId, VIP_SCORE, getTimeBeforeYear(ONE), null);
+                null, userId, VIP_SCORE, LocalDateTime.now().minusYears(ONE), null);
     }
 
     /**
@@ -67,7 +66,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      */
     public int aboutToExpireVipScore(long userId) {
         return ((ScoreRecordMapper) getMapper()).sumAvailableScore(
-                null, userId, VIP_SCORE, getTimeBeforeYear(ONE), getTimeBeforeMonth(11));
+                null, userId, VIP_SCORE, LocalDateTime.now().minusYears(ONE), LocalDateTime.now().minusMonths(11));
     }
 
     /**
@@ -111,7 +110,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
     @Synchronized(locks = @Lock(name = LOCK_USER_VIP_SCORE, keys = "#userId"))
     public void useVipScore(long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
-        Date startTime = getTimeBeforeYear(ONE);
+        LocalDateTime startTime = LocalDateTime.now().minusYears(ONE);
         ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(null, userId, VIP_SCORE, startTime);
         while(score > ZERO && null != scoreRecordPo) {
             int available = scoreRecordPo.getScoreValue() - scoreRecordPo.getUsedScore();
@@ -127,7 +126,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
         isTrue(ZERO == score, "Not enough vip score");
     }
 
-    public Page<ScoreRecordPo> findScoreRecords(PageQuery<ScoreRecordPo> pageQuery, @Nullable Date startTime) {
+    public Page<ScoreRecordPo> findScoreRecords(PageQuery<ScoreRecordPo> pageQuery, @Nullable LocalDateTime startTime) {
         //当前线程紧跟着的第一个select方法会被分页
         Page<ScoreRecordPo> page = offsetPage(pageQuery.getOffset(), pageQuery.getPageSize());
         String orderBy = pageQuery.orderBy();

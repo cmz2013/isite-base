@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description 树节点PO
@@ -42,11 +42,11 @@ public class TreePo<I> implements TreeModel<I> {
      * 针对@CreatedDate注解，创建时会自动赋值，需要在配置类中添加 @EnableMongoAuditing 注解使其生效
      */
     @CreatedDate
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @LastModifiedDate
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

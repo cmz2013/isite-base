@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_CLIENTS;
+import static org.isite.security.data.constants.SecurityUrls.GET_OAUTH_CLIENTS;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

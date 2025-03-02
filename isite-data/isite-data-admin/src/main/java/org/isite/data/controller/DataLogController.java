@@ -20,7 +20,7 @@ import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.Assert.isFalse;
-import static org.isite.data.support.constants.UrlConstants.URL_DATA;
+import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 数据接口日志Controller

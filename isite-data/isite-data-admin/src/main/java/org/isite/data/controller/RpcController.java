@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.data.support.constants.UrlConstants.API_GET_RPC;
+import static org.isite.data.support.constants.DataUrls.API_GET_RPC;
 
 /**
  * @Description 数据接口API

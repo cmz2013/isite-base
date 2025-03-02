@@ -11,7 +11,7 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_JS_PREFIX;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_CSS;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_IMAGES;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_STATIC_JS;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

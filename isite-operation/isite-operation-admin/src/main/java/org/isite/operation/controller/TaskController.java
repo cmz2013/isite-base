@@ -36,8 +36,8 @@ import static org.isite.commons.lang.Reflection.toJsonFields;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.TaskConverter.toTaskPo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.isite.operation.support.enums.TaskType.values;
 
 /**

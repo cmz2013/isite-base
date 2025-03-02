@@ -5,7 +5,7 @@ import org.isite.security.data.dto.VerificationCodeDto;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
-import static org.isite.security.data.constants.UrlConstants.DELETE_VERIFICATION_CODE;
+import static org.isite.security.data.constants.SecurityUrls.DELETE_VERIFICATION_CODE;
 
 /**
  * @Description 通过FeignClientFactory获取客户端实例，头部传递token、version等信息

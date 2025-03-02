@@ -33,9 +33,9 @@ import static org.isite.commons.lang.Constants.ZERO;
 import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
 import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.operation.converter.ActivityConverter.toActivity;
-import static org.isite.operation.support.constants.CacheKey.ACTIVITY_IDS_EVENT_PREFIX;
-import static org.isite.operation.support.constants.CacheKey.ACTIVITY_PREFIX;
-import static org.isite.operation.support.constants.CacheKey.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
+import static org.isite.operation.support.constants.CacheKeys.ACTIVITY_IDS_EVENT_PREFIX;
+import static org.isite.operation.support.constants.CacheKeys.ACTIVITY_PREFIX;
+import static org.isite.operation.support.constants.CacheKeys.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
 
 /**
  * @Description 运营活动缓存（只缓存已上架的活动）

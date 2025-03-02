@@ -50,8 +50,8 @@ import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
 import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.converter.ActivityConverter.toActivityPo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.isite.operation.support.enums.ActivityTheme.values;
 
 /**

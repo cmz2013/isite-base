@@ -13,9 +13,9 @@ import java.util.Map;
 
 import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.data.support.constants.CacheKey.DATA_API_NUMBER;
-import static org.isite.data.support.constants.CacheKey.DATA_CALL_PREFIX;
-import static org.isite.data.support.constants.CacheKey.DATA_EXECUTOR_NUMBER;
+import static org.isite.data.support.constants.CacheKeys.DATA_API_NUMBER;
+import static org.isite.data.support.constants.CacheKeys.DATA_CALL_PREFIX;
+import static org.isite.data.support.constants.CacheKeys.DATA_EXECUTOR_NUMBER;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

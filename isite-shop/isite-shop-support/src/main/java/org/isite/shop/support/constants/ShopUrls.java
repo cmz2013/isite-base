@@ -5,9 +5,9 @@ package org.isite.shop.support.constants;
  * url常量命名规则约定：API_/MY_/PUBLIC_ + HTTP Method + 资源Path
  * @Author <font color='blue'>zhangcm</font>
  */
-public class UrlConstants {
+public class ShopUrls {
 
-    private UrlConstants() {
+    private ShopUrls() {
     }
 
     public static final String URL_SHOP = "/shop";

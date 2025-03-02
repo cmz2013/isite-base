@@ -39,7 +39,7 @@ import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId
 import static org.isite.tenant.converter.RoleConverter.toRole;
 import static org.isite.tenant.converter.RoleConverter.toRolePo;
 import static org.isite.tenant.converter.RoleConverter.toRoleSelectivePo;
-import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.TenantUrls.URL_TENANT;
 
 /**
  * @Description 角色信息 Controller

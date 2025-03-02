@@ -8,9 +8,9 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_PUBLIC;
  * url常量命名规则约定：API_/MY_/PUBLIC_ + HTTP Method + 资源Path
  * @Author <font color='blue'>zhangcm</font>
  */
-public class UrlConstants {
+public class MiscUrls {
 
-    private UrlConstants() {
+    private MiscUrls() {
     }
 
     public static final String URL_MISC = "/misc";

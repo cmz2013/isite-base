@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Map;
 
 import static org.isite.security.converter.UserConverter.toUserMap;
-import static org.isite.security.data.constants.UrlConstants.API_POST_USER;
-import static org.isite.security.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
-import static org.isite.security.data.constants.UrlConstants.POST_LOGIN_PROCESS;
-import static org.isite.security.data.constants.UrlConstants.PUT_OAUTH_TENANT;
-import static org.isite.security.data.constants.UrlConstants.URL_LOGIN_FORM;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH;
+import static org.isite.security.data.constants.SecurityUrls.API_POST_USER;
+import static org.isite.security.data.constants.SecurityUrls.API_PUT_USER_PASSWORD;
+import static org.isite.security.data.constants.SecurityUrls.POST_LOGIN_PROCESS;
+import static org.isite.security.data.constants.SecurityUrls.PUT_OAUTH_TENANT;
+import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH;
 import static org.isite.security.web.utils.SecurityUtils.getOauthUser;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;

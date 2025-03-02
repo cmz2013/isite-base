@@ -64,7 +64,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
             return;
         }
         int prizeId = ((PrizeReward) reward).getPrizeId();
-        Prize prize = get(prizeId, activity.getPrizes());
+        Prize prize = get(activity.getPrizes(), prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
         toPrizeRecordPo(taskRecord, prize);
         prizeRecordService.insert(taskRecord);

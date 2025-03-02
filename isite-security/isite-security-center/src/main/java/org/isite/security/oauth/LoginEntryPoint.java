@@ -3,7 +3,7 @@ package org.isite.security.oauth;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import static java.lang.Boolean.TRUE;
-import static org.isite.security.data.constants.UrlConstants.URL_LOGIN_FORM;
+import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
 
 /**
  * @Description 当ExceptionTranslationFilter截获AuthenticationException或者AccessDeniedException异常时，

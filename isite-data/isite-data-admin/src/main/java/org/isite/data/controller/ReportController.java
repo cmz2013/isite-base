@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.isite.data.converter.ReportConverter.toReportData;
-import static org.isite.data.support.constants.CacheKey.DATA_CALL_FAILURE;
-import static org.isite.data.support.constants.CacheKey.DATA_CALL_LATEST;
-import static org.isite.data.support.constants.UrlConstants.URL_DATA;
+import static org.isite.data.support.constants.CacheKeys.DATA_CALL_FAILURE;
+import static org.isite.data.support.constants.CacheKeys.DATA_CALL_LATEST;
+import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 运行报表 Controller

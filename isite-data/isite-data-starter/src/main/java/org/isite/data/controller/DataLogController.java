@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.isite.data.support.constants.UrlConstants.PUT_LOG_RETRY;
+import static org.isite.data.support.constants.DataUrls.PUT_LOG_RETRY;
 
 /**
  * @Description 数据补偿API

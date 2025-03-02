@@ -7,7 +7,7 @@ import org.isite.jpa.data.Model;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description PO用于Service层、DAO层
@@ -32,11 +32,11 @@ public class Po<I> implements Model<I> {
      * 创建时间
      */
     @Column(insertable = false, updatable = false)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @Column(insertable = false, updatable = false)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

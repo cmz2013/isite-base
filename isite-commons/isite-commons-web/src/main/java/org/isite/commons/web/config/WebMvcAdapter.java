@@ -1,6 +1,6 @@
 package org.isite.commons.web.config;
 
-import org.isite.commons.cloud.converter.EnumConverter;
+import org.isite.commons.cloud.converter.EnumConstantConverter;
 import org.isite.commons.cloud.utils.RequestPathMatcher;
 import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +59,7 @@ public class WebMvcAdapter extends WebMvcConfigurationSupport {
 
     @Override
     protected void addFormatters(FormatterRegistry registry) {
-        registry.addConverterFactory(new EnumConverter());
+        registry.addConverterFactory(new EnumConstantConverter());
     }
 
     /**

@@ -32,9 +32,9 @@ import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.tenant.converter.EmployeeConverter.toEmployeePo;
 import static org.isite.tenant.converter.EmployeeConverter.toEmployeeSelectivePo;
-import static org.isite.tenant.data.constants.UrlConstants.API_GET_EMPLOYEE;
-import static org.isite.tenant.data.constants.UrlConstants.GET_EMPLOYEE_LIST;
-import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.TenantUrls.API_GET_EMPLOYEE;
+import static org.isite.tenant.data.constants.TenantUrls.GET_EMPLOYEE_LIST;
+import static org.isite.tenant.data.constants.TenantUrls.URL_TENANT;
 import static org.isite.user.client.UserAccessor.addPhoneIfAbsent;
 
 /**

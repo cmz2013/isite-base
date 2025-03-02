@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.isite.security.constants.SecurityConstants.VERIFICATION_CODE_VALIDITY;
-import static org.isite.security.data.constants.CacheKey.VERIFICATION_CODE_FORMAT;
+import static org.isite.security.data.constants.CacheKeys.VERIFICATION_CODE_FORMAT;
 
 /**
  * @Description 短信/邮件验证码缓存

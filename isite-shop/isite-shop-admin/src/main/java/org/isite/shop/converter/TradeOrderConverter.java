@@ -1,5 +1,9 @@
 package org.isite.shop.converter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.shop.po.CouponRecordPo;
@@ -12,26 +16,16 @@ import org.isite.shop.support.dto.TradeOrderGetDto;
 import org.isite.shop.support.dto.TradeOrderItemPostDto;
 import org.isite.shop.support.dto.TradeOrderSkuDto;
 import org.isite.shop.support.dto.TradeOrderSupplierDto;
+import org.isite.shop.support.enums.PaymentType;
+import org.isite.shop.support.enums.TradeStatus;
 import org.isite.user.data.vo.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.System.currentTimeMillis;
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Assert.isFalse;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.COMMA;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.shop.support.enums.PaymentType.ALIPAY;
-import static org.isite.shop.support.enums.TradeStatus.PENDING;
-import static org.isite.shop.support.enums.TradeStatus.SUCCESS;
+import java.util.stream.Collectors;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -45,20 +39,20 @@ public class TradeOrderConverter {
             Long userId, Long orderNo, int payPrice, ClientIdentifier client) {
         TradeOrderPo tradeOrderPo = new TradeOrderPo();
         tradeOrderPo.setUserId(userId);
-        tradeOrderPo.setOrderTime(new Date(currentTimeMillis()));
+        tradeOrderPo.setOrderTime(LocalDateTime.now());
         tradeOrderPo.setOrderNo(orderNo);
         tradeOrderPo.setClientIdentifier(client);
         tradeOrderPo.setPayPrice(payPrice);
         //订单支付金额为0时，订单状态为支付完成, 否则订单状态为待支付
-        tradeOrderPo.setStatus(ZERO == payPrice ? SUCCESS : PENDING);
-        tradeOrderPo.setServiceCharge(ZERO);
+        tradeOrderPo.setStatus(Constants.ZERO == payPrice ? TradeStatus.SUCCESS : TradeStatus.PENDING);
+        tradeOrderPo.setServiceCharge(Constants.ZERO);
         tradeOrderPo.setPaymentNo(0L);
-        tradeOrderPo.setPaymentType(ALIPAY);
+        tradeOrderPo.setPaymentType(PaymentType.ALIPAY);
         return tradeOrderPo;
     }
 
     public static TradeOrderPo toTradeOrderSelectivePo(Long userId, TradeOrderGetDto tradeOrderGetDto) {
-        TradeOrderPo tradeOrderPo = convert(tradeOrderGetDto, TradeOrderPo::new);
+        TradeOrderPo tradeOrderPo = DataConverter.convert(tradeOrderGetDto, TradeOrderPo::new);
         tradeOrderPo.setUserId(userId);
         return tradeOrderPo;
     }
@@ -66,7 +60,7 @@ public class TradeOrderConverter {
     public static TradeOrderPo toTradeOrderSelectivePo(Long orderId, PayNoticeDto payNoticeDto) {
         TradeOrderPo tradeOrderPo = new TradeOrderPo();
         tradeOrderPo.setId(orderId);
-        tradeOrderPo.setStatus(SUCCESS);
+        tradeOrderPo.setStatus(TradeStatus.SUCCESS);
         tradeOrderPo.setServiceCharge(payNoticeDto.getServiceCharge());
         tradeOrderPo.setPaymentType(payNoticeDto.getPaymentType());
         tradeOrderPo.setPaymentNo(payNoticeDto.getPaymentNo());
@@ -78,7 +72,8 @@ public class TradeOrderConverter {
             TradeOrderPo tradeOrderPo, List<TradeOrderItemPo> orderItemPos) {
         TradeOrderSupplierDto tradeOrderSupplierDto = new TradeOrderSupplierDto();
         tradeOrderSupplierDto.setUserId(tradeOrderPo.getUserId());
-        tradeOrderSupplierDto.setSkuDtos(orderItemPos.stream().map(TradeOrderConverter::toTradeOrderSkuDto).collect(toList()));
+        tradeOrderSupplierDto.setSkuDtos(
+                orderItemPos.stream().map(TradeOrderConverter::toTradeOrderSkuDto).collect(Collectors.toList()));
         return tradeOrderSupplierDto;
     }
 
@@ -95,9 +90,9 @@ public class TradeOrderConverter {
      */
     public static List<TradeOrderItemPo> toTradeOrderItemSelectivePos(
             Integer payPrice, List<TradeOrderItemPo> orderItemPos, Integer serviceCharge) {
-        int lastIndex = orderItemPos.size() - ONE;
+        int lastIndex = orderItemPos.size() - Constants.ONE;
         List<TradeOrderItemPo> results = new ArrayList<>(orderItemPos.size());
-        for (int i = 0; i < lastIndex; i++) {
+        for (int i = Constants.ZERO; i < lastIndex; i++) {
             results.add(toTradeOrderItemSelectivePo(orderItemPos.get(i).getId(),
                     orderItemPos.get(i).getPayPrice() * serviceCharge / payPrice));
         }
@@ -140,33 +135,32 @@ public class TradeOrderConverter {
         tradeOrderItemPo.setSpuName(spuPo.getSpuName());
         tradeOrderItemPo.setSupplier(spuPo.getSupplier());
         tradeOrderItemPo.setSupplierParam(spuPo.getSupplierParam());
-        tradeOrderItemPo.setServiceCharge(ZERO);
+        tradeOrderItemPo.setServiceCharge(Constants.ZERO);
 
         int payPrice = tradeOrderItemPo.getSalePrice() * tradeOrderItemPo.getSkuNum();
         if (null != orderItemPostDto.getCouponRecordId()) {
             CouponRecordPo couponRecordPo = couponRecordPos.get(orderItemPostDto.getCouponRecordId());
-            isTrue(couponRecordPo.getUserId().equals(userDetails.getId()), new OverstepAccessError());
-            isFalse(couponRecordPo.getUsed(), "Coupon has been used");
-            long expireTime = couponRecordPo.getExpireTime().getTime();
-            isTrue(expireTime > currentTimeMillis(), "Coupon has expired");
+            Assert.isTrue(couponRecordPo.getUserId().equals(userDetails.getId()), new OverstepAccessError());
+            Assert.isFalse(couponRecordPo.getUsed(), "coupon has been used");
+            Assert.isTrue(couponRecordPo.getExpireTime().isAfter(LocalDateTime.now()), "coupon has expired");
             String skuIds = couponRecordPo.getSkuIds();
-            if (isNotBlank(skuIds)) {
-                isTrue(asList(skuIds.split(COMMA)).contains(tradeOrderItemPo.getSkuId().toString()),
-                        "Coupon is not applicable to this item");
+            if (StringUtils.isNotBlank(skuIds)) {
+                Assert.isTrue(Arrays.asList(skuIds.split(Constants.COMMA)).contains(tradeOrderItemPo.getSkuId().toString()),
+                        "coupon is not applicable to this item");
             }
             tradeOrderItemPo.setDiscountPrice(couponRecordPo.getDiscountPrice());
             payPrice = payPrice - tradeOrderItemPo.getDiscountPrice();
-            isTrue(payPrice >= ZERO, "Coupon has been overpaid");
+            Assert.isTrue(payPrice >= Constants.ZERO, "coupon has been overpaid");
         } else {
-            tradeOrderItemPo.setDiscountPrice(ZERO);
+            tradeOrderItemPo.setDiscountPrice(Constants.ZERO);
         }
         //计算订单条目实际支付金额，优惠券优先级大于会员积分抵扣
         if (null != tradeOrderItemPo.getPayScore()) {
             tradeOrderItemPo.setPayScore(orderItemPostDto.getPayScore());
-            isTrue(payPrice >= tradeOrderItemPo.getPayScore(), "Score has been overpaid");
+            Assert.isTrue(payPrice >= tradeOrderItemPo.getPayScore(), "score has been overpaid");
             payPrice = payPrice - tradeOrderItemPo.getPayScore();
         } else {
-            tradeOrderItemPo.setPayScore(ZERO);
+            tradeOrderItemPo.setPayScore(Constants.ZERO);
         }
         tradeOrderItemPo.setPayPrice(payPrice);
         return tradeOrderItemPo;

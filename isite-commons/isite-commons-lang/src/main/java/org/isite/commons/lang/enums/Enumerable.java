@@ -1,8 +1,8 @@
 package org.isite.commons.lang.enums;
 
-import javax.annotation.Nullable;
+import org.isite.commons.lang.Assert;
 
-import static org.isite.commons.lang.Assert.isTrue;
+import javax.annotation.Nullable;
 
 /**
  * @Description 枚举类父接口，规范枚举的实现
@@ -29,7 +29,7 @@ public interface Enumerable<T> {
      * @param code 编码
      */
     static <E extends Enumerable<?>> @Nullable E getByCode(Class<E> eClass, Object code) {
-        isTrue(eClass.isEnum(), "not an enum class: " + eClass.getName());
+        Assert.isTrue(eClass.isEnum(), eClass.getName() + " is not an enum");
         // getEnumConstants()方法用于返回枚举常量数组,当此类对象不表示枚举类型时，它返回null
         for (E constant : eClass.getEnumConstants()) {
             if (constant.getCode().equals(code)) {

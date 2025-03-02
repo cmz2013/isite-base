@@ -17,7 +17,7 @@ import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.operation.converter.InviteRecordConverter.toInviteRecordSelectivePo;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

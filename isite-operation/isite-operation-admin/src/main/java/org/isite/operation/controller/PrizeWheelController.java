@@ -17,7 +17,7 @@ import static org.isite.commons.lang.Assert.notNull;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 
 /**
  * @Description 抽奖活动，完成奖品任务获取抽奖次数

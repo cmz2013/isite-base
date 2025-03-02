@@ -41,8 +41,8 @@ import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
 import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -92,7 +92,7 @@ public class PrizeRecordController extends BaseController {
             @PathVariable("activityId") Integer activityId, @PathVariable("prizeId") Integer prizeId) {
         Activity activity = ongoingActivityService.getOngoingActivity(activityId);
         notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
-        Prize prize = get(prizeId, activity.getPrizes());
+        Prize prize = get(activity.getPrizes(), prizeId);
         notNull(prize, getMessage("prize.notFound", "prize not found"));
         return toResult(prizeRecordService.receivePrize(activity, prize, getUserId()));
     }

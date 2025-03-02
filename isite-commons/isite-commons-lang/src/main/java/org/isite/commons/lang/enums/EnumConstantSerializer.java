@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
-public class EnumerableSerializer extends JsonSerializer<Object> {
+public class EnumConstantSerializer extends JsonSerializer<Object> {
 
     @Override
     public void serialize(Object object, JsonGenerator generator, SerializerProvider provider) throws IOException {

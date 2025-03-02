@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
 import static org.isite.commons.lang.encoder.NumberEncoder.encode;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 import static org.isite.operation.support.enums.BusinessIdentity.OPERATION_ACTIVITY;
 import static org.isite.operation.support.enums.InviteCodeType.USER_ID;
 

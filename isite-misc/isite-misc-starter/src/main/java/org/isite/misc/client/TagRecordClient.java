@@ -5,7 +5,7 @@ import org.isite.misc.data.dto.TagRecordDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static org.isite.misc.data.constants.UrlConstants.POST_TAG_RECORD;
+import static org.isite.misc.data.constants.MiscUrls.POST_TAG_RECORD;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

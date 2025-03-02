@@ -2,10 +2,10 @@ package org.isite.security.data.vo;
 
 import lombok.Getter;
 import org.isite.commons.cloud.data.enums.HttpMethod;
+import org.isite.commons.lang.Assert;
 import org.springframework.security.core.GrantedAuthority;
 
-import static java.util.Objects.hash;
-import static org.isite.commons.lang.Assert.notBlank;
+import java.util.Objects;
 
 /**
  * @Description 数据接口权限
@@ -23,7 +23,7 @@ public class DataAuthority implements GrantedAuthority {
     private final String requestPath;
 
     public DataAuthority(HttpMethod method, String requestPath) {
-        notBlank(requestPath, "requestPath is required");
+        Assert.notBlank(requestPath, "requestPath is required");
         this.method = method;
         this.requestPath = requestPath;
     }
@@ -47,6 +47,6 @@ public class DataAuthority implements GrantedAuthority {
 
     @Override
     public int hashCode() {
-        return hash(method, requestPath);
+        return Objects.hash(method, requestPath);
     }
 }

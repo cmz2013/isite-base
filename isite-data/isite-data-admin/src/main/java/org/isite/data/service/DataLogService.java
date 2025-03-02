@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.utils.ResultUtils.getData;
-import static org.isite.data.support.constants.CacheKey.DATA_CALL_FAILURE;
-import static org.isite.data.support.constants.CacheKey.LOCK_DATA_LOG;
+import static org.isite.data.support.constants.CacheKeys.DATA_CALL_FAILURE;
+import static org.isite.data.support.constants.CacheKeys.LOCK_DATA_LOG;
 
 /**
  * @Description 接口日志Service

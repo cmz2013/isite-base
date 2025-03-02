@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
-import static org.isite.security.data.constants.UrlConstants.POST_LOGIN_PROCESS;
-import static org.isite.security.data.constants.UrlConstants.URL_LOGIN_FORM;
-import static org.isite.security.data.constants.UrlConstants.URL_OAUTH_LOGOUT;
+import static org.isite.security.data.constants.SecurityUrls.POST_LOGIN_PROCESS;
+import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
+import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH_LOGOUT;
 import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED;
 

@@ -36,14 +36,14 @@ import static org.isite.user.converter.UserConverter.toUserDetails;
 import static org.isite.user.converter.UserConverter.toUserPo;
 import static org.isite.user.converter.UserConverter.toUserSecret;
 import static org.isite.user.converter.UserConverter.toUserSelectivePo;
-import static org.isite.user.data.constants.UrlConstants.API_GET_USER_SECRET;
-import static org.isite.user.data.constants.UrlConstants.API_POST_USER;
-import static org.isite.user.data.constants.UrlConstants.API_POST_USER_WECHAT;
-import static org.isite.user.data.constants.UrlConstants.API_PUT_USER_PASSWORD;
-import static org.isite.user.data.constants.UrlConstants.GET_USERS;
-import static org.isite.user.data.constants.UrlConstants.GET_USER_DETAILS;
-import static org.isite.user.data.constants.UrlConstants.POST_USER_PHONE_IF_ABSENT;
-import static org.isite.user.data.constants.UrlConstants.URL_USER;
+import static org.isite.user.data.constants.UserUrls.API_GET_USER_SECRET;
+import static org.isite.user.data.constants.UserUrls.API_POST_USER;
+import static org.isite.user.data.constants.UserUrls.API_POST_USER_WECHAT;
+import static org.isite.user.data.constants.UserUrls.API_PUT_USER_PASSWORD;
+import static org.isite.user.data.constants.UserUrls.GET_USERS;
+import static org.isite.user.data.constants.UserUrls.GET_USER_DETAILS;
+import static org.isite.user.data.constants.UserUrls.POST_USER_PHONE_IF_ABSENT;
+import static org.isite.user.data.constants.UserUrls.URL_USER;
 
 /**
  * @Description 用户Controller

@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 每日签到
@@ -31,5 +31,5 @@ public class SignLogPo extends Po<Long> {
     /**
      * 签到时间
      */
-    private Date signTime;
+    private LocalDateTime signTime;
 }

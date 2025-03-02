@@ -1,13 +1,12 @@
 package org.isite.commons.cloud.converter;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static java.util.Collections.emptyMap;
-import static java.util.stream.Collectors.groupingBy;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -24,7 +23,8 @@ public class MapConverter {
      * @param srcList 源数据列表
      */
     public static <K, V> Map<K, V> toMap(Function<V, K> getter, List<V> srcList) {
-        return isEmpty(srcList) ? emptyMap() : srcList.stream().collect(Collectors.toMap(getter, t -> t));
+        return CollectionUtils.isEmpty(srcList) ?
+                Collections.emptyMap() : srcList.stream().collect(Collectors.toMap(getter, t -> t));
     }
 
     /**
@@ -34,6 +34,6 @@ public class MapConverter {
      * @param srcList 源数据列表
      */
     public static <K, V> Map<K, List<V>> groupBy(Function<V, K> getter, List<V> srcList) {
-        return srcList.stream().collect(groupingBy(getter));
+        return srcList.stream().collect(Collectors.groupingBy(getter));
     }
 }

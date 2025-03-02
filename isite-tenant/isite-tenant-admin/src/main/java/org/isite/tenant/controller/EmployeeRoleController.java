@@ -25,7 +25,7 @@ import static org.isite.commons.lang.Constants.ONE;
 import static org.isite.commons.lang.Constants.THOUSAND;
 import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
 import static org.isite.tenant.converter.EmployeeRoleConverter.toEmployeeRoleSelectivePo;
-import static org.isite.tenant.data.constants.UrlConstants.URL_TENANT;
+import static org.isite.tenant.data.constants.TenantUrls.URL_TENANT;
 
 /**
  * @Description 给员工设置角色。

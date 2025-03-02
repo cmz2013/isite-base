@@ -1,6 +1,6 @@
 package org.isite.log.data.constants;
 
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 
 /**
  * @Description URL常量
@@ -8,14 +8,14 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
  * 2、user-center在数据接口权限白名单中可以用 /user/**，所以不需要PUBLIC_和MY_前缀
  * @Author <font color='blue'>zhangcm</font>
  */
-public class UrlConstants {
+public class LogUrls {
 
-    private UrlConstants() {
+    private LogUrls() {
     }
 
     public static final String URL_LOG = "/log";
     /**
      * 保存日志接口
      */
-    public static final String API_POST_LOG = URL_API + URL_LOG;
+    public static final String API_POST_LOG = UrlConstants.URL_API + URL_LOG;
 }

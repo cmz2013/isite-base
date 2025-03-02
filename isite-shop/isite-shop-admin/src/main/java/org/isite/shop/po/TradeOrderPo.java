@@ -10,7 +10,7 @@ import org.isite.shop.support.enums.TradeStatus;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -26,7 +26,7 @@ public class TradeOrderPo extends Po<Long> {
     /**
      * 下单时间
      */
-    private Date orderTime;
+    private LocalDateTime orderTime;
     /**
      * 订单号
      */
@@ -52,7 +52,7 @@ public class TradeOrderPo extends Po<Long> {
     /**
      * 支付时间
      */
-    private Date payTime;
+    private LocalDateTime payTime;
     /**
      * 订单状态
      */

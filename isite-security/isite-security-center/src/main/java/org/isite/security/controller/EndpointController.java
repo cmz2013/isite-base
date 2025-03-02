@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.isite.security.data.constants.UrlConstants.GET_OAUTH_CLIENTS;
+import static org.isite.security.data.constants.SecurityUrls.GET_OAUTH_CLIENTS;
 
 /**
  * @Author <font color='blue'>zhangcm</font>

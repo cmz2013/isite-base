@@ -21,7 +21,7 @@ import java.util.List;
 import static org.isite.commons.cloud.converter.DataConverter.convert;
 import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
 import static org.isite.data.converter.HostConverter.toHosts;
-import static org.isite.data.support.constants.UrlConstants.URL_DATA;
+import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 执行器Controller

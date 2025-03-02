@@ -1,6 +1,8 @@
 package org.isite.commons.cloud.converter;
 
 import org.isite.commons.cloud.data.vo.Tree;
+import org.isite.commons.cloud.utils.VoUtils;
+import org.isite.commons.lang.Constants;
 import org.isite.jpa.data.TreeModel;
 
 import java.util.ArrayList;
@@ -14,9 +16,6 @@ import java.util.function.Function;
 import static java.util.Collections.emptyList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.isite.commons.cloud.utils.TreeUtils.get;
-import static org.isite.commons.cloud.utils.VoUtils.contain;
-import static org.isite.commons.lang.Constants.ZERO;
-
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -60,7 +59,7 @@ public class TreeConverter {
         Set<I> pids = new HashSet<>();
 
         //按顺序遍历PO链表（树节点PO列表有可能排过序），从PO列表移除转为T，依次添加到结果集中。
-        for (int i = ZERO; i < nodes.size();) {
+        for (int i = Constants.ZERO; i < nodes.size();) {
             toTree(toTree(nodes.remove(i), converter), trees, nodes, converter, pids);
         }
         return toTree(trees, pids, converter, query);
@@ -73,7 +72,7 @@ public class TreeConverter {
     void toTree(T tree, List<T> trees, List<P> nodes, Function<P, T> converter, Set<I> pids) {
         //根节点
         if (tree.isRoot()) {
-            if (!contain(tree.getId(), trees)) {
+            if (!VoUtils.contain(trees, tree.getId())) {
                 trees.add(tree);
             }
             return;
@@ -115,7 +114,7 @@ public class TreeConverter {
         pids.clear();
 
         //按顺序遍历PO链表（树节点PO列表排过序），从PO列表移除转为T，依次添加到结果集中。
-        for (int i = ZERO; i < nodes.size();) {
+        for (int i = Constants.ZERO; i < nodes.size();) {
             T parent = toTree(nodes.remove(i), converter);
             Iterator<T> iterator = trees.iterator();
             while (iterator.hasNext()) {

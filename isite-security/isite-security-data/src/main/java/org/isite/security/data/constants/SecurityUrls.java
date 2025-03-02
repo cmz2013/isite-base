@@ -9,9 +9,9 @@ import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
  * 3）security-center在数据接口权限白名单中可以用 /oauth/**，所以不需要PUBLIC_和MY_前缀
  * @Author <font color='blue'>zhangcm</font>
  */
-public class UrlConstants {
+public class SecurityUrls {
 
-    private UrlConstants() {
+    private SecurityUrls() {
     }
     /**
      * SpringCloud OAuth2框架提供的API：

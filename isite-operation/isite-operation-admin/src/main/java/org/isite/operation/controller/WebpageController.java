@@ -44,9 +44,9 @@ import static org.isite.operation.activity.ActivityAssert.notOnline;
 import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
 import static org.isite.operation.converter.WebpageConverter.toWebpagePo;
-import static org.isite.operation.support.constants.CacheKey.LOCK_ACTIVITY;
+import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
 import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
-import static org.isite.operation.support.constants.UrlConstants.URL_OPERATION;
+import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
 
 /**
  * @Description 活动页面 Controller

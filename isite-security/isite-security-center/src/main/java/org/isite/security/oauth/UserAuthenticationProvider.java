@@ -28,8 +28,8 @@ import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
 import static org.isite.commons.lang.enums.ChronoUnit.DAY;
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.security.constants.SecurityConstants.LOGIN_FAILURE_TIMES_MAX;
-import static org.isite.security.data.constants.CacheKey.LOGIN_LOCKED_FORMAT;
-import static org.isite.security.data.constants.CacheKey.LOGIN_TIMES_FORMAT;
+import static org.isite.security.data.constants.CacheKeys.LOGIN_LOCKED_FORMAT;
+import static org.isite.security.data.constants.CacheKeys.LOGIN_TIMES_FORMAT;
 import static org.isite.security.data.constants.SecurityConstants.BAD_CREDENTIALS;
 
 /**

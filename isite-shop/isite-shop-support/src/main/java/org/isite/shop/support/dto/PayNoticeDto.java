@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.shop.support.enums.PaymentType;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description 订单支付成功通知参数
@@ -30,7 +30,7 @@ public class PayNoticeDto {
     /**
      * 支付时间
      */
-    private Date payTime;
+    private LocalDateTime payTime;
     /**
      * 支付金额(分)，不含服务费
      */
