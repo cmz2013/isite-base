@@ -1,12 +1,10 @@
 package org.isite.misc.client;
 
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.cloud.utils.ResultUtils;
 import org.isite.commons.web.feign.FeignClientFactory;
+import org.isite.misc.data.constants.MiscConstants;
 import org.isite.misc.data.dto.TagRecordDto;
-
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.cloud.utils.ResultUtils.getData;
-import static org.isite.misc.data.constants.MiscConstants.SERVICE_ID;
-
 /**
  * @Description TagRecordClient 辅助类
  * @Author <font color='blue'>zhangcm</font>
@@ -17,8 +15,9 @@ public class TagRecordAccessor {
     }
 
     public static Integer addTagRecord(TagRecordDto recordDto) {
-        TagRecordClient tagRecordClient = getBean(FeignClientFactory.class).getFeignClient(TagRecordClient.class, SERVICE_ID);
-        return getData(tagRecordClient.addTagRecord(recordDto));
+        FeignClientFactory feignClientFactory = ApplicationContextUtils.getBean(FeignClientFactory.class);
+        TagRecordClient tagRecordClient = feignClientFactory.getFeignClient(TagRecordClient.class, MiscConstants.SERVICE_ID);
+        return ResultUtils.getData(tagRecordClient.addTagRecord(recordDto));
     }
 
 }

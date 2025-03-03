@@ -1,11 +1,9 @@
-package org.isite.user;
+package org.isite.log;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-
-import static org.springframework.boot.SpringApplication.run;
-
 /**
  * @Description 如果没有使用@MapperScan注解，就需要在接口上增加@Mapper注解，否则MyBatis无法判断扫描哪些接口。
  * @Author <font color='blue'>zhangcm</font>
@@ -16,6 +14,6 @@ import static org.springframework.boot.SpringApplication.run;
 public class LogApplication {
 
     public static void main(String[] args) {
-        run(LogApplication.class, args);
+        SpringApplication.run(LogApplication.class, args);
     }
 }

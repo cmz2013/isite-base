@@ -5,13 +5,12 @@ import org.isite.mybatis.mapper.PoMapper;
 import org.isite.shop.po.TradeOrderItemPo;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Repository
 public interface TradeOrderItemMapper extends PoMapper<TradeOrderItemPo, Long> {
 
-    int sumPayPrice(@Param("userId") long userId, @Param("startTime") Date startTime);
+    int sumPayPrice(@Param("userId") long userId, @Param("startTime") LocalDateTime startTime);
 }

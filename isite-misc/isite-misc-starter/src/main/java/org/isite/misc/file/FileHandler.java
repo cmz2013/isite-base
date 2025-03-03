@@ -1,6 +1,9 @@
 package org.isite.misc.file;
 
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
+import org.isite.misc.client.FileRecordAccessor;
 import org.isite.misc.data.dto.FileRecordPostDto;
 import org.isite.misc.data.dto.FileRecordPutDto;
 import org.isite.misc.data.enums.FileStatus;
@@ -11,19 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.Executor;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.misc.client.FileRecordAccessor.addFileRecord;
-import static org.isite.misc.client.FileRecordAccessor.updateFileRecord;
-import static org.isite.misc.data.enums.FileStatus.EXPORT_FAILURE;
-import static org.isite.misc.data.enums.FileStatus.EXPORT_PROCESS;
-import static org.isite.misc.data.enums.FileStatus.EXPORT_SUCCESS;
-import static org.isite.misc.data.enums.FileStatus.EXPORT_WAITING;
-import static org.isite.misc.data.enums.FileStatus.PARSE_FAILURE;
-import static org.isite.misc.data.enums.FileStatus.PARSE_PROCESS;
-import static org.isite.misc.data.enums.FileStatus.UPLOAD_SUCCESS;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -59,7 +49,7 @@ public abstract class FileHandler {
     public FileRecord uploadFile(
             String fileName, InputStream input, String target, Parser<?> parser) throws Exception {
         storeFile(fileName, input, target);
-        FileRecord fileRecord = createFileRecord(fileName, target, UPLOAD_SUCCESS);
+        FileRecord fileRecord = createFileRecord(fileName, target, FileStatus.UPLOAD_SUCCESS);
         if (null != parser) {
             if (parser.isAsync()) {
                 executor.execute(() -> parseFile(fileRecord, parser));
@@ -75,7 +65,7 @@ public abstract class FileHandler {
      * @param fileRecord 文件记录
      */
     private void parseFile(FileRecord fileRecord, Parser<?> parser) {
-        updateFileStatus(fileRecord.getId(), PARSE_PROCESS, BLANK_STR);
+        updateFileStatus(fileRecord.getId(), FileStatus.PARSE_PROCESS, Constants.BLANK_STR);
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             downloadFile(fileRecord, output);
             try(InputStream input = new ByteArrayInputStream(output.toByteArray());) {
@@ -83,7 +73,7 @@ public abstract class FileHandler {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            fileRecord.setStatus(PARSE_FAILURE);
+            fileRecord.setStatus(FileStatus.PARSE_FAILURE);
             fileRecord.setRemark(e.getMessage());
         }
         updateFileStatus(fileRecord.getId(), fileRecord.getStatus(), fileRecord.getRemark());
@@ -91,7 +81,7 @@ public abstract class FileHandler {
 
     private void updateFileStatus(Integer id, FileStatus status, String remark) {
         try {
-            updateFileRecord(new FileRecordPutDto(id, status, remark));
+            FileRecordAccessor.updateFileRecord(new FileRecordPutDto(id, status, remark));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -113,7 +103,7 @@ public abstract class FileHandler {
      * @return 文件记录
      */
     public FileRecord exportFile(String fileName, StreamProvider provider, String target) {
-        FileRecord fileRecord = createFileRecord(fileName, target, EXPORT_WAITING);
+        FileRecord fileRecord = createFileRecord(fileName, target, FileStatus.EXPORT_WAITING);
         executor.execute(() -> exportFile(fileRecord, provider));
         return fileRecord;
     }
@@ -125,12 +115,12 @@ public abstract class FileHandler {
      */
     private void exportFile(FileRecord fileRecord, StreamProvider provider) {
         try {
-            updateFileStatus(fileRecord.getId(), EXPORT_PROCESS, BLANK_STR);
+            updateFileStatus(fileRecord.getId(), FileStatus.EXPORT_PROCESS, Constants.BLANK_STR);
             storeFile(fileRecord.getFileName(), provider.stream(), fileRecord.getTarget());
-            updateFileStatus(fileRecord.getId(), EXPORT_SUCCESS, BLANK_STR);
+            updateFileStatus(fileRecord.getId(), FileStatus.EXPORT_SUCCESS, Constants.BLANK_STR);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            updateFileStatus(fileRecord.getId(), EXPORT_FAILURE, e.getMessage());
+            updateFileStatus(fileRecord.getId(), FileStatus.EXPORT_FAILURE, e.getMessage());
         }
     }
 
@@ -146,8 +136,8 @@ public abstract class FileHandler {
         fileRecordPostDto.setStatus(status);
         fileRecordPostDto.setFileName(fileName);
         fileRecordPostDto.setTarget(target);
-        FileRecord fileRecord = convert(fileRecordPostDto, FileRecord::new);
-        fileRecord.setId(addFileRecord(fileRecordPostDto));
+        FileRecord fileRecord = DataConverter.convert(fileRecordPostDto, FileRecord::new);
+        fileRecord.setId(FileRecordAccessor.addFileRecord(fileRecordPostDto));
         return fileRecord;
     }
 

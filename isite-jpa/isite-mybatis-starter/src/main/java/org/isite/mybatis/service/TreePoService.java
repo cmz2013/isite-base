@@ -1,7 +1,13 @@
 package org.isite.mybatis.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.page.PageMethod;
 import org.apache.ibatis.session.RowBounds;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Functions;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.jpa.service.TreeModelService;
 import org.isite.mybatis.data.TreePo;
 import org.isite.mybatis.mapper.TreePoMapper;
@@ -10,17 +16,6 @@ import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.Collection;
 import java.util.List;
-
-import static com.github.pagehelper.page.PageMethod.offsetPage;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.PERCENT;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -43,7 +38,7 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(getClass(), TreePoService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(getClass(), TreePoService.class));
     }
 
     @Override
@@ -58,8 +53,8 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     protected Integer doUpdateById(P newPo) {
         P oldPo = get(newPo.getId());
-        notNull(oldPo, "id not found: " + newPo.getId());
-        int results = ZERO;
+        Assert.notNull(oldPo, "id not found: " + newPo.getId());
+        int results = Constants.ZERO;
         if (!newPo.getPid().equals(oldPo.getPid())) {
             newPo.setPids(getPids(newPo.getPid()));
             results = updatePids(getPids(newPo), getPids(oldPo));
@@ -73,8 +68,8 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     protected Integer doUpdateSelectiveById(P newPo) {
         P oldPo = get(newPo.getId());
-        notNull(oldPo, "id not found: " + newPo.getId());
-        int results = ZERO;
+        Assert.notNull(oldPo, "id not found: " + newPo.getId());
+        int results = Constants.ZERO;
         if (null != newPo.getPid() && !newPo.getPid().equals(oldPo.getPid())) {
             newPo.setPids(getPids(newPo.getPid()));
             results = updatePids(getPids(newPo), getPids(oldPo));
@@ -95,13 +90,13 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
      */
     @Override
     protected Integer doDelete(I id) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andLike(P::getPids, getPids(id) + PERCENT);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andLike(P::getPids, getPids(id) + Constants.PERCENT);
         return mapper.deleteByPrimaryKey(id) + mapper.deleteByExample(weekend);
     }
 
     private int updatePids(String newPids, String oldPids) {
-        return mapper.updatePids(treePidsGenerator.setPids(newPids, oldPids), oldPids + PERCENT);
+        return mapper.updatePids(treePidsGenerator.setPids(newPids, oldPids), oldPids + Constants.PERCENT);
     }
 
     @Override
@@ -111,41 +106,45 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public P findOne(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
         return mapper.selectOneByExample(weekend);
     }
 
     @Override
     public List<P> findLikePids(String pids) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andLike(P::getPids, pids + PERCENT);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andLike(P::getPids, pids + Constants.PERCENT);
         return mapper.selectByExample(weekend);
     }
 
     @Override
     public List<P> findList(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     /**
      * 查询数据
      */
     public List<P> findList(Weekend<P> weekend) {
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
     public List<P> findList(P po) {
-        return mapper.selectByRowBounds(po, new RowBounds(ZERO, THOUSAND));
+        return mapper.selectByRowBounds(po,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
     public List<P> findAll() {
-        offsetPage(ZERO, THOUSAND);
-        return mapper.selectAll();
+        try(Page<P> ignored = PageMethod.offsetPage(Constants.ZERO, Constants.THOUSAND)) {
+            return mapper.selectAll();
+        }
     }
 
     /**
@@ -163,19 +162,19 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public Integer count(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
         return mapper.selectCountByExample(weekend);
     }
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value) {
-        return mapper.existsByColumn(toFieldName(getter), value);
+        return mapper.existsByColumn(Reflection.toFieldName(getter), value);
     }
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value, I exceptId) {
-        return mapper.existsByColumnAndExcludeId(toFieldName(getter), value, exceptId);
+        return mapper.existsByColumnAndExcludeId(Reflection.toFieldName(getter), value, exceptId);
     }
 
     @Override
@@ -190,7 +189,8 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        return mapper.selectByExampleAndRowBounds(getWeekend(getter, values), new RowBounds(ZERO, THOUSAND));
+        return mapper.selectByExampleAndRowBounds(getWeekend(getter, values),
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
@@ -199,8 +199,8 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     }
 
     private Weekend<P> getWeekend(Functions<P, Object> getter, Collection<?> values) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andIn(toFieldName(getter), values);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andIn(Reflection.toFieldName(getter), values);
         return weekend;
     }
 

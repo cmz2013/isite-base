@@ -5,18 +5,18 @@ import org.isite.commons.cloud.converter.DataConverter;
 import org.isite.commons.lang.Assert;
 import org.isite.commons.lang.Constants;
 import org.isite.commons.web.exception.OverstepAccessError;
+import org.isite.fms.data.dto.ReceiptNoticeDto;
+import org.isite.fms.data.enums.PaymentType;
 import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.shop.po.CouponRecordPo;
 import org.isite.shop.po.SkuPo;
 import org.isite.shop.po.SpuPo;
 import org.isite.shop.po.TradeOrderItemPo;
 import org.isite.shop.po.TradeOrderPo;
-import org.isite.shop.support.dto.PayNoticeDto;
 import org.isite.shop.support.dto.TradeOrderGetDto;
 import org.isite.shop.support.dto.TradeOrderItemPostDto;
 import org.isite.shop.support.dto.TradeOrderSkuDto;
 import org.isite.shop.support.dto.TradeOrderSupplierDto;
-import org.isite.shop.support.enums.PaymentType;
 import org.isite.shop.support.enums.TradeStatus;
 import org.isite.user.data.vo.UserDetails;
 
@@ -57,14 +57,14 @@ public class TradeOrderConverter {
         return tradeOrderPo;
     }
 
-    public static TradeOrderPo toTradeOrderSelectivePo(Long orderId, PayNoticeDto payNoticeDto) {
+    public static TradeOrderPo toTradeOrderSelectivePo(Long orderId, ReceiptNoticeDto receiptNoticeDto) {
         TradeOrderPo tradeOrderPo = new TradeOrderPo();
         tradeOrderPo.setId(orderId);
         tradeOrderPo.setStatus(TradeStatus.SUCCESS);
-        tradeOrderPo.setServiceCharge(payNoticeDto.getServiceCharge());
-        tradeOrderPo.setPaymentType(payNoticeDto.getPaymentType());
-        tradeOrderPo.setPaymentNo(payNoticeDto.getPaymentNo());
-        tradeOrderPo.setPayTime(payNoticeDto.getPayTime());
+        tradeOrderPo.setServiceCharge(receiptNoticeDto.getServiceCharge());
+        tradeOrderPo.setPaymentType(receiptNoticeDto.getPaymentType());
+        tradeOrderPo.setPaymentNo(receiptNoticeDto.getPaymentNo());
+        tradeOrderPo.setPayTime(receiptNoticeDto.getPayTime());
         return tradeOrderPo;
     }
 

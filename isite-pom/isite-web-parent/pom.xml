@@ -41,6 +41,11 @@
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
+                <artifactId>isite-fms-data</artifactId>
+                <version>${isite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.isite</groupId>
                 <artifactId>isite-data-support</artifactId>
                 <version>${isite.version}</version>
             </dependency>

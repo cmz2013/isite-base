@@ -3,8 +3,7 @@ package org.isite.mybatis.mapper;
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.MapperTemplate;
-
-import static tk.mybatis.mapper.mapperhelper.SqlHelper.updateTable;
+import tk.mybatis.mapper.mapperhelper.SqlHelper;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -17,7 +16,7 @@ public class TreePidsProvider extends MapperTemplate {
 
     public String updatePids(MappedStatement mappedStatement) {
         Class<?> entityClass = this.getEntityClass(mappedStatement);
-        return updateTable(entityClass, this.tableName(entityClass)) +
+        return SqlHelper.updateTable(entityClass, this.tableName(entityClass)) +
                 updateSetColumns() +
                 whereColumns();
     }

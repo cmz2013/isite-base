@@ -1,9 +1,12 @@
 package org.isite.misc.controller;
 
+import org.isite.commons.cloud.converter.DataConverter;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.misc.converter.TagCategoryConverter;
+import org.isite.misc.data.constants.MiscUrls;
 import org.isite.misc.data.dto.TagCategoryDto;
 import org.isite.misc.data.vo.TagCategory;
 import org.isite.misc.po.TagCategoryPo;
@@ -17,11 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.misc.converter.TagCategoryConverter.toTagCategoryPo;
-import static org.isite.misc.data.constants.MiscUrls.URL_MISC;
-
 /**
  * @Description 标签Controller
  * @Author <font color='blue'>zhangcm</font>
@@ -34,28 +32,28 @@ public class TagCategoryController extends BaseController {
     /**
      * 查询标签分类
      */
-    @GetMapping(URL_MISC + "/tag/categories")
+    @GetMapping(MiscUrls.URL_MISC + "/tag/categories")
     public Result<List<TagCategory>> findTagCategories(TagCategoryDto tagCategoryDto) {
-        List<TagCategoryPo> tagCategoryPos = tagCategoryService.findList(convert(tagCategoryDto, TagCategoryPo::new));
-        return toResult(convert(tagCategoryPos, TagCategory::new));
+        List<TagCategoryPo> tagCategoryPos = tagCategoryService.findList(DataConverter.convert(tagCategoryDto, TagCategoryPo::new));
+        return toResult(DataConverter.convert(tagCategoryPos, TagCategory::new));
     }
 
     /**
      * 新增标签分类
      */
-    @PostMapping(URL_MISC + "/tag/category")
+    @PostMapping(MiscUrls.URL_MISC + "/tag/category")
     public Result<Integer> addTagCategory(
             @Validated(Add.class) @RequestBody TagCategoryDto tagCategoryDto) {
-        return toResult(tagCategoryService.insert(toTagCategoryPo(tagCategoryDto)));
+        return toResult(tagCategoryService.insert(TagCategoryConverter.toTagCategoryPo(tagCategoryDto)));
     }
 
     /**
      * 新增标签分类
      */
-    @PutMapping(URL_MISC + "/tag/category")
+    @PutMapping(MiscUrls.URL_MISC + "/tag/category")
     public Result<Integer> updateTagCategory(
             @Validated(Update.class) @RequestBody TagCategoryDto tagCategoryDto) {
-        return toResult(tagCategoryService.insert(toTagCategoryPo(tagCategoryDto)));
+        return toResult(tagCategoryService.insert(TagCategoryConverter.toTagCategoryPo(tagCategoryDto)));
     }
 
     @Autowired

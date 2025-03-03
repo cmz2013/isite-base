@@ -53,8 +53,8 @@
             <artifactId>isite-operation-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
+            <groupId>org.isite</groupId>
+            <artifactId>isite-fms-data</artifactId>
         </dependency>
     </dependencies>
 </project>

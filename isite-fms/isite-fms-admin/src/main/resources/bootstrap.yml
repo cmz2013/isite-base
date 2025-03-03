@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    #激活dev环境
+    active: dev
+server :
+  port : 7070
+
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      server-addr: isite-dev.com:8848
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: 00000001-0000-0000-0000-000000000000
+        group: DEFAULT_GROUP
+        metadata:
+          x-version: @project.version@
+      config:
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        group: ${spring.cloud.nacos.discovery.group}
+        file-extension: yml
+        extension-configs:
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-cloud.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-jetcache.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-sentinel-web.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-mybatis.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-rabbitmq.yml
+
+---
+spring:
+  profiles: test
+  cloud:
+    nacos:
+      server-addr: isite-test.com:8848
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: 00000001-0000-0000-0000-000000000000
+        group: DEFAULT_GROUP
+        metadata:
+          x-version: @project.version@
+      config:
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        group: ${spring.cloud.nacos.discovery.group}
+        file-extension: yml
+        extension-configs:
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-cloud.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-jetcache.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-sentinel-web.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-mybatis.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-rabbitmq.yml
+
+---
+spring:
+  profiles: pro
+  cloud:
+    nacos:
+      #在K8S集群中部署服务，敏感信息放在Secret中比放在容器镜像中来说更安全和灵活
+      server-addr: isite.com:8848
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: 00000001-0000-0000-0000-000000000000
+        group: DEFAULT_GROUP
+        metadata:
+          version : @project.version@
+      config:
+        namespace: ${spring.cloud.nacos.discovery.namespace}
+        group: ${spring.cloud.nacos.discovery.group}
+        file-extension: yml
+        extension-configs:
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-cloud.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-jetcache.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-sentinel-web.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-mybatis.yml
+          - group: ${spring.cloud.nacos.discovery.group}
+            data-id: isite-rabbitmq.yml

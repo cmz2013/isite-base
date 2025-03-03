@@ -1,11 +1,14 @@
 package org.isite.misc.controller;
 
 import com.github.pagehelper.Page;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.misc.data.constants.MiscUrls;
 import org.isite.misc.data.dto.TagRecordDto;
 import org.isite.misc.data.vo.TagRecord;
 import org.isite.misc.po.TagRecordPo;
@@ -16,12 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.misc.data.constants.MiscUrls.POST_TAG_RECORD;
-import static org.isite.misc.data.constants.MiscUrls.URL_MISC;
-
 /**
  * @Description 标签记录Controller
  * @Author <font color='blue'>zhangcm</font>
@@ -34,18 +31,18 @@ public class TagRecordController extends BaseController {
     /**
      * 保存标签记录
      */
-    @PostMapping(POST_TAG_RECORD)
+    @PostMapping(MiscUrls.POST_TAG_RECORD)
     public Result<Integer> addTagRecord(@RequestBody @Validated(Add.class) TagRecordDto recordDto) {
-        return toResult(tagRecordService.insert(convert(recordDto, TagRecordPo::new)));
+        return toResult(tagRecordService.insert(DataConverter.convert(recordDto, TagRecordPo::new)));
     }
 
     /**
      * 查询标签记录
      */
-    @GetMapping(URL_MISC + "/tag/records")
+    @GetMapping(MiscUrls.URL_MISC + "/tag/records")
     public PageResult<TagRecord> findPage(PageRequest<TagRecordDto> request) {
-        try (Page<TagRecordPo> page = tagRecordService.findPage(toPageQuery(request, TagRecordPo::new))) {
-            return toPageResult(request, convert(page.getResult(), TagRecord::new), page.getTotal());
+        try (Page<TagRecordPo> page = tagRecordService.findPage(PageQueryConverter.toPageQuery(request, TagRecordPo::new))) {
+            return toPageResult(request, DataConverter.convert(page.getResult(), TagRecord::new), page.getTotal());
         }
     }
 

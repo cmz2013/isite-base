@@ -2,10 +2,10 @@ package org.isite.shop.po;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.fms.data.enums.PaymentType;
 import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
 import org.isite.security.data.enums.ClientIdentifier;
-import org.isite.shop.support.enums.PaymentType;
 import org.isite.shop.support.enums.TradeStatus;
 import tk.mybatis.mapper.annotation.ColumnType;
 

@@ -1,6 +1,6 @@
 package org.isite.security.data.constants;
 
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 
 /**
  * @Description
@@ -49,15 +49,15 @@ public class SecurityUrls {
     /**
      * 注册用户信息
      */
-    public static final String API_POST_USER = URL_API + URL_OAUTH + "/user";
+    public static final String API_POST_USER = UrlConstants.URL_API + URL_OAUTH + "/user";
     /**
      * 更新用户密码
      */
-    public static final String API_PUT_USER_PASSWORD = URL_API + URL_OAUTH + "/user/password";
+    public static final String API_PUT_USER_PASSWORD = UrlConstants.URL_API + URL_OAUTH + "/user/password";
     /**
      * 获取验证码（不需要登录）
      */
-    public static final String API_GET_VERIFICATION_CODE = URL_API + URL_OAUTH + "/verificationCode";
+    public static final String API_GET_VERIFICATION_CODE = UrlConstants.URL_API + URL_OAUTH + "/verificationCode";
     /**
      * 校验验证码
      */

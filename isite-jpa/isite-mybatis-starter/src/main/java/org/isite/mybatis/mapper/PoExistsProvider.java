@@ -3,11 +3,7 @@ package org.isite.mybatis.mapper;
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.MapperTemplate;
-
-import static java.lang.String.format;
-import static tk.mybatis.mapper.mapperhelper.SqlHelper.fromTable;
-import static tk.mybatis.mapper.mapperhelper.SqlHelper.whereAllIfColumns;
-
+import tk.mybatis.mapper.mapperhelper.SqlHelper;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -23,32 +19,32 @@ public class PoExistsProvider extends MapperTemplate {
 
     public String existsByPo(MappedStatement mappedStatement) {
         Class<?> entityClass = this.getEntityClass(mappedStatement);
-        return format(SELECT_EXISTS, SELECT_ONE +
-                fromTable(entityClass, this.tableName(entityClass)) +
-                whereAllIfColumns(entityClass, this.isNotEmpty()) +
+        return String.format(SELECT_EXISTS, SELECT_ONE +
+                SqlHelper.fromTable(entityClass, this.tableName(entityClass)) +
+                SqlHelper.whereAllIfColumns(entityClass, this.isNotEmpty()) +
                 LIMIT_ONE);
     }
 
     public String existsByPoAndExcludeId(MappedStatement mappedStatement) {
         Class<?> entityClass = this.getEntityClass(mappedStatement);
-        return format(SELECT_EXISTS, SELECT_ONE +
-                fromTable(entityClass, this.tableName(entityClass)) +
-                whereAllIfColumns(entityClass, this.isNotEmpty()) + "AND id!= #{excludeId}" +
+        return String.format(SELECT_EXISTS, SELECT_ONE +
+                SqlHelper.fromTable(entityClass, this.tableName(entityClass)) +
+                SqlHelper.whereAllIfColumns(entityClass, this.isNotEmpty()) + "AND id!= #{excludeId}" +
                 LIMIT_ONE);
     }
 
     public String existsByColumn(MappedStatement mappedStatement) {
         Class<?> entityClass = this.getEntityClass(mappedStatement);
-        return format(SELECT_EXISTS, SELECT_ONE +
-                fromTable(entityClass, this.tableName(entityClass)) +
+        return String.format(SELECT_EXISTS, SELECT_ONE +
+                SqlHelper.fromTable(entityClass, this.tableName(entityClass)) +
                 "<where>${column} = #{value}</where>" +
                 LIMIT_ONE);
     }
 
     public String existsByColumnAndExcludeId(MappedStatement mappedStatement) {
         Class<?> entityClass = this.getEntityClass(mappedStatement);
-        return format(SELECT_EXISTS, SELECT_ONE +
-                fromTable(entityClass, this.tableName(entityClass)) +
+        return String.format(SELECT_EXISTS, SELECT_ONE +
+                SqlHelper.fromTable(entityClass, this.tableName(entityClass)) +
                 "<where>${column} = #{value} AND id!= #{excludeId}</where>" +
                 LIMIT_ONE);
     }

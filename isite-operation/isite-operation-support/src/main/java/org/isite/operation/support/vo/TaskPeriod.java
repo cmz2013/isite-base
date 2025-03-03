@@ -9,8 +9,6 @@ import org.isite.commons.lang.utils.DateUtils;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static java.time.temporal.ChronoUnit.MILLIS;
-
 /**
  * @Description 任务周期频率，例如：3天6次（unit=DAYS time=3 limit=6）
  * @Author <font color='blue'>zhangcm</font>
@@ -23,7 +21,7 @@ public class TaskPeriod implements Serializable {
      */
     private Long duration;
     /**
-     * 时间单位
+     * 时间单位。任务周期仅支持按天、小时、月、周、季度、年进行周期性执行，其他单位暂不支持
      */
     private ChronoUnit unit;
     /**
@@ -41,26 +39,24 @@ public class TaskPeriod implements Serializable {
         if (null == this.unit || null == this.duration) {
             return null;
         }
-        LocalDateTime dateTime = LocalDateTime.now().minus(
-                this.unit.getMillis() * (this.duration - Constants.ONE), MILLIS);
         switch (unit) {
             case HOUR: {
-                return DateUtils.startOfHour(dateTime);
+                return DateUtils.startOfHour(LocalDateTime.now().minusHours(this.duration - Constants.ONE));
             }
             case DAY: {
-                return DateUtils.startOfDay(dateTime);
+                return DateUtils.startOfDay(LocalDateTime.now().minusDays(this.duration - Constants.ONE));
             }
             case MONTH: {
-                return DateUtils.startOfMonth(dateTime);
+                return DateUtils.startOfMonth(LocalDateTime.now().minusMonths(this.duration - Constants.ONE));
             }
             case WEEK: {
-                return DateUtils.startOfWeek(dateTime);
+                return DateUtils.startOfWeek(LocalDateTime.now().minusWeeks(this.duration - Constants.ONE));
             }
             case QUARTER: {
-                return DateUtils.startOfQuarter(dateTime);
+                return DateUtils.startOfMonth(LocalDateTime.now().minusMonths(this.duration * Constants.THREE - Constants.ONE));
             }
             case YEAR: {
-                return DateUtils.startOfYear(dateTime);
+                return DateUtils.startOfYear(LocalDateTime.now().minusYears(this.duration - Constants.ONE));
             }
             default: return null;
         }

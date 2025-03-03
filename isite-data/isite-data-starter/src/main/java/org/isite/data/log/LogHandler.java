@@ -1,14 +1,12 @@
 package org.isite.data.log;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.data.support.constants.DataConstants;
 import org.isite.data.support.dto.DataLogDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static java.lang.Boolean.FALSE;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.isite.data.support.constants.DataConstants.QUEUE_DATA_LOG;
 
 /**
  * @Description 数据接口日志处理
@@ -43,10 +41,10 @@ public class LogHandler {
     public void handle(DataLogDto logDto) {
         try {
             //如果ID不为空，则为重试操作，重试接口同步返回最新日志
-            if (isNotBlank(logDto.getId())  || this.logStrategy.discard(logDto)) {
+            if (StringUtils.isNotBlank(logDto.getId())  || this.logStrategy.discard(logDto)) {
                 return;
             }
-            rabbitTemplate.convertAndSend(QUEUE_DATA_LOG, logDto);
+            rabbitTemplate.convertAndSend(DataConstants.QUEUE_DATA_LOG, logDto);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -59,7 +57,7 @@ public class LogHandler {
      */
     public void handle(DataLogDto logDto, Throwable e) {
         log.error(e.getMessage(), e);
-        logDto.setStatus(FALSE);
+        logDto.setStatus(Boolean.FALSE);
         logDto.setRemark(e.getClass().getName());
         handle(logDto);
     }

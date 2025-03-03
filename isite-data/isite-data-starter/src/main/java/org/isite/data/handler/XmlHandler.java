@@ -1,18 +1,15 @@
 package org.isite.data.handler;
 
 import lombok.SneakyThrows;
+import org.apache.commons.digester3.binder.DigesterLoader;
 import org.apache.commons.digester3.xmlrules.FromXmlRulesModule;
+import org.apache.commons.lang3.StringUtils;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.lang.file.FileUtils;
+import org.isite.commons.lang.template.xml.Thymeleaf;
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
-
-import static org.apache.commons.digester3.binder.DigesterLoader.newLoader;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.lang.file.FileUtils.EXTENSION_FTL;
-import static org.isite.commons.lang.file.FileUtils.EXTENSION_XML;
-import static org.isite.commons.lang.template.xml.Thymeleaf.process;
-
 /**
  * @Description xml数据接口的处理过程
  * @Author <font color='blue'>zhangcm</font>
@@ -30,13 +27,13 @@ public abstract class XmlHandler<P, R> extends DataHandler<P, R> {
 	@Override
 	@SneakyThrows
 	protected P toData(String data, Class<P> pClass) {
-		if (isBlank(data)) {
+		if (StringUtils.isBlank(data)) {
 			return null;
 		}
-		return newLoader(new FromXmlRulesModule() {
+		return DigesterLoader.newLoader(new FromXmlRulesModule() {
 			@Override
 			protected void loadRules() {
-				loadXMLRules(new InputSource(pClass.getResourceAsStream(pClass.getSimpleName() + EXTENSION_XML)));
+				loadXMLRules(new InputSource(pClass.getResourceAsStream(pClass.getSimpleName() + FileUtils.EXTENSION_XML)));
 			}
 		}).newDigester().parse(new ByteArrayInputStream(data.getBytes()));
 	}
@@ -51,8 +48,8 @@ public abstract class XmlHandler<P, R> extends DataHandler<P, R> {
 		if (null == result) {
 			return null;
 		}
-		return process(
-				result.getClass().getResourceAsStream(result.getClass().getSimpleName() + EXTENSION_FTL),
+		return Thymeleaf.process(
+				result.getClass().getResourceAsStream(result.getClass().getSimpleName() + FileUtils.EXTENSION_FTL),
 				result);
 	}
 }

@@ -72,6 +72,11 @@
             </dependency>
             <dependency>
                 <groupId>org.isite</groupId>
+                <artifactId>isite-fms-starter</artifactId>
+                <version>${isite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.isite</groupId>
                 <artifactId>isite-sentinel-web-starter</artifactId>
                 <version>${isite.version}</version>
             </dependency>

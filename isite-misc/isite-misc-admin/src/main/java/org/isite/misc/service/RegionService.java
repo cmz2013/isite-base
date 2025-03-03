@@ -1,6 +1,9 @@
 package org.isite.misc.service;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.enums.ActiveStatus;
+import org.isite.misc.converter.RegionConverter;
 import org.isite.misc.mapper.RegionMapper;
 import org.isite.misc.po.RegionPo;
 import org.isite.mybatis.service.TreePoService;
@@ -8,11 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.misc.converter.RegionConverter.toPcodes;
-
 /**
  * @Description 地区Service
  * @Author <font color='blue'>zhangcm</font>
@@ -40,12 +38,12 @@ public class RegionService extends TreePoService<RegionPo, Integer> {
      */
     public String getFullName(int id) {
         if (isRoot(id)) {
-            return BLANK_STR;
+            return Constants.BLANK_STR;
         }
         RegionPo regionPo = get(id);
         StringBuilder fullName = new StringBuilder();
-        List<String> codes = toPcodes(regionPo.getCode());
-        if (isNotEmpty(codes)) {
+        List<String> codes = RegionConverter.toPcodes(regionPo.getCode());
+        if (CollectionUtils.isNotEmpty(codes)) {
             List<RegionPo> regions = findIn(RegionPo::getCode, codes);
             codes.forEach(code -> {
                 for (RegionPo region : regions) {

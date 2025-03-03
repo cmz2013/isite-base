@@ -1,10 +1,8 @@
 package org.isite.data.mq;
 
+import org.isite.data.support.constants.DataConstants;
 import org.springframework.amqp.core.Queue;
 import org.springframework.stereotype.Component;
-
-import static org.isite.data.support.constants.DataConstants.QUEUE_DATA_LOG;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -22,6 +20,6 @@ public class DataLogQueue extends Queue {
          *
          * autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除
          */
-        super(QUEUE_DATA_LOG, true, false, false);
+        super(DataConstants.QUEUE_DATA_LOG, true, false, false);
     }
 }

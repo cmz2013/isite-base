@@ -8,7 +8,7 @@ import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description 租户信息
@@ -42,5 +42,5 @@ public class TenantPo extends Po<Integer> {
     /**
      * 到期时间
      */
-    private Date expireTime;
+    private LocalDateTime expireTime;
 }

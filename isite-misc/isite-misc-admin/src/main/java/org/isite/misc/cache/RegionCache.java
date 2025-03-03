@@ -1,23 +1,20 @@
 package org.isite.misc.cache;
 
+import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
+import org.isite.misc.converter.RegionConverter;
+import org.isite.misc.data.constants.CacheKeys;
 import org.isite.misc.data.vo.Region;
 import org.isite.misc.service.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import static com.alicp.jetcache.anno.CacheType.BOTH;
-import static java.util.stream.Collectors.toList;
-import static org.isite.commons.lang.Constants.DAY_SECOND;
-import static org.isite.commons.lang.Constants.MINUTE_SECOND;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.misc.converter.RegionConverter.toRegion;
-import static org.isite.misc.data.constants.CacheKeys.REGION_LIST_PREFIX;
-
+import java.util.stream.Collectors;
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Component
 public class RegionCache {
@@ -34,10 +31,12 @@ public class RegionCache {
      * 使用两级缓存（远程+本地），避免高频率访问redis
      * 修改地区的时候，需要根据pid删除缓存
      */
-    @Cached(name = REGION_LIST_PREFIX, key = "#pid", cacheType = BOTH, expire = DAY_SECOND, localExpire = MINUTE_SECOND)
+    @Cached(name = CacheKeys.REGION_LIST_PREFIX, key = "#pid", cacheType = CacheType.BOTH,
+            expire = Constants.DAY_SECOND, localExpire = Constants.MINUTE_SECOND)
     public List<Region> getRegionByPid(int pid) {
         String fullName = regionService.getFullName(pid);
-        return regionService.findByPid(pid, ENABLED).stream().map(regionPo ->
-                toRegion(regionPo, fullName + regionPo.getRegionName())).collect(toList());
+        return regionService.findByPid(pid, ActiveStatus.ENABLED).stream().map(regionPo ->
+                        RegionConverter.toRegion(regionPo, fullName + regionPo.getRegionName()))
+                .collect(Collectors.toList());
     }
 }

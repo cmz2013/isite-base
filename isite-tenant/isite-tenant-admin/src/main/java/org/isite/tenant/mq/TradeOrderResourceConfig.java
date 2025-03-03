@@ -1,15 +1,13 @@
 package org.isite.tenant.mq;
 
+import org.isite.shop.support.enums.SpuSupplier;
 import org.isite.shop.support.mq.TradeOrderExchange;
+import org.isite.tenant.data.constants.TenantConstants;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.isite.shop.support.enums.SpuSupplier.TENANT_RESOURCE;
-import static org.isite.tenant.data.constants.TenantConstants.QUEUE_TRADE_ORDER_SUCCESS_TENANT_RESOURCE;
-import static org.springframework.amqp.core.BindingBuilder.bind;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -27,11 +25,12 @@ public class TradeOrderResourceConfig {
          *
          * autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除
          */
-        return new Queue(QUEUE_TRADE_ORDER_SUCCESS_TENANT_RESOURCE, true, false, false);
+        return new Queue(TenantConstants.QUEUE_TRADE_ORDER_SUCCESS_TENANT_RESOURCE, true, false, false);
     }
 
     @Bean
     public Binding resourceSpuBinding(TradeOrderExchange tradeOrderExchange) {
-        return bind(tradeOrderResourceQueue()).to(tradeOrderExchange).with(TENANT_RESOURCE.getCode());
+        return BindingBuilder.bind(tradeOrderResourceQueue()).to(tradeOrderExchange)
+                .with(SpuSupplier.TENANT_RESOURCE.getCode());
     }
 }

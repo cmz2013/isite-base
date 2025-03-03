@@ -1,15 +1,12 @@
 package org.isite.data.log;
 
 import lombok.SneakyThrows;
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
 import org.isite.data.callback.DataCallback;
 import org.isite.data.handler.DataHandler;
 import org.isite.data.support.dto.DataLogDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static java.lang.Class.forName;
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -25,7 +22,7 @@ public class DataLogService {
 
     @SneakyThrows
     public DataLogDto retry(DataLogDto logDto) {
-        Object executor = getBean(forName(logDto.getApiClass()));
+        Object executor = ApplicationContextUtils.getBean(Class.forName(logDto.getApiClass()));
         logDto = executor instanceof DataHandler<?, ?> ?
                 ((DataHandler<?, ?>) executor).handle(logDto) :
                 ((DataCallback<?, ?>) executor).execute(logDto);

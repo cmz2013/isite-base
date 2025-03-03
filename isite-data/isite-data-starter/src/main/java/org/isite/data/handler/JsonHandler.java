@@ -1,10 +1,7 @@
 package org.isite.data.handler;
 
 import org.isite.commons.cloud.data.vo.Result;
-
-import static org.isite.commons.lang.json.Jackson.parseObject;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-
+import org.isite.commons.lang.json.Jackson;
 /**
  * @Description JSON数据接口处理过程
  * @Author <font color='blue'>zhangcm</font>
@@ -20,16 +17,16 @@ public abstract class JsonHandler<P, R> extends DataHandler<P, R> {
 	 */
 	@Override
 	protected String formatResult(Result<R> result) {
-		return toJsonString(result);
+		return Jackson.toJsonString(result);
 	}
 
 	@Override
 	protected P toData(String data, Class<P> pClass) {
-		return null == data ? null : parseObject(data, pClass);
+		return null == data ? null : Jackson.parseObject(data, pClass);
 	}
 
 	@Override
 	protected String formatData(P data) {
-		return toJsonString(data);
+		return Jackson.toJsonString(data);
 	}
 }

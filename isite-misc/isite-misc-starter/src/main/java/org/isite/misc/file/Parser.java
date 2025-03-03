@@ -3,14 +3,10 @@ package org.isite.misc.file;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.isite.misc.data.enums.FileStatus;
 import org.isite.misc.data.vo.FileRecord;
 
 import java.io.InputStream;
-
-import static java.lang.Boolean.TRUE;
-import static org.isite.misc.data.enums.FileStatus.PARSE_FAILURE;
-import static org.isite.misc.data.enums.FileStatus.PARSE_SUCCESS;
-
 /**
  * @Description 解析文件
  * @Author <font color='blue'>zhangcm</font>
@@ -23,7 +19,7 @@ public abstract class Parser<T> {
     /**
      * @Description 是否异步解析
      */
-    private boolean async = TRUE;
+    private boolean async = Boolean.TRUE;
 
     /**
      * @Description 解析文件
@@ -32,10 +28,10 @@ public abstract class Parser<T> {
      */
     public FileRecord execute(FileRecord fileRecord, InputStream input) {
         try {
-            fileRecord.setStatus(handle(toData(input)) ? PARSE_SUCCESS : PARSE_FAILURE);
+            fileRecord.setStatus(handle(toData(input)) ? FileStatus.PARSE_SUCCESS : FileStatus.PARSE_FAILURE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            fileRecord.setStatus(PARSE_FAILURE);
+            fileRecord.setStatus(FileStatus.PARSE_FAILURE);
             fileRecord.setRemark(e.getMessage());
         }
         return fileRecord;
