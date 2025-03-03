@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.isite.commons.lang.Assert.isTrue;
 import static org.isite.commons.lang.Constants.ZERO;
@@ -30,7 +30,7 @@ public class ScoreTaskExecutor extends TaskExecutor<ScoreRecordPo> {
     private ScoreRecordService scoreRecordService;
 
     @Override
-    protected long countTaskRecord(int activityId, int taskId, @Nullable Date startTime, long userId) {
+    protected long countTaskRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long userId) {
         return scoreRecordService.countScoreRecord(activityId, taskId, startTime, userId);
     }
 
@@ -65,6 +65,6 @@ public class ScoreTaskExecutor extends TaskExecutor<ScoreRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { USER_SCORE };
+        return new TaskType[] {USER_SCORE};
     }
 }

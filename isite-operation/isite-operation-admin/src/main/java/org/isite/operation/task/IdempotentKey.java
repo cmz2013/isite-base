@@ -1,15 +1,11 @@
 package org.isite.operation.task;
 
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.DateUtils;
 import org.springframework.lang.Nullable;
 
-import java.util.Date;
-
-import static org.isite.commons.lang.Constants.COLON;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.DateUtils.PATTERN_DATETIME;
-import static org.isite.commons.lang.utils.DateUtils.formatDate;
-import static org.isite.commons.lang.utils.StringUtils.join;
-
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -21,9 +17,9 @@ public class IdempotentKey {
     /**
      * 任务记录幂等KEY的五元素：活动ID、任务ID、任务周期（0：代表无任务周期）、用户ID、任务编号
      */
-    public static String toValue(int activityId, int taskId, @Nullable Date periodStartTime,
+    public static String toValue(int activityId, int taskId, @Nullable LocalDateTime periodStartTime,
                                   long userId, long taskNumber) {
-        return join(COLON, activityId, taskId, null != periodStartTime ?
-                        formatDate(periodStartTime, PATTERN_DATETIME) : ZERO, userId, taskNumber);
+        return StringUtils.join(Constants.COLON, activityId, taskId, null != periodStartTime ?
+                        DateUtils.format(periodStartTime, DateUtils.PATTERN_DATETIME) : Constants.ZERO, userId, taskNumber);
     }
 }

@@ -1,13 +1,12 @@
 package org.isite.security.client;
 
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.cloud.utils.ResultUtils;
 import org.isite.commons.web.feign.FeignClientFactory;
+import org.isite.security.data.constants.SecurityConstants;
 import org.isite.security.data.vo.OauthClient;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.cloud.utils.ResultUtils.getData;
-import static org.isite.security.data.constants.SecurityConstants.SERVICE_ID;
 
 /**
  * @Description EndpointClient 辅助类
@@ -23,8 +22,8 @@ public class EndpointAccessor {
      * 查询客户端名称
      */
     public static List<OauthClient> findOauthClients(List<String> clientIds) {
-        FeignClientFactory feignClientFactory = getBean(FeignClientFactory.class);
-        EndpointClient endpointClient = feignClientFactory.getFeignClient(EndpointClient.class, SERVICE_ID);
-        return getData(endpointClient.findOauthClients(clientIds));
+        FeignClientFactory feignClientFactory = ApplicationContextUtils.getBean(FeignClientFactory.class);
+        EndpointClient endpointClient = feignClientFactory.getFeignClient(EndpointClient.class, SecurityConstants.SERVICE_ID);
+        return ResultUtils.getData(endpointClient.findOauthClients(clientIds));
     }
 }

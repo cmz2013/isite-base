@@ -142,6 +142,36 @@ public class DateUtils {
 	}
 
 	/**
+	 * 获取当前小时的开始时间
+	 */
+	public static LocalDateTime startOfHour() {
+		return startOfHour(LocalDateTime.now());
+	}
+
+	/**
+	 * 获取小时的开始时间
+	 */
+	public static LocalDateTime startOfHour(LocalDateTime date) {
+		//1毫秒等于 100 0000 纳秒
+		return date.withMinute(Constants.ZERO).withSecond(Constants.ZERO).withNano(Constants.ZERO);
+	}
+
+	/**
+	 * 获取当前小时的结束时间
+	 */
+	public static LocalDateTime endOfHour() {
+		return endOfHour(LocalDateTime.now());
+	}
+
+	/**
+	 * 获取小时的结束时间
+	 */
+	public static LocalDateTime endOfHour(LocalDateTime date) {
+		return startOfHour(date).plusHours(Constants.ONE).minus(Constants.ONE, ChronoUnit.MILLIS);
+	}
+
+
+	/**
 	 * 获取当前天的开始时间
 	 */
 	public static LocalDateTime startOfDay() {
@@ -172,36 +202,50 @@ public class DateUtils {
 	/**
 	 * 获取当前周的开始日期
 	 */
-	public static LocalDate startOfWeek() {
-		return startOfWeek(LocalDate.now());
+	public static LocalDateTime startOfWeek() {
+		return startOfWeek(LocalDateTime.now());
 	}
 
 	/**
 	 * 获取周的开始时间
 	 */
-	public static LocalDate startOfWeek(LocalDate date) {
-		return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+	public static LocalDateTime startOfWeek(LocalDateTime date) {
+		return date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).with(LocalTime.MIN);
 	}
 
 	/**
 	 * 获取当前周的结束时间
 	 */
-	public static LocalDate endOfWeek() {
-		return endOfWeek(LocalDate.now());
+	public static LocalDateTime endOfWeek() {
+		return endOfWeek(LocalDateTime.now());
 	}
 
 	/**
 	 * 获取周的结束时间
 	 */
-	public static LocalDate endOfWeek(LocalDate date) {
-		return date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+	public static LocalDateTime endOfWeek(LocalDateTime date) {
+		return date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).with(LocalTime.MAX);
+	}
+
+	/**
+	 * 获取当前月的开始日期
+	 */
+	public static LocalDateTime startOfMonth() {
+		return startOfMonth(LocalDateTime.now());
+	}
+
+	/**
+	 * 获取月的开始时间
+	 */
+	public static LocalDateTime startOfMonth(LocalDateTime date) {
+		return date.with(TemporalAdjusters.firstDayOfMonth()).with(LocalTime.MIN);
 	}
 
 	/**
 	 * 获取当前月的结束时间
 	 */
-	public static LocalDate endOfMonth() {
-		return endOfMonth(LocalDate.now());
+	public static LocalDateTime endOfMonth() {
+		return endOfMonth(LocalDateTime.now());
 	}
 
 	/**
@@ -210,52 +254,67 @@ public class DateUtils {
 	 * 4月、6月、9月、11月各是30天。
 	 * 1月、3月、5月、7月、8月、10月、12月各是31天。
 	 */
-	public static LocalDate endOfMonth(LocalDate date) {
-		return YearMonth.from(date).atEndOfMonth();
+	public static LocalDateTime endOfMonth(LocalDateTime date) {
+		return date.with(TemporalAdjusters.lastDayOfMonth()).with(LocalTime.MAX);
 	}
 
 	/**
 	 * 当前季度的开始时间
 	 */
-	public static LocalDate startOfQuarter() {
-		return startOfQuarter(LocalDate.now());
+	public static LocalDateTime startOfQuarter() {
+		return startOfQuarter(LocalDateTime.now());
 	}
 
 	/**
 	 * 季度的开始时间
 	 */
-	public static LocalDate startOfQuarter(LocalDate date) {
+	public static LocalDateTime startOfQuarter(LocalDateTime date) {
 		int month = (date.getMonthValue() - Constants.ONE) / Constants.THREE * Constants.THREE + Constants.ONE;
-		return LocalDate.of(date.getYear(), month, Constants.ONE);
+		return LocalDateTime.of(date.getYear(), month,
+				Constants.ONE, Constants.ZERO, Constants.ZERO, Constants.ZERO, Constants.ZERO);
 	}
 
 	/**
 	 * 当前季度的结束时间
 	 */
-	public static LocalDate endOfQuarter() {
-		return endOfQuarter(LocalDate.now());
+	public static LocalDateTime endOfQuarter() {
+		return endOfQuarter(LocalDateTime.now());
 	}
 
 	/**
 	 * 季度的结束时间
 	 */
-	public static LocalDate endOfQuarter(LocalDate date) {
+	public static LocalDateTime endOfQuarter(LocalDateTime date) {
 		int month = ((date.getMonthValue() - Constants.ONE) / Constants.THREE + Constants.ONE) * Constants.THREE;
-		return date.withMonth(month).with(TemporalAdjusters.lastDayOfMonth());
+		return date.withMonth(month).with(TemporalAdjusters.lastDayOfMonth()).with(LocalTime.MAX);
+	}
+
+	/**
+	 * 当前年的开始时间
+	 */
+	public static LocalDateTime startOfYear() {
+		return startOfYear(LocalDateTime.now());
+	}
+
+	/**
+	 * 年的开始时间
+	 */
+	public static LocalDateTime startOfYear(LocalDateTime date) {
+		return date.with(TemporalAdjusters.firstDayOfYear()).with(LocalTime.MIN);
 	}
 
 	/**
 	 * 当前年的结束时间
 	 */
-	public static LocalDate endOfYear() {
-		return endOfYear(LocalDate.now());
+	public static LocalDateTime endOfYear() {
+		return endOfYear(LocalDateTime.now());
 	}
 
 	/**
 	 * 年的结束时间
 	 */
-	public static LocalDate endOfYear(LocalDate date) {
-		return date.with(TemporalAdjusters.lastDayOfYear());
+	public static LocalDateTime endOfYear(LocalDateTime date) {
+		return date.with(TemporalAdjusters.lastDayOfYear()).with(LocalTime.MAX);
 	}
 
 	public static LocalDate parseDate(String source, String pattern) {

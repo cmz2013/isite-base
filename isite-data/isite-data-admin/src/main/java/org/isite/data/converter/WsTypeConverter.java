@@ -1,13 +1,12 @@
 package org.isite.data.converter;
 
+import org.isite.commons.lang.enums.Enumerable;
 import org.isite.data.support.enums.WsType;
 import org.isite.mongo.converter.MongoConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.stereotype.Component;
-
-import static org.isite.commons.lang.enums.Enumerable.getByCode;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -29,7 +28,7 @@ public class WsTypeConverter extends MongoConverter<WsType, Integer> {
     public static class WsTypeReading implements Converter<Integer, WsType> {
         @Override
         public WsType convert(Integer code) {
-            return getByCode(WsType.class, code);
+            return Enumerable.getByCode(WsType.class, code);
         }
     }
 

@@ -1,22 +1,18 @@
 package org.isite.data.service;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.DateUtils;
 import org.isite.data.cache.ReportCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Long.parseLong;
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.apache.commons.collections4.MapUtils.isNotEmpty;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.DateUtils.formatDate;
-import static org.isite.commons.lang.utils.DateUtils.getCalendar;
-import static org.isite.commons.lang.utils.DateUtils.getTimeBeforeHour;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -35,8 +31,8 @@ public class ReportService {
     @Async
     public void saveCallDetail(String key) {
         Map<Long, Integer> callDetail = getCallDetail(key);
-        long currTime = parseLong(formatDate(getCalendar().getTime(), DATA_CALL_KEY_PATTERN));
-        callDetail.put(currTime, callDetail.getOrDefault(currTime, ZERO) + ONE);
+        long currTime = Long.parseLong(DateUtils.format(LocalDateTime.now(), DATA_CALL_KEY_PATTERN));
+        callDetail.put(currTime, callDetail.getOrDefault(currTime, Constants.ZERO) + Constants.ONE);
         reportCache.saveCallDetail(key, callDetail);
     }
 
@@ -44,15 +40,16 @@ public class ReportService {
      * 删除接口调用1小时之前的数据
      */
     private void removeExpired(Map<Long, Integer> callDetail) {
-        long minTime = parseLong(formatDate(getTimeBeforeHour(ONE), DATA_CALL_KEY_PATTERN));
-        if (isNotEmpty(callDetail)) {
+        long minTime = Long.parseLong(DateUtils.format(
+                LocalDateTime.now().minusHours(Constants.ONE), DATA_CALL_KEY_PATTERN));
+        if (MapUtils.isNotEmpty(callDetail)) {
             List<Long> expiredTimes = new ArrayList<>();
             callDetail.keySet().forEach(time -> {
                 if (time < minTime) {
                     expiredTimes.add(time);
                 }
             });
-            if (isNotEmpty(expiredTimes)) {
+            if (CollectionUtils.isNotEmpty(expiredTimes)) {
                 expiredTimes.forEach(callDetail::remove);
             }
         }

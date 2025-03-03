@@ -33,6 +33,6 @@ public class PrizeCodeGiver extends PrizeGiver {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[] { PRIZE_CODE };
+        return new PrizeType[] {PRIZE_CODE};
     }
 }

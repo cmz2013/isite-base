@@ -1,13 +1,12 @@
 package org.isite.data.converter;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.isite.data.support.vo.Host;
 import org.springframework.cloud.client.ServiceInstance;
 
+import java.util.Collections;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import java.util.stream.Collectors;
 
 public class HostConverter {
 
@@ -15,7 +14,7 @@ public class HostConverter {
     }
 
     public static List<Host> toHosts(List<ServiceInstance> servers) {
-        return isEmpty(servers) ? emptyList() : servers.stream().map(server ->
-                new Host(server.getHost(), server.getPort())).collect(toList());
+        return CollectionUtils.isEmpty(servers) ? Collections.emptyList() : servers.stream().map(server ->
+                new Host(server.getHost(), server.getPort())).collect(Collectors.toList());
     }
 }

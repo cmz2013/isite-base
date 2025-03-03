@@ -8,7 +8,7 @@ public class DataConstants {
 
     private DataConstants() {
     }
-    public static final String SERVICE_ID = "data-admin";
+    public static final String SERVICE_ID = "isite-data-admin";
     /**
      * MQ队列：数据接口日志消息队列
      */

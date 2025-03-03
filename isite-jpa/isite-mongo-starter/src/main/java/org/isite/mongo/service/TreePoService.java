@@ -1,38 +1,27 @@
 package org.isite.mongo.service;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import lombok.Getter;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Functions;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.jpa.data.JpaConstants;
 import org.isite.jpa.service.TreeModelService;
+import org.isite.mongo.converter.QueryConverter;
+import org.isite.mongo.converter.UpdateConverter;
 import org.isite.mongo.data.TreePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Collection;
 import java.util.List;
-
-import static com.mongodb.client.model.Filters.regex;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.DOLLAR;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.JpaConstants.FIELD_CREATE_TIME;
-import static org.isite.jpa.data.JpaConstants.FIELD_ID;
-import static org.isite.jpa.data.JpaConstants.FIELD_PIDS;
-import static org.isite.jpa.data.JpaConstants.FIELD_UPDATE_TIME;
-import static org.isite.mongo.converter.QueryConverter.toQuery;
-import static org.isite.mongo.converter.QueryConverter.toQuerySelective;
-import static org.isite.mongo.converter.UpdateConverter.toUpdate;
-import static org.isite.mongo.converter.UpdateConverter.toUpdateSelective;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -49,7 +38,7 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(getClass(), TreePoService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(getClass(), TreePoService.class));
     }
 
     /**
@@ -63,7 +52,7 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     protected Long doInsert(P po) {
         po.setPids(getPids(po.getPid()));
         mongoTemplate.insert(po);
-        return (long) ONE;
+        return 1L;
     }
 
     /**
@@ -73,15 +62,16 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     protected Long doUpdateById(P newPo) {
         P oldPo = get(newPo.getId());
-        notNull(oldPo, "id not found: " + newPo.getId());
-        long results = ZERO;
+        Assert.notNull(oldPo, "id not found: " + newPo.getId());
+        long results = Constants.ZERO;
         if (!newPo.getPid().equals(oldPo.getPid())) {
             newPo.setPids(getPids(newPo.getPid()));
             results = updatePids(getPids(newPo), getPids(oldPo));
         }
         return results + mongoTemplate.updateFirst(
-                query(where(FIELD_ID).is(newPo.getId())),
-                toUpdate(newPo, FIELD_ID, FIELD_CREATE_TIME, FIELD_UPDATE_TIME),
+                Query.query(Criteria.where(JpaConstants.FIELD_ID).is(newPo.getId())),
+                UpdateConverter.toUpdate(newPo,
+                        JpaConstants.FIELD_ID, JpaConstants.FIELD_CREATE_TIME, JpaConstants.FIELD_UPDATE_TIME),
                 getPoClass()).getModifiedCount();
     }
 
@@ -92,15 +82,16 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     @Override
     protected Long doUpdateSelectiveById(P newPo) {
         P oldPo = get(newPo.getId());
-        notNull(oldPo, "id not found: " + newPo.getId());
-        long results = ZERO;
+        Assert.notNull(oldPo, "id not found: " + newPo.getId());
+        long results = Constants.ZERO;
         if (null != newPo.getPid() && !newPo.getPid().equals(oldPo.getPid())) {
             newPo.setPids(getPids(newPo.getPid()));
             results = updatePids(getPids(newPo), getPids(oldPo));
         }
         return results + mongoTemplate.updateFirst(
-                query(where(FIELD_ID).is(newPo.getId())),
-                toUpdateSelective(newPo, FIELD_ID, FIELD_CREATE_TIME, FIELD_UPDATE_TIME),
+                Query.query(Criteria.where(JpaConstants.FIELD_ID).is(newPo.getId())),
+                UpdateConverter.toUpdateSelective(newPo,
+                        JpaConstants.FIELD_ID, JpaConstants.FIELD_CREATE_TIME, JpaConstants.FIELD_UPDATE_TIME),
                 getPoClass()).getModifiedCount();
     }
 
@@ -114,16 +105,16 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
     private Long updatePids(String newPids, String oldPids) {
         String collectionName = mongoTemplate.getCollectionName(getPoClass());
         MongoCollection<Document> collection = mongoTemplate.getCollection(collectionName);
-        Bson filter = regex(FIELD_PIDS, "^" + oldPids);
-        Bson update = new Document("$set", new Document(FIELD_PIDS,
+        Bson filter = Filters.regex(JpaConstants.FIELD_PIDS, "^" + oldPids);
+        Bson update = new Document("$set", new Document(JpaConstants.FIELD_PIDS,
                 new Document("$concat", new Object[] {newPids, new Document("$substr",
-                        new Object[] {DOLLAR + FIELD_PIDS, oldPids.length() + ONE})})));
+                        new Object[] {Constants.DOLLAR + JpaConstants.FIELD_PIDS, oldPids.length() + Constants.ONE})})));
         return collection.updateMany(filter, update).getModifiedCount();
     }
 
     @Override
     public Long count(P po) {
-        return mongoTemplate.count(toQuerySelective(po), getPoClass());
+        return mongoTemplate.count(QueryConverter.toQuerySelective(po), getPoClass());
     }
 
     @Override
@@ -133,7 +124,7 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public Long count(Functions<P, Object> getter, Object value) {
-        return mongoTemplate.count(toQuery(getter, value), getPoClass());
+        return mongoTemplate.count(QueryConverter.toQuery(getter, value), getPoClass());
     }
 
     /**
@@ -150,64 +141,66 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
 
     @Override
     public P findOne(P po) {
-        return mongoTemplate.findOne(toQuerySelective(po), getPoClass());
+        return mongoTemplate.findOne(QueryConverter.toQuerySelective(po), getPoClass());
     }
 
     @Override
     public P findOne(Functions<P, Object> getter, Object value) {
-        return mongoTemplate.findOne(toQuery(getter, value), getPoClass());
+        return mongoTemplate.findOne(QueryConverter.toQuery(getter, value), getPoClass());
     }
 
     @Override
     public List<P> findList(P po) {
-        return mongoTemplate.find(toQuerySelective(po), getPoClass());
+        return mongoTemplate.find(QueryConverter.toQuerySelective(po), getPoClass());
     }
 
     @Override
     public List<P> findAll() {
-        return mongoTemplate.find(new Query().limit(THOUSAND), getPoClass());
+        return mongoTemplate.find(new Query().limit(Constants.THOUSAND), getPoClass());
     }
 
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        return mongoTemplate.find(toQuery(getter, values), getPoClass());
+        return mongoTemplate.find(QueryConverter.toQuery(getter, values), getPoClass());
     }
 
     @Override
     public Long countIn(Functions<P, Object> getter, Collection<?> values) {
-        return mongoTemplate.count(toQuery(getter, values), getPoClass());
+        return mongoTemplate.count(QueryConverter.toQuery(getter, values), getPoClass());
     }
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value) {
-        return mongoTemplate.exists(toQuery(getter, value), getPoClass());
+        return mongoTemplate.exists(QueryConverter.toQuery(getter, value), getPoClass());
     }
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value, I exceptId) {
-        return mongoTemplate.exists(toQuery(getter, value)
-                .addCriteria(where(FIELD_ID).ne(exceptId)), getPoClass());
+        return mongoTemplate.exists(QueryConverter.toQuery(getter, value)
+                .addCriteria(Criteria.where(JpaConstants.FIELD_ID).ne(exceptId)), getPoClass());
     }
 
     @Override
     public boolean exists(P po) {
-        return mongoTemplate.exists(toQuerySelective(po), getPoClass());
+        return mongoTemplate.exists(QueryConverter.toQuerySelective(po), getPoClass());
     }
 
     @Override
     public boolean exists(P po, I exceptId) {
-        return mongoTemplate.exists(toQuerySelective(po)
-                .addCriteria(where(FIELD_ID).ne(exceptId)), getPoClass());
+        return mongoTemplate.exists(QueryConverter.toQuerySelective(po)
+                .addCriteria(Criteria.where(JpaConstants.FIELD_ID).ne(exceptId)), getPoClass());
     }
 
     @Override
     public List<P> findList(Functions<P, Object> getter, Object value) {
-        return mongoTemplate.find(toQuery(getter, value).limit(THOUSAND), getPoClass());
+        return mongoTemplate.find(QueryConverter.toQuery(getter, value).limit(Constants.THOUSAND), getPoClass());
     }
 
     @Override
     public List<P> findLikePids(String pids) {
-        return mongoTemplate.find(query(where(FIELD_PIDS).regex("^" + pids)), getPoClass());
+        return mongoTemplate.find(
+                Query.query(Criteria.where(JpaConstants.FIELD_PIDS).regex("^" + pids)),
+                getPoClass());
     }
 
     /**
@@ -215,8 +208,10 @@ public class TreePoService<P extends TreePo<I>, I> extends TreeModelService<P, I
      */
     @Override
     protected Long doDelete(I id) {
-        return mongoTemplate.remove(query(where(FIELD_ID).is(id)), getPoClass()).getDeletedCount() +
-                mongoTemplate.remove(query(where(FIELD_PIDS).regex("^" + getPids(id))), getPoClass()).getDeletedCount();
+        return mongoTemplate.remove(Query.query(Criteria.where(JpaConstants.FIELD_ID).is(id)), getPoClass())
+                .getDeletedCount() + mongoTemplate.remove(
+                        Query.query(Criteria.where(JpaConstants.FIELD_PIDS).regex("^" + getPids(id))), getPoClass())
+                .getDeletedCount();
     }
 
     @Autowired

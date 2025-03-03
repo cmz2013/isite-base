@@ -45,6 +45,6 @@ public class SignScoreExecutor extends ScoreTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { OPERATION_SIGN_SCORE };
+        return new TaskType[] {OPERATION_SIGN_SCORE};
     }
 }

@@ -1,8 +1,14 @@
 package org.isite.mybatis.service;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.page.PageMethod;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Functions;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.jpa.data.Direction;
 import org.isite.jpa.data.ListQuery;
 import org.isite.jpa.data.Order;
 import org.isite.jpa.data.PageQuery;
@@ -14,18 +20,6 @@ import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.util.Collection;
 import java.util.List;
-
-import static com.github.pagehelper.page.PageMethod.offsetPage;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getFields;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.Reflection.getValue;
-import static org.isite.commons.lang.Reflection.toFieldName;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.Direction.ASC;
-import static tk.mybatis.mapper.weekend.Weekend.of;
 
 /**
  * @param <P> PO
@@ -45,7 +39,7 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
 
     @Override
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(this.getClass(), PoService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(this.getClass(), PoService.class));
     }
 
     @Override
@@ -93,34 +87,38 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
 
     @Override
     public P findOne(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
         return mapper.selectOneByExample(weekend);
     }
 
     @Override
     public List<P> findList(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     /**
      * 查询数据
      */
     public List<P> findList(Weekend<P> weekend) {
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
     public List<P> findList(P po) {
-        return mapper.selectByRowBounds(po, new RowBounds(ZERO, THOUSAND));
+        return mapper.selectByRowBounds(po,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
     public List<P> findAll() {
-        offsetPage(ZERO, THOUSAND);
-        return mapper.selectAll();
+        try (Page<P> ignored = PageMethod.offsetPage(Constants.ZERO, Constants.THOUSAND)) {
+            return mapper.selectAll();
+        }
     }
 
     @Override
@@ -135,12 +133,12 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value) {
-        return mapper.existsByColumn(toFieldName(getter), value);
+        return mapper.existsByColumn(Reflection.toFieldName(getter), value);
     }
 
     @Override
     public boolean exists(Functions<P, Object> getter, Object value, I excludeId) {
-        return mapper.existsByColumnAndExcludeId(toFieldName(getter), value, excludeId);
+        return mapper.existsByColumnAndExcludeId(Reflection.toFieldName(getter), value, excludeId);
     }
 
     /**
@@ -158,8 +156,8 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
 
     @Override
     public Integer count(Functions<P, Object> getter, Object value) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andEqualTo(toFieldName(getter), value);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andEqualTo(Reflection.toFieldName(getter), value);
         return mapper.selectCountByExample(weekend);
     }
 
@@ -176,30 +174,31 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
     @Override
     public Page<P> findPage(PageQuery<P> pageQuery) {
         //当前线程紧跟着的第一个select方法会被分页
-        Page<P> page = offsetPage(pageQuery.getOffset(), pageQuery.getPageSize());
-        String orderBy = pageQuery.orderBy();
-        if (isNotBlank(orderBy)) {
-            page.setOrderBy(orderBy);
+        try(Page<P> page = PageMethod.offsetPage(pageQuery.getOffset(), pageQuery.getPageSize())) {
+            String orderBy = pageQuery.orderBy();
+            if (StringUtils.isNotBlank(orderBy)) {
+                page.setOrderBy(orderBy);
+            }
+            return (Page<P>) mapper.select(pageQuery.getPo());
         }
-        return (Page<P>) mapper.select(pageQuery.getPo());
     }
 
     @Override
     public List<P> findList(ListQuery<P> listQuery) {
-        Weekend<P> weekend = of(this.getPoClass());
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
         Order order = listQuery.getOrder();
         WeekendCriteria<P, Object> criteria = weekend.weekendCriteria();
         if (null != listQuery.getPo()) {
-            getFields(getPoClass()).forEach(field -> {
+            Reflection.getFields(getPoClass()).forEach(field -> {
                 if (!field.getName().equals(order.getField())) {
-                    Object value = getValue(listQuery.getPo(), field);
+                    Object value = Reflection.getValue(listQuery.getPo(), field);
                     if (null != value) {
                         criteria.andEqualTo(field.getName(), value);
                     }
                 }
             });
         }
-        if (ASC.equals(order.getDirection())) {
+        if (Direction.ASC.equals(order.getDirection())) {
             if (null != listQuery.getIndex()) {
                 criteria.andGreaterThan(order.getField(), listQuery.getIndex());
             }
@@ -210,7 +209,8 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
             }
             weekend.orderBy(order.getField()).desc();
         }
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, listQuery.getPageSize()));
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, listQuery.getPageSize()));
     }
 
     /**
@@ -221,15 +221,16 @@ public class PoService<P extends Po<I>, I> extends ModelService<P, I, Integer> {
      */
     @Override
     public List<P> findIn(Functions<P, Object> getter, Collection<?> values) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andIn(toFieldName(getter), values);
-        return mapper.selectByExampleAndRowBounds(weekend, new RowBounds(ZERO, THOUSAND));
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andIn(Reflection.toFieldName(getter), values);
+        return mapper.selectByExampleAndRowBounds(weekend,
+                new RowBounds(Constants.ZERO, Constants.THOUSAND));
     }
 
     @Override
     public Integer countIn(Functions<P, Object> getter, Collection<?> values) {
-        Weekend<P> weekend = of(this.getPoClass());
-        weekend.weekendCriteria().andIn(toFieldName(getter), values);
+        Weekend<P> weekend = Weekend.of(this.getPoClass());
+        weekend.weekendCriteria().andIn(Reflection.toFieldName(getter), values);
         return mapper.selectCountByExample(weekend);
     }
 

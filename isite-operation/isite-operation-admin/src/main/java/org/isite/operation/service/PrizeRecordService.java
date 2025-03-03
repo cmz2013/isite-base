@@ -19,6 +19,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -135,7 +136,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
     /**
      * 统计在当前任务周期内完成的奖品记录个数
      */
-    public int countPrizeRecord(Integer activityId, Integer taskId, @Nullable Date startTime, Long userId) {
+    public int countPrizeRecord(Integer activityId, Integer taskId, @Nullable LocalDateTime startTime, Long userId) {
         Weekend<PrizeRecordPo> weekend = of(PrizeRecordPo.class);
         WeekendCriteria<PrizeRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(PrizeRecordPo::getUserId, userId)

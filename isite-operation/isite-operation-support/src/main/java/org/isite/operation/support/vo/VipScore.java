@@ -8,17 +8,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ScoreView {
+public class VipScore {
     //可用的总积分
     private int totalScore;
     //快要过期的积分
     private int aboutToExpire;
 
-    public ScoreView(int totalScore) {
+    public VipScore(int totalScore) {
         this.totalScore = totalScore;
     }
 
-    public ScoreView(int totalScore, int aboutToExpire) {
+    public VipScore(int totalScore, int aboutToExpire) {
         this.totalScore = totalScore;
         this.aboutToExpire = aboutToExpire;
     }

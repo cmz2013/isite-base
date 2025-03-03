@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static java.lang.Boolean.TRUE;
@@ -48,7 +49,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             return;
         }
         Integer limit = null;
-        Date startTime = null;
+        LocalDateTime startTime = null;
         if (null != task.getTaskPeriod()) {
             startTime = task.getTaskPeriod().getStartTime();
             limit = task.getTaskPeriod().getLimit();
@@ -87,7 +88,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * 创建任务参与记录
      */
     protected P createTaskRecord(EventDto eventDto, Activity activity,
-                                 Task task, Date periodStartTime, long taskNumber) {
+                                 Task task, LocalDateTime periodStartTime, long taskNumber) {
         try {
             Class<P> rClass = getTaskRecordClass();
             P taskRecord = rClass.getDeclaredConstructor().newInstance();
@@ -144,7 +145,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @return 任务号
      */
     protected long getTaskNumber(
-            int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
+            int activityId, int taskId, LocalDateTime periodStartTime, Integer limit, EventDto eventDto) {
         return getTaskNumber(activityId, taskId, periodStartTime, limit, eventDto.getUserId());
     }
 
@@ -157,7 +158,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @param userId 用户ID
      * @return 任务号
      */
-    public long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, long userId) {
+    public long getTaskNumber(int activityId, int taskId, LocalDateTime periodStartTime, Integer limit, long userId) {
         long records = countTaskRecord(activityId, taskId, periodStartTime, userId);
         if (null != limit && limit > ZERO) {
             return limit > records ? records + ONE : ZERO;
@@ -174,7 +175,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @param userId 用户ID
      * @return 任务记录条数
      */
-    protected abstract long countTaskRecord(int activityId, int taskId, @Nullable Date startTime, long userId);
+    protected abstract long countTaskRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long userId);
 
     @Autowired
     public void setTaskObjectService(TaskObjectService taskObjectService) {

@@ -3,16 +3,14 @@ package org.isite.data.controller;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.data.cache.ReportCache;
+import org.isite.data.converter.ReportConverter;
 import org.isite.data.service.ReportService;
+import org.isite.data.support.constants.CacheKeys;
+import org.isite.data.support.constants.DataUrls;
 import org.isite.data.support.vo.ReportData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.isite.data.converter.ReportConverter.toReportData;
-import static org.isite.data.support.constants.CacheKeys.DATA_CALL_FAILURE;
-import static org.isite.data.support.constants.CacheKeys.DATA_CALL_LATEST;
-import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 运行报表 Controller
@@ -24,11 +22,11 @@ public class ReportController extends BaseController {
     private ReportCache reportCache;
     private ReportService reportService;
 
-    @GetMapping(URL_DATA + "/report")
+    @GetMapping(DataUrls.URL_DATA + "/report")
     public Result<ReportData> getReportData() {
-        return toResult(toReportData(reportCache.countExecutor(), reportCache.countApi(),
-                reportService.getCallDetail(DATA_CALL_LATEST),
-                reportService.getCallDetail(DATA_CALL_FAILURE)));
+        return toResult(ReportConverter.toReportData(reportCache.countExecutor(), reportCache.countApi(),
+                reportService.getCallDetail(CacheKeys.DATA_CALL_LATEST),
+                reportService.getCallDetail(CacheKeys.DATA_CALL_FAILURE)));
     }
 
     @Autowired

@@ -11,5 +11,5 @@ public class LogConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "log-admin";
+    public static final String SERVICE_ID = "isite-log-admin";
 }

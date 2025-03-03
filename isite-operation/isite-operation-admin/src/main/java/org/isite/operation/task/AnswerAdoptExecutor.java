@@ -7,7 +7,7 @@ import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Task;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.isite.commons.lang.utils.TypeUtils.cast;
 import static org.isite.operation.support.enums.TaskType.QUESTION_REPLY_ADOPT_PRIZE;
@@ -21,7 +21,7 @@ public class AnswerAdoptExecutor extends PrizeTaskExecutor {
 
     @Override
     protected PrizeRecordPo createTaskRecord(
-            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+            EventDto eventDto, Activity activity, Task task, LocalDateTime periodStartTime, long taskNumber) {
         PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         prizeRecordPo.setUserId(cast(eventDto.getEventParam()));
         return prizeRecordPo;
@@ -29,6 +29,6 @@ public class AnswerAdoptExecutor extends PrizeTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { QUESTION_REPLY_ADOPT_PRIZE };
+        return new TaskType[] {QUESTION_REPLY_ADOPT_PRIZE};
     }
 }

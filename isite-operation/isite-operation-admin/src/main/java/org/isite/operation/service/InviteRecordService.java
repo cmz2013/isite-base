@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static tk.mybatis.mapper.weekend.Weekend.of;
 
@@ -22,7 +22,7 @@ public class InviteRecordService extends TaskRecordService<InviteRecordPo> {
         super(mapper);
     }
 
-    public int countInviteRecord(int activityId, int taskId, Date startTime, long inviterId) {
+    public int countInviteRecord(int activityId, int taskId, LocalDateTime startTime, long inviterId) {
         Weekend<InviteRecordPo> weekend = of(InviteRecordPo.class);
         WeekendCriteria<InviteRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(InviteRecordPo::getInviterId, inviterId)

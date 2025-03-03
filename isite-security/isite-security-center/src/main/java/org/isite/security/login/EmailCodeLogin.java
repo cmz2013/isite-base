@@ -23,7 +23,7 @@ public class EmailCodeLogin implements CodeLogin {
 
     @Override
     public LoginCodeType[] getIdentities() {
-        return new LoginCodeType[] { VERIFICATION_CODE_EMAIL };
+        return new LoginCodeType[] {VERIFICATION_CODE_EMAIL};
     }
 
     @Override

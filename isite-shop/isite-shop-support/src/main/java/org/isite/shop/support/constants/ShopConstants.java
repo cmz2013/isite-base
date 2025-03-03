@@ -11,7 +11,7 @@ public class ShopConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "shop-admin";
+    public static final String SERVICE_ID = "isite-shop-admin";
 
     public static final String QUEUE_TRADE_ORDER_SUCCESS = "queue-trade-order-success";
     /**

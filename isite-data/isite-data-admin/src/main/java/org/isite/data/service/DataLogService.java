@@ -1,21 +1,18 @@
 package org.isite.data.service;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.utils.ResultUtils;
 import org.isite.commons.web.feign.FeignClientFactory;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.data.client.DataCompensateClient;
 import org.isite.data.po.DataLogPo;
+import org.isite.data.support.constants.CacheKeys;
 import org.isite.data.support.dto.DataLogDto;
 import org.isite.mongo.service.PoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static java.lang.Boolean.FALSE;
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.utils.ResultUtils.getData;
-import static org.isite.data.support.constants.CacheKeys.DATA_CALL_FAILURE;
-import static org.isite.data.support.constants.CacheKeys.LOCK_DATA_LOG;
 
 /**
  * @Description 接口日志Service
@@ -37,17 +34,17 @@ public class DataLogService extends PoService<DataLogPo, String> {
      * @Description 执行完数据补偿，返回日志信息，如果返回空即为清除日志
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_DATA_LOG, keys = "#dataLogPo.id"))
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_DATA_LOG, keys = "#dataLogPo.id"))
     public DataLogDto retry(DataLogPo dataLogPo) {
         //根据DataLog中的appCode设置FeignClient的name（value）
         DataCompensateClient dataCompensateClient = feignClientFactory.getFeignClient(DataCompensateClient.class, dataLogPo.getAppCode());
-        DataLogDto dataLogDto = convert(dataLogPo, DataLogDto::new);
+        DataLogDto dataLogDto = DataConverter.convert(dataLogPo, DataLogDto::new);
         //执行完数据补偿，同步更新日志
-        dataLogDto = getData(dataCompensateClient.retry(dataLogDto));
+        dataLogDto = ResultUtils.getData(dataCompensateClient.retry(dataLogDto));
         if (null == dataLogDto) {
             this.delete(dataLogPo.getId());
         } else {
-            this.updateById(convert(dataLogDto, DataLogPo::new));
+            this.updateById(DataConverter.convert(dataLogDto, DataLogPo::new));
         }
         return dataLogDto;
     }
@@ -74,8 +71,8 @@ public class DataLogService extends PoService<DataLogPo, String> {
     @Transactional(rollbackFor = Exception.class)
     public void addDataLog(DataLogPo dataLogPo) {
         this.insert(dataLogPo);
-        if (FALSE.equals(dataLogPo.getStatus())) {
-            this.reportService.saveCallDetail(DATA_CALL_FAILURE);
+        if (Boolean.FALSE.equals(dataLogPo.getStatus())) {
+            this.reportService.saveCallDetail(CacheKeys.DATA_CALL_FAILURE);
             if (null != emailAlerter) {
                 this.emailAlerter.alert(dataLogPo);
             }

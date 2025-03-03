@@ -2,20 +2,17 @@ package org.isite.data.cache;
 
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.data.po.DataApiPo;
 import org.isite.data.service.DataApiService;
 import org.isite.data.service.ExecutorService;
+import org.isite.data.support.constants.CacheKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.data.support.constants.CacheKeys.DATA_API_NUMBER;
-import static org.isite.data.support.constants.CacheKeys.DATA_CALL_PREFIX;
-import static org.isite.data.support.constants.CacheKeys.DATA_EXECUTOR_NUMBER;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -25,27 +22,27 @@ public class ReportCache {
     private DataApiService dataApiService;
     private ExecutorService executorService;
 
-    @Cached(name = DATA_EXECUTOR_NUMBER)
+    @Cached(name = CacheKeys.DATA_EXECUTOR_NUMBER)
     public long countExecutor() {
         return executorService.countAll();
     }
 
-    @Cached(name = DATA_API_NUMBER)
+    @Cached(name = CacheKeys.DATA_API_NUMBER)
     public long countApi() {
-        return dataApiService.count(DataApiPo::getStatus, ENABLED);
+        return dataApiService.count(DataApiPo::getStatus, ActiveStatus.ENABLED);
     }
 
     /**
      * name会被用于缓存key的前缀
      * 使用SpEL指定key和value
      */
-    @CacheUpdate(name = DATA_CALL_PREFIX, key = "#key", value = "#callDetail")
+    @CacheUpdate(name = CacheKeys.DATA_CALL_PREFIX, key = "#key", value = "#callDetail")
     public void saveCallDetail(String key, Map<Long, Integer> callDetail) {
     }
 
-    @Cached(name = DATA_CALL_PREFIX, key = "#key")
+    @Cached(name = CacheKeys.DATA_CALL_PREFIX, key = "#key")
     public Map<Long, Integer> getCallDetail(String key) {
-        return new HashMap<>(ONE);
+        return new HashMap<>(Constants.ONE);
     }
 
     @Autowired

@@ -1,14 +1,11 @@
 package org.isite.data.callback;
 
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.json.Jackson;
+import org.isite.commons.lang.utils.TypeUtils;
+
 import java.util.function.Predicate;
-
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.json.Jackson.parseObject;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-
 /**
  * @Description 回调接口处理过程抽象类
  * @Author <font color='blue'>zhangcm</font>
@@ -25,23 +22,23 @@ public abstract class JsonCallback<P, R> extends DataCallback<P, R> {
 
 	protected JsonCallback(Predicate<R> predicate) {
 		super(predicate);
-		Class<?>[] classes = getGenericParameters(this.getClass(), JsonCallback.class);
-		this.dataClass = cast(classes[ZERO]);
-		this.resultClass = cast(classes[ONE]);
+		Class<?>[] classes = Reflection.getGenericParameters(this.getClass(), JsonCallback.class);
+		this.dataClass = TypeUtils.cast(classes[Constants.ZERO]);
+		this.resultClass = TypeUtils.cast(classes[Constants.ONE]);
 	}
 
 	@Override
 	protected R toResult(String[] results) {
-		return parseObject(results[ZERO], resultClass);
+		return Jackson.parseObject(results[Constants.ZERO], resultClass);
 	}
 
 	@Override
 	protected P toData(String[] data) {
-		return parseObject(data[ZERO], dataClass);
+		return Jackson.parseObject(data[Constants.ZERO], dataClass);
 	}
 
 	@Override
 	protected String formatData(P data) {
-		return toJsonString(data);
+		return Jackson.toJsonString(data);
 	}
 }

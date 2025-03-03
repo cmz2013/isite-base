@@ -1,14 +1,23 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
+import org.isite.operation.converter.ScoreRecordConverter;
 import org.isite.operation.po.ScoreRecordPo;
 import org.isite.operation.service.ScoreRecordService;
+import org.isite.operation.support.constants.OperationUrls;
+import org.isite.operation.support.enums.ScoreType;
 import org.isite.operation.support.vo.ScoreRecord;
-import org.isite.operation.support.vo.ScoreView;
+import org.isite.operation.support.vo.VipScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.converter.ScoreRecordConverter.toScoreRecordSelectivePo;
-import static org.isite.operation.support.constants.OperationUrls.PUT_USE_VIP_SCORE;
-import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
-import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
-import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -44,51 +39,50 @@ public class ScoreRecordController extends BaseController {
     /**
      * 用户查询活动积分总值
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/activity/{activityId}/score")
-    public Result<ScoreView> findActivityScore(@PathVariable("activityId") Integer activityId) {
-        return toResult(new ScoreView(scoreRecordService.sumActivityScore(activityId, getUserId())));
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/activity/{activityId}/score")
+    public Result<VipScore> findActivityScore(@PathVariable("activityId") Integer activityId) {
+        return toResult(new VipScore(scoreRecordService.sumActivityScore(activityId, TransmittableHeaders.getUserId())));
     }
 
     /**
      * 用户查询活动积分记录
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/activity/{activityId}/score/records")
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/activity/{activityId}/score/records")
     public PageResult<ScoreRecord> findPage(@PathVariable("activityId") Integer activityId, PageRequest<?> request) {
-        try (Page<ScoreRecordPo> page = scoreRecordService.findPage(
-                toPageQuery(request, () -> toScoreRecordSelectivePo(activityId, getUserId(), ACTIVITY_SCORE)))) {
-            return toPageResult(request, convert(page.getResult(), ScoreRecord::new), page.getTotal());
+        try (Page<ScoreRecordPo> page = scoreRecordService.findPage(PageQueryConverter.toPageQuery(request,
+                () -> ScoreRecordConverter.toScoreRecordSelectivePo(activityId, TransmittableHeaders.getUserId(), ScoreType.ACTIVITY_SCORE)))) {
+            return toPageResult(request, DataConverter.convert(page.getResult(), ScoreRecord::new), page.getTotal());
         }
     }
 
     /**
      * 用户查询VIP总积分，VIP积分有效期为1年
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/score")
-    public Result<ScoreView> findVipScore() {
-        return toResult(new ScoreView(scoreRecordService.sumVipScore(getUserId()),
-                scoreRecordService.aboutToExpireVipScore(getUserId())));
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/score")
+    public Result<VipScore> findVipScore() {
+        return toResult(scoreRecordService.findVipScore(TransmittableHeaders.getUserId()));
     }
 
     /**
      * 用户查询VIP积分记录，VIP积分有效期为1年
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/score/records")
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/score/records")
     public PageResult<ScoreRecord> findPage(PageRequest<?> request) {
-        try (Page<ScoreRecordPo> page = scoreRecordService.findScoreRecords(toPageQuery(request, () -> {
+        try (Page<ScoreRecordPo> page = scoreRecordService.findScoreRecords(PageQueryConverter.toPageQuery(request, () -> {
                     ScoreRecordPo scoreRecordPo = new ScoreRecordPo();
-                    scoreRecordPo.setScoreType(VIP_SCORE);
-                    scoreRecordPo.setUserId(getUserId());
+                    scoreRecordPo.setScoreType(ScoreType.VIP_SCORE);
+                    scoreRecordPo.setUserId(TransmittableHeaders.getUserId());
                     return scoreRecordPo;
-                }), LocalDateTime.now().minusYears(ONE))) {
-            return toPageResult(request, convert(page.getResult(), ScoreRecord::new), page.getTotal());
+                }), LocalDateTime.now().minusYears(Constants.ONE))) {
+            return toPageResult(request, DataConverter.convert(page.getResult(), ScoreRecord::new), page.getTotal());
         }
     }
 
     @Validated
-    @PutMapping(PUT_USE_VIP_SCORE)
+    @PutMapping(OperationUrls.PUT_USE_VIP_SCORE)
     public Result<?> useVipScore(@RequestParam(("score")) @NotNull Integer score) {
-        isTrue(score > ZERO, "score must be greater than 0");
-        return toResult(() -> scoreRecordService.useVipScore(getUserId(), score));
+        Assert.isTrue(score > Constants.ZERO, "score must be greater than 0");
+        return toResult(() -> scoreRecordService.useVipScore(TransmittableHeaders.getUserId(), score));
     }
 
     @Autowired

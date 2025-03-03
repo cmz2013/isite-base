@@ -1,11 +1,8 @@
 package org.isite.jpa.data;
 
 import lombok.Getter;
-
-import static org.isite.commons.lang.Assert.notBlank;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.SPACE;
-import static org.isite.jpa.data.Direction.ASC;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 
 /**
  * @Description 数据列表顺序
@@ -15,11 +12,7 @@ import static org.isite.jpa.data.Direction.ASC;
 public class Order {
 
     private String field;
-    private Direction direction = ASC;
-
-    public Order(String field) {
-        this.setField(field);
-    }
+    private Direction direction = Direction.ASC;
 
     public Order(String field, Direction direction) {
         this.setField(field);
@@ -27,12 +20,12 @@ public class Order {
     }
 
     private void setField(String field) {
-        notBlank(field, "field cannot be blank");
+        Assert.notBlank(field, "field cannot be blank");
         this.field = field;
     }
 
     private void setDirection(Direction direction) {
-        notNull(direction, "direction cannot be null");
+        Assert.notNull(direction, "direction cannot be null");
         this.direction = direction;
     }
 
@@ -40,6 +33,6 @@ public class Order {
      * 构造排序语句
      */
     public String orderBy() {
-        return this.field + SPACE + this.direction.name();
+        return this.field + Constants.SPACE + this.direction.name();
     }
 }

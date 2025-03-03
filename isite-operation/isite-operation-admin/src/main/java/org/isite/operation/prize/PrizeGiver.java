@@ -69,6 +69,6 @@ public class PrizeGiver implements Strategy<PrizeType> {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[] { THANK, PHYSICAL };
+        return new PrizeType[] {THANK, PHYSICAL};
     }
 }

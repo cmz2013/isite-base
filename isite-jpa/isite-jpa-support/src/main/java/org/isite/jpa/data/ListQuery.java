@@ -2,12 +2,8 @@ package org.isite.jpa.data;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.TEN;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Constants.ZERO;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 
 /**
  * @Description 根据有序索引执行分页查询的PO参数
@@ -23,7 +19,7 @@ public class ListQuery<P extends Model<?>> {
     /**
      * 每页条数
      */
-    private Integer pageSize = TEN;
+    private Integer pageSize = Constants.TEN;
     /**
      * 在当前页的最小值或最大值，取决于排序方式。index为null时，查询第一页数据
      */
@@ -35,12 +31,12 @@ public class ListQuery<P extends Model<?>> {
     private final Order order;
 
     public ListQuery(Order order) {
-        notNull(order, "order cannot be null");
+        Assert.notNull(order, "order cannot be null");
         this.order = order;
     }
 
     public void setPageSize(int pageSize) {
-        isTrue(pageSize > ZERO && pageSize <= THOUSAND,
+        Assert.isTrue(pageSize > Constants.ZERO && pageSize <= Constants.THOUSAND,
                 "pageSize is greater than 0 and less than or equal to 1000");
         this.pageSize = pageSize;
     }

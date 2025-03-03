@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -65,7 +65,7 @@ public class TaskService extends PoService<TaskPo, Integer> {
      */
     public boolean isFinishTask(long userId, int activityId, Task task) {
         Integer limit = null;
-        Date startTime = null;
+        LocalDateTime startTime = null;
         if (null != task.getTaskPeriod()) {
             startTime = task.getTaskPeriod().getStartTime();
             limit = task.getTaskPeriod().getLimit();

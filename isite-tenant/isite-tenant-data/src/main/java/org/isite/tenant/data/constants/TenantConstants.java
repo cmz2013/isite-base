@@ -11,7 +11,7 @@ public class TenantConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "tenant-admin";
+    public static final String SERVICE_ID = "isite-tenant-admin";
     /**
      * 超级管理员角色
      */

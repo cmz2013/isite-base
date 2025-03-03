@@ -47,6 +47,6 @@ public class VipScoreGiver extends PrizeGiver {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[]{ PrizeType.VIP_SCORE };
+        return new PrizeType[]{PrizeType.VIP_SCORE};
     }
 }

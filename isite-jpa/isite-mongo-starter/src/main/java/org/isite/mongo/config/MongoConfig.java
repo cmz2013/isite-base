@@ -1,5 +1,7 @@
 package org.isite.mongo.config;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.mongo.converter.MongoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,11 +20,6 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.apache.commons.collections4.CollectionUtils.addAll;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.springframework.data.mongodb.core.convert.MongoCustomConversions.create;
-
 /**
  * @Description
  * 添加@EnableMongoAuditing注解使@CreatedDate和@LastModifiedDate生效.
@@ -40,7 +37,7 @@ public class MongoConfig implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     public MongoConfig(ApplicationContext applicationContext) {
         applicationContext.getBeansOfType(MongoConverter.class).forEach(
-                (key, value) -> addAll(converters, value.conversions()));
+                (key, value) -> CollectionUtils.addAll(converters, value.conversions()));
     }
 
     /**
@@ -48,13 +45,13 @@ public class MongoConfig implements ApplicationListener<ContextRefreshedEvent> {
      */
     @Bean
     public MongoCustomConversions mongoCustomConversions() {
-        return create(adapter -> adapter.registerConverters(converters));
+        return MongoCustomConversions.create(adapter -> adapter.registerConverters(converters));
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         MongoTemplate mongoTemplate = event.getApplicationContext().getBean(MongoTemplate.class);
-        MappingMongoConverter converter = cast(mongoTemplate.getConverter());
+        MappingMongoConverter converter = TypeUtils.cast(mongoTemplate.getConverter());
         if (converter.getTypeMapper().isTypeKey(TYPEKEY)) {
             //mongo插入一行数据时，会默认添加一个_class字段来存储实体类类型。设置取消_class字段
             converter.setTypeMapper(new DefaultMongoTypeMapper(null));

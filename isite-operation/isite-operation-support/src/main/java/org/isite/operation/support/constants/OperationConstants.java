@@ -11,7 +11,7 @@ public class OperationConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "operation-admin";
+    public static final String SERVICE_ID = "isite-operation-admin";
 
     public static final String FIELD_ACTIVITY_ID = "activityId";
     public static final String FIELD_ACTIVITY_PID = "activityPid";

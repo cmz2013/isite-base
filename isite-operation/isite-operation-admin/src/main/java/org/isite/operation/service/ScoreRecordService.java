@@ -6,6 +6,7 @@ import org.isite.commons.web.sync.Synchronized;
 import org.isite.jpa.data.PageQuery;
 import org.isite.operation.mapper.ScoreRecordMapper;
 import org.isite.operation.po.ScoreRecordPo;
+import org.isite.operation.support.vo.VipScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,6 @@ import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static com.github.pagehelper.page.PageMethod.offsetPage;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -41,7 +41,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
     /**
      * 统计积分记录
      */
-    public int countScoreRecord(int activityId, int taskId, @Nullable Date startTime, long userId) {
+    public int countScoreRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long userId) {
         Weekend<ScoreRecordPo> weekend = of(ScoreRecordPo.class);
         WeekendCriteria<ScoreRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(ScoreRecordPo::getUserId, userId)
@@ -135,5 +135,9 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
         }
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
         return (Page<ScoreRecordPo>) mapper.selectScoreRecord(pageQuery.getPo(), startTime);
+    }
+
+    public VipScore findVipScore(Long userId) {
+        return new VipScore(sumVipScore(userId), aboutToExpireVipScore(userId));
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static java.lang.Boolean.FALSE;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
@@ -45,7 +45,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
      */
     @Override
     protected PrizeRecordPo createTaskRecord(
-            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+            EventDto eventDto, Activity activity, Task task, LocalDateTime periodStartTime, long taskNumber) {
         PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
         prizeRecordPo.setLockStatus(FALSE);
@@ -71,7 +71,7 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
     }
 
     @Override
-    protected long countTaskRecord(int activityId, int taskId, @Nullable Date startTime, long userId) {
+    protected long countTaskRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long userId) {
         return prizeRecordService.countPrizeRecord(activityId, taskId, startTime, userId);
     }
 
@@ -82,6 +82,6 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { QUESTION_PRIZE };
+        return new TaskType[] {QUESTION_PRIZE};
     }
 }

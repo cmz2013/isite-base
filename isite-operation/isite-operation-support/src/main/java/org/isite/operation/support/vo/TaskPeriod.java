@@ -2,22 +2,14 @@ package org.isite.operation.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.enums.ChronoUnit;
+import org.isite.commons.lang.utils.DateUtils;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfDay;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHalfYear;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfHour;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfMinute;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfMonth;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfQuarter;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfSecond;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfWeek;
-import static org.isite.commons.lang.utils.DateUtils.getStartTimeOfYear;
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 /**
  * @Description 任务周期频率，例如：3天6次（unit=DAYS time=3 limit=6）
@@ -45,38 +37,30 @@ public class TaskPeriod implements Serializable {
     /**
      * 获取当前任务周期的开始时间
      */
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         if (null == this.unit || null == this.duration) {
             return null;
         }
-        Date date = new Date(currentTimeMillis() - this.unit.getMillis() * (this.duration - ONE));
+        LocalDateTime dateTime = LocalDateTime.now().minus(
+                this.unit.getMillis() * (this.duration - Constants.ONE), MILLIS);
         switch (unit) {
             case HOUR: {
-                return getStartTimeOfHour(date);
+                return DateUtils.startOfHour(dateTime);
             }
             case DAY: {
-                return getStartTimeOfDay(date);
+                return DateUtils.startOfDay(dateTime);
             }
             case MONTH: {
-                return getStartTimeOfMonth(date);
+                return DateUtils.startOfMonth(dateTime);
             }
             case WEEK: {
-                return getStartTimeOfWeek(date);
-            }
-            case HALF_YEAR: {
-                return getStartTimeOfHalfYear(date);
+                return DateUtils.startOfWeek(dateTime);
             }
             case QUARTER: {
-                return getStartTimeOfQuarter(date);
+                return DateUtils.startOfQuarter(dateTime);
             }
             case YEAR: {
-                return getStartTimeOfYear(date);
-            }
-            case MINUTE: {
-                return getStartTimeOfMinute(date);
-            }
-            case SECOND: {
-                return getStartTimeOfSecond(date);
+                return DateUtils.startOfYear(dateTime);
             }
             default: return null;
         }

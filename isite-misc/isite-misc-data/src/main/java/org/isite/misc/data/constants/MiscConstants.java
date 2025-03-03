@@ -11,6 +11,6 @@ public class MiscConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "misc-admin";
+    public static final String SERVICE_ID = "isite-misc-admin";
 
 }

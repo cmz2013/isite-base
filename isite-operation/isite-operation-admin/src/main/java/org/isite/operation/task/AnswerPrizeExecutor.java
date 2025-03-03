@@ -34,6 +34,6 @@ public class AnswerPrizeExecutor extends PrizeTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { QUESTION_REPLY_PRIZE };
+        return new TaskType[] {QUESTION_REPLY_PRIZE};
     }
 }

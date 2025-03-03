@@ -1,20 +1,17 @@
 package org.isite.jpa.service;
 
 import lombok.Getter;
+import org.isite.commons.lang.Assert;
 import org.isite.commons.lang.Functions;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.jpa.data.BuiltIn;
+import org.isite.jpa.data.JpaConstants;
 import org.isite.jpa.data.Model;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-
-import static java.lang.Boolean.FALSE;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.jpa.data.JpaConstants.INTERNAL_DATA_ILLEGAL_OPERATE;
 
 /**
  * @Description 在增删改操作时，是否开启事务取决于数据库的默认行为和当前的会话设置。
@@ -37,7 +34,7 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      * 如果BaseService的泛型参数<P>,在子类依然使用泛型参数，则需要重新该方法
      */
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(this.getClass(), BaseService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(this.getClass(), BaseService.class));
     }
 
     /**
@@ -86,11 +83,12 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     protected void checkBuiltInData(I id, BuiltIn builtIn) {
         if (null == builtIn.getInternal()) {
-            builtIn.setInternal(FALSE);
+            builtIn.setInternal(Boolean.FALSE);
         }
-        BuiltIn oldPo = cast(this.get(id));
-        notNull(oldPo, "id not found: " + id);
-        isTrue(builtIn.getInternal().equals(oldPo.getInternal()), INTERNAL_DATA_ILLEGAL_OPERATE);
+        BuiltIn oldPo = TypeUtils.cast(this.get(id));
+        Assert.notNull(oldPo, "id not found: " + id);
+        Assert.isTrue(builtIn.getInternal().equals(oldPo.getInternal()),
+                JpaConstants.INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     /**
@@ -98,9 +96,10 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      */
     protected void checkBuiltInData(BuiltIn builtIn) {
         if (null == builtIn.getInternal()) {
-            builtIn.setInternal(FALSE);
+            builtIn.setInternal(Boolean.FALSE);
         } else {
-            isTrue(FALSE.equals(builtIn.getInternal()), INTERNAL_DATA_ILLEGAL_OPERATE);
+            Assert.isTrue(Boolean.FALSE.equals(builtIn.getInternal()),
+                    JpaConstants.INTERNAL_DATA_ILLEGAL_OPERATE);
         }
     }
 
@@ -108,10 +107,10 @@ public abstract class BaseService<P extends Model<I>, I, N extends Number> {
      * 根据id查询数据，并检查是否为内置数据
      */
     protected void checkBuiltInData(I id) {
-        BuiltIn oldPo = cast(this.get(id));
-        notNull(oldPo, "id not found: " + id);
-        isTrue(null == oldPo.getInternal() || FALSE.equals(oldPo.getInternal()),
-                INTERNAL_DATA_ILLEGAL_OPERATE);
+        BuiltIn oldPo = TypeUtils.cast(this.get(id));
+        Assert.notNull(oldPo, "id not found: " + id);
+        Assert.isTrue(null == oldPo.getInternal() || Boolean.FALSE.equals(oldPo.getInternal()),
+                JpaConstants.INTERNAL_DATA_ILLEGAL_OPERATE);
     }
 
     protected abstract N doUpdateSelectiveById(P po);

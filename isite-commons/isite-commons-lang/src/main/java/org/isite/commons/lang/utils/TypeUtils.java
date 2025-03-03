@@ -50,9 +50,6 @@ public class TypeUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object object) {
-        if (null == object) {
-            return null;
-        }
         return (T) object;
     }
 }

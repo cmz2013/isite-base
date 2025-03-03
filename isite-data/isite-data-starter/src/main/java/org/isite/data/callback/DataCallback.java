@@ -2,12 +2,22 @@ package org.isite.data.callback;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.data.constants.HttpHeaders;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ChronoUnit;
 import org.isite.commons.web.sign.SignSecret;
+import org.isite.commons.web.sign.SignUtils;
+import org.isite.data.client.DataApiAccessor;
 import org.isite.data.client.WsClient;
 import org.isite.data.client.WsClientFactory;
 import org.isite.data.exception.CallbackException;
 import org.isite.data.log.LogHandler;
+import org.isite.data.support.constants.DataConstants;
 import org.isite.data.support.dto.DataLogDto;
+import org.isite.data.support.enums.WsType;
 import org.isite.data.support.vo.DataApi;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +26,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
-
-import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_APP_CODE;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_SIGNATURE;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TIMESTAMP;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.NEW_LINE;
-import static org.isite.commons.lang.Constants.THREE;
-import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
-import static org.isite.commons.lang.utils.StringUtils.join;
-import static org.isite.commons.web.sign.SignUtils.getSignature;
-import static org.isite.commons.web.sign.SignUtils.getSignatureParameter;
-import static org.isite.data.client.DataApiAccessor.callApi;
-import static org.isite.data.support.constants.DataConstants.SERVICE_ID;
-import static org.isite.data.support.enums.WsType.CALLBACK;
 
 /**
  * @Description 封装数据回调接口处理流程
@@ -84,7 +77,7 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 		DataApi dataApi = getDataApi(logDto.getApiId());
 		try {
 			WsClient wsClient = wsClientFactory.get(dataApi.getWsProtocol());
-			String[] data = logDto.getReqData().split(NEW_LINE);
+			String[] data = logDto.getReqData().split(Constants.NEW_LINE);
 			parseResult(logDto, wsClient.call(dataApi, headers(dataApi, toData(data)), data));
 			logHandler.handle(logDto);
 		} catch (Exception e) {
@@ -107,8 +100,8 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 
 	private void parseResult(DataLogDto logDto, String[] results) {
 		R data = null;
-		if (isNotEmpty(results)) {
-			logDto.setRepData(join(NEW_LINE, results));
+		if (ArrayUtils.isNotEmpty(results)) {
+			logDto.setRepData(StringUtils.join(Constants.NEW_LINE, results));
 			data = toResult(results);
 		}
 		logDto.setStatus(predicate.test(data));
@@ -122,13 +115,13 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 	@SneakyThrows
 	protected Map<String, String> headers(DataApi dataApi, P data) {
 		String apiName = new URI(dataApi.getServerUrl()).getPath();
-		Map<String, Object> parameters = getSignatureParameter(data);
-		long timestamp = currentTimeMillis() / SECOND.getMillis();
+		Map<String, Object> parameters = SignUtils.getSignatureParameter(data);
+		long timestamp = System.currentTimeMillis() / ChronoUnit.SECOND.getMillis();
 		String password = signSecret.password("data-api-" + dataApi.getId());
-		Map<String, String> headers = new HashMap<>(THREE);
-		headers.put(X_APP_CODE, dataApi.getAppCode());
-		headers.put(X_TIMESTAMP, valueOf(timestamp));
-		headers.put(X_SIGNATURE, getSignature(apiName, parameters, password, timestamp));
+		Map<String, String> headers = new HashMap<>(Constants.THREE);
+		headers.put(HttpHeaders.X_APP_CODE, dataApi.getAppCode());
+		headers.put(HttpHeaders.X_TIMESTAMP, String.valueOf(timestamp));
+		headers.put(HttpHeaders.X_SIGNATURE, SignUtils.getSignature(apiName, parameters, password, timestamp));
 		return headers;
 	}
 
@@ -136,7 +129,7 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 	 * @Description 根据id查询数据接口
 	 */
 	protected DataApi getDataApi(String apiId) {
-		return callApi(CALLBACK, apiId, signSecret.password(SERVICE_ID));
+		return DataApiAccessor.callApi(WsType.CALLBACK, apiId, signSecret.password(DataConstants.SERVICE_ID));
 	}
 
 	@Autowired
@@ -156,8 +149,8 @@ public abstract class DataCallback<P, R> implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		notNull(this.signSecret, "signSecret must be set");
-		notNull(this.logHandler, "logHandler must be set");
-		notNull(this.wsClientFactory, "wsClientFactory must be set");
+		Assert.notNull(this.signSecret, "signSecret must be set");
+		Assert.notNull(this.logHandler, "logHandler must be set");
+		Assert.notNull(this.wsClientFactory, "wsClientFactory must be set");
 	}
 }

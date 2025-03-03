@@ -1,14 +1,19 @@
 package org.isite.data.client;
 
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.soap.SOAPFactory;
 import org.apache.axiom.soap.SOAPHeaderBlock;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.data.support.enums.WsProtocol;
 import org.isite.data.support.vo.DataApi;
 import org.springframework.stereotype.Component;
@@ -17,16 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.axiom.om.OMAbstractFactory.getOMFactory;
-import static org.apache.axiom.om.OMAbstractFactory.getSOAP11Factory;
-import static org.apache.axis2.Constants.Configuration.DISABLE_SOAP_ACTION;
-import static org.apache.commons.collections4.MapUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.data.support.enums.WsProtocol.SOAP;
-
 /**
  * @Description 请求SOAP服务的客户端
  * @Author <font color='blue'>zhangcm</font>
@@ -44,11 +39,11 @@ public class SoapClient extends WsClient {
 		ServiceClient serviceClient = new ServiceClient();
 		try {
 			Options opts = new Options();
-			opts.setProperty(DISABLE_SOAP_ACTION, true);
+			opts.setProperty(Constants.Configuration.DISABLE_SOAP_ACTION, Boolean.TRUE);
 			opts.setTo(new EndpointReference(api.getServerUrl()));
 
 			long timeOut = 10000;
-			if (null != api.getTimeout() && api.getTimeout() > ZERO) {
+			if (null != api.getTimeout() && api.getTimeout() > 0) {
 				timeOut = api.getTimeout();
 			}
 			opts.setTimeOutInMilliSeconds(timeOut);
@@ -64,7 +59,7 @@ public class SoapClient extends WsClient {
 				OMElement element = iterator.next();
 				results.add(element.getText());
 			}
-			return cast(results.toArray());
+			return TypeUtils.cast(results.toArray());
 		} finally {
 			serviceClient.cleanupTransport();
 		}
@@ -75,13 +70,13 @@ public class SoapClient extends WsClient {
 	 */
 	private List<SOAPHeaderBlock> createSoapHeader(DataApi api, Map<String, String> headers) {
 		List<SOAPHeaderBlock> results = new ArrayList<>();
-		if (isNotEmpty(headers)) {
+		if (MapUtils.isNotEmpty(headers)) {
 			// 利用工厂，创建命名空间
 			OMNamespace namespace = null;
-			if (isNotBlank(api.getWsNameSpace())) {
-				namespace = getOMFactory().createOMNamespace(api.getWsNameSpace(), api.getWsPointName());
+			if (StringUtils.isNotBlank(api.getWsNameSpace())) {
+				namespace = OMAbstractFactory.getOMFactory().createOMNamespace(api.getWsNameSpace(), api.getWsPointName());
 			}
-			SOAPFactory soapFactory = getSOAP11Factory();
+			SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
 			for (Map.Entry<String, String> entry: headers.entrySet()) {
 				// 利用工厂，创建消息头
 				SOAPHeaderBlock soapHeader = soapFactory.createSOAPHeaderBlock(entry.getKey(), namespace);
@@ -97,7 +92,7 @@ public class SoapClient extends WsClient {
 	 */
 	private void createHeaderChild(SOAPHeaderBlock soapHeader, Object data, OMNamespace namespace) {
 		if (null != data) {
-			SOAPFactory soapFactory = getSOAP11Factory();
+			SOAPFactory soapFactory = OMAbstractFactory.getSOAP11Factory();
 			if (data instanceof Map<?, ?>) {
 				for (Map.Entry<?, ?> entry : ((Map<?, ?>) data).entrySet()) {
 					SOAPHeaderBlock headerChild = soapFactory.createSOAPHeaderBlock(entry.getKey().toString(), namespace);
@@ -114,9 +109,9 @@ public class SoapClient extends WsClient {
 	 * 创建SOAP Body数据
 	 */
 	private OMElement createSoapBody(DataApi api, Map<String, Object> data) {
-		OMFactory omFactory = getOMFactory();
+		OMFactory omFactory = OMAbstractFactory.getOMFactory();
 		OMNamespace namespace = null;
-		if (isNotBlank(api.getWsNameSpace())) {
+		if (StringUtils.isNotBlank(api.getWsNameSpace())) {
 			namespace = omFactory.createOMNamespace(
 					api.getWsNameSpace(), api.getWsPointName());
 		}
@@ -134,6 +129,6 @@ public class SoapClient extends WsClient {
 
 	@Override
 	public WsProtocol[] getIdentities() {
-		return new WsProtocol[] { SOAP };
+		return new WsProtocol[] {WsProtocol.SOAP};
 	}
 }

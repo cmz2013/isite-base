@@ -1,5 +1,7 @@
 package org.isite.data.controller;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
@@ -7,8 +9,10 @@ import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.data.converter.DataApiConverter;
 import org.isite.data.po.DataApiPo;
 import org.isite.data.service.DataApiService;
+import org.isite.data.support.constants.DataUrls;
 import org.isite.data.support.dto.DataApiDto;
 import org.isite.data.support.vo.DataApi;
 import org.isite.jpa.data.Page;
@@ -20,11 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.data.converter.DataApiConverter.toDataApiPo;
-import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 数据接口Controller
@@ -38,31 +37,31 @@ public class DataApiController extends BaseController {
     /**
      * 添加数据接口
      */
-    @PostMapping(URL_DATA + "/api")
+    @PostMapping(DataUrls.URL_DATA + "/api")
     public Result<Long> addDataApi(@RequestBody @Validated(Add.class) DataApiDto dataApiDto) {
-        return toResult(dataApiService.insert(toDataApiPo(dataApiDto)));
+        return toResult(dataApiService.insert(DataApiConverter.toDataApiPo(dataApiDto)));
     }
 
     /**
      * 修改数据接口
      */
-    @PutMapping(URL_DATA + "/api")
+    @PutMapping(DataUrls.URL_DATA + "/api")
     public Result<Long> updateDataApi(@RequestBody @Validated(Update.class) DataApiDto dataApiDto) {
-        return toResult(dataApiService.updateSelectiveById(convert(dataApiDto, DataApiPo::new)));
+        return toResult(dataApiService.updateSelectiveById(DataConverter.convert(dataApiDto, DataApiPo::new)));
     }
 
     /**
      * 查询接口
      */
-    @GetMapping(URL_DATA + "/api/{id}")
+    @GetMapping(DataUrls.URL_DATA + "/api/{id}")
     public Result<DataApi> getDataApi(@PathVariable("id") String id) {
-        return toResult(convert(dataApiService.get(id), DataApi::new));
+        return toResult(DataConverter.convert(dataApiService.get(id), DataApi::new));
     }
 
     /**
      * 启停接口
      */
-    @PutMapping(URL_DATA + "/api/{id}/status/{status}")
+    @PutMapping(DataUrls.URL_DATA + "/api/{id}/status/{status}")
     public Result<Long> updateDataApi(
             @PathVariable("id") String id, @PathVariable("status") ActiveStatus status) {
         return toResult(dataApiService.updateById(id, DataApiPo::getStatus, status));
@@ -71,10 +70,10 @@ public class DataApiController extends BaseController {
     /**
      * 查询接口列表
      */
-    @GetMapping(URL_DATA + "/apis")
+    @GetMapping(DataUrls.URL_DATA + "/apis")
     public PageResult<DataApi> findPage(PageRequest<DataApiDto> request) {
-        Page<DataApiPo> page = dataApiService.findPage(toPageQuery(request, DataApiPo::new));
-        return toPageResult(request, convert(page.getResult(), DataApi::new), page.getTotal());
+        Page<DataApiPo> page = dataApiService.findPage(PageQueryConverter.toPageQuery(request, DataApiPo::new));
+        return toPageResult(request, DataConverter.convert(page.getResult(), DataApi::new), page.getTotal());
     }
 
     @Autowired

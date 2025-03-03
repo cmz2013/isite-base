@@ -1,14 +1,11 @@
 package org.isite.data.converter;
 
+import org.isite.commons.lang.Constants;
 import org.isite.data.support.vo.ReportData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static org.isite.commons.lang.Constants.COLON;
-import static org.isite.commons.lang.Constants.TWO;
-import static org.isite.commons.lang.Constants.ZERO;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -44,9 +41,9 @@ public class ReportConverter {
         List<Integer> failureDetail = new ArrayList<>(callLatest.size());
         List<String> callTimes = new ArrayList<>(callLatest.size());
         callLatest.keySet().stream().sorted().forEach(key -> {
-            String time = key.toString().substring(8);
-            callTimes.add(time.substring(ZERO, TWO) + COLON + time.substring(TWO));
-            int failureNumber = callFailure.getOrDefault(key, ZERO);
+            String time = key.toString().substring(Constants.EIGHT);
+            callTimes.add(time.substring(Constants.ZERO, Constants.TWO) + Constants.COLON + time.substring(Constants.TWO));
+            int failureNumber = callFailure.getOrDefault(key, Constants.ZERO);
             successDetail.add(callLatest.get(key) - failureNumber);
             failureDetail.add(failureNumber);
         });

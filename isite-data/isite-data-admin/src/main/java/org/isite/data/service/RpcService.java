@@ -1,14 +1,12 @@
 package org.isite.data.service;
 
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.data.po.DataApiPo;
+import org.isite.data.support.constants.CacheKeys;
 import org.isite.data.support.enums.WsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static java.lang.String.format;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.data.support.constants.CacheKeys.DATA_CALL_LATEST;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -26,11 +24,11 @@ public class RpcService {
         apiPo.setId(apiId);
         apiPo.setAppCode(appCode);
         apiPo.setWsType(wsType);
-        apiPo.setStatus(ENABLED);
+        apiPo.setStatus(ActiveStatus.ENABLED);
 
         apiPo = dataApiService.findOne(apiPo);
-        notNull(apiPo, format("not found: appCode=%s, wsType=%s, apiId=%s", appCode, wsType, apiId));
-        this.reportService.saveCallDetail(DATA_CALL_LATEST);
+        Assert.notNull(apiPo, String.format("not found: appCode=%s, wsType=%s, apiId=%s", appCode, wsType, apiId));
+        this.reportService.saveCallDetail(CacheKeys.DATA_CALL_LATEST);
         return apiPo;
     }
 

@@ -1,11 +1,15 @@
 package org.isite.data.controller;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.data.converter.HostConverter;
 import org.isite.data.po.ExecutorPo;
 import org.isite.data.service.ExecutorService;
+import org.isite.data.support.constants.DataUrls;
 import org.isite.data.support.dto.ExecutorDto;
 import org.isite.data.support.vo.Executor;
 import org.isite.data.support.vo.Host;
@@ -17,11 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.data.converter.HostConverter.toHosts;
-import static org.isite.data.support.constants.DataUrls.URL_DATA;
 
 /**
  * @Description 执行器Controller
@@ -41,18 +40,18 @@ public class ExecutorController extends BaseController {
     /**
      * 查询执行器
      */
-    @GetMapping(URL_DATA + "/executors")
+    @GetMapping(DataUrls.URL_DATA + "/executors")
     public PageResult<Executor> findPage(PageRequest<ExecutorDto> request) {
-        Page<ExecutorPo> page = executorService.findPage(toPageQuery(request, ExecutorPo::new));
-        return toPageResult(request, convert(page.getResult(), Executor::new), page.getTotal());
+        Page<ExecutorPo> page = executorService.findPage(PageQueryConverter.toPageQuery(request, ExecutorPo::new));
+        return toPageResult(request, DataConverter.convert(page.getResult(), Executor::new), page.getTotal());
     }
 
     /**
      * 查询服务器
      */
-    @GetMapping(URL_DATA + "/executor/{serviceId}")
+    @GetMapping(DataUrls.URL_DATA + "/executor/{serviceId}")
     public Result<List<Host>> findServer(@PathVariable("serviceId") String serviceId) {
-        return toResult(toHosts(discoveryClient.getInstances(serviceId)));
+        return toResult(HostConverter.toHosts(discoveryClient.getInstances(serviceId)));
     }
 
     @Autowired

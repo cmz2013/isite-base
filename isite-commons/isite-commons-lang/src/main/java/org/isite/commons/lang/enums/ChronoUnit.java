@@ -36,10 +36,6 @@ public enum ChronoUnit implements Enumerable<String> {
      */
     QUARTER(7776000000L),
     /**
-     * 半年
-     */
-    HALF_YEAR(15552000000L),
-    /**
      * 年
      */
     YEAR(31104000000L);

@@ -23,7 +23,7 @@ public class SmsCodeLogin implements CodeLogin {
 
     @Override
     public LoginCodeType[] getIdentities() {
-        return new LoginCodeType[] { VERIFICATION_CODE_SMS };
+        return new LoginCodeType[] {VERIFICATION_CODE_SMS};
     }
 
     @Override

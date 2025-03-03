@@ -1,17 +1,14 @@
 package org.isite.jpa.service;
 
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.jpa.data.TreeModel;
 
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.COMMA;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -27,7 +24,7 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      */
     @Override
     protected Class<P> initPoClass() {
-        return cast(getGenericParameter(this.getClass(), TreeModelService.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(this.getClass(), TreeModelService.class));
     }
 
     /**
@@ -35,10 +32,10 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      */
     public String getPids(I pid) {
         if (isRoot(pid)) {
-            return BLANK_STR;
+            return Constants.BLANK_STR;
         }
         P po = get(pid);
-        notNull(po, "id not found: " + pid);
+        Assert.notNull(po, "id not found: " + pid);
         return getPids(po);
     }
 
@@ -46,7 +43,8 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      * 根据父节点获取pids
      */
     public String getPids(P parent) {
-        return isBlank(parent.getPids()) ? parent.getId().toString() : parent.getPids() + COMMA + parent.getId();
+        return StringUtils.isBlank(parent.getPids()) ? parent.getId().toString() :
+                parent.getPids() + Constants.COMMA + parent.getId();
     }
 
     /**
@@ -58,6 +56,6 @@ public abstract class TreeModelService<P extends TreeModel<I>, I, N extends Numb
      * 根据pid是判断该节点是否为根节点
      */
     public boolean isRoot(I pid) {
-        return null == pid || pid.equals(ZERO) || BLANK_STR.equals(pid);
+        return null == pid || pid.equals(Constants.ZERO) || Constants.BLANK_STR.equals(pid);
     }
 }

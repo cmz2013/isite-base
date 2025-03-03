@@ -1,21 +1,17 @@
 package org.isite.data.callback;
 
 import lombok.SneakyThrows;
+import org.apache.commons.digester3.binder.DigesterLoader;
 import org.apache.commons.digester3.xmlrules.FromXmlRulesModule;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.file.FileUtils;
+import org.isite.commons.lang.template.xml.Thymeleaf;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.function.Predicate;
-
-import static org.apache.commons.digester3.binder.DigesterLoader.newLoader;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.file.FileUtils.EXTENSION_FTL;
-import static org.isite.commons.lang.file.FileUtils.EXTENSION_XML;
-import static org.isite.commons.lang.template.xml.Thymeleaf.process;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-
 /**
  * @Description 回调接口处理过程抽象类
  * @Author <font color='blue'>zhangcm</font>
@@ -32,9 +28,9 @@ public abstract class XmlCallback<P, R> extends DataCallback<P, R> {
 
 	protected XmlCallback(Predicate<R> predicate) {
 		super(predicate);
-		Class<?>[] classes = getGenericParameters(this.getClass(), XmlCallback.class);
-		this.dataClass = cast(classes[ZERO]);
-		this.resultClass = cast(classes[ONE]);
+		Class<?>[] classes = Reflection.getGenericParameters(this.getClass(), XmlCallback.class);
+		this.dataClass = TypeUtils.cast(classes[Constants.ZERO]);
+		this.resultClass = TypeUtils.cast(classes[Constants.ONE]);
 	}
 
 	@Override
@@ -43,30 +39,32 @@ public abstract class XmlCallback<P, R> extends DataCallback<P, R> {
 		if (null == data) {
 			return null;
 		}
-		return process(
-				data.getClass().getResourceAsStream(data.getClass().getSimpleName() + EXTENSION_FTL),
+		return Thymeleaf.process(
+				data.getClass().getResourceAsStream(data.getClass().getSimpleName() + FileUtils.EXTENSION_FTL),
 				data);
 	}
 
 	@Override
 	@SneakyThrows
 	protected R toResult(String[] results) {
-		return newLoader(new FromXmlRulesModule() {
+		return DigesterLoader.newLoader(new FromXmlRulesModule() {
 			@Override
 			protected void loadRules() {
-				loadXMLRules(new InputSource(resultClass.getResourceAsStream(resultClass.getSimpleName() + EXTENSION_XML)));
+				loadXMLRules(new InputSource(resultClass.getResourceAsStream(
+						resultClass.getSimpleName() + FileUtils.EXTENSION_XML)));
 			}
-		}).newDigester().parse(new ByteArrayInputStream(results[ZERO].getBytes()));
+		}).newDigester().parse(new ByteArrayInputStream(results[Constants.ZERO].getBytes()));
 	}
 
 	@Override
 	@SneakyThrows
 	protected P toData(String[] data) {
-		return newLoader(new FromXmlRulesModule() {
+		return DigesterLoader.newLoader(new FromXmlRulesModule() {
 			@Override
 			protected void loadRules() {
-				loadXMLRules(new InputSource(dataClass.getResourceAsStream(dataClass.getSimpleName() + EXTENSION_XML)));
+				loadXMLRules(new InputSource(dataClass.getResourceAsStream(
+						dataClass.getSimpleName() + FileUtils.EXTENSION_XML)));
 			}
-		}).newDigester().parse(new ByteArrayInputStream(data[ZERO].getBytes()));
+		}).newDigester().parse(new ByteArrayInputStream(data[Constants.ZERO].getBytes()));
 	}
 }

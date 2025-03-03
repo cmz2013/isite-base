@@ -11,6 +11,7 @@ import org.isite.operation.task.PrizeTaskExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class PrizeWheelService {
             return null;
         }
         Integer limit = null;
-        Date periodStartTime = null;
+        LocalDateTime periodStartTime = null;
         if (null != activityProperty.getTaskPeriod()) {
             periodStartTime = activityProperty.getTaskPeriod().getStartTime();
             limit = activityProperty.getTaskPeriod().getLimit();

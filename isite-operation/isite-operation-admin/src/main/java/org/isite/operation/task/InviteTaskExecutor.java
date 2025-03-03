@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
 import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
@@ -42,7 +42,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     protected InviteRecordPo createTaskRecord(
-            EventDto eventDto, Activity activity, Task task, Date periodStartTime, long taskNumber) {
+            EventDto eventDto, Activity activity, Task task, LocalDateTime periodStartTime, long taskNumber) {
         InviteRecordPo inviteRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
         inviteRecordPo.setInviterId(inviteEventParam.getInviterId());
@@ -50,7 +50,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     }
 
     @Override
-    protected long getTaskNumber(int activityId, int taskId, Date periodStartTime, Integer limit, EventDto eventDto) {
+    protected long getTaskNumber(int activityId, int taskId, LocalDateTime periodStartTime, Integer limit, EventDto eventDto) {
         //已参与活动不能被邀请
         getBeans(TaskRecordService.class).values().forEach(taskRecordService -> isFalse(
                 taskRecordService.exists(activityId, eventDto.getUserId()), "can't invite users who already exist"));
@@ -68,7 +68,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
      * @param inviterId 邀请人ID
      */
     @Override
-    protected long countTaskRecord(int activityId, int taskId, @Nullable Date startTime, long inviterId) {
+    protected long countTaskRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long inviterId) {
         return inviteRecordService.countInviteRecord(activityId, taskId, startTime, inviterId);
     }
 
@@ -102,6 +102,6 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE };
+        return new TaskType[] {OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE};
     }
 }

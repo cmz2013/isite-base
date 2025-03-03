@@ -11,7 +11,7 @@ public class UserConstants {
     /**
      * 服务ID
      */
-    public static final String SERVICE_ID = "user-center";
+    public static final String SERVICE_ID = "isite-user-center";
     /**
      * 字段名：用户ID
      */

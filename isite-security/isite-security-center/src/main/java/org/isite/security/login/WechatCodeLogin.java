@@ -69,7 +69,7 @@ public class WechatCodeLogin implements CodeLogin {
 
     @Override
     public LoginCodeType[] getIdentities() {
-        return new LoginCodeType[] { AUTHORIZATION_CODE_WECHAT };
+        return new LoginCodeType[] {AUTHORIZATION_CODE_WECHAT};
     }
 
     /**

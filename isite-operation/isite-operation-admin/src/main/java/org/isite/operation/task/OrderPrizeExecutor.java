@@ -28,6 +28,6 @@ public class OrderPrizeExecutor extends PrizeTaskExecutor {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] { SHOP_ORDER_PRIZE };
+        return new TaskType[] {SHOP_ORDER_PRIZE};
     }
 }
