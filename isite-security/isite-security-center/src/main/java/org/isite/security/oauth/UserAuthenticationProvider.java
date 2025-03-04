@@ -1,6 +1,13 @@
 package org.isite.security.oauth;
 
-import org.isite.security.data.enums.LoginCodeType;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.enums.ChronoUnit;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.security.constants.SecurityConstants;
+import org.isite.security.data.constants.CacheKeys;
+import org.isite.security.data.enums.CodeLoginMode;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.login.ClientLoginFactory;
 import org.isite.security.login.CodeLoginFactory;
@@ -17,28 +24,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.String.format;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang3.BooleanUtils.isFalse;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.enums.ChronoUnit.DAY;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.security.constants.SecurityConstants.LOGIN_FAILURE_TIMES_MAX;
-import static org.isite.security.data.constants.CacheKeys.LOGIN_LOCKED_FORMAT;
-import static org.isite.security.data.constants.CacheKeys.LOGIN_TIMES_FORMAT;
-import static org.isite.security.data.constants.SecurityConstants.BAD_CREDENTIALS;
-
+import java.util.concurrent.TimeUnit;
 /**
  * @Description 处理基于用户名和密码的认证
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
 public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-
+    private static final String BAD_CREDENTIALS = "Bad credentials";
     private CodeLoginFactory codeLoginFactory;
     private ClientLoginFactory clientLoginFactory;
     private StringRedisTemplate redisTemplate;
@@ -51,19 +44,19 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
     @Override
     protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) {
         if (!user.isEnabled()) {
-            throw new DisabledException(getMessage("user.disabled", "User is disabled"));
+            throw new DisabledException(MessageUtils.getMessage("user.disabled", "User is disabled"));
         }
-        OauthUser oauthUser = cast(user);
-        LoginCodeType codeType = userLoginService.getCodeType(token);
-        if (null != codeType) {
-            if (!codeLoginFactory.get(codeType).checkCode(token.getName(), token.getCredentials().toString())) {
+        OauthUser oauthUser = TypeUtils.cast(user);
+        CodeLoginMode codeLoginMode = userLoginService.getCodeLoginMode(token);
+        if (null != codeLoginMode) {
+            if (!codeLoginFactory.get(codeLoginMode).checkCode(token.getName(), token.getCredentials().toString())) {
                 this.checkFailureTimes(user.getUsername());
-                throw new BadCredentialsException(getMessage("verificationCode.invalid", BAD_CREDENTIALS));
+                throw new BadCredentialsException(MessageUtils.getMessage("captcha.invalid", BAD_CREDENTIALS));
             }
         } else {
             if (!clientLoginFactory.get(userLoginService.getClientId(token)).checksPassword(oauthUser.getPassword(), token)) {
                 this.checkFailureTimes(oauthUser.getUsername());
-                throw new BadCredentialsException(getMessage("user.badCredentials", BAD_CREDENTIALS));
+                throw new BadCredentialsException(MessageUtils.getMessage("user.badCredentials", BAD_CREDENTIALS));
             }
         }
     }
@@ -73,14 +66,14 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
      */
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken token) {
-        if (isBlank(username) || null == token.getCredentials()) {
-            throw new BadCredentialsException(getMessage("user.badCredentials", BAD_CREDENTIALS));
+        if (StringUtils.isBlank(username) || null == token.getCredentials()) {
+            throw new BadCredentialsException(MessageUtils.getMessage("user.badCredentials", BAD_CREDENTIALS));
         }
         // username是用户名或手机号或邮箱地址等
         if (isNonLocked(username)) {
-            LoginCodeType codeType = userLoginService.getCodeType(token);
-            OauthUser oauthUser = null != codeType ?
-                    codeLoginFactory.get(codeType).getOauthUser(username, token) :
+            CodeLoginMode codeLoginMode = userLoginService.getCodeLoginMode(token);
+            OauthUser oauthUser = null != codeLoginMode ?
+                    codeLoginFactory.get(codeLoginMode).getOauthUser(username, token) :
                     clientLoginFactory.get(userLoginService.getClientId(token)).getOauthUser(username, token);
             if (null == oauthUser) {
                 this.checkFailureTimes(username);
@@ -89,7 +82,7 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
             }
             return oauthUser;
         }
-        throw new LockedException(getMessage("user.locked",
+        throw new LockedException(MessageUtils.getMessage("user.locked",
                 "The user's account is locked and they can try to log in again after 24 hours"));
     }
 
@@ -97,7 +90,8 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
      * 判断账号没有被锁定
      */
     private boolean isNonLocked(String username) {
-        return isBlank(redisTemplate.opsForValue().get(format(LOGIN_LOCKED_FORMAT, username))) ? TRUE : FALSE;
+        return StringUtils.isBlank(redisTemplate.opsForValue().get(
+                String.format(CacheKeys.LOGIN_LOCKED_FORMAT, username))) ? Boolean.TRUE : Boolean.FALSE;
     }
 
     /**
@@ -105,16 +99,16 @@ public class UserAuthenticationProvider extends AbstractUserDetailsAuthenticatio
      * 为了防止暴力破解账号和密码，一般会对用户登录失败次数进行限定，在一定时间窗口超过一定次数，则锁定账户，来确保系统安全。
      */
     private void checkFailureTimes(String username) {
-        String lockKey = format(LOGIN_LOCKED_FORMAT, username);
+        String lockKey = String.format(CacheKeys.LOGIN_LOCKED_FORMAT, username);
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         String lockValue = operations.get(lockKey);
-        if (isBlank(lockValue) || isFalse(parseBoolean(lockValue))) {
-            String timesKey = format(LOGIN_TIMES_FORMAT, username);
+        if (StringUtils.isBlank(lockValue) || BooleanUtils.isFalse(Boolean.parseBoolean(lockValue))) {
+            String timesKey = String.format(CacheKeys.LOGIN_TIMES_FORMAT, username);
             Long timesValue = operations.increment(timesKey);
-            if (null != timesValue && timesValue <= LOGIN_FAILURE_TIMES_MAX) {
-                redisTemplate.expire(timesKey, DAY.getMillis(), MILLISECONDS);
+            if (null != timesValue && timesValue <= SecurityConstants.LOGIN_FAILURE_TIMES_MAX) {
+                redisTemplate.expire(timesKey, ChronoUnit.DAY.getMillis(), TimeUnit.MILLISECONDS);
             } else {
-                operations.set(lockKey, TRUE.toString(), DAY.getMillis(), MILLISECONDS);
+                operations.set(lockKey, Boolean.TRUE.toString(), ChronoUnit.DAY.getMillis(), TimeUnit.MILLISECONDS);
                 redisTemplate.delete(timesKey);
             }
         }

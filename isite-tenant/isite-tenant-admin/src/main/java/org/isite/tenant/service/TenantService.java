@@ -1,6 +1,7 @@
 package org.isite.tenant.service;
 
 import org.isite.mybatis.service.PoService;
+import org.isite.tenant.converter.EmployeeConverter;
 import org.isite.tenant.mapper.TenantMapper;
 import org.isite.tenant.po.EmployeePo;
 import org.isite.tenant.po.EmployeeRolePo;
@@ -10,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.isite.tenant.converter.EmployeeConverter.toEmployeePo;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -36,7 +34,7 @@ public class TenantService extends PoService<TenantPo, Integer> {
     public Integer addTenant(long userId, TenantPo tenantPo, List<Integer> resourceIds) {
         this.insert(tenantPo);
         int roleId = roleService.addAdminRole(tenantPo.getId(), resourceIds);
-        EmployeePo employeePo = toEmployeePo(userId, tenantPo.getId());
+        EmployeePo employeePo = EmployeeConverter.toEmployeePo(userId, tenantPo.getId());
         employeeService.insert(employeePo);
         employeeRoleService.insert(new EmployeeRolePo(employeePo.getId(), roleId, tenantPo.getId()));
         return tenantPo.getId();

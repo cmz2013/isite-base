@@ -1,6 +1,8 @@
 package org.isite.commons.lang.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Constants;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -11,13 +13,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.lang.Constants.ZERO;
-
+import java.util.stream.Collectors;
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Slf4j
 public class IoUtils {
@@ -57,7 +55,7 @@ public class IoUtils {
             int n;
             byte[] buffer = new byte[1024];
             while (-1 != (n = src.read(buffer))) {
-                dest.write(buffer, ZERO, n);
+                dest.write(buffer, Constants.ZERO, n);
             }
         }
     }
@@ -68,7 +66,7 @@ public class IoUtils {
     public static List<String> getStringList(InputStream input) throws IOException {
         try (InputStreamReader isr = new InputStreamReader(input);
              BufferedReader br = new BufferedReader(isr, 1024)) {
-            return br.lines().collect(toList());
+            return br.lines().collect(Collectors.toList());
         }
     }
 
@@ -78,7 +76,7 @@ public class IoUtils {
     public static List<String> getStringList(InputStream input, Charset charset) throws IOException {
         try (InputStreamReader isr = new InputStreamReader(input, charset);
             BufferedReader br = new BufferedReader(isr, 1024)) {
-            return br.lines().collect(toList());
+            return br.lines().collect(Collectors.toList());
         }
     }
 
@@ -86,7 +84,7 @@ public class IoUtils {
      * 释放资源
      */
     public static void close(Closeable... closeables) {
-        if (isEmpty(closeables)) {
+        if (ArrayUtils.isEmpty(closeables)) {
             return;
         }
         for (Closeable closeable : closeables) {

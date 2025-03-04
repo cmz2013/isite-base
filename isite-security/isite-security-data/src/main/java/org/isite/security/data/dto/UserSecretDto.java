@@ -2,7 +2,7 @@ package org.isite.security.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.isite.security.data.enums.VerificationCodeType;
+import org.isite.security.data.enums.CaptchaType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,7 +28,7 @@ public class UserSecretDto {
      * 发送验证码的方式
      */
     @NotNull
-    private VerificationCodeType verificationCodeType;
+    private CaptchaType captchaType;
     /**
      * 密保终端：email或手机号等
      */
@@ -38,5 +38,5 @@ public class UserSecretDto {
      * 验证码
      */
     @NotBlank
-    private String code;
+    private String captcha;
 }

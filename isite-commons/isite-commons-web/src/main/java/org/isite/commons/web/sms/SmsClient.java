@@ -2,15 +2,13 @@ package org.isite.commons.web.sms;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.web.http.HttpClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.isite.commons.lang.Constants.THREE;
-import static org.isite.commons.web.http.HttpClient.post;
-
 /**
  * @Description 发送短信的客户端
  * @Author <font color='blue'>zhangcm</font>
@@ -50,10 +48,10 @@ public class SmsClient {
      * @param content 短信内容
      */
     public void send(String mobile, String content) throws IOException, URISyntaxException {
-        Map<String, Object> params = new HashMap<>(THREE);
+        Map<String, Object> params = new HashMap<>(Constants.THREE);
         params.put(fieldMobile, mobile);
         params.put(fieldContent, content);
         params.put(fieldKey, apiKey);
-        post(apiUrl, params);
+        HttpClient.post(apiUrl, params);
     }
 }

@@ -1,23 +1,22 @@
 package org.isite.security.data.enums;
 
 import org.isite.commons.lang.enums.Enumerable;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
-public enum LoginCodeType implements Enumerable<String> {
+public enum CodeLoginMode implements Enumerable<String> {
     /**
      * 短信验证码
      */
-    VERIFICATION_CODE_SMS,
+    CAPTCHA_SMS,
     /**
      * 邮件验证码
      */
-    VERIFICATION_CODE_EMAIL,
+    CAPTCHA_EMAIL,
     /**
      * 微信授权码
      */
-    AUTHORIZATION_CODE_WECHAT;
+    CODE_WECHAT;
 
     @Override
     public String getCode() {

@@ -6,20 +6,20 @@ import org.isite.commons.lang.enums.Enumerable;
  * @Description 验证码类型
  * @Author <font color='blue'>zhangcm</font>
  */
-public enum VerificationCodeType implements Enumerable<String> {
+public enum CaptchaType implements Enumerable<String> {
     /**
      * 短信验证码
      */
-    SMS("verificationCode.agent.sms", "phone number"),
+    SMS("captcha.agent.sms", "phone number"),
     /**
      * 邮件验证码
      */
-    EMAIL("verificationCode.agent.email", "email address");
+    EMAIL("captcha.agent.email", "email address");
 
     private final String agentKey;
     private final String agentLabel;
 
-    VerificationCodeType(String agentKey, String agentLabel) {
+    CaptchaType(String agentKey, String agentLabel) {
         this.agentKey = agentKey;
         this.agentLabel = agentLabel;
     }

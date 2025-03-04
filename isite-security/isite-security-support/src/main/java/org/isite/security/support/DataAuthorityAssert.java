@@ -9,7 +9,6 @@ import org.isite.security.data.vo.OauthUser;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;
-
 /**
  * @Description 检查用户数据接口权限
  * @Author <font color='blue'>zhangcm</font>

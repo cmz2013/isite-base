@@ -3,14 +3,11 @@ package org.isite.commons.lang;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.lang.json.Comment;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.commons.lang.schedule.ProbabilityScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -21,8 +18,8 @@ public class JsonFieldTest {
     private Reward[] rewards;
 
     public static void main(String[] args) {
-        System.out.println(toJsonString(toJsonFields(JsonFieldTest.class)));
-        System.out.println(toJsonString(toJsonFields(PrizeTaskProperty.class)));
+        System.out.println(Jackson.toJsonString(Reflection.toJsonFields(JsonFieldTest.class)));
+        System.out.println(Jackson.toJsonString(Reflection.toJsonFields(PrizeTaskProperty.class)));
 
         PrizeTaskProperty property = new PrizeTaskProperty();
         List<PrizeReward> rewards = new ArrayList<>();
@@ -35,8 +32,8 @@ public class JsonFieldTest {
         reward.setWeight(10);
         rewards.add(reward);
         property.setRewards(rewards);
-        System.out.println(toJsonString(toJsonFields(property)));
-        System.out.println(new GetterFieldNameTest().test(GetterFieldNameTest::getData));
+        System.out.println(Jackson.toJsonString(Reflection.toJsonFields(property)));
+        System.out.println(new ReflectionTest().testFieldName(ReflectionTest::getData));
     }
 
     public static class PrizeTaskProperty extends TaskPropertyTest<PrizeReward> {

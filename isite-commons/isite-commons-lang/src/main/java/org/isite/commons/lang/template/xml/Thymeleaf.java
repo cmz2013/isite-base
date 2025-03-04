@@ -1,5 +1,7 @@
 package org.isite.commons.lang.template.xml;
 
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.IoUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -11,11 +13,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.isite.commons.lang.Reflection.getFields;
-import static org.isite.commons.lang.Reflection.getValue;
-import static org.isite.commons.lang.utils.IoUtils.getString;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -32,10 +29,10 @@ public class Thymeleaf {
      */
     public static String process(String template, Object data) {
         //将Object属性值转为Map
-        List<Field> fields = getFields(data.getClass());
+        List<Field> fields = Reflection.getFields(data.getClass());
         Map<String, Object> variables = new HashMap<>();
         fields.forEach(field -> {
-            Object value = getValue(data, field.getName());
+            Object value = Reflection.getValue(data, field.getName());
             if (null != value) {
                 variables.put(field.getName(), value);
             }
@@ -50,7 +47,7 @@ public class Thymeleaf {
      * @return xml字符串
      */
     public static String process(InputStream template, Object data) throws IOException {
-        return process(getString(template), data);
+        return process(IoUtils.getString(template), data);
     }
 
     /**

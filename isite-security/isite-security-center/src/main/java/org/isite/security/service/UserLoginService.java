@@ -1,16 +1,27 @@
 package org.isite.security.service;
 
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.Enumerable;
 import org.isite.commons.web.sign.SignSecret;
-import org.isite.security.code.CodeExecutor;
-import org.isite.security.code.CodeExecutorFactory;
+import org.isite.commons.web.utils.RequestUtils;
+import org.isite.security.code.CaptchaExecutor;
+import org.isite.security.code.CaptchaExecutorFactory;
+import org.isite.security.constants.SecurityConstants;
+import org.isite.security.converter.DataAuthorityConverter;
+import org.isite.security.converter.UserConverter;
 import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.dto.UserSecretDto;
-import org.isite.security.data.enums.LoginCodeType;
-import org.isite.security.data.enums.VerificationCodeType;
+import org.isite.security.data.enums.CaptchaType;
+import org.isite.security.data.enums.CodeLoginMode;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.login.UserPasswordEncoder;
 import org.isite.security.oauth.AuthenticationDetails;
 import org.isite.security.oauth.TokenService;
+import org.isite.security.web.utils.SecurityUtils;
+import org.isite.tenant.client.RbacAccessor;
+import org.isite.tenant.client.ResourceAccessor;
 import org.isite.tenant.data.constants.TenantConstants;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
@@ -20,41 +31,20 @@ import org.isite.user.data.constants.UserConstants;
 import org.isite.user.data.vo.UserSecret;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
-
-import static java.lang.Boolean.TRUE;
-import static java.lang.String.format;
-import static java.util.Collections.singletonList;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.Enumerable.getByCode;
-import static org.isite.commons.web.utils.RequestUtils.getRequest;
-import static org.isite.security.constants.SecurityConstants.CODE_TYPE;
-import static org.isite.security.converter.DataAuthorityConverter.toDataAuthority;
-import static org.isite.security.converter.UserConverter.toUserPostDto;
-import static org.isite.security.data.enums.VerificationCodeType.SMS;
-import static org.isite.security.web.utils.SecurityUtils.getTokenValue;
-import static org.isite.tenant.client.RbacAccessor.getRbac;
-import static org.isite.tenant.client.ResourceAccessor.getResources;
-import static org.isite.tenant.data.constants.TenantConstants.ROLE_ADMINISTRATOR;
-import static org.isite.user.client.UserAccessor.addUser;
-import static org.isite.user.client.UserAccessor.getUserSecret;
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class UserLoginService {
-
     private static final String BAD_SECRET = "incorrect username or %s";
     private SignSecret signSecret;
-    private CodeExecutorFactory codeExecutorFactory;
+    private CaptchaExecutorFactory captchaExecutorFactory;
     private OauthUserService oauthUserService;
     private UserPasswordEncoder passwordMatcher;
     private TokenService tokenService;
@@ -62,28 +52,30 @@ public class UserLoginService {
     /**
      * 校验验证码，注册用户信息
      */
-    public Long registUser(UserRegistDto userRegistDto) {
-        CodeExecutor codeExecutor = codeExecutorFactory.get(SMS);
-        isTrue(codeExecutor.checkCode(userRegistDto.getPhone(), userRegistDto.getCode()),
-                getMessage("verificationCode.invalid", "the verification code is invalid"));
+    public long registUser(UserRegistDto userRegistDto) {
+        CaptchaExecutor captchaExecutor = captchaExecutorFactory.get(CaptchaType.SMS);
+        Assert.isTrue(captchaExecutor.checkCaptcha(userRegistDto.getPhone(), userRegistDto.getCaptcha()),
+                MessageUtils.getMessage("captcha.invalid", "the captcha is invalid"));
         userRegistDto.setPassword(passwordMatcher.encode(userRegistDto.getPassword()));
-        return addUser(toUserPostDto(userRegistDto), signSecret.password(UserConstants.SERVICE_ID));
+        return UserAccessor.addUser(UserConverter.toUserPostDto(userRegistDto), signSecret.password(UserConstants.SERVICE_ID));
     }
 
     /**
      * 校验验证码，更新用户密码
      */
     public int updatePassword(UserSecretDto userSecretDto) {
-        UserSecret userSecret = getUserSecret(userSecretDto.getUsername(), signSecret.password(UserConstants.SERVICE_ID));
-        VerificationCodeType verificationCodeType = userSecretDto.getVerificationCodeType();
+        UserSecret userSecret = UserAccessor.getUserSecret(
+                userSecretDto.getUsername(), signSecret.password(UserConstants.SERVICE_ID));
+        CaptchaType captchaType = userSecretDto.getCaptchaType();
         //核实用户的密保手机号或email地址
-        notNull(userSecret, format(getMessage("verificationCode.badSecret", BAD_SECRET), verificationCodeType.getAgentLabel()));
-        CodeExecutor codeExecutor = codeExecutorFactory.get(verificationCodeType);
-        isTrue(userSecretDto.getAgent().equals(codeExecutor.getAgent(userSecret)),
-                format(getMessage("verificationCode.badSecret", BAD_SECRET), verificationCodeType.getAgentLabel()));
+        Assert.notNull(userSecret, String.format(
+                MessageUtils.getMessage("captcha.badSecret", BAD_SECRET), captchaType.getAgentLabel()));
+        CaptchaExecutor captchaExecutor = captchaExecutorFactory.get(captchaType);
+        Assert.isTrue(userSecretDto.getAgent().equals(captchaExecutor.getAgent(userSecret)),
+                String.format(MessageUtils.getMessage("captcha.badSecret", BAD_SECRET), captchaType.getAgentLabel()));
         //校验验证码
-        isTrue(codeExecutor.checkCode(userSecretDto.getAgent(), userSecretDto.getCode()),
-                getMessage("verificationCode.invalid", "the verification code is invalid"));
+        Assert.isTrue(captchaExecutor.checkCaptcha(userSecretDto.getAgent(), userSecretDto.getCaptcha()),
+                MessageUtils.getMessage("captcha.invalid", "the captcha is invalid"));
         tokenService.revokeTokensByUser(userSecret.getUsername());
         return UserAccessor.updatePassword(userSecret.getId(),
                 passwordMatcher.encode(userSecretDto.getPassword()),
@@ -94,21 +86,21 @@ public class UserLoginService {
      * 获取登录用户客户端功能权限
      */
     public List<Role> getRoles(OauthUser oauthUser, String clientId) {
-        if (TRUE.equals(oauthUser.getInternal())) {
+        if (Boolean.TRUE.equals(oauthUser.getInternal())) {
             Role role = new Role();
-            role.setId(ZERO);
-            role.setRoleName(ROLE_ADMINISTRATOR);
-            role.setResources(getResources(clientId, signSecret.password(TenantConstants.SERVICE_ID)));
-            return singletonList(role);
+            role.setId(Constants.ZERO);
+            role.setRoleName(TenantConstants.ROLE_ADMINISTRATOR);
+            role.setResources(ResourceAccessor.getResources(clientId, signSecret.password(TenantConstants.SERVICE_ID)));
+            return Collections.singletonList(role);
         }
-        Rbac rbac = getRbac(
+        Rbac rbac = RbacAccessor.getRbac(
                 new LoginDto(oauthUser.getTenant().getId(), oauthUser.getUserId(), clientId),
                 signSecret.password(TenantConstants.SERVICE_ID));
-        notNull(rbac, getMessage("tenant.unavailable", "tenant unavailable"));
+        Assert.notNull(rbac, MessageUtils.getMessage("tenant.unavailable", "the tenant is unavailable"));
         oauthUser.setTenant(rbac.getTenant());
         oauthUser.setEmployeeId(rbac.getEmployeeId());
-        oauthUser.setAuthorityMap(toDataAuthority(rbac.getDataApis()));
-        oauthUserService.storeOauthUser(getTokenValue(), oauthUser);
+        oauthUser.setAuthorityMap(DataAuthorityConverter.toDataAuthority(rbac.getDataApis()));
+        oauthUserService.storeOauthUser(SecurityUtils.getTokenValue(), oauthUser);
         return rbac.getRoles();
     }
 
@@ -116,14 +108,14 @@ public class UserLoginService {
      * 多租户的用户，登录以后可以切换租户，同时更新rbac权限信息
      */
     public List<Role> changeTenant(OauthUser oauthUser, Integer tenantId, String clientId) {
-        Rbac rbac = getRbac(
+        Rbac rbac = RbacAccessor.getRbac(
                 new LoginDto(tenantId, oauthUser.getUserId(), clientId),
                 signSecret.password(TenantConstants.SERVICE_ID));
-        notNull(rbac, getMessage("tenant.unavailable", "tenant unavailable"));
+        Assert.notNull(rbac, MessageUtils.getMessage("tenant.unavailable", "the tenant is unavailable"));
         oauthUser.setTenant(rbac.getTenant());
         oauthUser.setEmployeeId(rbac.getEmployeeId());
-        oauthUser.setAuthorityMap(toDataAuthority(rbac.getDataApis()));
-        oauthUserService.storeOauthUser(getTokenValue(), oauthUser);
+        oauthUser.setAuthorityMap(DataAuthorityConverter.toDataAuthority(rbac.getDataApis()));
+        oauthUserService.storeOauthUser(SecurityUtils.getTokenValue(), oauthUser);
         return rbac.getRoles();
     }
 
@@ -140,17 +132,18 @@ public class UserLoginService {
             return ((AuthenticationDetails) token.getDetails()).getClientId();
         }
         //客户端http basic认证方式获取clientId
-        return ((User) getContext().getAuthentication().getPrincipal()).getUsername();
+        return ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 
     /**
-     * 获取code_type参数
+     * 获取CODE_LOGIN_MODE参数
      */
-    public LoginCodeType getCodeType(UsernamePasswordAuthenticationToken token) {
+    public CodeLoginMode getCodeLoginMode(UsernamePasswordAuthenticationToken token) {
         if (token.getDetails() instanceof AuthenticationDetails) {
-            return ((AuthenticationDetails) token.getDetails()).getLoginCodeType();
+            return ((AuthenticationDetails) token.getDetails()).getCodeLoginMode();
         }
-        return getByCode(LoginCodeType.class, getRequest().getParameter(CODE_TYPE));
+        return Enumerable.getByCode(CodeLoginMode.class,
+                RequestUtils.getRequest().getParameter(SecurityConstants.CODE_LOGIN_MODE));
     }
 
     @Autowired
@@ -159,8 +152,8 @@ public class UserLoginService {
     }
 
     @Autowired
-    public void setCodeExecutorFactory(CodeExecutorFactory codeExecutorFactory) {
-        this.codeExecutorFactory = codeExecutorFactory;
+    public void setCaptchaExecutorFactory(CaptchaExecutorFactory captchaExecutorFactory) {
+        this.captchaExecutorFactory = captchaExecutorFactory;
     }
 
     @Autowired

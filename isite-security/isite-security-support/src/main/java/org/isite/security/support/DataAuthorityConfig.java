@@ -7,10 +7,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.PathMatcher;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
- * @Date 2024/8/19 20:57
  */
 @Configuration
 @ConditionalOnProperty(name = "security.data.authority", havingValue = "true")

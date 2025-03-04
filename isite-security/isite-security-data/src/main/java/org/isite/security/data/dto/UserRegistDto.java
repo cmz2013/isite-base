@@ -49,5 +49,5 @@ public class UserRegistDto {
      * 短信验证码
      */
     @NotBlank
-    private String code;
+    private String captcha;
 }

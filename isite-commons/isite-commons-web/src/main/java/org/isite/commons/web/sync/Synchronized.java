@@ -1,15 +1,11 @@
 package org.isite.commons.web.sync;
 
+import org.isite.commons.lang.Constants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.MINUTE_SECOND;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Description 申明方法执行前使用分布式并发锁控制。
  * 项目必须引用和配置spring-boot-starter-data-redis，分布式并发锁的切面配置才会生效。
@@ -39,17 +35,17 @@ public @interface Synchronized {
     /**
      * KEY的前缀
      */
-    String prefix() default BLANK_STR;
+    String prefix() default Constants.BLANK_STR;
     /**
      * 设置锁的有效时间（秒），防止死锁
      */
-    long time() default MINUTE_SECOND;
+    long time() default Constants.MINUTE_SECOND;
     /**
      * 忙时等待时间（毫秒）。默认不等待，即并发冲突时立即中断请求
      */
-    long waiting() default ZERO;
+    long waiting() default Constants.ZERO;
     /**
      * 忙时重试次数，waiting > 0 时该配置生效
      */
-    int retry() default ONE;
+    int retry() default Constants.ONE;
 }

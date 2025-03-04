@@ -1,15 +1,13 @@
 package org.isite.tenant.client;
 
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.web.feign.SignInterceptor;
+import org.isite.tenant.data.constants.TenantUrls;
 import org.isite.tenant.data.dto.LoginDto;
 import org.isite.tenant.data.vo.Rbac;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-
-import static org.isite.commons.web.feign.SignInterceptor.FEIGN_SIGN_PASSWORD;
-import static org.isite.tenant.data.constants.TenantUrls.API_GET_EMPLOYEE_RBAC;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -20,7 +18,7 @@ public interface RbacClient {
      * feign的get方式默认不能解析对象，只支持基本类型参数，对象类型自动转POST请求。
      * 使用openfeign提供的@SpringQueryMap可以将对象属性转为url中的查询参数
      */
-    @GetMapping(value = API_GET_EMPLOYEE_RBAC)
+    @GetMapping(value = TenantUrls.API_GET_EMPLOYEE_RBAC)
     Result<Rbac> getRbac(@SpringQueryMap LoginDto loginDto,
-                         @RequestHeader(FEIGN_SIGN_PASSWORD) String signPassword);
+                         @RequestHeader(SignInterceptor.FEIGN_SIGN_PASSWORD) String signPassword);
 }

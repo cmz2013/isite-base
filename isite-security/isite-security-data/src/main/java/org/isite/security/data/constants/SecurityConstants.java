@@ -9,5 +9,4 @@ public class SecurityConstants {
     }
 
     public static final String SERVICE_ID = "isite-security-center";
-    public static final String BAD_CREDENTIALS = "Bad credentials";
 }

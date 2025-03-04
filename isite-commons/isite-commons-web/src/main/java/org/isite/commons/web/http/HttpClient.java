@@ -2,6 +2,7 @@ package org.isite.commons.web.http;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.data.constants.ContentType;
 import org.isite.commons.cloud.data.constants.HttpHeaders;
 import org.isite.commons.cloud.data.enums.HttpMethod;
 import org.isite.commons.lang.Constants;

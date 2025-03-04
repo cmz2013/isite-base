@@ -16,6 +16,10 @@ public enum ResultStatus implements Enumerable<Integer> {
      */
     BAD_REQUEST(400, "Bad Request"),
     /**
+     * 未授权
+     */
+    UNAUTHORIZED(401, "Unauthorized"),
+    /**
      * 异常
      */
     EXPECTATION_FAILED(417, "Expectation Failed"),

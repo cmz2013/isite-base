@@ -1,9 +1,7 @@
 package org.isite.commons.lang.utils;
 
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Constants;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -13,15 +11,15 @@ public class StringUtils {
     }
 
     public static String join(CharSequence delimiter, Object... elements) {
-        if (isEmpty(elements)) {
+        if (ArrayUtils.isEmpty(elements)) {
             return null;
         }
         StringBuilder builder = new StringBuilder();
-        for (int i = ZERO; i < elements.length - ONE; i++) {
+        for (int i = Constants.ZERO; i < elements.length - Constants.ONE; i++) {
             builder.append(elements[i]);
             builder.append(delimiter);
         }
-        builder.append(elements[elements.length - ONE]);
+        builder.append(elements[elements.length - Constants.ONE]);
         return builder.toString();
     }
 }

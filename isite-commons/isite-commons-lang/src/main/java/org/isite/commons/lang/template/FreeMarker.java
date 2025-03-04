@@ -6,17 +6,14 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.isite.commons.lang.Constants;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-
-import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.isite.commons.lang.Constants.POUND_SIGN;
-
+import java.nio.charset.StandardCharsets;
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class FreeMarker {
 
@@ -27,10 +24,10 @@ public class FreeMarker {
      * 构造 Configuration
      */
     private static Configuration getConfiguration() {
-        Configuration configuration = new Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        Configuration configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         //freemarker默认将数字按3位使用逗号分割，设定freemarker数值格式化
-        configuration.setNumberFormat(POUND_SIGN);
-        configuration.setDefaultEncoding(UTF_8.name());
+        configuration.setNumberFormat(Constants.POUND_SIGN);
+        configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         return configuration;
     }
 

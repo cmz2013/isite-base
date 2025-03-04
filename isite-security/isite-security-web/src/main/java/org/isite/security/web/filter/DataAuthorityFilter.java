@@ -1,8 +1,12 @@
 package org.isite.security.web.filter;
 
+import org.isite.commons.cloud.utils.PropertyUtils;
+import org.isite.commons.lang.enums.ResultStatus;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.security.support.DataAuthorityAssert;
 import org.isite.security.support.DataAuthorityConfig;
 import org.isite.security.web.exception.OverstepAccessHandler;
+import org.isite.security.web.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.annotation.Order;
@@ -16,13 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
-import static java.lang.String.format;
-import static org.isite.commons.cloud.utils.PropertyUtils.getApplicationName;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.security.web.utils.SecurityUtils.getOauthUser;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-
 /**
  * @Description DataAuthorityFilter 读取当前用户的数据接口权限，校验当前请求是否被授权。
  * 在用户登录的时候，根据（RBAC）授权的资源ID查询接口路径（数据权限），缓存到用户登录信息中。
@@ -36,7 +33,6 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @WebFilter(filterName="dataAuthorityFilter", urlPatterns = "/*")
 @ConditionalOnBean(DataAuthorityConfig.class)
 public class DataAuthorityFilter implements Filter {
-
     private DataAuthorityAssert dataAuthorityAssert;
     private OverstepAccessHandler overstepAccessHandler;
 
@@ -47,7 +43,7 @@ public class DataAuthorityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest httpRequest = cast(request);
+        HttpServletRequest httpRequest = TypeUtils.cast(request);
         /*
          * 假定web application名称为news,在浏览器中输入请求路径：http://localhost:8080/news/main/list.jsp
          * 1、request.getContextPath() 可返回站点的根路径。也就是项目的名字：/news
@@ -55,14 +51,16 @@ public class DataAuthorityFilter implements Filter {
          * 3、request.getRequestURI()：/news/main/list.jsp
          * 4、request.getRealPath("/")：F:\Tomcat 6.0\webapps\news\test
          */
-        String serviceId = getApplicationName();
-        if (dataAuthorityAssert.isAuthorized(getOauthUser(), serviceId, httpRequest.getMethod(), httpRequest.getServletPath())) {
+        String serviceId = PropertyUtils.getApplicationName();
+        if (dataAuthorityAssert.isAuthorized(SecurityUtils.getOauthUser(),
+                serviceId, httpRequest.getMethod(), httpRequest.getServletPath())) {
             chain.doFilter(request, response);
             return;
         }
         //返回未授权异常信息
-        overstepAccessHandler.handle(httpRequest, cast(response), new AccessDeniedException(
-                format("%s %s#%s", FORBIDDEN.getReasonPhrase(), serviceId, httpRequest.getServletPath())));
+        overstepAccessHandler.handle(httpRequest, TypeUtils.cast(response),
+                new AccessDeniedException(String.format("%s %s#%s", ResultStatus.FORBIDDEN.getReasonPhrase(),
+                        serviceId, httpRequest.getServletPath())));
     }
 
     @Autowired

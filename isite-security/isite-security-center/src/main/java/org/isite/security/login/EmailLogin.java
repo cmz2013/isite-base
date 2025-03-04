@@ -1,29 +1,25 @@
 package org.isite.security.login;
 
-import org.isite.security.code.CodeExecutorFactory;
-import org.isite.security.data.enums.LoginCodeType;
+import org.isite.security.code.CaptchaExecutorFactory;
+import org.isite.security.data.enums.CaptchaType;
+import org.isite.security.data.enums.CodeLoginMode;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
-
-import static org.isite.security.data.enums.LoginCodeType.VERIFICATION_CODE_SMS;
-import static org.isite.security.data.enums.VerificationCodeType.SMS;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class SmsCodeLogin implements CodeLogin {
-
+public class EmailLogin implements CodeLogin {
     private ClientLoginFactory clientLoginFactory;
-    private CodeExecutorFactory codeExecutorFactory;
+    private CaptchaExecutorFactory captchaExecutorFactory;
     private UserLoginService userLoginService;
 
     @Override
-    public LoginCodeType[] getIdentities() {
-        return new LoginCodeType[] {VERIFICATION_CODE_SMS};
+    public CodeLoginMode[] getIdentities() {
+        return new CodeLoginMode[] {CodeLoginMode.CAPTCHA_EMAIL};
     }
 
     @Override
@@ -32,8 +28,8 @@ public class SmsCodeLogin implements CodeLogin {
     }
 
     @Override
-    public boolean checkCode(String agent, String code) {
-        return codeExecutorFactory.get(SMS).checkCode(agent, code);
+    public boolean checkCode(String agent, String captcha) {
+        return captchaExecutorFactory.get(CaptchaType.EMAIL).checkCaptcha(agent, captcha);
     }
 
     @Autowired
@@ -42,8 +38,8 @@ public class SmsCodeLogin implements CodeLogin {
     }
 
     @Autowired
-    public void setCodeExecutorFactory(CodeExecutorFactory codeExecutorFactory) {
-        this.codeExecutorFactory = codeExecutorFactory;
+    public void setCaptchaExecutorFactory(CaptchaExecutorFactory captchaExecutorFactory) {
+        this.captchaExecutorFactory = captchaExecutorFactory;
     }
 
     @Autowired

@@ -1,6 +1,8 @@
 package org.isite.security.web.config;
 
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Constants;
 import org.isite.security.web.exception.OverstepAccessHandler;
 import org.isite.security.web.exception.UnauthorizedEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,12 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.split;
-import static org.isite.commons.lang.Constants.COMMA;
-
-/** 
+/**
  * @Description 配置资源服务器。
  * ResourceServerConfigurerAdapter是默认情况下spring security oauth2的http配置，
  * 使用一个特殊的过滤器来检查请求中的承载令牌，以便通过 OAuth2 对请求进行认证。
@@ -42,7 +39,7 @@ public class ResourceServerSupport extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(isNotBlank(permit) ? split(permit, COMMA) : new String[] {}).permitAll()
+                .antMatchers(StringUtils.isNotBlank(permit) ? StringUtils.split(permit, Constants.COMMA) : new String[] {}).permitAll()
                 //除白名单外，其他任何请求都需要认证
                 .anyRequest().authenticated()
                 //自定义token空异常处理

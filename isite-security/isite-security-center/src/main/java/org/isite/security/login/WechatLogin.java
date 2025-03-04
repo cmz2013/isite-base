@@ -1,9 +1,17 @@
 package org.isite.security.login;
 
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.enums.Enumerable;
+import org.isite.commons.lang.json.Jackson;
+import org.isite.commons.web.http.HttpClient;
 import org.isite.commons.web.sign.SignSecret;
-import org.isite.security.data.enums.LoginCodeType;
+import org.isite.security.converter.UserConverter;
+import org.isite.security.data.enums.CodeLoginMode;
 import org.isite.security.data.vo.OauthUser;
+import org.isite.user.client.UserAccessor;
+import org.isite.user.data.constants.UserConstants;
 import org.isite.user.data.dto.WechatPostDto;
 import org.isite.user.data.enums.Sex;
 import org.isite.user.data.vo.UserSecret;
@@ -14,20 +22,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.Boolean.TRUE;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.enums.Enumerable.getByCode;
-import static org.isite.commons.lang.json.Jackson.parseObject;
-import static org.isite.commons.web.http.HttpClient.get;
-import static org.isite.commons.web.http.HttpClient.post;
-import static org.isite.security.converter.UserConverter.toOauthUser;
-import static org.isite.security.data.enums.LoginCodeType.AUTHORIZATION_CODE_WECHAT;
-import static org.isite.user.client.UserAccessor.addWechat;
-import static org.isite.user.client.UserAccessor.getUserSecret;
-import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
-
 /**
  * @Description 微信登录流程如下：
  * step1: 在 微信开放平台 注册一个应用，并获取到 App ID 和 App Secret
@@ -46,7 +40,7 @@ import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
  */
 @Component
 @EnableConfigurationProperties(WechatProperties.class)
-public class WechatCodeLogin implements CodeLogin {
+public class WechatLogin implements CodeLogin {
     private static final String FIELD_APP_ID = "appid";
     private static final String FIELD_SECRET = "secret";
     private static final String FIELD_CODE = "code";
@@ -63,13 +57,13 @@ public class WechatCodeLogin implements CodeLogin {
     private SignSecret signSecret;
 
     @Autowired
-    public WechatCodeLogin(WechatProperties wechatProperties) {
+    public WechatLogin(WechatProperties wechatProperties) {
         this.wechatProperties = wechatProperties;
     }
 
     @Override
-    public LoginCodeType[] getIdentities() {
-        return new LoginCodeType[] {AUTHORIZATION_CODE_WECHAT};
+    public CodeLoginMode[] getIdentities() {
+        return new CodeLoginMode[] {CodeLoginMode.CODE_WECHAT};
     }
 
     /**
@@ -85,23 +79,24 @@ public class WechatCodeLogin implements CodeLogin {
             params.put(FIELD_SECRET, wechatProperties.getSecret());
             params.put(FIELD_CODE, token.getCredentials());
             params.put(FIELD_GRANT_TYPE, "authorization_code");
-            Map<String, Object> result = parseObject(
-                    get(wechatProperties.getTokenUrl(), params), Map.class, String.class, Object.class);
+            Map<String, Object> result = Jackson.parseObject(
+                    HttpClient.get(wechatProperties.getTokenUrl(), params), Map.class, String.class, Object.class);
             if (result.containsKey(FIELD_ACCESS_TOKEN)) {
                 String accessToken = (String) result.get(FIELD_ACCESS_TOKEN);
                 String phoneNumber = getPhoneNumber(accessToken);
-                if (isBlank(phoneNumber)) {
-                    throw new IllegalArgumentException(getMessage("wechat.phone.not.found",
-                            "Failed to get WeChat mobile phone number"));
+                if (StringUtils.isBlank(phoneNumber)) {
+                    throw new IllegalArgumentException(MessageUtils.getMessage("wechat.phone.not.found",
+                            "failed to get wechat mobile phone number"));
                 }
                 //微信用户登录以后，根据微信手机号查询用户信息，如果查询不到用户信息时自动注册
-                UserSecret userSecret = getUserSecret(phoneNumber, signSecret.password(SERVICE_ID));
+                UserSecret userSecret = UserAccessor.getUserSecret(phoneNumber, signSecret.password(UserConstants.SERVICE_ID));
                 if (null == userSecret) {
                     String openId = (String) result.get(FIELD_OPENID);
                     WechatPostDto wechatPostDto = getWechatPostDto(accessToken, openId, phoneNumber);
-                    return toOauthUser(addWechat(wechatPostDto, signSecret.password(SERVICE_ID)), wechatPostDto);
+                    long userId = UserAccessor.addWechat(wechatPostDto, signSecret.password(UserConstants.SERVICE_ID));
+                    return UserConverter.toOauthUser(userId, wechatPostDto);
                 } else {
-                    return toOauthUser(userSecret);
+                    return UserConverter.toOauthUser(userSecret);
                 }
             }
         }
@@ -112,10 +107,10 @@ public class WechatCodeLogin implements CodeLogin {
     private String getPhoneNumber(String accessToken) {
         Map<String, Object> params = new HashMap<>();
         params.put(FIELD_ACCESS_TOKEN, accessToken);
-        Map<String, Object> result = parseObject(
-                post(wechatProperties.getPhoneUrl(), params), Map.class, String.class, Object.class);
+        Map<String, Object> result = Jackson.parseObject(
+                HttpClient.post(wechatProperties.getPhoneUrl(), params), Map.class, String.class, Object.class);
         if (result.containsKey(FIELD_PHONE_INFO)) {
-            result = parseObject((String) result.get(FIELD_PHONE_INFO), Map.class, String.class, Object.class);
+            result = Jackson.parseObject((String) result.get(FIELD_PHONE_INFO), Map.class, String.class, Object.class);
             return (String) result.get(FIELD_PHONE_NUMBER);
         }
         return null;
@@ -130,17 +125,17 @@ public class WechatCodeLogin implements CodeLogin {
         params.put(FIELD_ACCESS_TOKEN, accessToken);
         params.put(FIELD_OPENID, openId);
         params.put("lang", "zh_CN");
-        Map<String, Object> result = parseObject(
-                get(wechatProperties.getUserInfoUrl(), params), Map.class, String.class, Object.class);
+        Map<String, Object> result = Jackson.parseObject(
+                HttpClient.get(wechatProperties.getUserInfoUrl(), params), Map.class, String.class, Object.class);
         if (result.containsKey(FIELD_OPENID)) {
             wechatPostDto.setUsername((String) result.get(FIELD_NICKNAME));
-            wechatPostDto.setSex(getByCode(Sex.class, result.get(FIELD_SEX)));
+            wechatPostDto.setSex(Enumerable.getByCode(Sex.class, result.get(FIELD_SEX)));
             if (result.containsKey(FIELD_HEADIMGURL)) {
                 wechatPostDto.setHeadImg((String) result.get(FIELD_HEADIMGURL));
             }
         }
         wechatPostDto.setPhone(phoneNumber);
-        if (isBlank(wechatPostDto.getUsername())) {
+        if (StringUtils.isBlank(wechatPostDto.getUsername())) {
             wechatPostDto.setUsername(phoneNumber);
         }
         return wechatPostDto;
@@ -148,7 +143,7 @@ public class WechatCodeLogin implements CodeLogin {
 
     @Override
     public boolean checkCode(String agent, String code) {
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     @Autowired

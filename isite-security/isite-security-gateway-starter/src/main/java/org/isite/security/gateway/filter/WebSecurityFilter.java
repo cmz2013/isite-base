@@ -1,7 +1,16 @@
 package org.isite.security.gateway.filter;
 
 import lombok.Setter;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.converter.ResultConverter;
+import org.isite.commons.cloud.data.constants.HttpHeaders;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Error;
+import org.isite.commons.lang.enums.ResultStatus;
+import org.isite.commons.lang.json.Jackson;
+import org.isite.gateway.support.GatewayUtils;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.security.gateway.client.OauthUserClient;
 import org.isite.security.support.DataAuthorityAssert;
@@ -9,34 +18,15 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.Nullable;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import static java.lang.String.format;
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.converter.ResultConverter.toResult;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.COMMA;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.gateway.support.GatewayUtils.getServiceId;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static reactor.core.publisher.Mono.fromSupplier;
-
 /**
  * @Description 校验token和数据接口权限。
  * 在用户登录的时候，根据（RBAC）授权的资源ID查询接口路径（数据权限），缓存到用户登录信息中。
@@ -45,9 +35,7 @@ import static reactor.core.publisher.Mono.fromSupplier;
  * @Author <font color='blue'>zhangcm</font>
  */
 public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBean {
-    /**
-     * 不需要登录认证就可以访问的接口
-     */
+    //不需要登录认证就可以访问的接口
     private String[] oauthPermits;
     @Setter
     private OauthUserClient oauthUserClient;
@@ -60,8 +48,8 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
     }
 
     public WebSecurityFilter(String oauthPermits) {
-        if (isNotBlank(oauthPermits)) {
-            this.oauthPermits = oauthPermits.split(COMMA);
+        if (StringUtils.isNotBlank(oauthPermits)) {
+            this.oauthPermits = oauthPermits.split(Constants.COMMA);
         }
     }
 
@@ -72,49 +60,49 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
         if (isOauthPermits(requestPath)) {
             return chain.filter(exchange);
         }
-
-        HttpHeaders headers = request.getHeaders();
-        if (isBlank(headers.getFirst(AUTHORIZATION))) {
-            return doResponse(exchange, new Error(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase()));
+        MultiValueMap<String, String> headers = request.getHeaders();
+        if (StringUtils.isBlank(headers.getFirst(HttpHeaders.AUTHORIZATION))) {
+            return doResponse(exchange, new Error(
+                    ResultStatus.UNAUTHORIZED.getCode(), ResultStatus.UNAUTHORIZED.getReasonPhrase()));
         }
-        String serviceId = getServiceId(exchange);
+        String serviceId = GatewayUtils.getServiceId(exchange);
         OauthUser oauthUser = oauthUserClient.getUserDetails(headers.toSingleValueMap());
         if (null == dataAuthorityAssert || dataAuthorityAssert.isAuthorized(
                 oauthUser, serviceId, request.getMethodValue(), requestPath)) {
-            headers.add(X_USER_ID, valueOf(oauthUser.getUserId()));
+            headers.add(HttpHeaders.X_USER_ID, String.valueOf(oauthUser.getUserId()));
             if (null != oauthUser.getTenant()) {
-                headers.add(X_TENANT_ID, valueOf(oauthUser.getTenant().getId()));
-                headers.add(X_EMPLOYEE_ID, valueOf((oauthUser.getEmployeeId())));
+                headers.add(HttpHeaders.X_TENANT_ID, String.valueOf(oauthUser.getTenant().getId()));
+                headers.add(HttpHeaders.X_EMPLOYEE_ID, String.valueOf((oauthUser.getEmployeeId())));
             }
             return chain.filter(exchange);
         }
-        return doResponse(exchange, new Error(FORBIDDEN.value(),
-                format("%s %s#%s", FORBIDDEN.getReasonPhrase(), serviceId, requestPath)));
+        return doResponse(exchange, new Error(ResultStatus.FORBIDDEN.getCode(),
+                String.format("%s %s#%s", ResultStatus.FORBIDDEN.getReasonPhrase(), serviceId, requestPath)));
     }
 
     /**
      * 不需要登录认证就可以访问的接口
      */
     private boolean isOauthPermits(String requestPath) {
-        if (isEmpty(this.oauthPermits)) {
-            return false;
+        if (ArrayUtils.isEmpty(this.oauthPermits)) {
+            return Boolean.FALSE;
         }
         for (String permit : this.oauthPermits) {
             if (this.pathMatcher.match(permit, requestPath)) {
-                return true;
+                return Boolean.TRUE;
             }
         }
-        return false;
+        return Boolean.FALSE;
     }
 
     private Mono<Void> doResponse(ServerWebExchange exchange, Error error) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(OK);
+        response.setStatusCode(HttpStatus.OK);
         // header set_json响应
-        response.getHeaders().setContentType(APPLICATION_JSON);
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         //返回异常原因给前端
-        return response.writeWith(fromSupplier(() -> response.bufferFactory().wrap(
-                toJsonString(toResult(error)).getBytes())));
+        return response.writeWith(Mono.fromSupplier(() -> response.bufferFactory()
+                .wrap(Jackson.toJsonString(ResultConverter.toResult(error)).getBytes())));
     }
 
     @Override
@@ -125,7 +113,7 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
 
     @Override
     public void afterPropertiesSet() {
-        notNull(this.oauthUserClient, "oauthUserClient must be set");
-        notNull(this.pathMatcher, "pathMatcher must be set");
+        Assert.notNull(this.oauthUserClient, "oauthUserClient must be set");
+        Assert.notNull(this.pathMatcher, "pathMatcher must be set");
     }
 }

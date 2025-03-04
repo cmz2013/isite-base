@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 /**
@@ -40,7 +41,7 @@ public class RbacService {
             tenantPo = tenantService.get(login.getTenantId());
         }
         List<TenantPo> tenantPos = null != tenantPo ?
-                List.of(tenantPo) : tenantService.findByUserId(login.getUserId());
+                Collections.singletonList(tenantPo) : tenantService.findByUserId(login.getUserId());
         if (CollectionUtils.isEmpty(tenantPos)) {
             return null;
         }

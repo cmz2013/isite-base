@@ -1,29 +1,26 @@
 package org.isite.security.login;
 
 import org.isite.commons.web.sign.SignSecret;
+import org.isite.security.converter.UserConverter;
 import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.security.data.vo.OauthUser;
+import org.isite.user.client.UserAccessor;
+import org.isite.user.data.constants.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
-
-import static org.isite.security.converter.UserConverter.toOauthUser;
-import static org.isite.user.client.UserAccessor.getUserSecret;
-import static org.isite.user.data.constants.UserConstants.SERVICE_ID;
-
 /**
  * @Description 用户中心登录
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class UserClientLogin implements ClientLogin {
-
+public class UserLogin implements ClientLogin {
     private UserPasswordEncoder userPasswordEncoder;
     private SignSecret signSecret;
 
     @Override
     public OauthUser getOauthUser(String username, UsernamePasswordAuthenticationToken token) {
-        return toOauthUser(getUserSecret(username, signSecret.password(SERVICE_ID)));
+        return UserConverter.toOauthUser(UserAccessor.getUserSecret(username, signSecret.password(UserConstants.SERVICE_ID)));
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.isite.commons.cloud.data.enums.HttpMethod;
 import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.enums.ChronoUnit;
 import org.isite.commons.lang.json.Jackson;
-import org.isite.commons.web.http.ContentType;
+import org.isite.commons.cloud.data.constants.ContentType;
 import org.isite.commons.web.http.HttpClient;
 import org.isite.commons.web.http.HttpUtils;
 import org.isite.data.support.enums.WsProtocol;

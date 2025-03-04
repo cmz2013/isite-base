@@ -1,5 +1,6 @@
 package org.isite.commons.web.mq;
 
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -10,9 +11,6 @@ import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.springframework.amqp.core.AcknowledgeMode.MANUAL;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -45,7 +43,7 @@ public class RabbitConfig {
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter());
         // 配置接收消息确认机制为手动确认
-        factory.setAcknowledgeMode(MANUAL);
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         return factory;
     }
 }

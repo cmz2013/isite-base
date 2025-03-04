@@ -1,14 +1,13 @@
 package org.isite.security.web.utils;
 
+import org.isite.commons.lang.Constants;
 import org.isite.security.data.vo.OauthUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
-import static java.util.Base64.getEncoder;
-import static org.isite.commons.lang.Constants.COLON;
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
-
+import java.util.Base64;
 /**
  * @Description 资源服务器认证鉴权工具类
  * @Author <font color='blue'>zhangcm</font>
@@ -23,7 +22,7 @@ public class SecurityUtils {
      */
     public static String getTokenValue() {
         // 通过ThreadLocal的应用取到当前的SecurityContext
-        SecurityContext context = getContext();
+        SecurityContext context = SecurityContextHolder.getContext();
         if (null == context) {
             return null;
         }
@@ -42,7 +41,7 @@ public class SecurityUtils {
      * 注意：如果只查询当前登录用户数据，接口路径约定/my/**，数据接口授权拦截器自动放行
      */
     public static OauthUser getOauthUser() {
-        SecurityContext context = getContext();
+        SecurityContext context = SecurityContextHolder.getContext();
         if (null == context) {
             return null;
         }
@@ -57,6 +56,6 @@ public class SecurityUtils {
      * 生成终端 HTTP Basic 认证字符串
      */
     public static String getBasicAuth(String username, String password) {
-        return "Basic " + getEncoder().encodeToString((username + COLON + password).getBytes());
+        return "Basic " + Base64.getEncoder().encodeToString((username + Constants.COLON + password).getBytes());
     }
 }

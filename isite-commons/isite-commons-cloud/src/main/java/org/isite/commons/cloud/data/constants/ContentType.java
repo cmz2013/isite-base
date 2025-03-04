@@ -1,4 +1,4 @@
-package org.isite.commons.web.http;
+package org.isite.commons.cloud.data.constants;
 
 /**
  * @Description http Content-Type

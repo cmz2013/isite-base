@@ -1,7 +1,7 @@
 package org.isite.security.code;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.security.data.enums.VerificationCodeType;
+import org.isite.security.data.enums.CaptchaType;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class CodeExecutorFactory extends AbstractFactory<CodeExecutor, VerificationCodeType, String> {
+public class CaptchaExecutorFactory extends AbstractFactory<CaptchaExecutor, CaptchaType, String> {
 }

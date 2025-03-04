@@ -1,7 +1,6 @@
 package org.isite.security.data.constants;
 
 import org.isite.commons.cloud.data.constants.UrlConstants;
-
 /**
  * @Description
  * 1) 自定义API使用oauth（认证鉴权中心）打头，和框架（spring-cloud-starter-oauth2）内置的URL前缀保持一致，支持网关转发请求
@@ -57,11 +56,11 @@ public class SecurityUrls {
     /**
      * 获取验证码（不需要登录）
      */
-    public static final String API_GET_VERIFICATION_CODE = UrlConstants.URL_API + URL_OAUTH + "/verificationCode";
+    public static final String API_GET_CAPTCHA = UrlConstants.URL_API + URL_OAUTH + "/captcha";
     /**
      * 校验验证码
      */
-    public static final String DELETE_VERIFICATION_CODE = URL_OAUTH + "/verificationCode";
+    public static final String DELETE_CAPTCHA = URL_OAUTH + "/captcha";
     /**
      * 授权码模式，用户登录以后批准授权
      * 用于替换框架（spring-cloud-starter-oauth2）内置的接口路径 /oauth/confirm_access

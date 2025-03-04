@@ -1,14 +1,12 @@
 package org.isite.tenant.client;
 
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.cloud.utils.ResultUtils;
 import org.isite.commons.web.feign.FeignClientFactory;
+import org.isite.tenant.data.constants.TenantConstants;
 import org.isite.tenant.data.vo.Resource;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.cloud.utils.ResultUtils.getData;
-import static org.isite.tenant.data.constants.TenantConstants.SERVICE_ID;
-
 /**
  * @Description ResourceClient 辅助类
  * @Author <font color='blue'>zhangcm</font>
@@ -22,8 +20,9 @@ public class ResourceAccessor {
      * 内置用户登录时获取客户端所有资源
      */
     public static List<Resource> getResources(String clientId, String signPassword) {
-        ResourceClient resourceClient = getBean(FeignClientFactory.class).getFeignClient(ResourceClient.class, SERVICE_ID);
-        return getData(resourceClient.getResources(clientId, signPassword));
+        FeignClientFactory feignClientFactory = ApplicationContextUtils.getBean(FeignClientFactory.class);
+        ResourceClient resourceClient = feignClientFactory.getFeignClient(ResourceClient.class, TenantConstants.SERVICE_ID);
+        return ResultUtils.getData(resourceClient.getResources(clientId, signPassword));
     }
 
 }

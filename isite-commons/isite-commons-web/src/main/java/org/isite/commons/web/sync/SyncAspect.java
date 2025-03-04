@@ -17,9 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Boolean.TRUE;
-
 /**
  * @Description 分布式并发锁切面编程。
  * 实现接口 Ordered#getOrder方法，用于设置多个 Aspect 执行的先后顺序，order越小优先级越高。也可以使用@Order注解代替接口
@@ -57,7 +54,7 @@ public class SyncAspect implements Ordered {
 
         List<LockCylinder> lockCylinders = new ArrayList<>(sync.locks().length);
         for (Lock lock : sync.locks()) {
-            if (TRUE.equals(spelExpressionUtils.getValue(lock.condition()))) {
+            if (Boolean.TRUE.equals(spelExpressionUtils.getValue(lock.condition()))) {
                 lockCylinders.add(locksmith.getLockCylinder(lock));
             }
         }

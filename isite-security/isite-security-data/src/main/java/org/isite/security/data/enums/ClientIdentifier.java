@@ -10,7 +10,7 @@ import org.isite.commons.lang.enums.Enumerable;
 @Getter
 public enum ClientIdentifier implements Enumerable<String> {
 
-    DATA_ADMIN("data.admin", "数据集成管理后台");
+    DATA_ADMIN("isite-data-admin", "数据集成管理后台");
 
     private final String code;
     private final String label;

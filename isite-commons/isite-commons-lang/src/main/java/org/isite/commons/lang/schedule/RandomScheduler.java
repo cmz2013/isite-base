@@ -1,10 +1,9 @@
 package org.isite.commons.lang.schedule;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.util.List;
 import java.util.Random;
-
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-
 /**
  * @Description 随机调度
  * @Author <font color='blue'>zhangcm</font>
@@ -17,7 +16,7 @@ public class RandomScheduler {
     }
 
     public static <T> T choose(List<T> list) {
-        if (isNotEmpty(list)) {
+        if (CollectionUtils.isNotEmpty(list)) {
             return list.get(RANDOM.nextInt(list.size()));
         }
         return null;

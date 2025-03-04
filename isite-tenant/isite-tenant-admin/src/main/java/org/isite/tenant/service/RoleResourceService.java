@@ -1,5 +1,6 @@
 package org.isite.tenant.service;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.isite.mybatis.service.PoService;
 import org.isite.tenant.mapper.RoleResourceMapper;
 import org.isite.tenant.po.ResourcePo;
@@ -9,9 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -42,7 +40,7 @@ public class RoleResourceService extends PoService<RoleResourcePo, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteRoleResources(int tenantId, List<Integer> resourceIds) {
-        if (isEmpty(resourceIds)) {
+        if (CollectionUtils.isEmpty(resourceIds)) {
             return;
         }
         ((RoleResourceMapper) getMapper()).deleteRoleResources(tenantId, resourceIds);

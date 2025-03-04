@@ -1,7 +1,7 @@
 package org.isite.security.login;
 
 import org.isite.commons.cloud.factory.AbstractFactory;
-import org.isite.security.data.enums.LoginCodeType;
+import org.isite.security.data.enums.CodeLoginMode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
-public class CodeLoginFactory extends AbstractFactory<CodeLogin, LoginCodeType, String> {
+public class CodeLoginFactory extends AbstractFactory<CodeLogin, CodeLoginMode, String> {
 
 }

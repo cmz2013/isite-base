@@ -5,8 +5,7 @@ import lombok.Setter;
 import org.isite.commons.cloud.data.enums.HttpMethod;
 import org.isite.commons.cloud.data.vo.Vo;
 
-import static java.util.Objects.hash;
-
+import java.util.Objects;
 /**
  * @Description 数据接口
  * @Author <font color='blue'>zhangcm</font>
@@ -47,6 +46,6 @@ public class DataApi extends Vo<Integer> {
 
     @Override
     public int hashCode() {
-        return hash(serviceId, method, requestPath);
+        return Objects.hash(serviceId, method, requestPath);
     }
 }

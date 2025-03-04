@@ -4,9 +4,8 @@ import org.isite.commons.cloud.factory.Strategy;
 import org.isite.security.data.enums.ClientIdentifier;
 import org.isite.security.data.vo.OauthUser;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 /**
- * @Description 用户登录接口
+ * @Description 用户密码登录接口
  * @Author <font color='blue'>zhangcm</font>
  */
 public interface ClientLogin extends Strategy<ClientIdentifier> {
