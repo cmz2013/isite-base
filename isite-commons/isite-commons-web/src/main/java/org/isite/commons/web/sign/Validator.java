@@ -1,7 +1,12 @@
 package org.isite.commons.web.sign;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.isite.commons.cloud.data.constants.HttpHeaders;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.commons.web.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -9,28 +14,17 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Long.parseLong;
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_FORWARDED_PREFIX;
-import static org.isite.commons.lang.Constants.QUESTION_MARK;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.isBasic;
-import static org.isite.commons.web.sign.SignUtils.getSignatureParameters;
-import static org.isite.commons.web.sign.SignUtils.verifySignature;
-import static org.isite.commons.web.utils.RequestUtils.getRequest;
-
 /**
- * @Description 接口签名验证
+ * @Description 接口签名验证。可以通过 注解@Signed 的属性validator指定子类重写校验逻辑
  * @Author <font color='blue'>zhangcm</font>
  */
 @Primary
 @Component
-public class Verification {
+public class Validator {
 
     /**
      * 接口签名有效期，单位：秒，如果没有配置则使用默认值30
@@ -38,25 +32,16 @@ public class Verification {
     @Value("${security.signature.validity:10}")
     private Long validity;
 
-    /**
-     * @param signature 接口签名
-     * @param target 正确的签名
-     * @return 接口签名是否正确
-     */
-    public boolean verify(String signature, String target) {
-        return isNotBlank(signature) && signature.equals(target);
-    }
-
     public boolean verify(ProceedingJoinPoint point, Signed signed, String signature, String password)
             throws NoSuchAlgorithmException {
-        HttpServletRequest request = getRequest();
-        String api = request.getRequestURI().contains(QUESTION_MARK) ?
-                request.getRequestURI().substring(ZERO, request.getRequestURI().indexOf(QUESTION_MARK)) :
+        HttpServletRequest request = RequestUtils.getRequest();
+        String api = request.getRequestURI().contains(Constants.QUESTION_MARK) ?
+                request.getRequestURI().substring(Constants.ZERO, request.getRequestURI().indexOf(Constants.QUESTION_MARK)) :
                 request.getRequestURI();
-        if (isNotBlank(request.getHeader(X_FORWARDED_PREFIX))) {
-            api = request.getHeader(X_FORWARDED_PREFIX) + api;
+        if (StringUtils.isNotBlank(request.getHeader(HttpHeaders.X_FORWARDED_PREFIX))) {
+            api = request.getHeader(HttpHeaders.X_FORWARDED_PREFIX) + api;
         }
-        return verifySignature(api, signature, password, parseLong(request.getHeader(signed.timestampHeader())),
+        return SignUtils.verifySignature(api, signature, password, Long.parseLong(request.getHeader(signed.timestampField())),
                 validity, getSignatureParameter(point, signed));
     }
 
@@ -66,21 +51,21 @@ public class Verification {
     private Map<String, Object> getSignatureParameter(ProceedingJoinPoint point, Signed validated) {
         MethodSignature methodSignature = (MethodSignature) point.getSignature();
         String[] parameterNames = methodSignature.getParameterNames();
-        Object[] args = point.getArgs();
         //每个参数上可能有多个注解,是一个一维数组,多个参数又是一维数组,就组成了二维数组
         Annotation[][] annotations = methodSignature.getMethod().getParameterAnnotations();
+        Object[] args = point.getArgs();
         Map<String, Object> signatureParameter = new HashMap<>();
-        List<String> signatureFields = asList(validated.fields());
+        List<String> signatureFields = Arrays.asList(validated.fields());
 
-        for (int index = ZERO; index < parameterNames.length; index++) {
-            if (isBasic(args[index])) {
+        for (int index = Constants.ZERO; index < parameterNames.length; index++) {
+            if (TypeUtils.isBasic(args[index])) {
                 String signatureField = getSignatureField(parameterNames[index], annotations[index]);
                 if (signatureFields.isEmpty() || signatureFields.contains(signatureField)) {
                     signatureParameter.put(signatureField, args[index]);
                 }
             } else {
                 //对象属性签名
-                signatureParameter.putAll(getSignatureParameters(signatureFields, args[index]));
+                signatureParameter.putAll(SignUtils.getSignatureParameters(signatureFields, args[index]));
             }
         }
         return signatureParameter;
@@ -98,5 +83,9 @@ public class Verification {
             }
         }
         return parameterName;
+    }
+
+    public boolean verify(String signature, String apiKey) {
+        return StringUtils.isNotBlank(signature) && signature.equals(apiKey);
     }
 }

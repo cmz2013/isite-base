@@ -1,22 +1,20 @@
 package org.isite.commons.web.sign;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
 import org.isite.commons.cloud.utils.SpelExpressionUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.web.utils.RequestUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.web.utils.RequestUtils.getRequest;
-
 /**
  * @Description 使用AOP切面方式实现接口签名校验，与业务代码解耦，实现代码复用。
  * 通过@ConditionalOnProperty来控制自动配置是否生效
@@ -40,20 +38,20 @@ public class SignAspect {
 
     @Around("@annotation(signed)")
     public Object doBefore(ProceedingJoinPoint point, Signed signed) throws Throwable {
-        HttpServletRequest request = getRequest();
+        HttpServletRequest request = RequestUtils.getRequest();
         SpelExpressionUtils spelExpressionUtils = new SpelExpressionUtils(
                 ((MethodSignature) point).getParameterNames(), point.getArgs());
-        String signature = isNotBlank(signed.signature()) ?
-                (String) spelExpressionUtils.getValue(signed.signature()) : request.getHeader(signed.signatureHeader());
-        SignSecret secret = getBean(signed.secret());
-        String appCode = isNotBlank(signed.appCode()) ?
-                signed.appCode() : request.getHeader(signed.appCodeHeader());
+        String signature = StringUtils.isNotBlank(signed.signature()) ?
+                (String) spelExpressionUtils.getValue(signed.signature()) : request.getHeader(signed.signatureField());
+        SignSecret secret = ApplicationContextUtils.getBean(signed.secret());
+        String appCode = StringUtils.isNotBlank(signed.appCode()) ?
+                signed.appCode() : request.getHeader(signed.appCodeField());
         String password = secret.password(appCode);
-        Verification verification = getBean(signed.verification());
-        if (isNotBlank(password)) {
-            isTrue(verification.verify(point, signed, signature, password), "invalid signature");
+        Validator validator = ApplicationContextUtils.getBean(signed.validator());
+        if (StringUtils.isNotBlank(password)) {
+            Assert.isTrue(validator.verify(point, signed, signature, password), "invalid signature");
         } else {
-            isTrue(verification.verify(signature, secret.apiKey(appCode)), "invalid signature");
+            Assert.isTrue(validator.verify(signature, secret.apiKey(appCode)), "invalid signature");
         }
         return point.proceed();
     }

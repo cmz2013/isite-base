@@ -36,14 +36,13 @@ public @interface Signed {
     Class<? extends SignSecret> secret() default SignSecret.class;
 
     /**
-     * 从请求头读取数据，如果没有配置则使用默认值
+     * 从请求头读取数据，如果没有配置则使用默认值字段名
      */
-    String appCodeHeader() default X_APP_CODE;
-    String signatureHeader() default X_SIGNATURE;
-    String timestampHeader() default X_TIMESTAMP;
-
+    String appCodeField() default X_APP_CODE;
+    String signatureField() default X_SIGNATURE;
+    String timestampField() default X_TIMESTAMP;
     /**
-     * 签名校验
+     * 签名校验，可以定义子类重写校验逻辑
      */
-    Class<? extends Verification> verification() default Verification.class;
+    Class<? extends Validator> validator() default Validator.class;
 }

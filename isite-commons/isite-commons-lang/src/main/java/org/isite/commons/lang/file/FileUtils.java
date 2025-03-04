@@ -5,7 +5,11 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.Error;
+import org.isite.commons.lang.enums.ResultStatus;
 import org.isite.commons.lang.utils.IoUtils;
 
 import java.io.File;
@@ -19,16 +23,6 @@ import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.io.File.separator;
-import static org.apache.commons.lang3.ObjectUtils.isEmpty;
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.DOT;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -74,7 +68,7 @@ public class FileUtils {
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
                 for (File item : files) {
 					results.addAll(find(item, timeFrom, timeTo));
 				}
@@ -106,7 +100,7 @@ public class FileUtils {
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					results.addAll(find(item, name));
 				}
@@ -137,7 +131,7 @@ public class FileUtils {
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					if (null != (file = get(item, name))) {
 						return file;
@@ -168,7 +162,7 @@ public class FileUtils {
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					results.addAll(find(item));
 				}
@@ -191,13 +185,13 @@ public class FileUtils {
 	 * 统计文件个数
 	 */
 	public static int count(File file) {
-		int count = ZERO;
+		int count = Constants.ZERO;
 		if (!file.exists()) {
 			return count;
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					count += count(item);
 				}
@@ -220,13 +214,13 @@ public class FileUtils {
 	 * 统计文件数
 	 */
 	public static int count(File file, long timeFrom, long timeTo) {
-		int count = ZERO;
+		int count = Constants.ZERO;
 		if (!file.exists()) {
 			return count;
 		}
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					count += count(item);
 				}
@@ -245,7 +239,7 @@ public class FileUtils {
 	public static File save(String pathname, String... contents) throws IOException {
 		File file = new File(pathname);
 		if (!file.getParentFile().exists()) {
-			isTrue(file.getParentFile().mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+			Assert.isTrue(file.getParentFile().mkdirs(), new Error(ResultStatus.EXPECTATION_FAILED.getCode(),
 					FAILED_CREATE_DIRECTORY + file.getParentFile().getAbsolutePath()));
 		}
 		try (PrintWriter writer = new PrintWriter(file)) {
@@ -263,7 +257,7 @@ public class FileUtils {
 	public static File save(String pathname, InputStream input) throws IOException {
 		File file = new File(pathname);
 		if (!file.getParentFile().exists()) {
-			isTrue(file.getParentFile().mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+			Assert.isTrue(file.getParentFile().mkdirs(), new Error(ResultStatus.EXPECTATION_FAILED.getCode(),
 					FAILED_CREATE_DIRECTORY + file.getParentFile().getAbsolutePath()));
 		}
 		try (OutputStream output = new FileOutputStream(file)) {
@@ -286,7 +280,7 @@ public class FileUtils {
 	}
 
 	private static void zip(ZipArchiveOutputStream zos, File[] files, String path) throws IOException {
-		if (isEmpty(files)) {
+		if (ArrayUtils.isEmpty(files)) {
 			return;
 		}
 		for (File file : files) {
@@ -304,8 +298,8 @@ public class FileUtils {
 	 * 获取文件相对路径,作为在ZIP中路径
 	 */
 	private static String getEntryName(File file, String path) {
-		if (!path.endsWith(separator)) {
-			path += separator;
+		if (!path.endsWith(File.separator)) {
+			path += File.separator;
 		}
 		String entryName;
 		if (file.getAbsolutePath().contains(path)) {
@@ -315,7 +309,7 @@ public class FileUtils {
 		}
 		if (file.isDirectory()) {
 			// 标识file是文件夹
-			entryName += separator;
+			entryName += File.separator;
 		}
 		return entryName;
 	}
@@ -331,15 +325,15 @@ public class FileUtils {
 			while (entries.hasMoreElements()) {
 				ZipArchiveEntry entry = entries.nextElement();
 				File file = new File(extractPath, entry.getName());
-				if (entry.getName().endsWith(separator)) {
-					isTrue(file.mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+				if (entry.getName().endsWith(File.separator)) {
+					Assert.isTrue(file.mkdirs(), new Error(ResultStatus.EXPECTATION_FAILED.getCode(),
 							FAILED_CREATE_DIRECTORY + file.getAbsolutePath()));
 					continue;
 				}
 
 				File parent = file.getParentFile();
 				if (!parent.exists()) {
-					isTrue(parent.mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+					Assert.isTrue(parent.mkdirs(), new Error(ResultStatus.EXPECTATION_FAILED.getCode(),
 							FAILED_CREATE_DIRECTORY + parent.getAbsolutePath()));
 				}
 				try (OutputStream os = new FileOutputStream(file)) {
@@ -375,9 +369,9 @@ public class FileUtils {
 		try (InputStream inStream = new FileInputStream(from);
 			 OutputStream outStream = new FileOutputStream(to)) {
 			byte[] buffer = new byte[1024];
-			int byteread = ZERO;
+			int byteread = Constants.ZERO;
 			while ((byteread = inStream.read(buffer)) != -1) {
-				outStream.write(buffer, ZERO, byteread);
+				outStream.write(buffer, Constants.ZERO, byteread);
 			}
 			outStream.flush();
 		}
@@ -390,14 +384,14 @@ public class FileUtils {
 	 */
 	private static void copyDirectory(File from, File to) throws IOException {
 		if (!to.exists()) {
-			isTrue(to.mkdirs(), new Error(EXPECTATION_FAILED.getCode(),
+			Assert.isTrue(to.mkdirs(), new Error(ResultStatus.EXPECTATION_FAILED.getCode(),
 					FAILED_CREATE_DIRECTORY + to.getAbsolutePath()));
 		}
 		String[] files = from.list();
-		if (isNotEmpty(files)) {
+		if (ArrayUtils.isNotEmpty(files)) {
 			for (String file : files) {
-				from = new File(from.getPath() + separator + file);
-				to = new File(to.getPath() + separator + file);
+				from = new File(from.getPath() + File.separator + file);
+				to = new File(to.getPath() + File.separator + file);
 				if (from.isFile()) {
 					copyFile(from, to);
 				} else {
@@ -413,7 +407,7 @@ public class FileUtils {
 	public static void delete(File file) throws IOException {
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
-			if (isNotEmpty(files)) {
+			if (ArrayUtils.isNotEmpty(files)) {
 				for (File item : files) {
 					delete(item);
 				}
@@ -445,7 +439,7 @@ public class FileUtils {
 	 * @param name: 文件名(文件全路径名称序列中的最后一个名称)
 	 */
 	public static String getExtension(String name) {
-		int index = name.lastIndexOf(DOT);
-		return index > ZERO ? name.substring(index).toLowerCase() : BLANK_STR;
+		int index = name.lastIndexOf(Constants.DOT);
+		return index > Constants.ZERO ? name.substring(index).toLowerCase() : Constants.BLANK_STR;
 	}
 }

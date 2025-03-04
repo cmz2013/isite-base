@@ -3,11 +3,9 @@ package org.isite.commons.lang.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.isite.commons.lang.Constants;
 
 import java.io.IOException;
-
-import static org.isite.commons.lang.Constants.BLANK_STR;
-
 /**
  * @Description 自定义null值序列化处理器
  * @Author zhangcm
@@ -37,7 +35,7 @@ public class NullSerializer {
         @Override
         public void serialize(Object value, JsonGenerator jsonGenerator, 
         					  SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(BLANK_STR);
+            jsonGenerator.writeString(Constants.BLANK_STR);
         }
     }
 }
