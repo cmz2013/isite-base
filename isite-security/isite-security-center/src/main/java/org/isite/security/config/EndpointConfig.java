@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 
 import java.util.List;
-
 /**
  * @Description OAuth2 客户端配置
  * 在配置类上添加注解 @ConfigurationProperties，把配置类的属性与yml配置文件绑定起来

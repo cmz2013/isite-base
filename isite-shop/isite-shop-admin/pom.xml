@@ -52,9 +52,5 @@
             <groupId>org.isite</groupId>
             <artifactId>isite-operation-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.isite</groupId>
-            <artifactId>isite-fms-data</artifactId>
-        </dependency>
     </dependencies>
 </project>

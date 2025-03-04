@@ -3,13 +3,12 @@ package org.isite.shop.support.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
+import org.isite.fms.data.enums.PaymentType;
 import org.isite.security.data.enums.ClientIdentifier;
-import org.isite.shop.support.enums.PaymentType;
 import org.isite.shop.support.enums.TradeStatus;
 
 import java.util.Date;
 import java.util.List;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */

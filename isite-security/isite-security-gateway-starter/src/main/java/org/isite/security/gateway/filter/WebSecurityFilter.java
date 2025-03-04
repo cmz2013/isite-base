@@ -111,6 +111,13 @@ public class WebSecurityFilter implements GatewayFilter, Ordered, InitializingBe
         return -1;
     }
 
+    /**
+     * @Description 实现InitializingBean接口afterPropertiesSet()方法，所有的依赖注入完成后，Spring会调用其
+     * afterPropertiesSet()方法，用于初始化bean之后进行特定的逻辑处理，执行其整体配置和最终初始化验证
+     * 常用Bean初始化操作一般情况下执行顺序为：构造方法 -> Setter方法 -> @Value注解 -> @Autowired注解 ->
+     * InitializingBean接口实现 -> @PostConstruct注解 -> BeanPostProcessor接口 -> ApplicationContextAware接口
+     * 构造函数实现强制依赖，setter方法实现可选依赖
+     */
     @Override
     public void afterPropertiesSet() {
         Assert.notNull(this.oauthUserClient, "oauthUserClient must be set");
