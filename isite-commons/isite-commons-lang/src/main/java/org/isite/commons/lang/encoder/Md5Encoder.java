@@ -1,16 +1,13 @@
 package org.isite.commons.lang.encoder;
 
+import org.isite.commons.lang.Constants;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static java.security.MessageDigest.getInstance;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Description MD5编码工具类
  * @Author <font color='blue'>zhangcm</font>
@@ -29,7 +26,7 @@ public class Md5Encoder {
 		}
 		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-		MessageDigest md = getInstance("MD5");
+		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(src.getBytes());
 		byte tmp[] = md.digest(); 
 		char rec[] = new char[16 * 2];
@@ -48,13 +45,12 @@ public class Md5Encoder {
 	public static String digest(File file) throws IOException, NoSuchAlgorithmException {
 		try (FileInputStream in = new FileInputStream(file)) {
 			byte[] buffer = new byte[1024];
-			MessageDigest digest = getInstance("MD5");
-			int len = ZERO;
-			while ((len = in.read(buffer, ZERO, 1024)) != -1) {
-				digest.update(buffer, ZERO, len);
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+			int length;
+			while ((length = in.read(buffer, Constants.ZERO, 1024)) != -1) {
+				messageDigest.update(buffer, Constants.ZERO, length);
 			}
-
-			BigInteger bigInt = new BigInteger(ONE, digest.digest());
+			BigInteger bigInt = new BigInteger(Constants.ONE, messageDigest.digest());
 			return bigInt.toString(16);
 		}
 	}

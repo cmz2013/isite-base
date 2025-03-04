@@ -1,6 +1,7 @@
 package org.isite.user.mq;
 
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.commons.web.mq.Basic;
 import org.isite.commons.web.mq.Consumer;
 import org.isite.shop.support.dto.TradeOrderSkuDto;
@@ -12,12 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Date;
-
-import static java.lang.Boolean.TRUE;
-import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.lang.enums.ChronoUnit.DAY;
-import static org.isite.commons.lang.json.Jackson.parseObject;
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -32,16 +28,15 @@ public class TradeOrderVipConsumer implements Consumer<TradeOrderSupplierDto> {
     public Basic handle(TradeOrderSupplierDto supplierDto) {
         try {
             VipPo vipPo = vipService.findOne(VipPo::getUserId, supplierDto.getUserId());
-            long expireTimeMillis = currentTimeMillis();
+            LocalDateTime now = LocalDateTime.now();
             if (null == vipPo) {
-                vipPo = new VipPo(supplierDto.getUserId(), new Date(expireTimeMillis));
-            } else if (vipPo.getExpireTime().getTime() < expireTimeMillis) {
-                vipPo.setExpireTime(new Date(expireTimeMillis));
+                vipPo = new VipPo(supplierDto.getUserId(), now);
+            } else if (vipPo.getExpireTime().isBefore(now)) {
+                vipPo.setExpireTime(now);
             }
             for (TradeOrderSkuDto skuDto : supplierDto.getSkuDtos()) {
-                VipSaleParam vipSaleParam = parseObject(skuDto.getSupplierParam(), VipSaleParam.class);
-                vipPo.setExpireTime(new Date(vipPo.getExpireTime().getTime() +
-                        vipSaleParam.getExpireDays() * skuDto.getSkuNum() * DAY.getMillis()));
+                VipSaleParam vipSaleParam = Jackson.parseObject(skuDto.getSupplierParam(), VipSaleParam.class);
+                vipPo.setExpireTime(vipPo.getExpireTime().plusDays(vipSaleParam.getExpireDays() * skuDto.getSkuNum()));
             }
             if (null == vipPo.getId()) {
                 vipService.insert(vipPo);
@@ -51,7 +46,7 @@ public class TradeOrderVipConsumer implements Consumer<TradeOrderSupplierDto> {
             return new Basic.Ack();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return new Basic.Nack().setRequeue(TRUE);
+            return new Basic.Nack().setRequeue(Boolean.TRUE);
         }
     }
 

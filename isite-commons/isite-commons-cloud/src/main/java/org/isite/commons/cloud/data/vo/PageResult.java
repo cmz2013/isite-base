@@ -3,11 +3,9 @@ package org.isite.commons.cloud.data.vo;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.PageRequest;
+import org.isite.commons.lang.enums.ResultStatus;
 
 import java.util.List;
-
-import static org.isite.commons.lang.enums.ResultStatus.OK;
-
 /**
  * @Description 分页查询响应数据
  * @Author <font color='blue'>zhangcm</font>
@@ -31,6 +29,6 @@ public class PageResult<D> extends Result<List<D>> {
     }
 
     public static <D> PageResult<D> success(PageRequest<?> request, List<D> list, Long total) {
-        return new PageResult<>(request, OK.getCode(), list, total);
+        return new PageResult<>(request, ResultStatus.OK.getCode(), list, total);
     }
 }

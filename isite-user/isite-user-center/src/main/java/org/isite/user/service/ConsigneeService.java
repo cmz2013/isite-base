@@ -1,7 +1,5 @@
 package org.isite.user.service;
 
-import org.isite.commons.lang.Assert;
-import org.isite.commons.web.exception.OverstepAccessError;
 import org.isite.mybatis.service.PoService;
 import org.isite.user.mapper.ConsigneeMapper;
 import org.isite.user.po.ConsigneePo;
@@ -25,7 +23,6 @@ public class ConsigneeService extends PoService<ConsigneePo, Long> {
      */
     @Transactional(rollbackFor = Exception.class)
     public int setDefaults(long userId, long consigneeId) {
-        Assert.isTrue(get(consigneeId).getUserId().equals(userId), new OverstepAccessError());
         clearDefaults(userId);
         ConsigneePo consigneePo = new ConsigneePo();
         consigneePo.setId(consigneeId);

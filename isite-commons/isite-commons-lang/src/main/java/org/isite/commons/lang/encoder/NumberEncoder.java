@@ -1,14 +1,12 @@
 package org.isite.commons.lang.encoder;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Constants;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.lang.String.valueOf;
-import static java.util.Arrays.copyOfRange;
-import static org.apache.commons.lang3.ArrayUtils.addAll;
-import static org.apache.commons.lang3.StringUtils.reverse;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Description 自然数（正整数）编码解码操作
  * 应用场景举例：分享链接如果需要携带用户ID，可通过编码保护ID
@@ -34,21 +32,19 @@ public class NumberEncoder {
      * 2）使用编码因子将原始字符列表（CHAR_LIST）一分为二，生成新的62个字符列表：第二个列表（编码因子对应字符作为首字母） + 第一个列表
      * 3）根据列表顺序，取下一个编码因子，使用2）新产生的62个字符列表重复 2）操作
      * 4）按顺序处理完所有编码因子，使用最终生成的62个字符列表对自然数进行编码。
-     *
      * @param number 正整数
      * @param passwords 秘钥
      */
     public static String encode(long number, int... passwords) {
-        if (number < ZERO) {
-            throw new IllegalArgumentException(valueOf(number));
+        if (number < Constants.ZERO) {
+            throw new IllegalArgumentException(String.valueOf(number));
         }
-
         char[] charList = getCharList(passwords);
         StringBuilder code = new StringBuilder();
         do {
             code.append(charList[(int) (number % charList.length)]);
             number = number / charList.length;
-        } while (number != ZERO);
+        } while (number != Constants.ZERO);
         return code.toString();
     }
 
@@ -67,14 +63,14 @@ public class NumberEncoder {
      * @Description 使用密码重组字符列表
      */
     private static char[] getCharList(char[] srcList, int password) {
-        if (ZERO == password) {
+        if (Constants.ZERO == password) {
             return srcList;
         }
         if (password >= CHAR_LIST.length) {
             password = password % CHAR_LIST.length;
         }
-        return addAll(copyOfRange(srcList, password, CHAR_LIST.length),
-                copyOfRange(CHAR_LIST, ZERO, password));
+        return ArrayUtils.addAll(Arrays.copyOfRange(srcList, password, CHAR_LIST.length),
+                Arrays.copyOfRange(CHAR_LIST, Constants.ZERO, password));
     }
 
     /**
@@ -83,7 +79,7 @@ public class NumberEncoder {
     private static Map<Character, Integer> getCharMap(int... passwords) {
         char[] charList = getCharList(passwords);
         Map<Character, Integer> charMap = new HashMap<>();
-        for(int i = ZERO; i < charList.length; i++) {
+        for(int i = Constants.ZERO; i < charList.length; i++) {
             charMap.put(charList[i], i);
         }
         return charMap;
@@ -93,11 +89,10 @@ public class NumberEncoder {
      * @Description 自然数（正整数）解码
      */
     public static long decode(String code, int... passwords) {
-        long result = ZERO;
+        long result = Constants.ZERO;
         Map<Character, Integer> charMap = getCharMap(passwords);
-        code = reverse(code);
-
-        for(int i = ZERO; i < code.length(); ++i) {
+        code = StringUtils.reverse(code);
+        for(int i = Constants.ZERO; i < code.length(); ++i) {
             Integer index = charMap.get(code.charAt(i));
             if (index == null) {
                 throw new IllegalArgumentException(code);

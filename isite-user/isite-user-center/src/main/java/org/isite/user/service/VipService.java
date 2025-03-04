@@ -6,8 +6,7 @@ import org.isite.user.po.VipPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static java.lang.System.currentTimeMillis;
-
+import java.time.LocalDateTime;
 /**
  * @Description 用户信息Service
  * @Author <font color='blue'>zhangcm</font>
@@ -22,6 +21,6 @@ public class VipService extends PoService<VipPo, Long> {
 
     public boolean isVip(long userId) {
         VipPo vipPo = this.findOne(VipPo::getUserId, userId);
-        return null != vipPo && vipPo.getExpireTime().getTime() > currentTimeMillis();
+        return null != vipPo && vipPo.getExpireTime().isAfter(LocalDateTime.now());
     }
 }

@@ -1,20 +1,15 @@
 package org.isite.commons.cloud.factory;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
 import org.isite.commons.lang.enums.Enumerable;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.util.EnumMap;
-
-import static org.apache.commons.lang.ArrayUtils.isNotEmpty;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.Reflection.getGenericParameters;
-import static org.isite.commons.lang.enums.Enumerable.getByCode;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-
 /**
  * @Description 抽象工厂
  * @param <S> 策略接口，接口子类自动注册到工厂类中
@@ -30,7 +25,8 @@ public abstract class AbstractFactory<S extends Strategy<E>, E extends Enum<E> &
      * 根据枚举code返回Bean
      */
     public S get(T code) {
-        E constant = getByCode(cast(getGenericParameter(this.getClass(), AbstractFactory.class, ONE)), code);
+        E constant = Enumerable.getByCode(TypeUtils.cast(
+                Reflection.getGenericParameter(this.getClass(), AbstractFactory.class, Constants.ONE)), code);
         return null == constant? null : get(constant);
     }
 
@@ -43,12 +39,12 @@ public abstract class AbstractFactory<S extends Strategy<E>, E extends Enum<E> &
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
-        Class<?>[] classes = getGenericParameters(this.getClass(), AbstractFactory.class);
-        Class<S> strategyClass = cast(classes[ZERO]);
-        Class<E> identityClass = cast(classes[ONE]);
+        Class<?>[] classes = Reflection.getGenericParameters(this.getClass(), AbstractFactory.class);
+        Class<S> strategyClass = TypeUtils.cast(classes[Constants.ZERO]);
+        Class<E> identityClass = TypeUtils.cast(classes[Constants.ONE]);
         strategies = new EnumMap<>(identityClass);
         context.getBeansOfType(strategyClass).values().forEach(strategy -> {
-            if (isNotEmpty(strategy.getIdentities())) {
+            if (ArrayUtils.isNotEmpty(strategy.getIdentities())) {
                 for (E identity : strategy.getIdentities()) {
                     strategies.put(identity, strategy);
                 }

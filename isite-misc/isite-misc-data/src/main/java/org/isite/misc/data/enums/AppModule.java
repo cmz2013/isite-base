@@ -2,13 +2,10 @@ package org.isite.misc.data.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.isite.commons.lang.enums.Enumerable;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
-@JsonFormat(shape = OBJECT)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum AppModule implements Enumerable<Integer> {
     USER_CENTER(1, "用户中心"),
     TENANT_ADMIN(2, "租户服务"),

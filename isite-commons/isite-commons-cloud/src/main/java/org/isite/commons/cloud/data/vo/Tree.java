@@ -2,12 +2,9 @@ package org.isite.commons.cloud.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.isite.commons.lang.Constants;
 
 import java.util.List;
-
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Description 树结构 VO
  * @param <T> children泛型参数，可用于将JSON字符串解析成集合元素实例（否则Jackson不能解析children泛型参数）
@@ -29,6 +26,6 @@ public class Tree<T extends Tree<T,  I>, I> extends Vo<I> {
      * 根据pid是判断该节点是否为根节点
      */
     public boolean isRoot() {
-        return null == pid || pid.equals(ZERO) || BLANK_STR.equals(pid);
+        return null == pid || pid.equals(Constants.ZERO) || Constants.BLANK_STR.equals(pid);
     }
 }

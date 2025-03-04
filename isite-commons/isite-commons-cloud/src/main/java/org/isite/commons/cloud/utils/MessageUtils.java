@@ -1,11 +1,8 @@
 package org.isite.commons.cloud.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
-
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-
 /**
  * @Description 消息工具类，Bean加载完以后才可以使用
  * @Author <font color='blue'>zhangcm</font>
@@ -18,7 +15,7 @@ public class MessageUtils  {
 
     public static String getMessage(Throwable throwable) {
         String message = throwable.getMessage();
-        if (isBlank(message)) {
+        if (StringUtils.isBlank(message)) {
             message = getMessage("serverError", "server error");
         }
         log.error(message, throwable);
@@ -26,6 +23,6 @@ public class MessageUtils  {
     }
 
     public static String getMessage(String key, String defaultMessage) {
-        return getBean(MessageSourceAccessor.class).getMessage(key, defaultMessage);
+        return ApplicationContextUtils.getBean(MessageSourceAccessor.class).getMessage(key, defaultMessage);
     }
 }

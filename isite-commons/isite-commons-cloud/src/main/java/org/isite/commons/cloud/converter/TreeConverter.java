@@ -1,22 +1,20 @@
 package org.isite.commons.cloud.converter;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.isite.commons.cloud.data.vo.Tree;
+import org.isite.commons.cloud.utils.TreeUtils;
 import org.isite.commons.cloud.utils.VoUtils;
 import org.isite.commons.lang.Constants;
 import org.isite.jpa.data.TreeModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-
-import static java.util.Collections.emptyList;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.cloud.utils.TreeUtils.get;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -49,8 +47,8 @@ public class TreeConverter {
      */
     public static <T extends Tree<T, I>, P extends TreeModel<I>, I> List<T>
     toTree(List<P> nodes, Function<P, T> converter, Function<Set<I>, List<P>> query) {
-        if (isEmpty(nodes)) {
-            return emptyList();
+        if (CollectionUtils.isEmpty(nodes)) {
+            return Collections.emptyList();
         }
         //树节点结果集，在链表中进行移除操作
         List<T> trees = new LinkedList<>();
@@ -106,13 +104,12 @@ public class TreeConverter {
      */
     private static <T extends Tree<T, I>, P extends TreeModel<I>, I>
     List<T> toTree(List<T> trees, Set<I> pids, Function<P, T> converter, Function<Set<I>, List<P>> query) {
-        if (null == query || isEmpty(pids)) {
+        if (null == query || CollectionUtils.isEmpty(pids)) {
             return trees;
         }
         //批量查询结果集中非根节点的父节点PO
         List<P> nodes = new LinkedList<>(query.apply(pids));
         pids.clear();
-
         //按顺序遍历PO链表（树节点PO列表排过序），从PO列表移除转为T，依次添加到结果集中。
         for (int i = Constants.ZERO; i < nodes.size();) {
             T parent = toTree(nodes.remove(i), converter);
@@ -143,7 +140,7 @@ public class TreeConverter {
      */
     private static <T extends Tree<T, I>, P extends TreeModel<I>, I>
     T toTree(I id, List<T> trees, List<P> nodes, Function<P, T> converter) {
-        T tree = get(id, trees);
+        T tree = TreeUtils.get(id, trees);
         if (null == tree) {
             //从PO列表中查询和移除父节点，并转为T
             return remove(nodes, id, converter);

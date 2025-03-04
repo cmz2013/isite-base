@@ -1,10 +1,16 @@
 package org.isite.user.controller;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.lang.Assert;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.OverstepAccessError;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
+import org.isite.user.converter.ConsigneeConverter;
+import org.isite.user.data.constants.UserUrls;
 import org.isite.user.data.dto.ConsigneeDto;
 import org.isite.user.data.vo.Consignee;
 import org.isite.user.po.ConsigneePo;
@@ -20,14 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.user.converter.ConsigneeConverter.toConsigneePo;
-import static org.isite.user.data.constants.UserUrls.URL_USER;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -43,51 +41,57 @@ public class ConsigneeController extends BaseController {
     /**
      * 查询收件人信息，优先返回默认收件人
      */
-    @GetMapping(URL_MY + URL_USER + "/consignee")
+    @GetMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignee")
     public Result<Consignee> getConsignee() {
-        return toResult(convert(consigneeService.getConsignee(getUserId()), Consignee::new));
+        return toResult(DataConverter.convert(consigneeService.getConsignee(
+                TransmittableHeaders.getUserId()), Consignee::new));
     }
 
     /**
      * 查询用户所有收件人信息
      */
-    @GetMapping(URL_MY + URL_USER + "/consignees")
+    @GetMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignees")
     public Result<List<Consignee>> findList() {
-        return toResult(convert(consigneeService.findList(ConsigneePo::getUserId, getUserId()), Consignee::new));
+        return toResult(DataConverter.convert(consigneeService.findList(
+                ConsigneePo::getUserId, TransmittableHeaders.getUserId()), Consignee::new));
     }
 
     /**
      * 添加用户收件人
      */
-    @PostMapping(URL_MY + URL_USER + "/consignee")
+    @PostMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignee")
     public Result<Integer> addConsignee(@RequestBody @Validated(Add.class) ConsigneeDto consigneeDto) {
-        return toResult(consigneeService.insert(toConsigneePo(consigneeDto)));
+        return toResult(consigneeService.insert(ConsigneeConverter.toConsigneePo(consigneeDto)));
     }
 
     /**
      * 更新用户收件人
      */
-    @PutMapping(URL_MY + URL_USER + "/consignee")
+    @PutMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignee")
     public Result<Integer> editConsignee(
             @RequestBody @Validated(Update.class) ConsigneeDto consigneeDto) {
-        isTrue(consigneeService.get(consigneeDto.getId()).getUserId().equals(getUserId()), new OverstepAccessError());
-        return toResult(consigneeService.updateSelectiveById(convert(consigneeDto, ConsigneePo::new)));
+        Assert.isTrue(consigneeService.get(consigneeDto.getId()).getUserId()
+                .equals(TransmittableHeaders.getUserId()), new OverstepAccessError());
+        return toResult(consigneeService.updateSelectiveById(DataConverter.convert(consigneeDto, ConsigneePo::new)));
     }
 
     /**
      * 删除收件人
      */
-    @DeleteMapping(URL_MY + URL_USER + "/consignee/{consigneeId}")
+    @DeleteMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignee/{consigneeId}")
     public Result<Integer> deleteConsignee(@PathVariable("consigneeId") Long consigneeId) {
-        isTrue(consigneeService.get(consigneeId).getUserId().equals(getUserId()), new OverstepAccessError());
+        Assert.isTrue(consigneeService.get(consigneeId).getUserId()
+                .equals(TransmittableHeaders.getUserId()), new OverstepAccessError());
         return toResult(consigneeService.delete(consigneeId));
     }
 
     /**
      * 设置默认地址（有且只能有一个）
      */
-    @PutMapping(URL_MY + URL_USER + "/consignee/{consigneeId}/defaults")
+    @PutMapping(UrlConstants.URL_MY + UserUrls.URL_USER + "/consignee/{consigneeId}/defaults")
     public Result<Integer> setDefaults(@PathVariable("consigneeId") Long consigneeId) {
-        return toResult(consigneeService.setDefaults(getUserId(), consigneeId));
+        long userId = TransmittableHeaders.getUserId();
+        Assert.isTrue(consigneeService.get(consigneeId).getUserId().equals(userId), new OverstepAccessError());
+        return toResult(consigneeService.setDefaults(userId, consigneeId));
     }
 }

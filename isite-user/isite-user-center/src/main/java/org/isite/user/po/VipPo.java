@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description VIP会员(通过购买成为VIP)
@@ -18,13 +18,13 @@ import java.util.Date;
 public class VipPo extends Po<Long> {
 
     private Long userId;
-    private Date expireTime;
+    private LocalDateTime expireTime;
 
     public VipPo() {
         super();
     }
 
-    public VipPo(Long userId, Date expireTime) {
+    public VipPo(Long userId, LocalDateTime expireTime) {
         super();
         this.userId = userId;
         this.expireTime = expireTime;

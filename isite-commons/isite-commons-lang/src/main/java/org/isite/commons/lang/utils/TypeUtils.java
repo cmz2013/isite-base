@@ -1,12 +1,10 @@
 package org.isite.commons.lang.utils;
 
-import static java.lang.reflect.Array.get;
-import static java.lang.reflect.Array.getLength;
-import static java.lang.reflect.Array.newInstance;
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ZERO;
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 
+import java.lang.reflect.Array;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -34,11 +32,11 @@ public class TypeUtils {
         if (null == object) {
             return null;
         }
-        isTrue(object.getClass().isArray(), object.getClass().getName() + " is not array");
-        T[] objects = cast(newInstance(clazz, getLength(object)));
-        if (isNotEmpty(objects)) {
-            for (int i = ZERO; i < objects.length; i++) {
-                objects[i] = cast(get(object, i));
+        Assert.isTrue(object.getClass().isArray(), object.getClass().getName() + " is not array");
+        T[] objects = cast(Array.newInstance(clazz, Array.getLength(object)));
+        if (ArrayUtils.isNotEmpty(objects)) {
+            for (int i = Constants.ZERO; i < objects.length; i++) {
+                objects[i] = cast(Array.get(object, i));
             }
         }
         return objects;

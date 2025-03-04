@@ -6,7 +6,6 @@ import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.user.data.enums.Sex;
-
 /**
  * @Description 用户信息
  * @Author <font color='blue'>zhangcm</font>

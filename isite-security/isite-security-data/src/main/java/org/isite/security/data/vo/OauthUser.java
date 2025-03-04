@@ -3,6 +3,7 @@ package org.isite.security.data.vo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.MapUtils;
 import org.isite.jpa.data.BuiltIn;
 import org.isite.tenant.data.vo.Tenant;
 import org.isite.user.data.enums.Sex;
@@ -11,11 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
-
-import static java.lang.Boolean.TRUE;
-import static java.util.stream.Collectors.toSet;
-import static org.apache.commons.collections4.MapUtils.isEmpty;
-
+import java.util.stream.Collectors;
 /**
  * @Description 用户认证授权信息
  * @Author <font color='blue'>zhangcm</font>
@@ -55,7 +52,7 @@ public class OauthUser implements UserDetails, BuiltIn, Serializable {
     private Boolean internal;
 
     @Setter
-    private boolean enabled = TRUE;
+    private boolean enabled = Boolean.TRUE;
     /**
      * 租户ID
      */
@@ -82,16 +79,17 @@ public class OauthUser implements UserDetails, BuiltIn, Serializable {
     @JsonIgnore
     public Set<DataAuthority> getAuthorities() {
         //stream().flatMap()用于将一个流中的每个元素转换为另一个流，然后将这些流合并成一个单一的流
-        return isEmpty(authorityMap) ? null : this.authorityMap.values().stream().flatMap(Set::stream).collect(toSet());
+        return MapUtils.isEmpty(authorityMap) ? null :
+                this.authorityMap.values().stream().flatMap(Set::stream).collect(Collectors.toSet());
     }
 
     public Set<DataAuthority> getAuthorities(String serviceId) {
-        return isEmpty(authorityMap) ? null : this.authorityMap.get(serviceId);
+        return MapUtils.isEmpty(authorityMap) ? null : this.authorityMap.get(serviceId);
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     /**
@@ -100,12 +98,12 @@ public class OauthUser implements UserDetails, BuiltIn, Serializable {
      */
     @Override
     public boolean isAccountNonLocked() {
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     @Override

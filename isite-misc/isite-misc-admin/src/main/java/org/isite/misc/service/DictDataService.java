@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.weekend.Weekend;
-
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
 /**
  * @Description 字典数据Service
  * @Author <font color='blue'>zhangcm</font>
@@ -29,7 +26,7 @@ public class DictDataService extends PoService<DictDataPo, Integer> {
     public int updateDictType(String newType, String oldType) {
         DictDataPo dataPo = new DictDataPo();
         dataPo.setType(newType);
-        Weekend<DictDataPo> weekend = of(DictDataPo.class);
+        Weekend<DictDataPo> weekend = Weekend.of(DictDataPo.class);
         weekend.weekendCriteria().andEqualTo(DictDataPo::getType, oldType);
         return getMapper().updateByExampleSelective(dataPo, weekend);
     }

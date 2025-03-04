@@ -1,12 +1,10 @@
 package com.xxl.job.admin.core.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.xxl.job.admin.core.util.JacksonUtil.writeValueAsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JacksonUtilTest {
 
@@ -18,10 +16,10 @@ public class JacksonUtilTest {
         map.put("bbb", "222");
 
         //when
-        String json = writeValueAsString(map);
+        String json = JacksonUtil.writeValueAsString(map);
 
         //then
-        assertEquals(json, "{\"aaa\":\"111\",\"bbb\":\"222\"}");
+        Assertions.assertEquals(json, "{\"aaa\":\"111\",\"bbb\":\"222\"}");
     }
 
     @Test
@@ -33,8 +31,8 @@ public class JacksonUtilTest {
         Map result = JacksonUtil.readValue(jsonString, Map.class);
 
         //then
-        assertEquals(result.get("aaa"), "111");
-        assertEquals(result.get("bbb"),"222");
+        Assertions.assertEquals(result.get("aaa"), "111");
+        Assertions.assertEquals(result.get("bbb"),"222");
 
     }
 }

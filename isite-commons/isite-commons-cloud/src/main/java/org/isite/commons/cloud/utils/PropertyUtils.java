@@ -1,9 +1,6 @@
 package org.isite.commons.cloud.utils;
 
 import org.springframework.core.env.Environment;
-
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBean;
-
 /**
  * @Description 读取配置。<br>Bean加载完成以后才可以使用PropertyUtils
  * @Author <font color='blue'>zhangcm</font>
@@ -25,7 +22,7 @@ public class PropertyUtils {
 	 * 读取属性
 	 */
 	public static String getProperty(String key) {
-		return getBean(Environment.class).getProperty(key);
+		return ApplicationContextUtils.getBean(Environment.class).getProperty(key);
 	}
 
 	/**
@@ -47,7 +44,7 @@ public class PropertyUtils {
 	 * 读取属性
 	 */
 	public static <T> T getProperty(String key, Class<T> tClass) {
-		return getBean(Environment.class).getProperty(key, tClass);
+		return ApplicationContextUtils.getBean(Environment.class).getProperty(key, tClass);
 	}
 
 }

@@ -13,5 +13,5 @@ public class VipSaleParam {
     /**
      * 有效期天数
      */
-    private Integer expireDays;
+    private long expireDays;
 }

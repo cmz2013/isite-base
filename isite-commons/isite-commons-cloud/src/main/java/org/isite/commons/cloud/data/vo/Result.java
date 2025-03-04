@@ -2,8 +2,7 @@ package org.isite.commons.cloud.data.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import static org.isite.commons.lang.enums.ResultStatus.OK;
+import org.isite.commons.lang.enums.ResultStatus;
 
 /**
  * @Description 定义接口返回数据的统一格式
@@ -26,11 +25,11 @@ public class Result<T> {
 	private T data;
 
     public static Result<Object> success() {
-		return new Result<>(OK.getCode(), null);
+		return new Result<>(ResultStatus.OK.getCode(), null);
     }
 
 	public static <D> Result<D> success(D data) {
-		return new Result<>(OK.getCode(), data);
+		return new Result<>(ResultStatus.OK.getCode(), data);
 	}
 
 	public Result() {

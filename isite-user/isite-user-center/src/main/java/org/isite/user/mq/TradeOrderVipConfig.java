@@ -1,15 +1,13 @@
 package org.isite.user.mq;
 
+import org.isite.shop.support.enums.SpuSupplier;
 import org.isite.shop.support.mq.TradeOrderExchange;
+import org.isite.user.data.constants.UserConstants;
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.isite.shop.support.enums.SpuSupplier.USER_VIP;
-import static org.isite.user.data.constants.UserConstants.QUEUE_TRADE_ORDER_SUCCESS_USER_VIP;
-import static org.springframework.amqp.core.BindingBuilder.bind;
-
 /**
  * @Description Spring AMQP提供了声明式配置，可以确保队列和交换机只被创建一次，即使多个微服务实例同时启动。
  * @Author <font color='blue'>zhangcm</font>
@@ -28,7 +26,7 @@ public class TradeOrderVipConfig {
          *
          * autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除
          */
-        return new Queue(QUEUE_TRADE_ORDER_SUCCESS_USER_VIP, true, false, false);
+        return new Queue(UserConstants.QUEUE_TRADE_ORDER_SUCCESS_USER_VIP, true, false, false);
     }
 
     /**
@@ -36,6 +34,6 @@ public class TradeOrderVipConfig {
      */
     @Bean
     public Binding vipSpuBinding(TradeOrderExchange tradeOrderExchange) {
-        return bind(tradeOrderVipQueue()).to(tradeOrderExchange).with(USER_VIP.getCode());
+        return BindingBuilder.bind(tradeOrderVipQueue()).to(tradeOrderExchange).with(SpuSupplier.USER_VIP.getCode());
     }
 }

@@ -2,7 +2,6 @@ package org.isite.user.controller;
 
 import com.github.pagehelper.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.isite.commons.cloud.converter.DataConverter;
 import org.isite.commons.cloud.converter.PageQueryConverter;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.vo.PageResult;
@@ -54,7 +53,7 @@ public class UserController extends BaseController {
     @GetMapping(UserUrls.GET_USERS)
     public PageResult<UserBasic> findPage(PageRequest<UserGetDto> request) {
         try (Page<UserPo> page = userService.findPage(PageQueryConverter.toPageQuery(request, UserPo::new))) {
-            return toPageResult(request, DataConverter.convert(page.getResult(), UserBasic::new), page.getTotal());
+            return toPageResult(request, UserConverter.toUserBasics(page.getResult()), page.getTotal());
         }
     }
 

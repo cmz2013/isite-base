@@ -2,14 +2,11 @@ package org.isite.misc.data.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.isite.commons.lang.enums.Enumerable;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
-
 /**
  * @Description 对象类型，和数据模型一一对应
  * @Author <font color='blue'>zhangcm</font>
  */
-@JsonFormat(shape = OBJECT)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ObjectType implements Enumerable<Integer> {
     /**
      * 用户
@@ -38,6 +35,7 @@ public enum ObjectType implements Enumerable<Integer> {
     ;
 
     private final Integer code;
+    @lombok.Getter
     private final String label;
 
     ObjectType(Integer code, String label) {
@@ -48,9 +46,5 @@ public enum ObjectType implements Enumerable<Integer> {
     @Override
     public Integer getCode() {
         return this.code;
-    }
-
-    public String getLabel() {
-        return label;
     }
 }

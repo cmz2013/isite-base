@@ -1,11 +1,8 @@
 package org.isite.commons.cloud.data.enums;
 
 import lombok.Getter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.lang.enums.Enumerable;
-
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_HTML_APP_PATTERN;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_HTML_PC_PATTERN;
-
 /**
  * @Description 用户终端类型
  * @Author <font color='blue'>zhangcm</font>
@@ -15,11 +12,11 @@ public enum TerminalType implements Enumerable<Integer> {
     /**
      * web浏览器
      */
-    WEB(0, URL_HTML_PC_PATTERN),
+    WEB(0, UrlConstants.URL_HTML_PC_PATTERN),
     /**
      * 移动应用
      */
-    APP(1, URL_HTML_APP_PATTERN);
+    APP(1, UrlConstants.URL_HTML_APP_PATTERN);
 
     private final Integer code;
     /**

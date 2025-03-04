@@ -1,18 +1,19 @@
 package org.isite.user.converter;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.user.data.dto.UserPostDto;
 import org.isite.user.data.dto.UserPutDto;
+import org.isite.user.data.enums.Sex;
 import org.isite.user.data.vo.UserBasic;
 import org.isite.user.data.vo.UserDetails;
 import org.isite.user.data.vo.UserSecret;
 import org.isite.user.po.UserPo;
 
-import static java.lang.Boolean.FALSE;
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.user.data.enums.Sex.UNKNOWN;
-
+import java.util.List;
+import java.util.stream.Collectors;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -23,47 +24,47 @@ public class UserConverter {
 
     public static UserPo toUserPo(String phone) {
         UserPo userPo = new UserPo();
-        userPo.setUsername(BLANK_STR);
+        userPo.setUsername(Constants.BLANK_STR);
         userPo.setPhone(phone);
-        userPo.setRealName(BLANK_STR);
-        userPo.setStatus(ENABLED);
-        userPo.setInternal(FALSE);
-        userPo.setRemark(BLANK_STR);
-        userPo.setPassword(BLANK_STR);
-        userPo.setEmail(BLANK_STR);
+        userPo.setRealName(Constants.BLANK_STR);
+        userPo.setStatus(ActiveStatus.ENABLED);
+        userPo.setInternal(Boolean.FALSE);
+        userPo.setRemark(Constants.BLANK_STR);
+        userPo.setPassword(Constants.BLANK_STR);
+        userPo.setEmail(Constants.BLANK_STR);
         return userPo;
     }
 
     public static UserDetails toUserDetails(UserPo userPo, boolean vip) {
-        UserDetails userDetails = convert(userPo, UserDetails::new);
+        UserDetails userDetails = DataConverter.convert(userPo, UserDetails::new);
         userDetails.setVip(vip);
         return userDetails;
     }
 
     public static UserPo toUserPo(UserPostDto userPostDto) {
-        UserPo userPo = convert(userPostDto, UserPo::new);
-        userPo.setStatus(ENABLED);
-        userPo.setInternal(FALSE);
+        UserPo userPo = DataConverter.convert(userPostDto, UserPo::new);
+        userPo.setStatus(ActiveStatus.ENABLED);
+        userPo.setInternal(Boolean.FALSE);
         if (null == userPo.getHeadImg()) {
-            userPo.setHeadImg(BLANK_STR);
+            userPo.setHeadImg(Constants.BLANK_STR);
         }
         if (null == userPo.getSex()) {
-            userPo.setSex(UNKNOWN);
+            userPo.setSex(Sex.UNKNOWN);
         }
         if (null == userPo.getEmail()) {
-            userPo.setEmail(BLANK_STR);
+            userPo.setEmail(Constants.BLANK_STR);
         }
         if (null == userPo.getPassword()) {
-            userPo.setPassword(BLANK_STR);
+            userPo.setPassword(Constants.BLANK_STR);
         }
-        userPo.setRemark(BLANK_STR);
+        userPo.setRemark(Constants.BLANK_STR);
         return userPo;
     }
 
     public static UserPo toUserSelectivePo(UserPutDto userPutDto) {
-        UserPo userPo = convert(userPutDto, UserPo::new);
+        UserPo userPo = DataConverter.convert(userPutDto, UserPo::new);
         if (null == userPo.getEmail()) {
-            userPo.setEmail(BLANK_STR);
+            userPo.setEmail(Constants.BLANK_STR);
         }
         return userPo;
     }
@@ -82,6 +83,13 @@ public class UserConverter {
         userBasic.setInternal(userPo.getInternal());
         userBasic.setStatus(userPo.getStatus());
         return userBasic;
+    }
+
+    public static List<UserBasic> toUserBasics(List<UserPo> userPos) {
+        if (CollectionUtils.isEmpty(userPos)) {
+            return null;
+        }
+        return userPos.stream().map(UserConverter::toUserBasic).collect(Collectors.toList());
     }
 
     public static UserSecret toUserSecret(UserPo userPo) {

@@ -1,10 +1,8 @@
 package org.isite.commons.cloud.utils;
 
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.lang.Assert;
 import org.isite.commons.lang.Error;
-
-import static org.isite.commons.lang.Assert.isTrue;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -25,7 +23,7 @@ public class ResultUtils {
      * @Description 当Result状态为成功时返回数据，否则抛出异常信息
      */
     public static <T> T getData(Result<T> result) {
-        isTrue(isOk(result), new Error(result.getCode(), result.getMessage()));
+        Assert.isTrue(isOk(result), new Error(result.getCode(), result.getMessage()));
         return result.getData();
     }
 
@@ -33,7 +31,7 @@ public class ResultUtils {
      * @Description 当Result状态为成功时返回数据，否则抛出message异常信息
      */
     public static <T> T getData(Result<T> result, String message) {
-        isTrue(isOk(result), new Error(result.getCode(), message));
+        Assert.isTrue(isOk(result), new Error(result.getCode(), message));
         return result.getData();
     }
 }
