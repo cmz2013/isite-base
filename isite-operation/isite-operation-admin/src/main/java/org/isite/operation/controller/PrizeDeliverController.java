@@ -34,7 +34,6 @@ import static org.springframework.beans.BeanUtils.copyProperties;
  */
 @RestController
 public class PrizeDeliverController extends BaseController {
-
     private PrizeRecordService prizeRecordService;
     private PrizeDeliverService prizeDeliverService;
 

@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class DataApiController extends BaseController {
-
     private DataApiService dataApiService;
 
     /**

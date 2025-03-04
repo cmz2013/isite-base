@@ -1,20 +1,15 @@
 package org.isite.commons.lang.json;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ArrayUtils;
+import org.isite.commons.lang.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
-import static java.lang.Boolean.FALSE;
-import static java.lang.System.arraycopy;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Description JSON工具类
  * @Author <font color='blue'>zhangcm</font>
@@ -25,9 +20,9 @@ public class Jackson {
 
 	static {
 		//如果是空对象的时候,不抛异常,也就是对应的属性没有get方法
-		OBJECT_MAPPER.configure(FAIL_ON_EMPTY_BEANS, FALSE);
+		OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, Boolean.FALSE);
 		//反序列化的时候如果多了其他属性,不抛出异常
-		OBJECT_MAPPER.configure(FAIL_ON_UNKNOWN_PROPERTIES, FALSE);
+		OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, Boolean.FALSE);
 		OBJECT_MAPPER.setSerializerFactory(OBJECT_MAPPER.getSerializerFactory()
 				.withSerializerModifier(new DefaultSerializerModifier()));
 	}
@@ -75,12 +70,12 @@ public class Jackson {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> parseArray(String content, Class<T> tClass, Class<?>... classes) {
-		if (isEmpty(classes)) {
+		if (ArrayUtils.isEmpty(classes)) {
 			return parseObject(content, ArrayList.class, tClass);
 		}
-		Class<?>[] parameterClasses = new Class[ONE + classes.length];
-		parameterClasses[ZERO] = tClass;
-		arraycopy(classes, ZERO, parameterClasses, ONE, classes.length);
+		Class<?>[] parameterClasses = new Class[Constants.ONE + classes.length];
+		parameterClasses[Constants.ZERO] = tClass;
+		System.arraycopy(classes, Constants.ZERO, parameterClasses, Constants.ONE, classes.length);
 		return parseObject(content, ArrayList.class, parameterClasses);
 	}
 }

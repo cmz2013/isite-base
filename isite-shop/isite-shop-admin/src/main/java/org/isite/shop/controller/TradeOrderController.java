@@ -49,7 +49,6 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class TradeOrderController extends BaseController {
-
     private SpuService spuService;
     private SkuService skuService;
     private CouponRecordService couponRecordService;

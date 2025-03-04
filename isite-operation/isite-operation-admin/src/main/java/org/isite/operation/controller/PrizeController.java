@@ -44,7 +44,6 @@ import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
  */
 @RestController
 public class PrizeController extends BaseController {
-
     private PrizeService prizeService;
     private PrizeRecordService prizeRecordService;
     private ActivityService activityService;

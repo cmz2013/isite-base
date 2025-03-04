@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class FileRecordController extends BaseController {
-
     private FileRecordService fileRecordService;
 
     @PostMapping(MiscUrls.PUT_FILE_RECORD)

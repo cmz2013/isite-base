@@ -45,7 +45,6 @@ import static org.isite.operation.support.enums.TaskType.values;
  */
 @RestController
 public class TaskController extends BaseController {
-
     private TaskService taskService;
     private ActivityService activityService;
     private ActivityCache activityCache;

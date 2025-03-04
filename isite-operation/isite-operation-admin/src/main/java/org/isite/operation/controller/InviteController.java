@@ -18,7 +18,6 @@ import static org.isite.operation.support.enums.InviteCodeType.USER_ID;
  */
 @RestController
 public class InviteController extends BaseController {
-
     /**
      * 获取邀请码
      */

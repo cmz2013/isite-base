@@ -24,7 +24,6 @@ import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
  */
 @RestController
 public class InviteRecordController extends BaseController {
-
     private InviteRecordService inviteRecordService;
 
     /**

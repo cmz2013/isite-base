@@ -26,7 +26,6 @@ import java.util.List;
  */
 @RestController
 public class TagCategoryController extends BaseController {
-
     private TagCategoryService tagCategoryService;
 
     /**

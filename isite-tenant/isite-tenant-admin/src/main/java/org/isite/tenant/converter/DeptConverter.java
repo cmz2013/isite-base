@@ -1,13 +1,10 @@
 package org.isite.tenant.converter;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.tenant.data.dto.DepartmentDto;
 import org.isite.tenant.po.DepartmentPo;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -17,25 +14,25 @@ public class DeptConverter {
     }
 
     public static DepartmentPo toDeptPo(int tenantId, DepartmentDto departmentDto) {
-        DepartmentPo departmentPo = convert(departmentDto, DepartmentPo::new);
+        DepartmentPo departmentPo = DataConverter.convert(departmentDto, DepartmentPo::new);
         departmentPo.setTenantId(tenantId);
-        departmentPo.setStatus(ENABLED);
+        departmentPo.setStatus(ActiveStatus.ENABLED);
         if (null == departmentPo.getRemark()) {
-            departmentPo.setRemark(BLANK_STR);
+            departmentPo.setRemark(Constants.BLANK_STR);
         }
         if (null == departmentPo.getPid()) {
-            departmentPo.setPid(ZERO);
+            departmentPo.setPid(Constants.ZERO);
         }
         return departmentPo;
     }
 
     public static DepartmentPo toDeptSelectivePo(DepartmentDto departmentDto) {
-        DepartmentPo departmentPo = convert(departmentDto, DepartmentPo::new);
+        DepartmentPo departmentPo = DataConverter.convert(departmentDto, DepartmentPo::new);
         if (null == departmentPo.getRemark()) {
-            departmentPo.setRemark(BLANK_STR);
+            departmentPo.setRemark(Constants.BLANK_STR);
         }
         if (null == departmentPo.getPid()) {
-            departmentPo.setPid(ZERO);
+            departmentPo.setPid(Constants.ZERO);
         }
         return departmentPo;
     }

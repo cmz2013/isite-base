@@ -1,9 +1,6 @@
 package org.isite.commons.lang;
 
 import java.util.regex.Pattern;
-
-import static java.util.regex.Pattern.compile;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -19,7 +16,7 @@ public class Regex {
     /**
      * 手机号正则表达式
      */
-    private static final Pattern MOBILE_PHONE_PATTERN = compile("^1[345789]\\d{9}$");
+    private static final Pattern MOBILE_PHONE_PATTERN = Pattern.compile("^1[345789]\\d{9}$");
 
     /**
      * 判断是否为数字

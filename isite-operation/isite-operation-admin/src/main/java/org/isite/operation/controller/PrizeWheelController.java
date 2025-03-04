@@ -25,7 +25,6 @@ import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
  */
 @RestController
 public class PrizeWheelController extends BaseController {
-
     private PrizeWheelService prizeWheelService;
     private OngoingActivityService ongoingActivityService;
 

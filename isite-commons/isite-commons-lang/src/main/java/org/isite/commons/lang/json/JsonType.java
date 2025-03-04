@@ -7,7 +7,7 @@ import java.util.Date;
  * @Description JSON字段类型
  * @Author <font color='blue'>zhangcm</font>
  */
-public enum Type {
+public enum JsonType {
     /**
      * String
      */
@@ -32,7 +32,7 @@ public enum Type {
     /**
      * 获取当前字段的JSON数据类型
      */
-    public static Type getType(Class<?> clazz) {
+    public static JsonType getType(Class<?> clazz) {
         if (Number.class.isAssignableFrom(clazz)) {
             return NUMBER;
         }

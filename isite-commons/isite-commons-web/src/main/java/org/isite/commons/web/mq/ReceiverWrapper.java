@@ -2,15 +2,13 @@ package org.isite.commons.web.mq;
 
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.lang.json.Jackson;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.io.IOException;
-
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.commons.lang.utils.TypeUtils.isBasic;
-
 /**
  * @Description MQ消息接收者 Wrapper，调用消费者完成消费，发送消息回执进行确认。
  * 消费端实现约定接口，遵循消费端程序规范
@@ -37,7 +35,7 @@ public class ReceiverWrapper<B> {
         try {
             basic = consumer.handle(body);
         } catch (Exception e) {
-            log.error(isBasic(body) ? body.toString() : toJsonString(body), e);
+            log.error(TypeUtils.isBasic(body) ? body.toString() : Jackson.toJsonString(body), e);
             //防止MQ队列消息消费异常导致积压，默认丢弃消息
             basic = new Basic.Nack();
         }

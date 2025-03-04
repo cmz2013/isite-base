@@ -1,7 +1,6 @@
 package org.isite.commons.lang.enums;
 
 import lombok.Getter;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */

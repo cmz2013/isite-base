@@ -23,7 +23,6 @@ public class Constants {
      * 接口返回字段：数据
      */
     public static final String RESULT_DATA = "data";
-    public static final String CHARSET = "Charset";
     /**
      * 数字0
      */

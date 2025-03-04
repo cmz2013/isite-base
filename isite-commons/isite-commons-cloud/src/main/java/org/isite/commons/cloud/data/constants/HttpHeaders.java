@@ -15,6 +15,7 @@ public class HttpHeaders {
     public static final String CONTENT_DISPOSITION = "Content-Disposition";
     public static final String X_FORWARDED_HOST = "x-forwarded-host";
     public static final String AUTHORIZATION = "Authorization";
+    public static final String CHARSET = "Charset";
     /**
      * 用于识别协议（HTTP 或 HTTPS）
      */

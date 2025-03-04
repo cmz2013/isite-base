@@ -18,7 +18,6 @@ import java.util.List;
  */
 @RestController
 public class RegionController extends BaseController {
-
     private RegionCache regionCache;
 
     @Autowired

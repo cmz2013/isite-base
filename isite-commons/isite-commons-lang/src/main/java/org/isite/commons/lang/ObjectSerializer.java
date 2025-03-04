@@ -1,14 +1,13 @@
 package org.isite.commons.lang;
 
+import org.isite.commons.lang.utils.IoUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import static java.util.Base64.getDecoder;
-import static java.util.Base64.getEncoder;
-import static org.isite.commons.lang.utils.IoUtils.close;
+import java.util.Base64;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -30,7 +29,7 @@ public class ObjectSerializer {
             objectOutput.writeObject(object);
             return byteOutput.toByteArray();
         } finally {
-            close(objectOutput, byteOutput);
+            IoUtils.close(objectOutput, byteOutput);
         }
     }
 
@@ -45,7 +44,7 @@ public class ObjectSerializer {
          * 然而这两个字符并不能构成有效的对象流头，反序列化时会失败：invalid stream header: EFBFBDEF
          * 注：在转换成字符串的时候如果使用Base64则可以避免该问题
          */
-        return getEncoder().encodeToString(toBytes(object));
+        return Base64.getEncoder().encodeToString(toBytes(object));
     }
 
     /**
@@ -59,7 +58,7 @@ public class ObjectSerializer {
             objectInput = new ObjectInputStream(byteInput);
             return objectInput.readObject();
         } finally {
-            close(objectInput, byteInput);
+            IoUtils.close(objectInput, byteInput);
         }
     }
 
@@ -67,6 +66,6 @@ public class ObjectSerializer {
      * Object反序列化操作
      */
     public static Object deserialize(String string) throws IOException, ClassNotFoundException {
-        return deserialize(getDecoder().decode(string));
+        return deserialize(Base64.getDecoder().decode(string));
     }
 }

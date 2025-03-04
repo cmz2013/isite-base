@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TenantController extends BaseController {
-
     private TenantService tenantService;
 
     @GetMapping(TenantUrls.URL_TENANT + "list")

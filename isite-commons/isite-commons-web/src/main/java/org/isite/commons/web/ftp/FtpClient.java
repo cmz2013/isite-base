@@ -1,19 +1,17 @@
 package org.isite.commons.web.ftp;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE;
-import static org.apache.commons.net.ftp.FTPReply.isPositiveCompletion;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.SLASH;
+import java.nio.charset.StandardCharsets;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -30,12 +28,12 @@ public class FtpClient {
         client.connect(properties.getHost(), properties.getPort());
         client.login(properties.getUsername(), properties.getPassword());
         client.enterLocalPassiveMode();
-        if (!isPositiveCompletion(client.getReplyCode())) {
+        if (!FTPReply.isPositiveCompletion(client.getReplyCode())) {
             client.disconnect();
             throw new IOException("login failure");
         }
-        client.setControlEncoding(UTF_8.name());
-        client.setFileType(BINARY_FILE_TYPE);
+        client.setControlEncoding(StandardCharsets.UTF_8.name());
+        client.setFileType(FTP.BINARY_FILE_TYPE);
         return client;
     }
 
@@ -43,7 +41,7 @@ public class FtpClient {
      * 创建并切换目录(一级)
      */
     private boolean changeDirectory(String pathname, FTPClient client) throws IOException {
-        if (isBlank(pathname) || client.changeWorkingDirectory(pathname)) {
+        if (StringUtils.isBlank(pathname) || client.changeWorkingDirectory(pathname)) {
             return true;
         }
         return client.makeDirectory(pathname) && client.changeWorkingDirectory(pathname);
@@ -53,7 +51,7 @@ public class FtpClient {
      * 创建并切换多级目录
      */
     private boolean changeDirectory(String[] pathnames, FTPClient client) throws IOException {
-        if (isEmpty(pathnames)) {
+        if (ArrayUtils.isEmpty(pathnames)) {
             return true;
         }
         //如果目录不存在创建目录,ftp是不可以嵌套创建目录的
@@ -71,9 +69,9 @@ public class FtpClient {
     public void upload(String filename, InputStream stream, String pathname) throws IOException {
         FTPClient client = initFtpClient();
         try {
-            isTrue(changeDirectory(pathname.split(SLASH), client), "change directory failure: " + pathname);
+            Assert.isTrue(changeDirectory(pathname.split(Constants.SLASH), client), "change directory failure: " + pathname);
             //FTP协议里面，规定文件名编码为iso-8859-1
-            isTrue(client.storeFile(new String(filename.getBytes(), ISO_8859_1), stream),
+            Assert.isTrue(client.storeFile(new String(filename.getBytes(), StandardCharsets.ISO_8859_1), stream),
                     "failed to upload file: " + filename);
         } finally {
             //释放FTPClient连接
@@ -88,7 +86,7 @@ public class FtpClient {
         FTPClient client = initFtpClient();
         try {
             if (client.changeWorkingDirectory(pathname)) {
-                client.retrieveFile(new String(filename.getBytes(), ISO_8859_1), output);
+                client.retrieveFile(new String(filename.getBytes(), StandardCharsets.ISO_8859_1), output);
             }
         } finally {
             //释放FTPClient连接
@@ -103,7 +101,7 @@ public class FtpClient {
         FTPClient client = initFtpClient();
         try {
             return client.changeWorkingDirectory(pathname) &&
-                    client.deleteFile(new String(filename.getBytes(), ISO_8859_1));
+                    client.deleteFile(new String(filename.getBytes(), StandardCharsets.ISO_8859_1));
         } finally {
             client.disconnect();
         }

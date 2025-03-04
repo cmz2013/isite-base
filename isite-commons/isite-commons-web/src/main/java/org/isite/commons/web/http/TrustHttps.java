@@ -1,6 +1,7 @@
 package org.isite.commons.web.http;
 
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.lang.Constants;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -9,9 +10,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-
-import static java.lang.Boolean.TRUE;
-
 /**
  * @Description HTTPS SSL认证
  * @Author <font color='blue'>zhangcm</font>
@@ -44,10 +42,10 @@ public class TrustHttps {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
-        connection.setHostnameVerifier((hostname, session) -> TRUE);
+        connection.setHostnameVerifier((hostname, session) -> Boolean.TRUE);
     }
 
     public static boolean isHttps(String url) {
-        return "https".equalsIgnoreCase(url.substring(0, 5));
+        return "https".equalsIgnoreCase(url.substring(Constants.ZERO, Constants.FIVE));
     }
 }

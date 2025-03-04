@@ -111,7 +111,7 @@ public class TradeOrderService extends PoService<TradeOrderPo, Long> {
             //更新商品已售出数量
             Assert.isTrue(
                     skuService.updateSoldNum(orderItemPo.getSkuId(), orderItemPo.getSkuNum()) > Constants.ZERO,
-                    MessageUtils.getMessage("sku.stock.notEnough", "The item you ordered is out of stock"));
+                    MessageUtils.getMessage("sku.stock.notEnough", "the item you ordered is out of stock"));
         });
         //保存订单条目明细
         itemService.insert(orderItemPos);

@@ -28,7 +28,6 @@ import static org.isite.security.data.constants.SecurityUrls.DELETE_VERIFICATION
  */
 @RestController
 public class VerificationCodeController extends BaseController {
-
     private CodeExecutorFactory codeExecutorFactory;
 
     /**

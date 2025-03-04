@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class DataLogController extends BaseController {
-
     private DataLogService dataLogService;
 
     /**

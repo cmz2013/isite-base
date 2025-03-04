@@ -21,7 +21,6 @@ import static org.isite.security.data.constants.SecurityUrls.GET_OAUTH_CLIENTS;
  */
 @RestController
 public class EndpointController extends BaseController {
-
     private EndpointConfig endpointConfig;
 
     @Autowired

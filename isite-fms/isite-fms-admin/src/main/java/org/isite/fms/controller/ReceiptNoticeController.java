@@ -29,7 +29,6 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class ReceiptNoticeController extends BaseController {
-
     private WxpayConfig wxpayConfig;
     private RabbitTemplate rabbitTemplate;
     private AlipayConfig alipayConfig;

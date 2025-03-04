@@ -1,6 +1,13 @@
 package org.isite.commons.web.http;
 
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.data.constants.HttpHeaders;
 import org.isite.commons.cloud.data.enums.HttpMethod;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ChronoUnit;
+import org.isite.commons.lang.json.Jackson;
+import org.isite.commons.lang.utils.IoUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
@@ -9,29 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.net.HttpURLConnection.HTTP_ACCEPTED;
-import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_OK;
-import static org.apache.commons.collections4.MapUtils.isEmpty;
-import static org.apache.commons.collections4.MapUtils.isNotEmpty;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.CONTENT_TYPE;
-import static org.isite.commons.cloud.data.enums.HttpMethod.DELETE;
-import static org.isite.commons.cloud.data.enums.HttpMethod.GET;
-import static org.isite.commons.cloud.data.enums.HttpMethod.POST;
-import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.QUESTION_MARK;
-import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.commons.lang.utils.IoUtils.close;
-import static org.isite.commons.lang.utils.IoUtils.getString;
-import static org.isite.commons.web.http.ContentType.APPLICATION_JSON;
-import static org.isite.commons.web.http.HttpUtils.toFormData;
-
 /**
  * @Description HTTP Client
  * @Author <font color='blue'>zhangcm</font>
@@ -42,69 +26,70 @@ public class HttpClient {
     }
 
     public static String post(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(POST, uri, null, params, MINUTE.getMillis());
+        return request(HttpMethod.POST, uri, null, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String post(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(POST, uri, headers, params, MINUTE.getMillis());
+        return request(HttpMethod.POST, uri, headers, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String post(String uri, String params) throws IOException, URISyntaxException {
-        return request(POST, uri, null, params, MINUTE.getMillis());
+        return request(HttpMethod.POST, uri, null, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String post(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
-        return request(POST, uri, headers, params, MINUTE.getMillis());
+        return request(HttpMethod.POST, uri, headers, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String get(String uri, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(GET, uri, null, params, MINUTE.getMillis());
+        return request(HttpMethod.GET, uri, null, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String get(String uri, Map<String, String> headers, Map<String, Object> params) throws IOException, URISyntaxException {
-        return request(GET, uri, headers, params, MINUTE.getMillis());
+        return request(HttpMethod.GET, uri, headers, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String get(String uri, String params) throws IOException, URISyntaxException {
-        return request(GET, uri, null, params, MINUTE.getMillis());
+        return request(HttpMethod.GET, uri, null, params, ChronoUnit.MINUTE.getMillis());
     }
 
     public static String get(String uri, Map<String, String> headers, String params) throws IOException, URISyntaxException {
-        return request(GET, uri, headers, params, MINUTE.getMillis());
+        return request(HttpMethod.GET, uri, headers, params, ChronoUnit.MINUTE.getMillis());
     }
 
     /**
      * 格式化接口参数
      */
     private static String formatParams(String contentType, Map<String, Object> params) {
-        if (isNotBlank(contentType) && contentType.contains(APPLICATION_JSON)) {
-            return toJsonString(params);
+        if (StringUtils.isNotBlank(contentType) && contentType.contains(ContentType.APPLICATION_JSON)) {
+            return Jackson.toJsonString(params);
         }
-        return toFormData(params);
+        return HttpUtils.toFormData(params);
     }
 
     /**
      * url追加查询参数
      */
     private static String appendQueryParams(String url, String params) {
-        if (isBlank(params)) {
+        if (StringUtils.isBlank(params)) {
             return url;
         }
-        return url + (url.contains(QUESTION_MARK) ? AMPERSAND : QUESTION_MARK) + params;
+        return url + (url.contains(Constants.QUESTION_MARK) ?
+                Constants.AMPERSAND : Constants.QUESTION_MARK) + params;
     }
 
     /**
      * DELETE不支持body传参，GET也按习惯URL方式传参
      */
     private static boolean isQueryParams(HttpMethod method) {
-       return DELETE == method || GET == method;
+       return HttpMethod.DELETE == method || HttpMethod.GET == method;
     }
 
     public static String request(
             HttpMethod method, String url, Map<String, String> headers, Map<String, Object> params, long timeout)
             throws IOException, URISyntaxException {
-        return request(method, url, headers,
-                formatParams(isEmpty(headers) ? null : headers.get(CONTENT_TYPE), params), timeout);
+        return request(method, url, headers, formatParams(MapUtils.isEmpty(headers) ?
+                null : headers.get(HttpHeaders.CONTENT_TYPE), params), timeout);
     }
 
     /**
@@ -127,9 +112,9 @@ public class HttpClient {
             }
 
             // 不使用缓存
-            connection.setUseCaches(FALSE);
+            connection.setUseCaches(Boolean.FALSE);
             // 设置是否从connection读入
-            connection.setDoInput(TRUE);
+            connection.setDoInput(Boolean.TRUE);
             connection.setRequestMethod(method.name());
             /*
              * 是否向connection输出,参数放在http正文内时,要设为true。
@@ -138,7 +123,7 @@ public class HttpClient {
             connection.setDoOutput(!queryParams);
             connection.setConnectTimeout((int) timeout);
             connection.setReadTimeout((int) timeout);
-            if (isNotEmpty(headers)) {
+            if (MapUtils.isNotEmpty(headers)) {
                 /*
                  * 在Http Header中添加属性
                  */
@@ -158,15 +143,15 @@ public class HttpClient {
             }
 
             // 将内存缓冲区中封装好的完整的HTTP请求电文发送到服务端
-            if (connection.getResponseCode() == HTTP_OK ||
-                    connection.getResponseCode() == HTTP_ACCEPTED ||
-                    connection.getResponseCode() == HTTP_CREATED) {
-                return getString(connection.getInputStream());
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK ||
+                    connection.getResponseCode() == HttpURLConnection.HTTP_ACCEPTED ||
+                    connection.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
+                return IoUtils.getString(connection.getInputStream());
             } else{
-                throw new IOException(getString(connection.getErrorStream()));
+                throw new IOException(IoUtils.getString(connection.getErrorStream()));
             }
         } finally {
-            close(output);
+            IoUtils.close(output);
             if (null != connection) {
                 connection.disconnect();
             }

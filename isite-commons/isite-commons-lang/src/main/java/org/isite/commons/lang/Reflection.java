@@ -1,37 +1,25 @@
 package org.isite.commons.lang;
 
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.isite.commons.lang.json.Comment;
 import org.isite.commons.lang.json.JsonField;
+import org.isite.commons.lang.json.JsonType;
+import org.isite.commons.lang.utils.TypeUtils;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.reflect.Modifier.isPublic;
-import static java.lang.reflect.Modifier.isStatic;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.regex.Pattern.compile;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-import static org.apache.commons.lang3.ArrayUtils.isEmpty;
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.json.Type.ARRAY;
-import static org.isite.commons.lang.json.Type.OBJECT;
-import static org.isite.commons.lang.json.Type.getType;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.lang.utils.TypeUtils.castArray;
-
 /**
  * @Description 反射工具类
  * @Author <font color='blue'>zhangcm</font>
@@ -40,11 +28,11 @@ public class Reflection {
     /**
      * Getter方法
      */
-    private static final Pattern GET_PATTERN = compile("^get[A-Z].*");
+    private static final Pattern GET_PATTERN = Pattern.compile("^get[A-Z].*");
     /**
      * is方法
      */
-    private static final Pattern IS_PATTERN = compile("^is[A-Z].*");
+    private static final Pattern IS_PATTERN = Pattern.compile("^is[A-Z].*");
 
     private Reflection() {
     }
@@ -57,21 +45,21 @@ public class Reflection {
         // getFields 获取当前类或父类或父接口的 public 修饰的字段
         // getDeclaredFields 获取当前类的所有字段，包括 public/protected/private 修饰的字段
         Field[] fields = clazz.getDeclaredFields();
-        if (isNotEmpty(fields)) {
-            results.addAll(asList(fields));
+        if (ArrayUtils.isNotEmpty(fields)) {
+            results.addAll(Arrays.asList(fields));
         }
         Class<?> superclass = clazz.getSuperclass();
         if (null != superclass) {
             List<Field> list = getFields(superclass);
-            if (isNotEmpty(list)) {
+            if (CollectionUtils.isNotEmpty(list)) {
                 results.addAll(list);
             }
         }
         Class<?>[] interfaces = clazz.getInterfaces();
-        if (isNotEmpty(interfaces)) {
+        if (ArrayUtils.isNotEmpty(interfaces)) {
             for (Class<?> item : interfaces) {
                 List<Field> list = getFields(item);
-                if (isNotEmpty(list)) {
+                if (CollectionUtils.isNotEmpty(list)) {
                     results.addAll(list);
                 }
             }
@@ -97,9 +85,9 @@ public class Reflection {
     @SneakyThrows
     public static Object getValue(Object object, Field field) {
         //屏蔽Java语言的访问检查(public、private字段，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
-        field.setAccessible(TRUE);
+        field.setAccessible(Boolean.TRUE);
         Object value = field.get(object);
-        field.setAccessible(FALSE);
+        field.setAccessible(Boolean.FALSE);
         return value;
     }
 
@@ -111,9 +99,9 @@ public class Reflection {
         Field field = getField(object.getClass(), attribute);
         if (null != field) {
             //屏蔽Java语言的访问检查(public、private字段，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
-            field.setAccessible(TRUE);
+            field.setAccessible(Boolean.TRUE);
             field.set(object, value);
-            field.setAccessible(FALSE);
+            field.setAccessible(Boolean.FALSE);
         }
     }
 
@@ -122,7 +110,7 @@ public class Reflection {
      */
     public static Field getField(Class<?> clazz, String name) {
         Field[] fields = clazz.getDeclaredFields();
-        if (isNotEmpty(fields)) {
+        if (ArrayUtils.isNotEmpty(fields)) {
             for (Field field : fields) {
                 if (field.getName().equals(name)) {
                     return field;
@@ -137,7 +125,7 @@ public class Reflection {
             }
         }
         Class<?>[] interfaces = clazz.getInterfaces();
-        if (isNotEmpty(interfaces)) {
+        if (ArrayUtils.isNotEmpty(interfaces)) {
             for (Class<?> item : interfaces) {
                 Field field = getField(item, name);
                 if (null != field) {
@@ -153,7 +141,7 @@ public class Reflection {
      * @param type 泛型类
      */
     public static Class<?> getGenericParameter(Type type) {
-        return getGenericParameter(type, ZERO);
+        return getGenericParameter(type, Constants.ZERO);
     }
 
     /**
@@ -166,7 +154,7 @@ public class Reflection {
         if (type instanceof ParameterizedType) {
             type = ((ParameterizedType) type).getActualTypeArguments()[index];
             if (type instanceof ParameterizedType) {
-                return cast(((ParameterizedType) type).getRawType());
+                return TypeUtils.cast(((ParameterizedType) type).getRawType());
             }
             return (Class<?>) type;
         }
@@ -179,7 +167,7 @@ public class Reflection {
      * @param genericClass 对象类继承的泛型接口或泛型父类
      */
     public static Class<?> getGenericParameter(Class<?> objectClass, Class<?> genericClass) {
-        return getGenericParameter(objectClass, genericClass, ZERO);
+        return getGenericParameter(objectClass, genericClass, Constants.ZERO);
     }
 
     /**
@@ -226,7 +214,7 @@ public class Reflection {
         if (type instanceof ParameterizedType) {
             return getGenericParameters((ParameterizedType) type);
         }
-        return new Class[ZERO];
+        return new Class[Constants.ZERO];
     }
 
     /**
@@ -235,11 +223,11 @@ public class Reflection {
     private static Class<?>[] getGenericParameters(ParameterizedType type) {
         Type[] types = type.getActualTypeArguments();
         Class<?>[] arguments = new Class[types.length];
-        for (int i = ZERO; i < types.length; i++) {
+        for (int i = Constants.ZERO; i < types.length; i++) {
             if (types[i] instanceof ParameterizedType) {
-                arguments[i] = cast(((ParameterizedType) types[i]).getRawType());
+                arguments[i] = TypeUtils.cast(((ParameterizedType) types[i]).getRawType());
             } else {
-                arguments[i] = cast(types[i]);
+                arguments[i] = TypeUtils.cast(types[i]);
             }
         }
         return arguments;
@@ -254,9 +242,9 @@ public class Reflection {
         }
         Class<?> tClass;
         if (type instanceof ParameterizedType) {
-            tClass = cast(((ParameterizedType) type).getRawType());
+            tClass = TypeUtils.cast(((ParameterizedType) type).getRawType());
         } else {
-            tClass = cast(type);
+            tClass = TypeUtils.cast(type);
         }
         if (genericClass.equals(tClass)) {
             return type;
@@ -268,15 +256,15 @@ public class Reflection {
      * 返回types的泛型接口genericInterface，包含泛型参数
      */
     private static Type getGenericInterface(Type[] types, Class<?> genericInterface) {
-        if (isEmpty(types)) {
+        if (ArrayUtils.isEmpty(types)) {
             return null;
         }
         Class<?> tClass;
         for (Type type : types) {
             if (type instanceof ParameterizedType) {
-                tClass = cast(((ParameterizedType) type).getRawType());
+                tClass = TypeUtils.cast(((ParameterizedType) type).getRawType());
             } else {
-                tClass = cast(type);
+                tClass = TypeUtils.cast(type);
             }
             if (genericInterface.equals(tClass)) {
                 return type;
@@ -294,7 +282,7 @@ public class Reflection {
      */
     public static List<JsonField> toJsonFields(Object object) {
         if (null == object) {
-            return emptyList();
+            return Collections.emptyList();
         }
         List<JsonField> jsonFields = new ArrayList<>();
         toJsonFields(object.getClass(), object, jsonFields);
@@ -313,10 +301,8 @@ public class Reflection {
         // getMethods 获取的是类的所有共有方法，这就包括自身的所有public方法，和从基类继承的、从接口实现的所有public方法（包括Object的方法）
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            if (method.getParameterCount() > ZERO ||
-                    Void.TYPE.equals(method.getReturnType()) ||
-                    isStatic(method.getModifiers()) ||
-                    !isPublic(method.getModifiers())) {
+            if (method.getParameterCount() > Constants.ZERO || Void.TYPE.equals(method.getReturnType()) ||
+                    Modifier.isStatic(method.getModifiers()) || !Modifier.isPublic(method.getModifiers())) {
                 continue;
             }
             toJsonField(method, object, jsonFields);
@@ -326,9 +312,8 @@ public class Reflection {
         if (null != superclass) {
             toJsonFields(superclass, object, jsonFields);
         }
-
         Class<?>[] interfaces = clazz.getInterfaces();
-        if (isNotEmpty(interfaces)) {
+        if (ArrayUtils.isNotEmpty(interfaces)) {
             for (Class<?> item : interfaces) {
                 toJsonFields(item, object, jsonFields);
             }
@@ -340,7 +325,7 @@ public class Reflection {
      */
     public static List<JsonField> toJsonFields(Class<?> clazz) {
         if (null == clazz) {
-            return emptyList();
+            return Collections.emptyList();
         }
         List<JsonField> jsonFields = new ArrayList<>();
         toJsonFields(clazz, null, jsonFields);
@@ -361,7 +346,7 @@ public class Reflection {
         if (null != object) {
             object = method.invoke(object);
         }
-        jsonField.setType(getType(null == object ? method.getReturnType() : object.getClass()));
+        jsonField.setType(JsonType.getType(null == object ? method.getReturnType() : object.getClass()));
         jsonField.setComment(getFieldComment(method, fieldName));
         jsonField.setData(getJsonFieldData(method, object, jsonField));
         jsonFields.add(jsonField);
@@ -372,20 +357,20 @@ public class Reflection {
      */
     private static Object getJsonFieldData(Method method, Object returnValue, JsonField jsonField) {
         Class<?> returnType = null == returnValue ? method.getReturnType() : returnValue.getClass();
-        if (OBJECT.equals(jsonField.getType())) {
+        if (JsonType.OBJECT.equals(jsonField.getType())) {
             List<JsonField> dataFields = new ArrayList<>();
             if (Class.class.equals(returnType)) {
-                toJsonFields(null != returnValue ? cast(returnValue) : returnType, null, dataFields);
+                toJsonFields(null != returnValue ? TypeUtils.cast(returnValue) : returnType, null, dataFields);
             } else {
                 toJsonFields(returnType, returnValue, dataFields);
             }
             return dataFields;
         } else if (returnType.isArray()) {
             //处理数组类型,getComponentType()返回数组元素的类型
-            return toJsonFields(returnType.getComponentType(), castArray(returnValue, Object.class));
-        } else if (ARRAY.equals(jsonField.getType())) {
+            return toJsonFields(returnType.getComponentType(), TypeUtils.castArray(returnValue, Object.class));
+        } else if (JsonType.ARRAY.equals(jsonField.getType())) {
             //处理集合类型
-            Collection<?> collections = cast(returnValue);
+            Collection<?> collections = TypeUtils.cast(returnValue);
             //method.getGenericReturnType：返回带有泛型参数的返回类
             return toJsonFields(getGenericParameter(method.getGenericReturnType()), collections);
         }
@@ -425,7 +410,7 @@ public class Reflection {
      */
     private static List<List<JsonField>> toJsonFields(Class<?> clazz, Object[] objects) {
         List<List<JsonField>> arrayFields = new ArrayList<>();
-        if (isEmpty(objects)) {
+        if (ArrayUtils.isEmpty(objects)) {
             arrayFields.add(toJsonFields(clazz));
         } else {
             for (Object object : objects) {
@@ -442,7 +427,7 @@ public class Reflection {
      */
     private static List<List<JsonField>> toJsonFields(Class<?> clazz, Collection<?> objects) {
         List<List<JsonField>> collectionFields = new ArrayList<>();
-        if (isEmpty(objects)) {
+        if (CollectionUtils.isEmpty(objects)) {
             collectionFields.add(toJsonFields(clazz));
         } else {
             objects.forEach(object -> {
@@ -460,10 +445,10 @@ public class Reflection {
     public static String toFieldName(String getter) {
         if (GET_PATTERN.matcher(getter).matches()) {
             getter = getter.substring(Constants.THREE);
-            return getter.substring(ZERO, Constants.ONE).toLowerCase() + getter.substring(Constants.ONE);
+            return getter.substring(Constants.ZERO, Constants.ONE).toLowerCase() + getter.substring(Constants.ONE);
         } else if(IS_PATTERN.matcher(getter).matches()) {
             getter = getter.substring(Constants.TWO);
-            return getter.substring(ZERO, Constants.ONE).toLowerCase() + getter.substring(Constants.ONE);
+            return getter.substring(Constants.ZERO, Constants.ONE).toLowerCase() + getter.substring(Constants.ONE);
         }
         return null;
     }
@@ -479,10 +464,10 @@ public class Reflection {
         Method method = getter.getClass().getDeclaredMethod("writeReplace");
         //屏蔽Java语言的访问检查(public、private方法，默认都是开启访问检查)，使得对象的私有属性也可以被查询和设置
         //writeReplace是私有方法，需要去掉私有属性
-        method.setAccessible(TRUE);
+        method.setAccessible(Boolean.TRUE);
         //手动调用writeReplace()方法，返回一个SerializedLambda对象
         SerializedLambda lambda = (SerializedLambda) method.invoke(getter);
-        method.setAccessible(FALSE);
+        method.setAccessible(Boolean.FALSE);
         //得到lambda表达式中调用的方法名
         return toFieldName(lambda.getImplMethodName());
     }

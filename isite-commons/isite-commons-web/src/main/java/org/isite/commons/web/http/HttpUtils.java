@@ -1,17 +1,12 @@
 package org.isite.commons.web.http;
 
+import org.apache.commons.collections4.MapUtils;
+import org.isite.commons.lang.Constants;
+
 import java.util.Map;
-
-import static org.apache.commons.collections4.MapUtils.isEmpty;
-import static org.isite.commons.lang.Constants.AMPERSAND;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.EQUAL_SIGN;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
- * HTTP工具类
- * @author <font color='blue'>zhangcm</font>
+ * @Description HTTP工具类
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class HttpUtils {
 
@@ -22,8 +17,8 @@ public class HttpUtils {
      * 按照key1=val1&key2=val2 的方式进行编码
      */
     public static String toFormData(Map<String, Object> params) {
-        if (isEmpty(params)) {
-            return BLANK_STR;
+        if (MapUtils.isEmpty(params)) {
+            return Constants.BLANK_STR;
         }
         StringBuilder results = new StringBuilder();
         /*
@@ -34,10 +29,10 @@ public class HttpUtils {
          */
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             results.append(entry.getKey());
-            results.append(EQUAL_SIGN);
+            results.append(Constants.EQUAL_SIGN);
             results.append(entry.getValue());
-            results.append(AMPERSAND);
+            results.append(Constants.AMPERSAND);
         }
-        return results.substring(ZERO, results.length() - ONE);
+        return results.substring(Constants.ZERO, results.length() - Constants.ONE);
     }
 }

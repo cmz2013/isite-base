@@ -1,20 +1,12 @@
 package org.isite.commons.web.interceptor;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.data.constants.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static java.lang.Integer.parseInt;
-import static java.lang.Long.parseLong;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.AUTHORIZATION;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_EMPLOYEE_ID;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_TENANT_ID;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_USER_ID;
-import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
-
 /**
  * @Description 保存请求头数据（敏感信息），用于后续请求使用。
  * spring-webmvc 是基于 Servlet API，使用阻塞式 I/O，适用于传统的同步请求处理，可以把数据封装在ThreadLocal中传递。
@@ -23,7 +15,6 @@ import static org.isite.commons.cloud.data.constants.HttpHeaders.X_VERSION;
  * @Author <font color='blue'>zhangcm</font>
  */
 public class TransmittableHeaders implements HandlerInterceptor {
-
     private static final ThreadLocal<String> TRANSMITTABLE_VERSION = new TransmittableThreadLocal<>();
     private static final ThreadLocal<String> TRANSMITTABLE_AUTHORIZATION = new TransmittableThreadLocal<>();
     private static final ThreadLocal<Long> TRANSMITTABLE_USER_ID = new TransmittableThreadLocal<>();
@@ -77,25 +68,25 @@ public class TransmittableHeaders implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String version = request.getHeader(X_VERSION);
-        if (isNotBlank(version)) {
+        String version = request.getHeader(HttpHeaders.X_VERSION);
+        if (StringUtils.isNotBlank(version)) {
             TRANSMITTABLE_VERSION.set(version);
         }
-        String authorization = request.getHeader(AUTHORIZATION);
-        if (isNotBlank(authorization)) {
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.isNotBlank(authorization)) {
             TRANSMITTABLE_AUTHORIZATION.set(authorization);
         }
-        String userId = request.getHeader(X_USER_ID);
-        if (isNotBlank(userId)) {
-            TRANSMITTABLE_USER_ID.set(parseLong(userId));
+        String userId = request.getHeader(HttpHeaders.X_USER_ID);
+        if (StringUtils.isNotBlank(userId)) {
+            TRANSMITTABLE_USER_ID.set(Long.parseLong(userId));
         }
-        String employeeId = request.getHeader(X_EMPLOYEE_ID);
-        if (isNotBlank(employeeId)) {
-            TRANSMITTABLE_EMPLOYEE_ID.set(parseLong(employeeId));
+        String employeeId = request.getHeader(HttpHeaders.X_EMPLOYEE_ID);
+        if (StringUtils.isNotBlank(employeeId)) {
+            TRANSMITTABLE_EMPLOYEE_ID.set(Long.parseLong(employeeId));
         }
-        String tenantId = request.getHeader(X_TENANT_ID);
-        if (isNotBlank(tenantId)) {
-            TRANSMITTABLE_TENANT_ID.set(parseInt(tenantId));
+        String tenantId = request.getHeader(HttpHeaders.X_TENANT_ID);
+        if (StringUtils.isNotBlank(tenantId)) {
+            TRANSMITTABLE_TENANT_ID.set(Integer.parseInt(tenantId));
         }
         //如果false，停止流程，api被拦截
         return true;

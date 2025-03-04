@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TagController extends BaseController {
-
     private TagService tagService;
 
     /**

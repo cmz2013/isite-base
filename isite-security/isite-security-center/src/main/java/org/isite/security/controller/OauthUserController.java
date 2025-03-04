@@ -20,7 +20,6 @@ import static org.isite.security.web.utils.SecurityUtils.getTokenValue;
  */
 @RestController
 public class OauthUserController extends BaseController {
-
     private TokenService tokenService;
 
     /**

@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class DictTypeController extends BaseController {
-
     private DictCache dictCache;
     private DictTypeService dictTypeService;
 

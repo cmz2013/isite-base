@@ -1,16 +1,13 @@
 package org.isite.commons.web.exception;
 
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ResultStatus;
+
 import javax.validation.ConstraintViolation;
 import java.util.Set;
-
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.SEMICOLON;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
-
 /**
- * ConstraintViolation辅助类
- * @author <font color='blue'>zhangcm</font>
+ * @Description ConstraintViolation辅助类
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class ConstraintViolationUtils {
 
@@ -19,9 +16,9 @@ public class ConstraintViolationUtils {
 
     public static String getMessage(Set<ConstraintViolation<?>> constraintViolations) {
         StringBuilder message = new StringBuilder();
-        constraintViolations.forEach(e -> message.append(e.getMessage()).append(SEMICOLON));
-        return message.length() > ZERO ?
-                message.substring(ZERO, message.length() - ONE) :
-                EXPECTATION_FAILED.getReasonPhrase();
+        constraintViolations.forEach(e -> message.append(e.getMessage()).append(Constants.SEMICOLON));
+        return message.length() > Constants.ZERO ?
+                message.substring(Constants.ZERO, message.length() - Constants.ONE) :
+                ResultStatus.EXPECTATION_FAILED.getReasonPhrase();
     }
 }

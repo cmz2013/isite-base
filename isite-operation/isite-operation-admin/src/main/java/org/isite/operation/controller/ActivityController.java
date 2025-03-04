@@ -59,7 +59,6 @@ import static org.isite.operation.support.enums.ActivityTheme.values;
  */
 @RestController
 public class ActivityController extends BaseController {
-
     public static final String KEY_ACTIVITY_NOT_FOUND = "activity.notFound";
     public static final String VALUE_ACTIVITY_NOT_FOUND = "activity not found";
     private TaskService taskService;

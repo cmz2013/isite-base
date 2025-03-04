@@ -2,11 +2,7 @@ package org.isite.commons.web.sync;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.Thread.sleep;
-import static org.isite.commons.lang.Constants.ZERO;
+import org.isite.commons.lang.Constants;
 
 /**
  * @Description 忙时等待定时器。获取不到锁时，允许短时间的忙等待
@@ -33,11 +29,11 @@ public class BusyTimer {
 
     @SneakyThrows
     public boolean run() {
-        if (this.wait > ZERO && this.retry > ZERO) {
-            sleep(wait);
+        if (this.wait > Constants.ZERO && this.retry > Constants.ZERO) {
+            Thread.sleep(wait);
             this.retry--;
-            return TRUE;
+            return Boolean.TRUE;
         }
-        return FALSE;
+        return Boolean.FALSE;
     }
 }

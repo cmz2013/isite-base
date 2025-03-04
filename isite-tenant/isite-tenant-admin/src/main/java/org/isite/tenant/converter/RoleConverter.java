@@ -1,16 +1,15 @@
 package org.isite.tenant.converter;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.isite.tenant.data.dto.RoleDto;
+import org.isite.tenant.data.dto.RoleGetDto;
 import org.isite.tenant.data.vo.Resource;
 import org.isite.tenant.data.vo.Role;
 import org.isite.tenant.po.RolePo;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getTenantId;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -20,19 +19,25 @@ public class RoleConverter {
     }
 
     public static RolePo toRolePo(RoleDto roleDto) {
-        RolePo rolePo = convert(roleDto, RolePo::new);
-        rolePo.setTenantId(getTenantId());
+        RolePo rolePo = DataConverter.convert(roleDto, RolePo::new);
+        rolePo.setTenantId(TransmittableHeaders.getTenantId());
         if (null == rolePo.getRemark()) {
-            rolePo.setRemark(BLANK_STR);
+            rolePo.setRemark(Constants.BLANK_STR);
         }
         return rolePo;
     }
 
     public static RolePo toRoleSelectivePo(RoleDto roleDto) {
-        RolePo rolePo = convert(roleDto, RolePo::new);
+        RolePo rolePo = DataConverter.convert(roleDto, RolePo::new);
         if (null == rolePo.getRemark()) {
-            rolePo.setRemark(BLANK_STR);
+            rolePo.setRemark(Constants.BLANK_STR);
         }
+        return rolePo;
+    }
+
+    public static RolePo toRoleSelectivePo(int tenantId, RoleGetDto roleGetDto) {
+        RolePo rolePo = DataConverter.convert(roleGetDto, RolePo::new);
+        rolePo.setTenantId(tenantId);
         return rolePo;
     }
 
@@ -44,7 +49,7 @@ public class RoleConverter {
     }
 
     public static Role toRole(RolePo rolePo, List<Resource> resources) {
-        Role role = convert(rolePo, Role::new);
+        Role role = DataConverter.convert(rolePo, Role::new);
         role.setResources(resources);
         return role;
     }

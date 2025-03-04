@@ -33,7 +33,6 @@ import static org.isite.user.data.constants.UserUrls.URL_USER;
  */
 @RestController
 public class ConsigneeController extends BaseController {
-
     private ConsigneeService consigneeService;
 
     @Autowired

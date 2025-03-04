@@ -39,8 +39,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 public class UserLoginController extends BaseController {
-
     private UserLoginService userLoginService;
+
     /**
      * 授权码模式用户登录页面
      */

@@ -12,6 +12,10 @@ public enum ResultStatus implements Enumerable<Integer> {
      */
     OK(200, "OK"),
     /**
+     * 非法请求
+     */
+    BAD_REQUEST(400, "Bad Request"),
+    /**
      * 异常
      */
     EXPECTATION_FAILED(417, "Expectation Failed"),

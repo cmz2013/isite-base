@@ -8,21 +8,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.IoUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.math.BigDecimal.valueOf;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.file.FileUtils.EXTENSION_XLS;
-import static org.isite.commons.lang.file.FileUtils.getExtension;
-import static org.isite.commons.lang.utils.IoUtils.close;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -38,7 +33,7 @@ public class ExcelAccessor {
 
 	public ExcelAccessor(String pathname) throws IOException {
 		this.input = new FileInputStream(pathname);
-		this.workbook = EXTENSION_XLS.equals(getExtension(pathname)) ?
+		this.workbook = FileUtils.EXTENSION_XLS.equals(FileUtils.getExtension(pathname)) ?
 				new HSSFWorkbook(input) : new XSSFWorkbook(input);
 	}
 
@@ -47,7 +42,7 @@ public class ExcelAccessor {
 	 */
 	public List<Sheet> sheets() {
 		List<Sheet> sheets = new ArrayList<>();
-		for (int i = ZERO; i < workbook.getNumberOfSheets(); i++) {
+		for (int i = Constants.ZERO; i < workbook.getNumberOfSheets(); i++) {
 			if (null != workbook.getSheetAt(i)) {
 				sheets.add(workbook.getSheetAt(i));
 			}
@@ -60,7 +55,7 @@ public class ExcelAccessor {
 	 */
 	public List<Row> rows(Sheet sheet) {
 		List<Row> rows = new ArrayList<>();
-		for (int i = ZERO; i <= sheet.getLastRowNum(); i++) {
+		for (int i = Constants.ZERO; i <= sheet.getLastRowNum(); i++) {
 			if (null == sheet.getRow(i)) {
 				continue;
 			}
@@ -77,9 +72,9 @@ public class ExcelAccessor {
 			return null;
 		}
 		switch (cell.getCellType()) {
-			case BOOLEAN: return cell.getBooleanCellValue() + BLANK_STR;
+			case BOOLEAN: return cell.getBooleanCellValue() + Constants.BLANK_STR;
 			//返回不带指数字段的字符串表示形式
-			case NUMERIC: return valueOf(cell.getNumericCellValue()).toPlainString();
+			case NUMERIC: return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
 			case STRING: return cell.getStringCellValue();
 			case FORMULA: {
 				RichTextString text = cell.getRichStringCellValue();
@@ -98,7 +93,7 @@ public class ExcelAccessor {
 		try {
 			workbook.write(output);
 		} finally {
-			close(workbook, input);
+			IoUtils.close(workbook, input);
 		}
 	}
 }

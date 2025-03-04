@@ -1,12 +1,10 @@
 package org.isite.commons.web.feign;
 
+import org.isite.commons.lang.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClientBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import static org.isite.commons.lang.Constants.DOT;
-
 /**
  * @Description Feign客户端工厂类，动态指定服务ID，手动构建Feign客户端。
  * 在内部服务之间调用时，通过FeignClientFactory获取Feign客户端，
@@ -37,7 +35,7 @@ public class FeignClientFactory {
      */
     public <T> T getFeignClient(final Class<T> tClass, String name) {
         FeignClientBuilder.Builder<T> builder = this.feignClientBuilder.forType(tClass, name);
-        builder.contextId(name + DOT + tClass.getSimpleName());
+        builder.contextId(name + Constants.DOT + tClass.getSimpleName());
         builder.customize(feignBuilder -> feignBuilder.requestInterceptor(new HeaderEnhancer()));
        return builder.build();
     }

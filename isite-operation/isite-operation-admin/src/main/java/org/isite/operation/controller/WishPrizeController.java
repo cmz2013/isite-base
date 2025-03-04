@@ -34,7 +34,6 @@ import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
  */
 @RestController
 public class WishPrizeController extends BaseController {
-
     private WishPrizeService wishPrizeService;
     private OngoingActivityService ongoingActivityService;
     private ScoreRecordService scoreRecordService;

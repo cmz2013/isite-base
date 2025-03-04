@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class ReportController extends BaseController {
-
     private ReportCache reportCache;
     private ReportService reportService;
 

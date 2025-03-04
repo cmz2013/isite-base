@@ -1,12 +1,9 @@
 package org.isite.tenant.converter;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
 import org.isite.tenant.data.dto.ResourceDto;
 import org.isite.tenant.po.ResourcePo;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -16,18 +13,18 @@ public class ResourceConverter {
     }
 
     public static ResourcePo toResourcePo(ResourceDto resourceDto) {
-        ResourcePo resourcePo = convert(resourceDto, ResourcePo::new);
+        ResourcePo resourcePo = DataConverter.convert(resourceDto, ResourcePo::new);
         if (null == resourcePo.getHref()) {
-            resourcePo.setHref(BLANK_STR);
+            resourcePo.setHref(Constants.BLANK_STR);
         }
         if (null == resourcePo.getIcon()) {
-            resourcePo.setIcon(BLANK_STR);
+            resourcePo.setIcon(Constants.BLANK_STR);
         }
         if (null == resourcePo.getSort()) {
-            resourcePo.setSort(ZERO);
+            resourcePo.setSort(Constants.ZERO);
         }
         if (null == resourcePo.getRemark()) {
-            resourcePo.setRemark(BLANK_STR);
+            resourcePo.setRemark(Constants.BLANK_STR);
         }
         return resourcePo;
     }

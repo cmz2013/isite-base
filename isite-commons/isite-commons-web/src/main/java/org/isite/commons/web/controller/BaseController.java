@@ -7,10 +7,6 @@ import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.data.vo.ListResult.success;
-import static org.isite.commons.cloud.data.vo.PageResult.success;
-
 /**
  * @Description Controller公共方法
  * 注意：Controller方法建议不超过10行
@@ -23,7 +19,7 @@ public class BaseController {
      * @param <V> VO class
      */
     protected <V> Result<V> toResult(V vo) {
-        return success(vo);
+        return Result.success(vo);
     }
 
     /**
@@ -32,7 +28,7 @@ public class BaseController {
      * @param vos 返回响应数据
      */
     protected <V> ListResult<V> toListResult(ListRequest<?> request, List<V> vos) {
-        return success(request, vos);
+        return ListResult.success(request, vos);
     }
 
     /**
@@ -41,7 +37,7 @@ public class BaseController {
      * @param vos 返回响应数据
      */
     protected <V> PageResult<V> toPageResult(PageRequest<?> request, List<V> vos, long total) {
-        return success(request, vos, total);
+        return PageResult.success(request, vos, total);
     }
 
     /**
@@ -50,6 +46,6 @@ public class BaseController {
      */
     protected Result<Object> toResult(Runnable runnable) {
         runnable.run();
-        return success();
+        return Result.success();
     }
 }

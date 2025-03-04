@@ -28,7 +28,6 @@ import java.util.List;
  */
 @RestController
 public class DictDataController extends BaseController {
-
     private DictCache dictCache;
     private DictDataService dictDataService;
 

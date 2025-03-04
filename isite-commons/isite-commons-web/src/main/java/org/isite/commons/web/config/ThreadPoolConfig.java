@@ -1,5 +1,6 @@
 package org.isite.commons.web.config;
 
+import com.alibaba.ttl.threadpool.TtlExecutors;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +11,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
-
-import static com.alibaba.ttl.threadpool.TtlExecutors.getTtlExecutorService;
-import static java.lang.Boolean.TRUE;
-
 /**
  * @Description 配置线程池
  * 1）@EnableAsync，开启 Spring Bean的异步方法（@Async）
@@ -42,12 +39,12 @@ public class ThreadPoolConfig implements AsyncConfigurer {
         //ThreadPoolTaskExecutor是Spring框架中的一个线程池实现，它基于JDK的ThreadPoolExecutor，并提供了更方便的配置和使用
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         //优雅停机,调度器shutdown被调用时等待当前被调度的任务完成
-        taskExecutor.setWaitForTasksToCompleteOnShutdown(TRUE);
+        taskExecutor.setWaitForTasksToCompleteOnShutdown(Boolean.TRUE);
         //等待的时间，不能无限的等待下去
         taskExecutor.setAwaitTerminationSeconds(1800);
         taskExecutor.initialize();
         //创建线程池，使用 TtlExecutors 进行包装,在任务执行时正确传递线程变量
-        return getTtlExecutorService(taskExecutor.getThreadPoolExecutor());
+        return TtlExecutors.getTtlExecutorService(taskExecutor.getThreadPoolExecutor());
     }
 
     /**

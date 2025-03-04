@@ -1,12 +1,9 @@
 package org.isite.tenant.converter;
 
+import org.isite.commons.lang.Constants;
 import org.isite.tenant.data.dto.EmployeeDto;
+import org.isite.tenant.data.enums.OfficeStatus;
 import org.isite.tenant.po.EmployeePo;
-
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.tenant.data.enums.OfficeStatus.NORMAL;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -18,10 +15,10 @@ public class EmployeeConverter {
     public static EmployeePo toEmployeePo(long userId, int tenantId) {
         EmployeePo employeePo = new EmployeePo();
         employeePo.setUserId(userId);
-        employeePo.setOfficeStatus(NORMAL);
+        employeePo.setOfficeStatus(OfficeStatus.NORMAL);
         employeePo.setTenantId(tenantId);
-        employeePo.setDeptId(ZERO);
-        employeePo.setDomainAccount(BLANK_STR);
+        employeePo.setDeptId(Constants.ZERO);
+        employeePo.setDomainAccount(Constants.BLANK_STR);
         return employeePo;
     }
 
@@ -31,7 +28,7 @@ public class EmployeeConverter {
         employeePo.setDeptId(employeeDto.getDeptId());
         employeePo.setDomainAccount(employeeDto.getDomainAccount());
         employeePo.setUserId(userId);
-        employeePo.setOfficeStatus(NORMAL);
+        employeePo.setOfficeStatus(OfficeStatus.NORMAL);
         employeePo.setTenantId(tenantId);
         return employeePo;
     }
@@ -50,13 +47,6 @@ public class EmployeeConverter {
         EmployeePo employeePo = new EmployeePo();
         employeePo.setUserId(userId);
         employeePo.setTenantId(tenantId);
-        return employeePo;
-    }
-
-    public static EmployeePo toEmployeeSelectivePo(int tenantId, String domainAccount) {
-        EmployeePo employeePo = new EmployeePo();
-        employeePo.setTenantId(tenantId);
-        employeePo.setDomainAccount(domainAccount);
         return employeePo;
     }
 }

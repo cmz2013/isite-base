@@ -33,7 +33,6 @@ import java.time.LocalDateTime;
  */
 @RestController
 public class ScoreRecordController extends BaseController {
-
     private ScoreRecordService scoreRecordService;
 
     /**

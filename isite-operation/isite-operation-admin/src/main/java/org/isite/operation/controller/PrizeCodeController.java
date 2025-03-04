@@ -42,7 +42,6 @@ import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
  */
 @RestController
 public class PrizeCodeController extends BaseController {
-
     private ActivityService activityService;
     private PrizeService prizeService;
     private PrizeCodeService prizeCodeService;

@@ -2,6 +2,8 @@ package org.isite.commons.web.config;
 
 import org.isite.commons.cloud.converter.EnumConstantConverter;
 import org.isite.commons.cloud.utils.RequestPathMatcher;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -20,12 +22,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.json.Jackson.OBJECT_MAPPER;
-
 /**
  * @Description 可以在项目配置类中继承使用 WebMvcAdapter
  * @Author <font color='blue'>zhangcm</font>
@@ -35,8 +33,8 @@ public class WebMvcAdapter extends WebMvcConfigurationSupport {
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         //MappingJackson2HttpMessageConverter#DEFAULT_CHARSET = UTF_8
-        converters.add(new MappingJackson2HttpMessageConverter(OBJECT_MAPPER));
-        converters.add(new StringHttpMessageConverter(UTF_8));
+        converters.add(new MappingJackson2HttpMessageConverter(Jackson.OBJECT_MAPPER));
+        converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -75,7 +73,7 @@ public class WebMvcAdapter extends WebMvcConfigurationSupport {
             @Override
             public void initBinder(WebDataBinder binder) {
                 super.initBinder(binder);
-                binder.setAutoGrowCollectionLimit(THOUSAND);
+                binder.setAutoGrowCollectionLimit(Constants.THOUSAND);
             }
         };
         initializer.setConversionService(conversionService);
@@ -92,5 +90,4 @@ public class WebMvcAdapter extends WebMvcConfigurationSupport {
         super.setApplicationContext(applicationContext);
         applicationContext.getBean(ResourceBundleMessageSource.class).addBasenames("i18n-web/messages");
     }
-
 }

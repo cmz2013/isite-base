@@ -2,9 +2,7 @@ package org.isite.commons.web.exception;
 
 import org.isite.commons.cloud.utils.MessageUtils;
 import org.isite.commons.lang.Error;
-
-import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
-
+import org.isite.commons.lang.enums.ResultStatus;
 /**
  * @Description 非法参数异常
  * @Author <font color='blue'>zhangcm</font>
@@ -12,6 +10,7 @@ import static org.isite.commons.lang.enums.ResultStatus.EXPECTATION_FAILED;
 public class IllegalParameterError extends Error {
 
     public IllegalParameterError() {
-        super(EXPECTATION_FAILED.getCode(), MessageUtils.getMessage("illegalParameter", "illegal parameters"));
+        super(ResultStatus.EXPECTATION_FAILED.getCode(),
+                MessageUtils.getMessage("illegalParameter", "illegal parameters"));
     }
 }
