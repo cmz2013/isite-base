@@ -23,7 +23,6 @@ import java.time.temporal.TemporalAdjusters;
  * 如果只需要处理日期，推荐使用 LocalDate；
  * 如果需要处理日期和时间，但不需要考虑时区，推荐使用 LocalDateTime；
  * 如果需要处理日期、时间和时区，应该使用 ZonedDateTime。
- *
  * @Author <font color='blue'>zhangcm</font>
  */
 public class DateUtils {
@@ -130,15 +129,15 @@ public class DateUtils {
 	/**
 	 * 获取两个日期相差的天数
 	 */
-	public static long getDays(LocalDate dateInclusive, LocalDate dateExclusive) {
-		return ChronoUnit.DAYS.between(dateInclusive, dateExclusive);
+	public static long getDays(LocalDateTime inclusive, LocalDateTime exclusive) {
+		return ChronoUnit.DAYS.between(inclusive, exclusive);
 	}
 
 	/**
 	 * 获取两个日期相差的月份数
 	 */
-	public static long getMonths(LocalDate dateInclusive, LocalDate dateExclusive) {
-		return ChronoUnit.MONTHS.between(dateInclusive, dateExclusive);
+	public static long getMonths(LocalDateTime inclusive, LocalDateTime exclusive) {
+		return ChronoUnit.MONTHS.between(inclusive, exclusive);
 	}
 
 	/**
