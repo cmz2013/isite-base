@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.tenant.data.enums.OfficeStatus;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @Author <font color='blue'>zhangcm</font>
@@ -32,7 +32,7 @@ public class Employee extends Vo<Long> {
     /**
      * 入职日期
      */
-    private Date hireDate;
+    private LocalDate hireDate;
     /**
      * 试用期（月）
      */
