@@ -1,16 +1,25 @@
 package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.op.Add;
 import org.isite.commons.cloud.data.op.Update;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
 import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.commons.lang.json.JsonField;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
+import org.isite.operation.activity.ActivityAssert;
 import org.isite.operation.cache.ActivityCache;
 import org.isite.operation.converter.ActivityConverter;
 import org.isite.operation.po.ActivityPo;
@@ -20,6 +29,8 @@ import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskRecordService;
 import org.isite.operation.service.TaskService;
+import org.isite.operation.support.constants.CacheKeys;
+import org.isite.operation.support.constants.OperationUrls;
 import org.isite.operation.support.dto.ActivityDto;
 import org.isite.operation.support.dto.ActivityQuery;
 import org.isite.operation.support.enums.ActivityTheme;
@@ -35,25 +46,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isFalse;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
-import static org.isite.operation.activity.ActivityAssert.notOnline;
-import static org.isite.operation.converter.ActivityConverter.toActivityPo;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
-import static org.isite.operation.support.enums.ActivityTheme.values;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -62,69 +54,69 @@ public class ActivityController extends BaseController {
     public static final String KEY_ACTIVITY_NOT_FOUND = "activity.notFound";
     public static final String VALUE_ACTIVITY_NOT_FOUND = "activity not found";
     private TaskService taskService;
-    private PrizeService prizeService;
     private ActivityCache activityCache;
+    private PrizeService prizeService;
     private ActivityService activityService;
 
     /**
      * 查询活动信息（用于管理后台查询数据）
      */
-    @GetMapping(URL_OPERATION + "/activities")
+    @GetMapping(OperationUrls.URL_OPERATION + "/activities")
     public PageResult<Activity> findPage(PageRequest<ActivityQuery> request) {
-        try (Page<ActivityPo> page = activityService.findPage(toPageQuery(request, ActivityPo::new))) {
-            return toPageResult(request, convert(page.getResult(), Activity::new), page.getTotal());
+        try (Page<ActivityPo> page = activityService.findPage(PageQueryConverter.toPageQuery(request, ActivityPo::new))) {
+            return toPageResult(request, DataConverter.convert(page.getResult(), Activity::new), page.getTotal());
         }
     }
 
-    @PostMapping(URL_OPERATION + "/activity")
+    @PostMapping(OperationUrls.URL_OPERATION + "/activity")
     public Result<Integer> addActivity(@RequestBody @Validated(Add.class) ActivityDto activityDto) {
-        isTrue(activityService.isRoot(activityDto.getPid()) ||
+        Assert.isTrue(activityService.isRoot(activityDto.getPid()) ||
                         activityService.isRoot(activityService.get(activityDto.getPid()).getPid()),
-                getMessage("activity.twoLevels", "sub-activities can only have two levels"));
-        return toResult(activityService.addActivity(toActivityPo(activityDto)));
+                MessageUtils.getMessage("activity.twoLevels", "sub-activities can only have two levels"));
+        return toResult(activityService.addActivity(ActivityConverter.toActivityPo(activityDto)));
     }
 
-    @PutMapping(URL_OPERATION + "/activity")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityDto.id"))
+    @PutMapping(OperationUrls.URL_OPERATION + "/activity")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityDto.id"))
     public Result<Integer> editActivity(@Validated(Update.class) @RequestBody ActivityDto activityDto) {
-        notOnline(activityService.get(activityDto.getId()).getStatus());
-        return toResult(activityService.updateById(convert(activityDto, ActivityPo::new)));
+        ActivityAssert.notOnline(activityService.get(activityDto.getId()).getStatus());
+        return toResult(activityService.updateById(DataConverter.convert(activityDto, ActivityPo::new)));
     }
 
-    @DeleteMapping(URL_OPERATION + "/activity/{activityId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @DeleteMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> deleteActivity(@PathVariable("activityId") Integer activityId) {
         ActivityPo activityPo = activityService.get(activityId);
-        notOnline(activityPo.getStatus());
+        ActivityAssert.notOnline(activityPo.getStatus());
         if (activityService.isRoot(activityPo.getPid())) {
-            isFalse(activityService.exists(ActivityPo::getPid, activityPo.getId()),
-                    getMessage("parentActivity.notDelete", "there are sub-activities"));
+            Assert.isFalse(activityService.exists(ActivityPo::getPid, activityPo.getId()),
+                    MessageUtils.getMessage("parentActivity.notDelete", "there are sub-activities"));
         }
-        getBeans(TaskRecordService.class).values().forEach(
-                taskRecordService -> notExistTaskRecord(taskRecordService.exists(activityId)));
+        ApplicationContextUtils.getBeans(TaskRecordService.class).values().forEach(
+                taskRecordService -> ActivityAssert.notExistTaskRecord(taskRecordService.exists(activityId)));
         return toResult(activityService.deleteActivity(activityId));
     }
 
     /**
      * 获取活动主题
      */
-    @GetMapping(URL_OPERATION + "/activity/themes")
+    @GetMapping(OperationUrls.URL_OPERATION + "/activity/themes")
     public Result<ActivityTheme[]> getThemes() {
-        return toResult(values());
+        return toResult(ActivityTheme.values());
     }
 
     /**
      * 获取运营活动自定义属性
      */
-    @GetMapping(URL_OPERATION + "/activity/{theme}/properties")
+    @GetMapping(OperationUrls.URL_OPERATION + "/activity/{theme}/properties")
     public Result<List<JsonField>> getProperties(@PathVariable("theme")ActivityTheme theme) {
-        return toResult(toJsonFields(theme.getPropertyClass()));
+        return toResult(Reflection.toJsonFields(theme.getPropertyClass()));
     }
 
     /**
      * 查询在线的活动信息（不需要登录就可以访问）
      */
-    @GetMapping(URL_API + URL_OPERATION + "/activity/{activityId}")
+    @GetMapping(UrlConstants.URL_API + OperationUrls.URL_OPERATION + "/activity/{activityId}")
     public Result<Activity> getOnlineActivity(@PathVariable("activityId") Integer activityId) {
         return toResult(activityCache.getActivity(activityId));
     }
@@ -132,7 +124,7 @@ public class ActivityController extends BaseController {
     /**
      * 查询活动信息（从DB查询数据，主要用于管理员登录后台查询数据）
      */
-    @GetMapping(URL_OPERATION + "/activity/{activityId}")
+    @GetMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}")
     public Result<Activity> getActivity(@PathVariable("activityId") Integer activityId) {
         ActivityPo activityPo = activityService.get(activityId);
         return toResult(null == activityPo ? null :
@@ -143,15 +135,15 @@ public class ActivityController extends BaseController {
     /**
      * 活动上下架操作。上架的活动个数不能超过1000
      */
-    @PutMapping(URL_OPERATION + "/activity/{activityId}/status/{status}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1"))
+    @PutMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}/status/{status}")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityId", condition = "#status.code==1"))
     public Result<Integer> updateStatus(@PathVariable("activityId") Integer activityId,
                                         @PathVariable("status") ActiveStatus status) {
-        if (DISABLED.equals(status)) {
+        if (ActiveStatus.DISABLED.equals(status)) {
             return toResult(activityCache.disableActivity(activityCache.getActivity(activityId)));
         } else {
-            isTrue(THOUSAND > activityService.count(ActivityPo::getStatus, ENABLED),
-                    getMessage("activity.total.error", "the total of listed activities cannot exceed 1000"));
+            Assert.isTrue(Constants.THOUSAND > activityService.count(ActivityPo::getStatus, ActiveStatus.ENABLED),
+                    MessageUtils.getMessage("activity.total.error", "the total of listed activities cannot exceed 1000"));
             return toResult(activityCache.enableActivity(activityId));
         }
     }

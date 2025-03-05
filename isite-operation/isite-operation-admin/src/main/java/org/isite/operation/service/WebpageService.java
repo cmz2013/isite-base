@@ -1,15 +1,13 @@
 package org.isite.operation.service;
 
 import org.isite.commons.cloud.data.enums.TerminalType;
+import org.isite.commons.lang.template.xml.Thymeleaf;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.WebpageMapper;
 import org.isite.operation.po.WebpagePo;
 import org.isite.operation.support.vo.Activity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.isite.commons.lang.template.xml.Thymeleaf.process;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -53,7 +51,7 @@ public class WebpageService extends PoService<WebpagePo, Integer> {
      */
     public String getWebpage(Activity activity, TerminalType terminalType) {
         WebpagePo webpagePo = getWebpage(activity.getId(), terminalType);
-        return null != webpagePo ?
-                process(webpagePo.getCode(), activity) : "webpage not found";
+        return null != webpagePo ? Thymeleaf.process(webpagePo.getCode(), activity) :
+                "webpage not found";
     }
 }

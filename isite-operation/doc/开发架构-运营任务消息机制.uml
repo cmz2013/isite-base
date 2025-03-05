@@ -1428,14 +1428,14 @@
 <XPD:REF name="Views[3]">elUrqqjPUkyBZKxOaZpB4gAA</XPD:REF>
 <XPD:ATTR name="#Operations" type="integer">1</XPD:ATTR>
 <XPD:OBJ name="Operations[0]" type="UMLOperation" guid="1uKT5a10fkaLQx+9XotiHwAA">
-<XPD:ATTR name="Name" type="string">boolean participate</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">boolean doTask</XPD:ATTR>
 <XPD:REF name="Owner">A7wxTNDwMkiuojcoGgh7GQAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="LaZYHFjy7U+oVOoB4aQaVQAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="d4QFWdmmGEClGuoHaGcrxgAA">
 <XPD:ATTR name="Name" type="string">Activity</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1uKT5a10fkaLQx+9XotiHwAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="pCRMJ73O1Uuh+3jZSWrXAAAA">
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="N14iXpaIPki6sbUwt8Ed2wAA">
 <XPD:ATTR name="Name" type="string">userId</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">1uKT5a10fkaLQx+9XotiHwAA</XPD:REF>
 </XPD:OBJ>

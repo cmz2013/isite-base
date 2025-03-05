@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author <font color='blue'>zhangcm</font>
  */
 @Configuration
-public class SentinelConfig {
+public class WebSentinelConfig {
 
     @Bean
     public BlockRequestHandler blockRequestHandler() {

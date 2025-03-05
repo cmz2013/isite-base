@@ -1,5 +1,10 @@
 package org.isite.operation.task;
 
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.cloud.utils.VoUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.operation.converter.PrizeRecordConverter;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeRecordService;
 import org.isite.operation.service.PrizeTaskService;
@@ -15,22 +20,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-
-import static java.lang.Boolean.FALSE;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.cloud.utils.VoUtils.get;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.support.enums.TaskType.QUESTION_PRIZE;
-
 /**
  * @Description 奖品任务父接口，在领奖记录表 prize_record 中，保存用户的奖品记录
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
 public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
-
     private PrizeTaskService prizeTaskService;
     private PrizeRecordService prizeRecordService;
 
@@ -48,14 +43,14 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
             EventDto eventDto, Activity activity, Task task, LocalDateTime periodStartTime, long taskNumber) {
         PrizeRecordPo prizeRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
-        prizeRecordPo.setLockStatus(FALSE);
-        prizeRecordPo.setReceiveStatus(FALSE);
+        prizeRecordPo.setLockStatus(Boolean.FALSE);
+        prizeRecordPo.setReceiveStatus(Boolean.FALSE);
         return prizeRecordPo;
     }
 
     @Override
     protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
-        return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
+        return prizeTaskService.getReward(activity.getPrizes(), TypeUtils.cast(task.getProperty()));
     }
 
     @Override
@@ -64,9 +59,9 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
             return;
         }
         int prizeId = ((PrizeReward) reward).getPrizeId();
-        Prize prize = get(activity.getPrizes(), prizeId);
-        notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
-        toPrizeRecordPo(taskRecord, prize);
+        Prize prize = VoUtils.get(activity.getPrizes(), prizeId);
+        Assert.notNull(prize, MessageUtils.getMessage("prize.notFound", "prize not found: " + prizeId));
+        PrizeRecordConverter.toPrizeRecordPo(taskRecord, prize);
         prizeRecordService.insert(taskRecord);
     }
 
@@ -82,6 +77,6 @@ public class PrizeTaskExecutor extends TaskExecutor<PrizeRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {QUESTION_PRIZE};
+        return new TaskType[] {TaskType.QUESTION_PRIZE};
     }
 }

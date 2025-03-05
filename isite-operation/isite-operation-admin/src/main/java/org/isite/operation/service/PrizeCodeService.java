@@ -1,5 +1,8 @@
 package org.isite.operation.service;
 
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.PrizeCodeMapper;
 import org.isite.operation.po.PrizeCodePo;
@@ -7,17 +10,11 @@ import org.isite.operation.po.PrizePo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.weekend.Weekend;
 
 import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.ZERO;
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
+import java.util.stream.Collectors;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -38,7 +35,7 @@ public class PrizeCodeService extends PoService<PrizeCodePo, Integer> {
     public String grantPrizeCode(Long userId, Integer prizeId) {
         //根据奖品ID查询未使用的兑奖码
         PrizeCodePo codePo = ((PrizeCodeMapper) getMapper()).selectOneUnused(prizeId);
-        notNull(codePo, getMessage("Prize.notEnough", " have all been taken away"));
+        Assert.notNull(codePo, MessageUtils.getMessage("Prize.notEnough", " have all been taken away"));
         PrizeCodePo prizeCodePo = new PrizeCodePo();
         prizeCodePo.setId(codePo.getId());
         prizeCodePo.setUserId(userId);
@@ -51,12 +48,12 @@ public class PrizeCodeService extends PoService<PrizeCodePo, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public int deletePrizeCodes(PrizePo prizePo, List<Integer> ids) {
-        int rows = getMapper().deleteByExample(of(PrizeCodePo.class).weekendCriteria()
+        int rows = getMapper().deleteByExample(Weekend.of(PrizeCodePo.class).weekendCriteria()
                 .andEqualTo(PrizeCodePo::getPrizeId, prizePo.getId())
                 .andIn(PrizeCodePo::getId, ids)
-                .andEqualTo(PrizeCodePo::getUserId, ZERO));
-        isTrue(rows == ids.size(), getMessage("received.notDelete",
-                "It cannot be deleted if it has already been received"));
+                .andEqualTo(PrizeCodePo::getUserId, Constants.ZERO));
+        Assert.isTrue(rows == ids.size(), MessageUtils.getMessage("received.notDelete",
+                "cannot be deleted if it has already been received"));
         prizeService.updateTotalInventory(prizePo.getId(), prizePo.getTotalInventory() - rows);
         return rows;
     }
@@ -73,7 +70,7 @@ public class PrizeCodeService extends PoService<PrizeCodePo, Integer> {
     public int addPrizeCodes(PrizePo prizePo, Set<String> codes) {
         // rows的最大值取决于codes.size() int，所以将rows转换为int不会丢失精度
         int rows = insert(codes.stream().map(code ->
-                new PrizeCodePo(prizePo.getActivityId(), prizePo.getId(), code)).collect(toList()));
+                new PrizeCodePo(prizePo.getActivityId(), prizePo.getId(), code)).collect(Collectors.toList()));
         prizeService.updateTotalInventory(prizePo.getId(), prizePo.getTotalInventory() + rows);
         return rows;
     }

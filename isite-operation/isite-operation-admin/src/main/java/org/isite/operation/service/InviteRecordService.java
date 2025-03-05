@@ -8,9 +8,6 @@ import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.time.LocalDateTime;
-
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -23,7 +20,7 @@ public class InviteRecordService extends TaskRecordService<InviteRecordPo> {
     }
 
     public int countInviteRecord(int activityId, int taskId, LocalDateTime startTime, long inviterId) {
-        Weekend<InviteRecordPo> weekend = of(InviteRecordPo.class);
+        Weekend<InviteRecordPo> weekend = Weekend.of(InviteRecordPo.class);
         WeekendCriteria<InviteRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(InviteRecordPo::getInviterId, inviterId)
                 .andEqualTo(InviteRecordPo::getActivityId, activityId)

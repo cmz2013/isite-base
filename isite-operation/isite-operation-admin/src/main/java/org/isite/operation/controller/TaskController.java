@@ -1,15 +1,26 @@
 package org.isite.operation.controller;
 
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
 import org.isite.commons.lang.json.JsonField;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
+import org.isite.operation.activity.ActivityAssert;
 import org.isite.operation.cache.ActivityCache;
+import org.isite.operation.converter.TaskConverter;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.TaskService;
+import org.isite.operation.support.constants.CacheKeys;
+import org.isite.operation.support.constants.OperationUrls;
 import org.isite.operation.support.dto.TaskPostDto;
 import org.isite.operation.support.dto.TaskPutDto;
 import org.isite.operation.support.enums.EventType;
@@ -26,20 +37,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.THOUSAND;
-import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.activity.ActivityAssert.notOnline;
-import static org.isite.operation.converter.TaskConverter.toTaskPo;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
-import static org.isite.operation.support.enums.TaskType.values;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -52,69 +49,70 @@ public class TaskController extends BaseController {
     /**
      * 一个活动的任务个数不能超过1000（用于管理后台查询数据）
      */
-    @GetMapping(URL_OPERATION + "/activity/{activityId}/tasks")
+    @GetMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}/tasks")
     public Result<List<Task>> findTasks(@PathVariable("activityId") Integer activityId) {
-        return toResult(convert(taskService.findList(TaskPo::getActivityId, activityId), Task::new));
+        return toResult(DataConverter.convert(taskService.findList(TaskPo::getActivityId, activityId), Task::new));
     }
 
     /**
      * 查询当前周期内已完成的活动任务（用于用户查询数据）
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/activity/{activityId}/tasks/finish")
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/activity/{activityId}/tasks/finish")
     public Result<List<Integer>> findFinishTasks(@PathVariable("activityId") Integer activityId) {
-        return toResult(taskService.findFinishTasks(activityId, getUserId(), activityCache.getActivity(activityId).getTasks()));
+        return toResult(taskService.findFinishTasks(
+                activityId, TransmittableHeaders.getUserId(), activityCache.getActivity(activityId).getTasks()));
     }
 
     /**
      * 获取运营任务自定义属性
      */
-    @GetMapping(URL_OPERATION + "/task/{type}/properties")
+    @GetMapping(OperationUrls.URL_OPERATION + "/task/{type}/properties")
     public Result<List<JsonField>> getProperties(@PathVariable("type") TaskType type) {
-        return toResult(toJsonFields(type.getPropertyClass()));
+        return toResult(Reflection.toJsonFields(type.getPropertyClass()));
     }
 
     /**
      * 更新运营任务，不能变更活动ID
      */
-    @PutMapping(URL_OPERATION + "/activity/{activityId}/task")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @PutMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}/task")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> updateTask(@PathVariable("activityId") Integer activityId,
                                       @Validated @RequestBody TaskPutDto taskPutDto) {
-        notOnline(activityService.get(activityId).getStatus());
-        isTrue(taskService.get(taskPutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
-        isTrue(THOUSAND > taskService.count(TaskPo::getActivityId, activityId),
-                getMessage("task.total.error", "the total of tasks cannot exceed 1000"));
-        return toResult(taskService.updateSelectiveById(convert(taskPutDto, TaskPo::new)));
+        ActivityAssert.notOnline(activityService.get(activityId).getStatus());
+        Assert.isTrue(taskService.get(taskPutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
+        Assert.isTrue(Constants.THOUSAND > taskService.count(TaskPo::getActivityId, activityId),
+                MessageUtils.getMessage("task.total.error", "the total of tasks cannot exceed 1000"));
+        return toResult(taskService.updateSelectiveById(DataConverter.convert(taskPutDto, TaskPo::new)));
     }
 
     /**
      * 根据行为类型查询任务类型
      */
-    @GetMapping(URL_OPERATION + "/task/{event}/types")
+    @GetMapping(OperationUrls.URL_OPERATION + "/task/{event}/types")
     public Result<List<TaskType>> getTaskTypes(@PathVariable("event") EventType event) {
-        return toResult(values(event));
+        return toResult(TaskType.values(event));
     }
 
     /**
      * 删除运营任务
      */
-    @DeleteMapping(URL_OPERATION + "/activity/{activityId}/task/{taskId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @DeleteMapping(OperationUrls.URL_OPERATION + "/activity/{activityId}/task/{taskId}")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Long> deleteTask(@PathVariable("activityId") Integer activityId,
                                    @PathVariable("taskId") Integer taskId) {
-        notOnline(activityService.get(activityId).getStatus());
-        isTrue(taskService.get(taskId).getActivityId().equals(activityId), new IllegalParameterError());
+        ActivityAssert.notOnline(activityService.get(activityId).getStatus());
+        Assert.isTrue(taskService.get(taskId).getActivityId().equals(activityId), new IllegalParameterError());
         return toResult(taskService.deleteTask(taskId));
     }
 
     /**
      * 新增运营任务
      */
-    @PostMapping(URL_OPERATION + "/task")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#taskPostDto.activityId"))
+    @PostMapping(OperationUrls.URL_OPERATION + "/task")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#taskPostDto.activityId"))
     public Result<Integer> addTask(@Validated @RequestBody TaskPostDto taskPostDto) {
-        notOnline(activityService.get(taskPostDto.getActivityId()).getStatus());
-        return toResult(taskService.insert(toTaskPo(taskPostDto)));
+        ActivityAssert.notOnline(activityService.get(taskPostDto.getActivityId()).getStatus());
+        return toResult(taskService.insert(TaskConverter.toTaskPo(taskPostDto)));
     }
 
     @Autowired

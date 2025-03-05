@@ -1,5 +1,10 @@
 package org.isite.operation.converter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -8,15 +13,6 @@ import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 
 import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.lang.Constants.BLANK_STR;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
-import static org.isite.commons.lang.json.Jackson.parseObject;
-import static org.isite.operation.converter.TaskConverter.toTasks;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -26,16 +22,16 @@ public class ActivityConverter {
     }
 
     public static ActivityPo toActivityPo(ActivityDto activityDto) {
-        ActivityPo activityPo = convert(activityDto, ActivityPo::new);
-        activityPo.setStatus(DISABLED);
+        ActivityPo activityPo = DataConverter.convert(activityDto, ActivityPo::new);
+        activityPo.setStatus(ActiveStatus.DISABLED);
         if (null == activityPo.getPid()) {
-            activityPo.setPid(ZERO);
+            activityPo.setPid(Constants.ZERO);
         }
         if (null == activityPo.getProperty()) {
-            activityPo.setProperty(BLANK_STR);
+            activityPo.setProperty(Constants.BLANK_STR);
         }
         if (null == activityPo.getRemark()) {
-            activityPo.setRemark(BLANK_STR);
+            activityPo.setRemark(Constants.BLANK_STR);
         }
         return activityPo;
     }
@@ -45,12 +41,12 @@ public class ActivityConverter {
      */
     public static Activity toActivity(ActivityPo activityPo, List<TaskPo> taskPos, List<PrizePo> prizePos) {
         Activity activity = new Activity();
-        activity.setTasks(toTasks(taskPos));
-        if (isNotBlank(activityPo.getProperty())) {
-            activity.setProperty(parseObject(activityPo.getProperty(), activityPo.getTheme().getPropertyClass()));
+        activity.setTasks(TaskConverter.toTasks(taskPos));
+        if (StringUtils.isNotBlank(activityPo.getProperty())) {
+            activity.setProperty(Jackson.parseObject(activityPo.getProperty(), activityPo.getTheme().getPropertyClass()));
         }
         activity.setTheme(activityPo.getTheme());
-        activity.setPrizes(convert(prizePos, Prize::new));
+        activity.setPrizes(DataConverter.convert(prizePos, Prize::new));
         activity.setCreateTime(activityPo.getCreateTime());
         activity.setEndTime(activityPo.getEndTime());
         activity.setId(activityPo.getId());

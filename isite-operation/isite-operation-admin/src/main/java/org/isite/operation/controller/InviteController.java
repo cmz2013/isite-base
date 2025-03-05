@@ -1,17 +1,15 @@
 package org.isite.operation.controller;
 
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.lang.encoder.NumberEncoder;
 import org.isite.commons.web.controller.BaseController;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
+import org.isite.operation.support.constants.OperationUrls;
+import org.isite.operation.support.enums.BusinessIdentity;
+import org.isite.operation.support.enums.InviteCodeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_MY;
-import static org.isite.commons.lang.encoder.NumberEncoder.encode;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
-import static org.isite.operation.support.enums.BusinessIdentity.OPERATION_ACTIVITY;
-import static org.isite.operation.support.enums.InviteCodeType.USER_ID;
-
 /**
  * @Description 邀请活动 Controller
  * @Author <font color='blue'>zhangcm</font>
@@ -21,8 +19,9 @@ public class InviteController extends BaseController {
     /**
      * 获取邀请码
      */
-    @GetMapping(URL_MY + URL_OPERATION + "/invite/code")
+    @GetMapping(UrlConstants.URL_MY + OperationUrls.URL_OPERATION + "/invite/code")
     public Result<String> getInviteCode() {
-        return toResult(encode(getUserId(), OPERATION_ACTIVITY.getCode(), USER_ID.getCode()));
+        return toResult(NumberEncoder.encode(TransmittableHeaders.getUserId(),
+                BusinessIdentity.OPERATION_ACTIVITY.getCode(), InviteCodeType.USER_ID.getCode()));
     }
 }

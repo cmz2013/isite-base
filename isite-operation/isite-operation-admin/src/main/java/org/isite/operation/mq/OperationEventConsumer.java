@@ -50,7 +50,7 @@ public class OperationEventConsumer implements Consumer<EventDto> {
      */
     public void handle(Activity activity, EventDto eventDto) {
         ActivityMonitor monitor = activityMonitorFactory.get(activity.getTheme());
-        if (null == monitor || monitor.participate(activity, eventDto.getUserId())) {
+        if (null == monitor || monitor.doTask(activity, eventDto.getUserId())) {
             for (TaskType taskType : TaskType.values(eventDto.getEventType())) {
                 TaskExecutor<?> taskExecutor = taskExecutorFactory.get(taskType);
                 activity.getTasks().forEach(task -> {

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -40,5 +41,5 @@ public class PrizeDeliver extends Vo<Integer> {
     /**
      * 交付时间
      */
-    private Date deliverTime;
+    private LocalDateTime deliverTime;
 }

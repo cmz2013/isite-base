@@ -1,14 +1,11 @@
 package org.isite.operation.activity;
 
+import org.isite.commons.lang.Constants;
 import org.isite.operation.service.PrizeRecordService;
 import org.isite.operation.support.enums.ActivityTheme;
 import org.isite.operation.support.vo.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.operation.support.enums.ActivityTheme.WISH_PRIZE;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -20,8 +17,8 @@ public class WishPrizeMonitor implements ActivityMonitor {
      * 用户参与活动任务须要先完成许愿
      */
     @Override
-    public boolean participate(Activity activity, long userId) {
-        return prizeRecordService.count(activity.getId(), userId, null) > ZERO;
+    public boolean doTask(Activity activity, long userId) {
+        return prizeRecordService.count(activity.getId(), userId, null) > Constants.ZERO;
     }
 
     @Autowired
@@ -31,6 +28,6 @@ public class WishPrizeMonitor implements ActivityMonitor {
 
     @Override
     public ActivityTheme[] getIdentities() {
-        return new ActivityTheme[] {WISH_PRIZE};
+        return new ActivityTheme[] {ActivityTheme.WISH_PRIZE};
     }
 }

@@ -74,8 +74,7 @@ public class WebpageController extends BaseController {
     @Publisher(messages = @Message(queues = OperationConstants.QUEUE_OPERATION_EVENT, producer = WebpageProducer.class))
     public Result<String> getWebpage(@PathVariable("activityId") int activityId) {
         Activity activity = activityCache.getActivity(activityId);
-        Assert.notNull(activity, MessageUtils.getMessage(
-                ActivityController.KEY_ACTIVITY_NOT_FOUND, ActivityController.VALUE_ACTIVITY_NOT_FOUND));
+        Assert.notNull(activity, MessageUtils.getMessage(ActivityController.KEY_ACTIVITY_NOT_FOUND, ActivityController.VALUE_ACTIVITY_NOT_FOUND));
         return toResult(activityCache.getWebpage(activity, UserAgent.getTerminalType()));
     }
 

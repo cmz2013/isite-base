@@ -1,6 +1,10 @@
 package org.isite.operation.service;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.lang.Constants;
 import org.isite.mybatis.service.PoService;
+import org.isite.operation.activity.ActivityAssert;
 import org.isite.operation.mapper.TaskMapper;
 import org.isite.operation.po.TaskPo;
 import org.isite.operation.po.TaskRecordPo;
@@ -12,20 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.operation.activity.ActivityAssert.notExistTaskRecord;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class TaskService extends PoService<TaskPo, Integer> {
-
     private TaskExecutorFactory taskExecutorFactory;
 
     @Autowired
@@ -38,8 +35,8 @@ public class TaskService extends PoService<TaskPo, Integer> {
      */
     @Transactional(rollbackFor = Exception.class)
     public long deleteTask(Integer taskId) {
-        for (TaskRecordService<?> recordService : getBeans(TaskRecordService.class).values()) {
-            notExistTaskRecord(recordService.exists(TaskRecordPo::getTaskId, taskId));
+        for (TaskRecordService<?> recordService : ApplicationContextUtils.getBeans(TaskRecordService.class).values()) {
+            ActivityAssert.notExistTaskRecord(recordService.exists(TaskRecordPo::getTaskId, taskId));
         }
         return this.delete(taskId);
     }
@@ -48,8 +45,8 @@ public class TaskService extends PoService<TaskPo, Integer> {
      * 查询用户当前周期内已完成的活动任务
      */
     public List<Integer> findFinishTasks(int activityId, long userId, List<Task> tasks) {
-        if (isEmpty(tasks)) {
-            return emptyList();
+        if (CollectionUtils.isEmpty(tasks)) {
+            return Collections.emptyList();
         }
         List<Integer> ids = new ArrayList<>(tasks.size());
         for (Task task : tasks) {
@@ -70,7 +67,7 @@ public class TaskService extends PoService<TaskPo, Integer> {
             startTime = task.getTaskPeriod().getStartTime();
             limit = task.getTaskPeriod().getLimit();
         }
-        return ZERO == taskExecutorFactory.get(task.getTaskType())
+        return Constants.ZERO == taskExecutorFactory.get(task.getTaskType())
                 .getTaskNumber(activityId, task.getId(), startTime, limit, userId);
     }
 

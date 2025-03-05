@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Description 奖品交付信息
@@ -42,7 +42,7 @@ public class PrizeDeliverPo extends Po<Integer> {
     /**
      * 交付时间
      */
-    private Date deliverTime;
+    private LocalDateTime deliverTime;
     /**
      * 交付负责人员工id （FR：Fulfill Responsibility）
      */

@@ -2,7 +2,9 @@ package org.isite.operation.service;
 
 import lombok.SneakyThrows;
 import org.isite.commons.cloud.data.enums.TerminalType;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.lang.enums.ActiveStatus;
+import org.isite.commons.lang.utils.IoUtils;
 import org.isite.mybatis.service.PoService;
 import org.isite.operation.mapper.ActivityMapper;
 import org.isite.operation.po.ActivityPo;
@@ -18,19 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import static java.lang.String.format;
-import static org.isite.commons.cloud.data.enums.TerminalType.APP;
-import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.IoUtils.getString;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class ActivityService extends PoService<ActivityPo, Integer> {
-
     private PrizeService prizeService;
     private PrizeCodeService prizeCodeService;
     private TaskService taskService;
@@ -52,7 +46,7 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
      * 根据pid是判断该节点是否为根节点
      */
     public boolean isRoot(Integer pid) {
-        return null == pid || pid.equals(ZERO);
+        return null == pid || pid.equals(Constants.ZERO);
     }
 
     /**
@@ -87,16 +81,16 @@ public class ActivityService extends PoService<ActivityPo, Integer> {
     @Transactional(rollbackFor = Exception.class)
     public int addActivity(ActivityPo activityPo) {
         super.insert(activityPo);
-        addWebpage(activityPo, WEB);
-        addWebpage(activityPo, APP);
+        addWebpage(activityPo, TerminalType.WEB);
+        addWebpage(activityPo, TerminalType.APP);
         return activityPo.getId();
     }
 
     private void addWebpage(ActivityPo activityPo, TerminalType terminalType) throws IOException {
-        InputStream input = getClass().getResourceAsStream(
-                format(terminalType.getViewPattern(), activityPo.getTheme().getWebpage()));
+        InputStream input = getClass().getResourceAsStream(String.format(
+                terminalType.getViewPattern(), activityPo.getTheme().getWebpage()));
         if (null != input) {
-            webpageService.insert(activityPo.getId(), terminalType, getString(input));
+            webpageService.insert(activityPo.getId(), terminalType, IoUtils.getString(input));
         }
     }
 
