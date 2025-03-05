@@ -7,7 +7,6 @@ import org.isite.commons.cloud.data.enums.TerminalType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 /**
  * @Description 活动ID禁止更新
  * @Author <font color='blue'>zhangcm</font>

@@ -6,9 +6,9 @@ import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.operation.support.enums.ActivityTheme;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
 /**
  * @Description 运营活动是一种比较通用的活动，用户通过完成运营任务获取运营奖品。
  * 1) 活动一旦结束如果修改时间重新开始，有些运营任务会因为约束条件不能重复执行。
@@ -39,11 +39,11 @@ public class Activity extends Vo<Integer> {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 奖品信息
      */

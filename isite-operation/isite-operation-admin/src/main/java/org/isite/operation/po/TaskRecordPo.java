@@ -7,8 +7,7 @@ import org.isite.mybatis.data.Po;
 import org.isite.mybatis.type.EnumTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 /**
  * @Description 任务参与记录
  * @Author <font color='blue'>zhangcm</font>
@@ -44,7 +43,7 @@ public class TaskRecordPo extends Po<Long> {
     /**
      * 任务完成时间
      */
-    private Date finishTime;
+    private LocalDateTime finishTime;
     /**
      * 幂等键：用于任务记录去重
      */

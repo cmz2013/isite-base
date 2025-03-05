@@ -2,14 +2,13 @@ package org.isite.operation.support.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * @Description 回答问题行为参数，用于解析JSON字符串：EventDto#eventParam
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
-public class AnswerEventParam extends InviteEventParam {
+public class AnswerInviteParam extends InviteParam {
     /**
      * 是否首答
      */

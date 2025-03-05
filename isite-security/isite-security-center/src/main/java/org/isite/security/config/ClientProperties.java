@@ -2,18 +2,15 @@ package org.isite.security.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Constants;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Constants.COMMA;
-
 /**
  * @Description 客户端配置
  * @Author <font color="blue">zhangcm</font>
@@ -64,8 +61,8 @@ public class ClientProperties implements Serializable {
     private Boolean renewal;
 
     public List<String> getGrantTypes() {
-        if (isNotBlank(this.grantTypes)) {
-            return asList(this.grantTypes.split(COMMA));
+        if (StringUtils.isNotBlank(this.grantTypes)) {
+            return Arrays.asList(this.grantTypes.split(Constants.COMMA));
         }
         /*
          * Collections.EMPTY_LIST返回的是一个空的List。
@@ -80,20 +77,20 @@ public class ClientProperties implements Serializable {
          * Collections.emptyList()返回的也是一个空的List，它与Collections.EMPTY_LIST的唯一区别是，
          * Collections.emptyList()支持泛型，所以在需要泛型的时候，可以使用Collections.emptyList()
          */
-        return emptyList();
+        return Collections.emptyList();
     }
 
     public Set<String> getRegisteredRedirectUri() {
-        if (isNotBlank(this.registeredRedirectUris)) {
-            return new HashSet<>(asList(this.registeredRedirectUris.split(COMMA)));
+        if (StringUtils.isNotBlank(this.registeredRedirectUris)) {
+            return new HashSet<>(Arrays.asList(this.registeredRedirectUris.split(Constants.COMMA)));
         }
-        return emptySet();
+        return Collections.emptySet();
     }
 
     public List<String> getScopes() {
-        if (isNotBlank(this.scopes)) {
-            return asList(this.scopes.split(COMMA));
+        if (StringUtils.isNotBlank(this.scopes)) {
+            return Arrays.asList(this.scopes.split(Constants.COMMA));
         }
-        return emptyList();
+        return Collections.emptyList();
     }
 }

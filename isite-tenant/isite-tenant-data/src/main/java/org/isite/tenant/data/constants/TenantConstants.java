@@ -1,7 +1,6 @@
 package org.isite.tenant.data.constants;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class TenantConstants {
 

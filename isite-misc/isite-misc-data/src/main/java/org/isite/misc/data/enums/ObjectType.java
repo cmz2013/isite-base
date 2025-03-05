@@ -12,7 +12,6 @@ public enum ObjectType implements Enumerable<Integer> {
      * 用户
      */
     USER(1, "用户"),
-
     /**
      * 企业员工
      */
@@ -22,7 +21,6 @@ public enum ObjectType implements Enumerable<Integer> {
 
     QUESTION(81, "疑问"),
     QUESTION_ANSWER(82, "答案"),
-
     /**
      * 运营活动
      */

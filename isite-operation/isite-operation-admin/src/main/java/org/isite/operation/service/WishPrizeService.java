@@ -1,37 +1,28 @@
 package org.isite.operation.service;
 
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.cloud.utils.VoUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.misc.data.enums.ObjectType;
+import org.isite.operation.converter.PrizeRecordConverter;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.prize.PrizeGiverFactory;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.WishPrizeProperty;
+import org.isite.operation.task.IdempotentKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.cloud.utils.VoUtils.get;
-import static org.isite.commons.lang.Assert.isNull;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.misc.data.enums.ObjectType.USER;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordSelectivePo;
-import static org.isite.operation.task.IdempotentKey.toValue;
-
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class WishPrizeService {
-
     private PrizeGiverFactory prizeGiverFactory;
     private PrizeRecordService prizeRecordService;
     private ScoreRecordService scoreRecordService;
@@ -40,8 +31,8 @@ public class WishPrizeService {
      * 添加心愿礼品
      */
     public int addWishPrize(Activity activity, Prize prize, long userId) {
-        isNull(prizeRecordService.getNotReceive(prize.getActivityId(), null, userId),
-                getMessage("wish.exists", "you have an wish"));
+        Assert.isNull(prizeRecordService.getNotReceive(prize.getActivityId(), null, userId),
+                MessageUtils.getMessage("wish.exists", "you have an wish"));
         return addPrizeRecord(activity, prize, userId);
     }
 
@@ -51,18 +42,18 @@ public class WishPrizeService {
     private int addPrizeRecord(Activity activity, Prize prize, long userId) {
         PrizeRecordPo prizeRecordPo = new PrizeRecordPo();
         prizeRecordPo.setUserId(userId);
-        prizeRecordPo.setObjectType(USER);
-        prizeRecordPo.setObjectValue(valueOf(userId));
-        prizeRecordPo.setReceiveStatus(FALSE);
-        prizeRecordPo.setLockStatus(FALSE);
+        prizeRecordPo.setObjectType(ObjectType.USER);
+        prizeRecordPo.setObjectValue(String.valueOf(userId));
+        prizeRecordPo.setReceiveStatus(Boolean.FALSE);
+        prizeRecordPo.setLockStatus(Boolean.FALSE);
         prizeRecordPo.setActivityId(activity.getId());
         prizeRecordPo.setActivityPid(activity.getPid());
-        prizeRecordPo.setTaskId(ZERO);
-        prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
-        toPrizeRecordPo(prizeRecordPo, prize);
-        prizeRecordPo.setIdempotentKey(toValue(
-                activity.getId(), ZERO, null, userId,
-                prizeRecordService.count(toPrizeRecordSelectivePo(activity.getId(), ZERO, userId))));
+        prizeRecordPo.setTaskId(Constants.ZERO);
+        prizeRecordPo.setFinishTime(LocalDateTime.now());
+        PrizeRecordConverter.toPrizeRecordPo(prizeRecordPo, prize);
+        prizeRecordPo.setIdempotentKey(IdempotentKey.toValue(
+                activity.getId(), Constants.ZERO, null, userId,
+                prizeRecordService.count(PrizeRecordConverter.toPrizeRecordSelectivePo(activity.getId(), Constants.ZERO, userId))));
         return prizeRecordService.insert(prizeRecordPo);
     }
 
@@ -71,7 +62,7 @@ public class WishPrizeService {
      */
     public long updateWishPrize(int activityId, long userId, Prize prize) {
         PrizeRecordPo prizeRecordPo = prizeRecordService.getNotReceive(activityId, null, userId);
-        notNull(prizeRecordPo, getMessage("wish.notFound", "wish not found"));
+        Assert.notNull(prizeRecordPo, MessageUtils.getMessage("wish.notFound", "wish not found"));
         return prizeRecordService.updatePrize(prizeRecordPo.getId(), prize);
     }
 
@@ -80,14 +71,14 @@ public class WishPrizeService {
      */
     @Transactional(rollbackFor = Exception.class)
     public PrizeRecordPo receiveWishPrize(Activity activity, int prizeId, long userId) {
-        Prize prize = get(activity.getPrizes(), prizeId);
-        notNull(prize, getMessage("prize.notFound", "prize not found"));
+        Prize prize = VoUtils.get(activity.getPrizes(), prizeId);
+        Assert.notNull(prize, MessageUtils.getMessage("prize.notFound", "prize not found"));
         PrizeRecordPo recordPo = prizeRecordService.getNotReceive(activity.getId(), prizeId, userId);
-        notNull(recordPo, getMessage("wish.notFound", "wish not found"));
+        Assert.notNull(recordPo, MessageUtils.getMessage("wish.notFound", "wish not found"));
         long availableScore = scoreRecordService.sumActivityScore(activity.getId(), userId);
-        WishPrizeProperty activityProperty = cast(activity.getProperty());
-        isTrue(availableScore >= activityProperty.getFullScore(),
-                getMessage("wish.prize.notReceive", "you don't have enough score to receive this prize"));
+        WishPrizeProperty activityProperty = TypeUtils.cast(activity.getProperty());
+        Assert.isTrue(availableScore >= activityProperty.getFullScore(), MessageUtils.getMessage(
+                "wish.prize.notReceive", "you don't have enough score to receive this prize"));
         scoreRecordService.useActivityScore(activity.getId(), userId, activityProperty.getFullScore());
         prizeGiverFactory.get(prize.getPrizeType()).execute(activity, prize, recordPo);
         return recordPo;

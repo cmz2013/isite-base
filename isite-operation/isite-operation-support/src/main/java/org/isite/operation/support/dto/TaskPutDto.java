@@ -8,7 +8,6 @@ import org.isite.operation.support.vo.TaskPeriod;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */

@@ -3,9 +3,8 @@ package org.isite.operation.support.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.Dto;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

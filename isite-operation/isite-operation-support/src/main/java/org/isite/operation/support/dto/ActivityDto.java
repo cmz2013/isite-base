@@ -9,10 +9,9 @@ import org.isite.operation.support.enums.ActivityTheme;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
@@ -39,12 +38,12 @@ public class ActivityDto extends Dto<Integer> {
      * 开始时间
      */
     @NotNull(groups = {Add.class, Update.class})
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束时间
      */
     @NotNull(groups = {Add.class, Update.class})
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 备注
      */

@@ -6,8 +6,8 @@ import org.isite.commons.lang.enums.Enumerable;
 import org.isite.commons.lang.json.Jackson;
 import org.isite.misc.data.enums.AppModule;
 import org.isite.misc.data.enums.ObjectType;
-import org.isite.operation.support.vo.AnswerEventParam;
-import org.isite.operation.support.vo.InviteEventParam;
+import org.isite.operation.support.vo.AnswerInviteParam;
+import org.isite.operation.support.vo.InviteParam;
 
 import java.util.function.Function;
 /**
@@ -32,7 +32,7 @@ public enum EventType implements Enumerable<Integer> {
      * 用户答疑接口，被邀请人url携带邀请码：POST /question/{questionId}/reply?invite={code}
      */
     POST_QUESTION_REPLY(102, "答疑解惑", ObjectType.QUESTION_ANSWER, AppModule.QUESTION_ADMIN,
-            eventParam -> Jackson.parseObject(eventParam.toString(), AnswerEventParam.class)),
+            eventParam -> Jackson.parseObject(eventParam.toString(), AnswerInviteParam.class)),
     /**
      * 提问人采纳答案接口 PUT /reply/{replyId}/adopt
      * 发送行为消息时，EventDto#userId用于传递提问人ID，EventDto#eventParam用于传递 回答人ID
@@ -54,7 +54,7 @@ public enum EventType implements Enumerable<Integer> {
      * 活动页面接口 GET /webpage/{activityId}?invite={邀请码}
      */
     GET_OPERATION_WEBPAGE(402, "访问活动页面", ObjectType.OPERATION_ACTIVITY, AppModule.OPERATION_ADMIN,
-            eventParam -> Jackson.parseObject(eventParam.toString(), InviteEventParam.class)),
+            eventParam -> Jackson.parseObject(eventParam.toString(), InviteParam.class)),
     ;
 
     private final Integer code;

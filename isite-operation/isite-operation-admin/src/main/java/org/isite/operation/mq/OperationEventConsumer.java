@@ -1,6 +1,8 @@
 package org.isite.operation.mq;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.commons.web.mq.Basic;
 import org.isite.commons.web.mq.Consumer;
 import org.isite.operation.activity.ActivityMonitor;
@@ -17,11 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.operation.support.enums.TaskType.values;
-
 /**
  * @Description 运营任务事件消费者
  * @Author <font color='blue'>zhangcm</font>
@@ -38,7 +35,7 @@ public class OperationEventConsumer implements Consumer<EventDto> {
     public Basic handle(EventDto eventDto) {
         EventType eventType = eventDto.getEventType();
         List<Activity> activityList = ongoingActivityService.findOngoingActivities(eventType);
-        if (isEmpty(activityList)) {
+        if (CollectionUtils.isEmpty(activityList)) {
             return new Basic.Ack();
         }
         if (null != eventType.getConverter() && null != eventDto.getEventParam()) {
@@ -54,14 +51,14 @@ public class OperationEventConsumer implements Consumer<EventDto> {
     public void handle(Activity activity, EventDto eventDto) {
         ActivityMonitor monitor = activityMonitorFactory.get(activity.getTheme());
         if (null == monitor || monitor.participate(activity, eventDto.getUserId())) {
-            for (TaskType taskType : values(eventDto.getEventType())) {
+            for (TaskType taskType : TaskType.values(eventDto.getEventType())) {
                 TaskExecutor<?> taskExecutor = taskExecutorFactory.get(taskType);
                 activity.getTasks().forEach(task -> {
                     if (taskType.equals(task.getTaskType())) {
                         try {
                             taskExecutor.execute(activity, task, eventDto);
                         } catch (Exception e) {
-                            log.warn(toJsonString(eventDto), e);
+                            log.warn(Jackson.toJsonString(eventDto), e);
                         }
                     }
                 });

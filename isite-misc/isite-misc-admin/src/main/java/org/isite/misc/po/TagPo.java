@@ -5,10 +5,9 @@ import lombok.Setter;
 import org.isite.mybatis.data.Po;
 
 import javax.persistence.Table;
-
 /**
- * 标签，主要用于用户画像
- * @author <font color='blue'>zhangcm</font>
+ * @Description 标签，主要用于用户画像
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

@@ -10,8 +10,8 @@ import tk.mybatis.mapper.annotation.ColumnType;
 import javax.persistence.Table;
 
 /**
- * 地区(Region)表实体类
- * @author <font color='blue'>zhangcm</font>
+ * @Description 地区(Region)表实体类
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

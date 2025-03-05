@@ -1,8 +1,14 @@
 package org.isite.operation.cache;
 
+import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
 import org.isite.commons.cloud.data.enums.TerminalType;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
+import org.isite.operation.converter.ActivityConverter;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -10,6 +16,7 @@ import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskService;
 import org.isite.operation.service.WebpageService;
+import org.isite.operation.support.constants.CacheKeys;
 import org.isite.operation.support.enums.EventType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
@@ -20,23 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.alicp.jetcache.anno.CacheType.BOTH;
-import static org.isite.commons.cloud.data.enums.TerminalType.APP;
-import static org.isite.commons.cloud.data.enums.TerminalType.WEB;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.COLON;
-import static org.isite.commons.lang.Constants.DAY_SECOND;
-import static org.isite.commons.lang.Constants.MINUTE_SECOND;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.enums.ActiveStatus.DISABLED;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.operation.converter.ActivityConverter.toActivity;
-import static org.isite.operation.support.constants.CacheKeys.ACTIVITY_IDS_EVENT_PREFIX;
-import static org.isite.operation.support.constants.CacheKeys.ACTIVITY_PREFIX;
-import static org.isite.operation.support.constants.CacheKeys.WEBPAGE_ACTIVITY_TERMINAL_PREFIX;
-
 /**
  * @Description 运营活动缓存（只缓存已上架的活动）
  * @Author <font color='blue'>zhangcm</font>
@@ -67,16 +57,17 @@ public class ActivityCache {
     /**
      * 根据行为类型查询已上架的运营活动ID
      */
-    @Cached(name = ACTIVITY_IDS_EVENT_PREFIX, key = "#eventType.code", expire = DAY_SECOND)
+    @Cached(name = CacheKeys.ACTIVITY_IDS_EVENT_PREFIX, key = "#eventType.code", expire = Constants.DAY_SECOND)
     public List<Integer> findActivityIds(EventType eventType) {
         return activityService.findEnabledActivityIds(eventType);
     }
 
-    @Cached(name = ACTIVITY_PREFIX, key = "#activityId", cacheType = BOTH, expire = DAY_SECOND, localExpire = MINUTE_SECOND)
+    @Cached(name = CacheKeys.ACTIVITY_PREFIX, key = "#activityId",
+            cacheType = CacheType.BOTH, expire = Constants.DAY_SECOND, localExpire = Constants.MINUTE_SECOND)
     public Activity getActivity(int activityId) {
-        ActivityPo activityPo = activityService.getActivity(activityId, ENABLED);
-        notNull(activityPo, getMessage("activity.notFound", "activity not found"));
-        return toActivity(activityPo, taskService.findList(TaskPo::getActivityId, activityId),
+        ActivityPo activityPo = activityService.getActivity(activityId, ActiveStatus.ENABLED);
+        Assert.notNull(activityPo, MessageUtils.getMessage("activity.notFound", "activity not found"));
+        return ActivityConverter.toActivity(activityPo, taskService.findList(TaskPo::getActivityId, activityId),
                         prizeService.findList(PrizePo::getActivityId, activityId));
     }
 
@@ -84,7 +75,7 @@ public class ActivityCache {
      * 更新已锁定的库存
      * @param prize 是 activity.prizes 集合中的元素
      */
-    @CacheUpdate(name = ACTIVITY_PREFIX, key = "#activity.id", value = "#activity")
+    @CacheUpdate(name = CacheKeys.ACTIVITY_PREFIX, key = "#activity.id", value = "#activity")
     public void decrLockInventory(Activity activity, Prize prize) {
         prize.setLockInventory(prizeService.decrLockInventory(prize.getId(), prize.getLockInventory()));
     }
@@ -95,7 +86,8 @@ public class ActivityCache {
      * @param terminalType 用户终端类型
      * @return 活动网页html代码
      */
-    @Cached(name = WEBPAGE_ACTIVITY_TERMINAL_PREFIX, key = "#activity.id" + COLON + "#terminalType.code", expire = DAY_SECOND)
+    @Cached(name = CacheKeys.WEBPAGE_ACTIVITY_TERMINAL_PREFIX,
+            key = "#activity.id" + Constants.COLON + "#terminalType.code", expire = Constants.DAY_SECOND)
     public String getWebpage(Activity activity, TerminalType terminalType) {
         return webpageService.getWebpage(activity, terminalType);
     }
@@ -104,7 +96,7 @@ public class ActivityCache {
      * 更新已消耗库存
      * @param prize 是 activity.prizes 集合中的元素
      */
-    @CacheUpdate(name = ACTIVITY_PREFIX, key = "#activity.id", value = "#activity")
+    @CacheUpdate(name = CacheKeys.ACTIVITY_PREFIX, key = "#activity.id", value = "#activity")
     public void incrConsumeInventory(Activity activity, Prize prize) {
         prize.setConsumeInventory(prizeService.incrConsumeInventory(prize.getId(), prize.getConsumeInventory()));
     }
@@ -114,14 +106,14 @@ public class ActivityCache {
      */
     @Transactional(rollbackFor = Exception.class)
     public int disableActivity(Activity activity) {
-        int count = activityService.updateById(activity.getId(), ActivityPo::getStatus, DISABLED);
-        if (count > ZERO) {
+        int count = activityService.updateById(activity.getId(), ActivityPo::getStatus, ActiveStatus.DISABLED);
+        if (count > Constants.ZERO) {
             List<String> keys = new ArrayList<>();
-            keys.add(ACTIVITY_PREFIX + activity.getId());
-            keys.add(WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + COLON + WEB.getCode());
-            keys.add(WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + COLON + APP.getCode());
+            keys.add(CacheKeys.ACTIVITY_PREFIX + activity.getId());
+            keys.add(CacheKeys.WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + Constants.COLON + TerminalType.WEB.getCode());
+            keys.add(CacheKeys.WEBPAGE_ACTIVITY_TERMINAL_PREFIX + activity.getId() + Constants.COLON + TerminalType.APP.getCode());
             activity.getTasks().stream().map(task -> task.getTaskType().getEventType())
-                    .distinct().forEach(event -> keys.add(ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
+                    .distinct().forEach(event -> keys.add(CacheKeys.ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
             redisTemplate.delete(keys);
         }
         return count;
@@ -132,11 +124,11 @@ public class ActivityCache {
      */
     @Transactional(rollbackFor = Exception.class)
     public Integer enableActivity(int activityId) {
-        int count = activityService.updateById(activityId, ActivityPo::getStatus, ENABLED);
-        if (count > ZERO) {
+        int count = activityService.updateById(activityId, ActivityPo::getStatus, ActiveStatus.ENABLED);
+        if (count > Constants.ZERO) {
             List<String> keys = new ArrayList<>();
             taskService.findList(TaskPo::getActivityId, activityId).stream().map(task -> task.getTaskType().getEventType())
-                    .distinct().forEach(event -> keys.add(ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
+                    .distinct().forEach(event -> keys.add(CacheKeys.ACTIVITY_IDS_EVENT_PREFIX + event.getCode()));
             redisTemplate.delete(keys);
         }
         return count;

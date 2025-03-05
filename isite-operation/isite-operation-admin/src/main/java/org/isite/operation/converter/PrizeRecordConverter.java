@@ -1,18 +1,13 @@
 package org.isite.operation.converter;
 
+import org.isite.misc.data.enums.ObjectType;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.Task;
 
-import java.util.Date;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
-import static org.isite.misc.data.enums.ObjectType.OPERATION_INVITE_RECORD;
-
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -41,15 +36,15 @@ public class PrizeRecordConverter {
         PrizeRecordPo prizeRecordPo = new PrizeRecordPo();
         prizeRecordPo.setTaskId(task.getId());
         prizeRecordPo.setActivityPid(inviteRecordPo.getActivityPid());
-        prizeRecordPo.setObjectType(OPERATION_INVITE_RECORD);
-        prizeRecordPo.setObjectValue(valueOf(inviteRecordPo.getId()));
-        prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
+        prizeRecordPo.setObjectType(ObjectType.OPERATION_INVITE_RECORD);
+        prizeRecordPo.setObjectValue(String.valueOf(inviteRecordPo.getId()));
+        prizeRecordPo.setFinishTime(LocalDateTime.now());
         prizeRecordPo.setUserId(inviteRecordPo.getInviterId());
         prizeRecordPo.setActivityId(inviteRecordPo.getActivityId());
         prizeRecordPo.setIdempotentKey(inviteRecordPo.getIdempotentKey());
         //在奖品记录中保存奖品快照信息，但是不锁定奖品（不更新已锁定库存），只能通过管理页面设置抽奖必中更新已锁定库存
-        prizeRecordPo.setLockStatus(FALSE);
-        prizeRecordPo.setReceiveStatus(FALSE);
+        prizeRecordPo.setLockStatus(Boolean.FALSE);
+        prizeRecordPo.setReceiveStatus(Boolean.FALSE);
         toPrizeRecordPo(prizeRecordPo, prize);
         return prizeRecordPo;
     }

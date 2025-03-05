@@ -5,8 +5,7 @@ import lombok.Setter;
 import org.isite.commons.cloud.data.vo.Vo;
 import org.isite.operation.support.enums.PrizeType;
 
-import java.util.Date;
-
+import java.time.LocalDateTime;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -24,7 +23,7 @@ public class PrizeRecord extends Vo<Long> {
     /**
      * 领取时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
     /**
      * 奖品名称
      */

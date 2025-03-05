@@ -7,15 +7,12 @@ import org.isite.commons.lang.enums.Enumerable;
 import org.isite.operation.support.vo.ActivityProperty;
 import org.isite.operation.support.vo.PrizeWheelProperty;
 import org.isite.operation.support.vo.WishPrizeProperty;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.OBJECT;
-
 /**
  * @Description 活动主题
  * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
-@JsonFormat(shape = OBJECT)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ActivityTheme implements Enumerable<Integer> {
     /**
      * 好运星许愿活动，积分兑换奖品

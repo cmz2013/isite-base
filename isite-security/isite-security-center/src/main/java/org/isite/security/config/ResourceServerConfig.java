@@ -1,5 +1,6 @@
 package org.isite.security.config;
 
+import org.isite.security.data.constants.SecurityUrls;
 import org.isite.security.oauth.AuthenticationDetailsBuilder;
 import org.isite.security.oauth.LoginFailureHandler;
 import org.isite.security.oauth.LoginSuccessHandler;
@@ -7,15 +8,10 @@ import org.isite.security.oauth.LogoutSuccessHandler;
 import org.isite.security.web.config.ResourceServerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-
-import static org.isite.security.data.constants.SecurityUrls.POST_LOGIN_PROCESS;
-import static org.isite.security.data.constants.SecurityUrls.URL_LOGIN_FORM;
-import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH_LOGOUT;
-import static org.springframework.http.HttpMethod.OPTIONS;
-import static org.springframework.security.config.http.SessionCreationPolicy.IF_REQUIRED;
-
 /**
  * @Description 资源服务器配置（认证鉴权中心也是资源服务器）
  * @Author <font color='blue'>zhangcm</font>
@@ -23,7 +19,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.IF_
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerSupport {
-
     private LoginSuccessHandler loginSuccessHandler;
     private LoginFailureHandler loginFailureHandler;
     private LogoutSuccessHandler logoutSuccessHandler;
@@ -35,9 +30,9 @@ public class ResourceServerConfig extends ResourceServerSupport {
          * Spring Security默认不会创建Session，Spring oauth2授权码模式登录认证成功后重定向/oauth/authorize，
          * 如果没有Session会导致/oauth/authorize接口取不到认证信息，又重定向登录页面。
          */
-        http.sessionManagement().sessionCreationPolicy(IF_REQUIRED);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         //CORS中预检请求，首先向另外一个域名的资源发送一个HTTP OPTIONS请求，判断实际发送的请求是否安全。
-        http.authorizeRequests().antMatchers(OPTIONS).permitAll()
+        http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll()
                 //打开http basic认证方式
                 .and().httpBasic()
                 //关跨域保护
@@ -49,14 +44,14 @@ public class ResourceServerConfig extends ResourceServerSupport {
         http.formLogin()
                 .authenticationDetailsSource(authenticationDetailsBuilder)
                 //loginPage和loginProcessingUrl不配置：默认都是/login
-                .loginPage(URL_LOGIN_FORM)
+                .loginPage(SecurityUrls.URL_LOGIN_FORM)
                 //post请求
-                .loginProcessingUrl(POST_LOGIN_PROCESS)
+                .loginProcessingUrl(SecurityUrls.POST_LOGIN_PROCESS)
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
                 .and().logout()
                 .logoutSuccessHandler(logoutSuccessHandler)
-                .logoutUrl(URL_OAUTH_LOGOUT).permitAll();
+                .logoutUrl(SecurityUrls.URL_OAUTH_LOGOUT).permitAll();
     }
 
     @Autowired

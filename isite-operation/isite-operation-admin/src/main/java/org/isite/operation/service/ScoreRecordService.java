@@ -1,11 +1,17 @@
 package org.isite.operation.service;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.page.PageMethod;
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.jpa.data.PageQuery;
 import org.isite.operation.mapper.ScoreRecordMapper;
 import org.isite.operation.po.ScoreRecordPo;
+import org.isite.operation.support.constants.CacheKeys;
+import org.isite.operation.support.enums.ScoreType;
 import org.isite.operation.support.vo.VipScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -15,18 +21,6 @@ import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.time.LocalDateTime;
-
-import static com.github.pagehelper.page.PageMethod.offsetPage;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY_USER;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_USER_VIP_SCORE;
-import static org.isite.operation.support.enums.ScoreType.ACTIVITY_SCORE;
-import static org.isite.operation.support.enums.ScoreType.VIP_SCORE;
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -42,7 +36,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 统计积分记录
      */
     public int countScoreRecord(int activityId, int taskId, @Nullable LocalDateTime startTime, long userId) {
-        Weekend<ScoreRecordPo> weekend = of(ScoreRecordPo.class);
+        Weekend<ScoreRecordPo> weekend = Weekend.of(ScoreRecordPo.class);
         WeekendCriteria<ScoreRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(ScoreRecordPo::getUserId, userId)
                 .andEqualTo(ScoreRecordPo::getActivityId, activityId)
@@ -57,16 +51,16 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 统计用户可用的VIP积分，VIP积分有效期为一年
      */
     public int sumVipScore(long userId) {
-        return ((ScoreRecordMapper) getMapper()).sumAvailableScore(
-                null, userId, VIP_SCORE, LocalDateTime.now().minusYears(ONE), null);
+        return ((ScoreRecordMapper) getMapper()).sumAvailableScore(null, userId,
+                ScoreType.VIP_SCORE, LocalDateTime.now().minusYears(Constants.ONE), null);
     }
 
     /**
      * 统计用户快要过期的VIP积分，VIP积分有效期为一年
      */
     public int aboutToExpireVipScore(long userId) {
-        return ((ScoreRecordMapper) getMapper()).sumAvailableScore(
-                null, userId, VIP_SCORE, LocalDateTime.now().minusYears(ONE), LocalDateTime.now().minusMonths(11));
+        return ((ScoreRecordMapper) getMapper()).sumAvailableScore(null, userId,
+                ScoreType.VIP_SCORE, LocalDateTime.now().minusYears(Constants.ONE), LocalDateTime.now().minusMonths(11));
     }
 
     /**
@@ -74,7 +68,7 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      */
     public int sumActivityScore(int activityId, long userId) {
         return ((ScoreRecordMapper) getMapper()).sumAvailableScore(
-                activityId, userId, ACTIVITY_SCORE, null, null);
+                activityId, userId, ScoreType.ACTIVITY_SCORE, null, null);
     }
 
     /**
@@ -83,22 +77,22 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY_USER, keys = {"#activityId", "#userId"}))
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY_USER, keys = {"#activityId", "#userId"}))
     public void useActivityScore(int activityId, long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
-        ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ACTIVITY_SCORE, null);
-        while(score > ZERO && null != scoreRecordPo) {
+        ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ScoreType.ACTIVITY_SCORE, null);
+        while(score > Constants.ZERO && null != scoreRecordPo) {
             int available = scoreRecordPo.getScoreValue() - scoreRecordPo.getUsedScore();
             if (available >= score) {
                 this.updateById(scoreRecordPo.getId(), ScoreRecordPo::getUsedScore, scoreRecordPo.getUsedScore() + score);
-                score = ZERO;
+                score = Constants.ZERO;
             } else {
                 this.updateById(scoreRecordPo.getId(), ScoreRecordPo::getUsedScore, scoreRecordPo.getScoreValue());
                 score -= available;
-                scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ACTIVITY_SCORE, null);
+                scoreRecordPo = mapper.selectOneAvailableScore(activityId, userId, ScoreType.ACTIVITY_SCORE, null);
             }
         }
-        isTrue(ZERO == score, "Not enough activity score");
+        Assert.isTrue(Constants.ZERO == score, "not enough activity score");
     }
 
     /**
@@ -107,34 +101,35 @@ public class ScoreRecordService extends TaskRecordService<ScoreRecordPo> {
      * 这是因为事务中的所有操作都是在同一个数据库会话中进行的
      */
     @Transactional(rollbackFor = Exception.class)
-    @Synchronized(locks = @Lock(name = LOCK_USER_VIP_SCORE, keys = "#userId"))
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_USER_VIP_SCORE, keys = "#userId"))
     public void useVipScore(long userId, int score) {
         ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
-        LocalDateTime startTime = LocalDateTime.now().minusYears(ONE);
-        ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(null, userId, VIP_SCORE, startTime);
-        while(score > ZERO && null != scoreRecordPo) {
+        LocalDateTime startTime = LocalDateTime.now().minusYears(Constants.ONE);
+        ScoreRecordPo scoreRecordPo = mapper.selectOneAvailableScore(null, userId, ScoreType.VIP_SCORE, startTime);
+        while(score > Constants.ZERO && null != scoreRecordPo) {
             int available = scoreRecordPo.getScoreValue() - scoreRecordPo.getUsedScore();
             if (available >= score) {
                 this.updateById(scoreRecordPo.getId(), ScoreRecordPo::getUsedScore, scoreRecordPo.getUsedScore() + score);
-                score = ZERO;
+                score = Constants.ZERO;
             } else {
                 this.updateById(scoreRecordPo.getId(), ScoreRecordPo::getUsedScore, scoreRecordPo.getScoreValue());
                 score -= available;
-                scoreRecordPo = mapper.selectOneAvailableScore(null, userId, VIP_SCORE, startTime);
+                scoreRecordPo = mapper.selectOneAvailableScore(null, userId, ScoreType.VIP_SCORE, startTime);
             }
         }
-        isTrue(ZERO == score, "Not enough vip score");
+        Assert.isTrue(Constants.ZERO == score, "not enough vip score");
     }
 
     public Page<ScoreRecordPo> findScoreRecords(PageQuery<ScoreRecordPo> pageQuery, @Nullable LocalDateTime startTime) {
         //当前线程紧跟着的第一个select方法会被分页
-        Page<ScoreRecordPo> page = offsetPage(pageQuery.getOffset(), pageQuery.getPageSize());
-        String orderBy = pageQuery.orderBy();
-        if (isNotBlank(orderBy)) {
-            page.setOrderBy(orderBy);
+        try (Page<ScoreRecordPo> page = PageMethod.offsetPage(pageQuery.getOffset(), pageQuery.getPageSize())) {
+            String orderBy = pageQuery.orderBy();
+            if (StringUtils.isNotBlank(orderBy)) {
+                page.setOrderBy(orderBy);
+            }
+            ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
+            return (Page<ScoreRecordPo>) mapper.selectScoreRecord(pageQuery.getPo(), startTime);
         }
-        ScoreRecordMapper mapper = ((ScoreRecordMapper) getMapper());
-        return (Page<ScoreRecordPo>) mapper.selectScoreRecord(pageQuery.getPo(), startTime);
     }
 
     public VipScore findVipScore(Long userId) {

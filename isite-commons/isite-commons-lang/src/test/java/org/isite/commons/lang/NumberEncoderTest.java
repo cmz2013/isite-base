@@ -3,12 +3,10 @@ package org.isite.commons.lang;
 import org.isite.commons.lang.encoder.NumberEncoder;
 
 import java.util.Scanner;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class NumberEncoderTest {
-
     /**
      * @param args
      */

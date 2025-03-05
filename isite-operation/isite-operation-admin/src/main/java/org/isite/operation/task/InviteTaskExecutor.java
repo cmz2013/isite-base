@@ -1,5 +1,11 @@
 package org.isite.operation.task;
 
+import org.isite.commons.cloud.utils.ApplicationContextUtils;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.cloud.utils.VoUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.operation.converter.PrizeRecordConverter;
 import org.isite.operation.po.InviteRecordPo;
 import org.isite.operation.service.InviteRecordService;
 import org.isite.operation.service.PrizeRecordService;
@@ -8,7 +14,7 @@ import org.isite.operation.service.TaskRecordService;
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
 import org.isite.operation.support.vo.Activity;
-import org.isite.operation.support.vo.InviteEventParam;
+import org.isite.operation.support.vo.InviteParam;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.support.vo.PrizeReward;
 import org.isite.operation.support.vo.Reward;
@@ -18,24 +24,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-
-import static org.isite.commons.cloud.utils.ApplicationContextUtils.getBeans;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.cloud.utils.VoUtils.get;
-import static org.isite.commons.lang.Assert.isFalse;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.support.enums.TaskType.OPERATION_WEBPAGE_INVITE;
-import static org.isite.operation.support.enums.TaskType.QUESTION_REPLY_INVITE;
-
 /**
  * @Description 积分任务父接口。使用活动积分可以兑换奖品
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
 public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
-
     private PrizeRecordService prizeRecordService;
     private InviteRecordService inviteRecordService;
     private PrizeTaskService prizeTaskService;
@@ -44,20 +38,19 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
     protected InviteRecordPo createTaskRecord(
             EventDto eventDto, Activity activity, Task task, LocalDateTime periodStartTime, long taskNumber) {
         InviteRecordPo inviteRecordPo = super.createTaskRecord(eventDto, activity, task, periodStartTime, taskNumber);
-        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
-        inviteRecordPo.setInviterId(inviteEventParam.getInviterId());
+        InviteParam inviteParam = TypeUtils.cast(eventDto.getEventParam());
+        inviteRecordPo.setInviterId(inviteParam.getInviterId());
         return inviteRecordPo;
     }
 
     @Override
     protected long getTaskNumber(int activityId, int taskId, LocalDateTime periodStartTime, Integer limit, EventDto eventDto) {
         //已参与活动不能被邀请
-        getBeans(TaskRecordService.class).values().forEach(taskRecordService -> isFalse(
+        ApplicationContextUtils.getBeans(TaskRecordService.class).values().forEach(taskRecordService -> Assert.isFalse(
                 taskRecordService.exists(activityId, eventDto.getUserId()), "can't invite users who already exist"));
-
         //邀请人任务周期约束限制
-        InviteEventParam inviteEventParam = cast(eventDto.getEventParam());
-        return getTaskNumber(activityId, taskId, periodStartTime, limit, inviteEventParam.getInviterId());
+        InviteParam inviteParam = TypeUtils.cast(eventDto.getEventParam());
+        return getTaskNumber(activityId, taskId, periodStartTime, limit, inviteParam.getInviterId());
     }
 
     /**
@@ -74,7 +67,7 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
-        return prizeTaskService.getReward(activity.getPrizes(), cast(task.getProperty()));
+        return prizeTaskService.getReward(activity.getPrizes(), TypeUtils.cast(task.getProperty()));
     }
 
     @Override
@@ -84,10 +77,10 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
             return;
         }
         int prizeId = ((PrizeReward) reward).getPrizeId();
-        Prize prize = get(activity.getPrizes(), prizeId);
-        notNull(prize, getMessage("prize.notFound", "prize not found: " + prizeId));
-        prizeRecordService.insert(toPrizeRecordPo(
-                get(activity.getTasks(), inviteRecordPo.getTaskId()), inviteRecordPo, prize));
+        Prize prize = VoUtils.get(activity.getPrizes(), prizeId);
+        Assert.notNull(prize, MessageUtils.getMessage("prize.notFound", "prize not found: " + prizeId));
+        prizeRecordService.insert(PrizeRecordConverter.toPrizeRecordPo(
+                VoUtils.get(activity.getTasks(), inviteRecordPo.getTaskId()), inviteRecordPo, prize));
     }
 
     @Autowired
@@ -102,6 +95,6 @@ public class InviteTaskExecutor extends TaskExecutor<InviteRecordPo> {
 
     @Override
     public TaskType[] getIdentities() {
-        return new TaskType[] {OPERATION_WEBPAGE_INVITE, QUESTION_REPLY_INVITE};
+        return new TaskType[] {TaskType.OPERATION_WEBPAGE_INVITE, TaskType.QUESTION_REPLY_INVITE};
     }
 }

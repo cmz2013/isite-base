@@ -1,8 +1,7 @@
 package org.isite.commons.web.mq;
-
 /**
- * 消息生产接口
- * @author <font color='blue'>zhangcm</font>
+ * @Description 消息生产接口
+ * @Author <font color='blue'>zhangcm</font>
  */
 public interface Producer {
     /**

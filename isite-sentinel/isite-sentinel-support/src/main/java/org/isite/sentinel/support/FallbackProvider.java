@@ -7,13 +7,12 @@ import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.alibaba.csp.sentinel.slots.system.SystemBlockException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.isite.commons.cloud.data.vo.Result;
-
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.http.HttpStatus.SC_SERVICE_UNAVAILABLE;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Constants.COLON;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ResultStatus;
+import org.isite.commons.lang.json.Jackson;
 
 /**
  * @Description 自定义sentinel发生限流之后返回的参数
@@ -24,9 +23,9 @@ public class FallbackProvider {
 
     public Result<String> fallbackResponse(Throwable e) {
         if (e instanceof BlockException) {
-            return new Result<>(SC_SERVICE_UNAVAILABLE, getBlockMessage((BlockException) e));
+            return new Result<>(ResultStatus.SERVICE_UNAVAILABLE.getCode(), getBlockMessage((BlockException) e));
         } else {
-            return new Result<>(SC_SERVICE_UNAVAILABLE, getMessage(e));
+            return new Result<>(ResultStatus.SERVICE_UNAVAILABLE.getCode(), MessageUtils.getMessage(e));
         }
     }
 
@@ -43,9 +42,9 @@ public class FallbackProvider {
         } else if (e instanceof AuthorityException) {
             message = "sentinel authority exception";
         }
-        message = isNotBlank(message) ? message : e.getClass().getSimpleName();
+        message = StringUtils.isNotBlank(message) ? message : e.getClass().getSimpleName();
         if (null != e.getRule()) {
-            message += COLON + toJsonString(e.getRule());
+            message += Constants.COLON + Jackson.toJsonString(e.getRule());
         }
         return message;
     }

@@ -7,9 +7,8 @@ import org.isite.operation.support.vo.TaskPeriod;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

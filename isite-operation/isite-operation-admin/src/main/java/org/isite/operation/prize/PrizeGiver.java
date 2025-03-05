@@ -1,26 +1,21 @@
 package org.isite.operation.prize;
 
 import org.isite.commons.cloud.factory.Strategy;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
 import org.isite.operation.cache.ActivityCache;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.service.PrizeRecordService;
+import org.isite.operation.support.constants.CacheKeys;
 import org.isite.operation.support.enums.PrizeType;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import static java.lang.Boolean.TRUE;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_PRIZE;
-import static org.isite.operation.support.enums.PrizeType.PHYSICAL;
-import static org.isite.operation.support.enums.PrizeType.THANK;
-
 /**
  * @Description 奖品发放接口
  * @Author <font color='blue'>zhangcm</font>
@@ -36,15 +31,15 @@ public class PrizeGiver implements Strategy<PrizeType> {
      */
     @Synchronized(locks = {
             //总库存小于等于0时，不做库存校验，不需要加分布式锁
-            @Lock(name = LOCK_PRIZE, keys = "#prize.id", condition = "#prize.totalInventory > 0")})
+            @Lock(name = CacheKeys.LOCK_PRIZE, keys = "#prize.id", condition = "#prize.totalInventory > 0")})
     @Transactional(rollbackFor = Exception.class)
     public void execute(Activity activity, Prize prize, PrizeRecordPo recordPo) {
         prizeRecordService.updateReceiveStatus(recordPo, prize);
-        if (TRUE.equals(recordPo.getLockStatus())) {
+        if (Boolean.TRUE.equals(recordPo.getLockStatus())) {
             activityCache.decrLockInventory(activity, prize);
-        } else if (prize.getTotalInventory() > ZERO) {
-            isTrue(prize.getTotalInventory() > prize.getConsumeInventory(),
-                    getMessage("prize.notInventory", "the prize is gone"));
+        } else if (prize.getTotalInventory() > Constants.ZERO) {
+            Assert.isTrue(prize.getTotalInventory() > prize.getConsumeInventory(),
+                    MessageUtils.getMessage("prize.notInventory", "the prize is gone"));
             activityCache.incrConsumeInventory(activity, prize);
         }
         grantPrize(recordPo);
@@ -69,6 +64,6 @@ public class PrizeGiver implements Strategy<PrizeType> {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[] {THANK, PHYSICAL};
+        return new PrizeType[] {PrizeType.THANK, PrizeType.PHYSICAL};
     }
 }

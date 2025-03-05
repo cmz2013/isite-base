@@ -1,16 +1,24 @@
 package org.isite.operation.service;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.lang.Constants;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.sync.ConcurrentError;
+import org.isite.misc.data.enums.ObjectType;
+import org.isite.operation.converter.PrizeRecordConverter;
 import org.isite.operation.mapper.PrizeRecordMapper;
 import org.isite.operation.po.ActivityPo;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.PrizeRecordPo;
 import org.isite.operation.prize.PrizeGiver;
 import org.isite.operation.prize.PrizeGiverFactory;
+import org.isite.operation.support.constants.OperationConstants;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Prize;
 import org.isite.operation.task.IdempotentKey;
+import org.isite.user.data.constants.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -20,35 +28,13 @@ import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.String.valueOf;
-import static java.lang.System.currentTimeMillis;
-import static org.apache.commons.lang.BooleanUtils.isTrue;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notEmpty;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.misc.data.enums.ObjectType.TENANT_EMPLOYEE;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordPo;
-import static org.isite.operation.converter.PrizeRecordConverter.toPrizeRecordSelectivePo;
-import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_ID;
-import static org.isite.operation.support.constants.OperationConstants.FIELD_ACTIVITY_PID;
-import static org.isite.operation.support.constants.OperationConstants.FIELD_RECEIVE_STATUS;
-import static org.isite.user.data.constants.UserConstants.FIELD_USER_ID;
-import static tk.mybatis.mapper.weekend.Weekend.of;
-
 /**
  * @Description 奖品类型活动 Service
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
-
     private PrizeService prizeService;
     private PrizeGiverFactory prizeGiverFactory;
 
@@ -77,12 +63,12 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      * 查询用户已领取的领奖记录。如果是主活动，任务记录包含了主活动及其子活动（两级）的领奖记录
      */
     public List<PrizeRecordPo> findReceived(int activityId, long userId) {
-        Weekend<PrizeRecordPo> weekend = of(PrizeRecordPo.class);
+        Weekend<PrizeRecordPo> weekend = Weekend.of(PrizeRecordPo.class);
         Example example = new Example(getPoClass());
-        weekend.and(example.createCriteria().andEqualTo(FIELD_USER_ID, userId)
-                .andEqualTo(FIELD_RECEIVE_STATUS, TRUE));
-        weekend.and(example.createCriteria().orEqualTo(FIELD_ACTIVITY_ID, activityId)
-                .orEqualTo(FIELD_ACTIVITY_PID, activityId));
+        weekend.and(example.createCriteria().andEqualTo(UserConstants.FIELD_USER_ID, userId)
+                .andEqualTo(OperationConstants.FIELD_RECEIVE_STATUS, Boolean.TRUE));
+        weekend.and(example.createCriteria().orEqualTo(OperationConstants.FIELD_ACTIVITY_ID, activityId)
+                .orEqualTo(OperationConstants.FIELD_ACTIVITY_PID, activityId));
         return super.findList(weekend);
     }
 
@@ -110,16 +96,15 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateReceiveStatus(PrizeRecordPo prizeRecordPo, Prize prize) {
-        prizeRecordPo.setReceiveStatus(TRUE);
-        prizeRecordPo.setReceiveTime(new Date(currentTimeMillis()));
-        toPrizeRecordPo(prizeRecordPo, prize);
-
-        Weekend<PrizeRecordPo> weekend = of(PrizeRecordPo.class);
+        prizeRecordPo.setReceiveStatus(Boolean.TRUE);
+        prizeRecordPo.setReceiveTime(LocalDateTime.now());
+        PrizeRecordConverter.toPrizeRecordPo(prizeRecordPo, prize);
+        Weekend<PrizeRecordPo> weekend = Weekend.of(PrizeRecordPo.class);
         weekend.weekendCriteria().andEqualTo(PrizeRecordPo::getId, prizeRecordPo.getPrizeId())
                 // 使用乐观锁控制并发场景
-                .andEqualTo(PrizeRecordPo::getReceiveStatus, FALSE);
+                .andEqualTo(PrizeRecordPo::getReceiveStatus, Boolean.FALSE);
         int rows = getMapper().updateByExampleSelective(prizeRecordPo, weekend);
-        isTrue(rows > ZERO, new ConcurrentError());
+        Assert.isTrue(rows > Constants.ZERO, new ConcurrentError());
     }
 
     /**
@@ -129,7 +114,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
     public int updatePrize(Long recordId, Prize prize) {
         PrizeRecordPo prizeRecordPo = new PrizeRecordPo();
         prizeRecordPo.setId(recordId);
-        toPrizeRecordPo(prizeRecordPo, prize);
+        PrizeRecordConverter.toPrizeRecordPo(prizeRecordPo, prize);
         return updateSelectiveById(prizeRecordPo);
     }
 
@@ -137,7 +122,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      * 统计在当前任务周期内完成的奖品记录个数
      */
     public int countPrizeRecord(Integer activityId, Integer taskId, @Nullable LocalDateTime startTime, Long userId) {
-        Weekend<PrizeRecordPo> weekend = of(PrizeRecordPo.class);
+        Weekend<PrizeRecordPo> weekend = Weekend.of(PrizeRecordPo.class);
         WeekendCriteria<PrizeRecordPo, Object> criteria = weekend.weekendCriteria()
                 .andEqualTo(PrizeRecordPo::getUserId, userId)
                 .andEqualTo(PrizeRecordPo::getActivityId, activityId)
@@ -153,8 +138,8 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      */
     @Transactional(rollbackFor = Exception.class)
     public int receivePrize(Activity activity, Prize prize, long userId) {
-        List<PrizeRecordPo> prizeRecordPos = findList(toPrizeRecordSelectivePo(prize.getId(), userId, FALSE));
-        notEmpty(prizeRecordPos, getMessage("prize.notFound", "prize not found"));
+        List<PrizeRecordPo> prizeRecordPos = findList(PrizeRecordConverter.toPrizeRecordSelectivePo(prize.getId(), userId, Boolean.FALSE));
+        Assert.notEmpty(prizeRecordPos, MessageUtils.getMessage("prize.notFound", "prize not found"));
         PrizeGiver prizeGiver = prizeGiverFactory.get(prize.getPrizeType());
         prizeRecordPos.forEach(prizeRecordPo -> prizeGiver.execute(activity, prize, prizeRecordPo));
         return prizeRecordPos.size();
@@ -167,28 +152,27 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
     public int addPrizeRecord(
             ActivityPo activityPo, int prizeId, long userId, long employeeId) {
         PrizeRecordPo prizeRecordPo = new PrizeRecordPo();
-        if (ZERO != prizeId) {
+        if (Constants.ZERO != prizeId) {
             PrizePo prizePo = prizeService.get(prizeId);
-            notNull(prizePo, getMessage("prize.notFound", "prize not found"));
-            isTrue(prizePo.getActivityId().equals(activityPo.getId()), new IllegalParameterError());
-            toPrizeRecordPo(prizeRecordPo, prizePo);
-            prizeRecordPo.setLockStatus(TRUE);
+            Assert.notNull(prizePo, MessageUtils.getMessage("prize.notFound", "prize not found"));
+            Assert.isTrue(prizePo.getActivityId().equals(activityPo.getId()), new IllegalParameterError());
+            PrizeRecordConverter.toPrizeRecordPo(prizeRecordPo, prizePo);
+            prizeRecordPo.setLockStatus(Boolean.TRUE);
             prizeService.incrLockInventory(prizePo);
         } else {
-            prizeRecordPo.setLockStatus(FALSE);
+            prizeRecordPo.setLockStatus(Boolean.FALSE);
         }
-
-        prizeRecordPo.setObjectType(TENANT_EMPLOYEE);
-        prizeRecordPo.setObjectValue(valueOf(employeeId));
-        prizeRecordPo.setReceiveStatus(FALSE);
+        prizeRecordPo.setObjectType(ObjectType.TENANT_EMPLOYEE);
+        prizeRecordPo.setObjectValue(String.valueOf(employeeId));
+        prizeRecordPo.setReceiveStatus(Boolean.FALSE);
         prizeRecordPo.setUserId(userId);
         prizeRecordPo.setActivityId(activityPo.getId());
         prizeRecordPo.setActivityPid(activityPo.getPid());
-        prizeRecordPo.setTaskId(ZERO);
-        prizeRecordPo.setFinishTime(new Date(currentTimeMillis()));
+        prizeRecordPo.setTaskId(Constants.ZERO);
+        prizeRecordPo.setFinishTime(LocalDateTime.now());
         prizeRecordPo.setIdempotentKey(IdempotentKey.toValue(
-                activityPo.getId(), ZERO, null, userId,
-                count(toPrizeRecordSelectivePo(activityPo.getId(), ZERO, userId))));
+                activityPo.getId(), Constants.ZERO, null, userId,
+                count(PrizeRecordConverter.toPrizeRecordSelectivePo(activityPo.getId(), Constants.ZERO, userId))));
         return this.insert(prizeRecordPo);
     }
 
@@ -197,7 +181,7 @@ public class PrizeRecordService extends TaskRecordService<PrizeRecordPo> {
      */
     @Transactional(rollbackFor = Exception.class)
     public int deletePrizeRecord(PrizeRecordPo prizeRecordPo) {
-        if (isTrue(prizeRecordPo.getLockStatus())) {
+        if (BooleanUtils.isTrue(prizeRecordPo.getLockStatus())) {
             prizeService.rollbackLockInventory(prizeRecordPo.getPrizeId());
         }
         return this.delete(prizeRecordPo.getId());

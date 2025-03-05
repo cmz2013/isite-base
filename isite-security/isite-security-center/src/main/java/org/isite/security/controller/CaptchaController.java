@@ -1,6 +1,8 @@
 package org.isite.security.controller;
 
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.security.code.CaptchaExecutor;
 import org.isite.security.code.CaptchaExecutorFactory;
@@ -16,11 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import static org.isite.commons.cloud.data.vo.Result.success;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-
 /**
  * @Description 短信/邮件验证码 Controller
  * @Author <font color='blue'>zhangcm</font>
@@ -45,10 +42,11 @@ public class CaptchaController extends BaseController {
      */
     @DeleteMapping(SecurityUrls.DELETE_CAPTCHA)
     public Result<?> checkCaptcha(@Validated CaptchaDto captchaDto) {
-        CaptchaExecutor captchaExecutor = captchaExecutorFactory.get(captchaDto.getCaptchaType());
-        isTrue(captchaExecutor.checkCaptcha(captchaDto.getAgent(), captchaDto.getCode()),
-                getMessage("captcha.invalid", "the captcha is invalid"));
-        return success();
+        return toResult(() -> {
+            CaptchaExecutor captchaExecutor = captchaExecutorFactory.get(captchaDto.getCaptchaType());
+            Assert.isTrue(captchaExecutor.checkCaptcha(captchaDto.getAgent(), captchaDto.getCode()),
+                    MessageUtils.getMessage("captcha.invalid", "the captcha is invalid"));
+        });
     }
 
     @Autowired

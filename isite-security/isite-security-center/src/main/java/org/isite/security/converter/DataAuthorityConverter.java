@@ -1,18 +1,16 @@
 package org.isite.security.converter;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.isite.security.data.vo.DataAuthority;
 import org.isite.tenant.data.vo.DataApi;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.Collections.emptyMap;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class DataAuthorityConverter {
 
@@ -23,8 +21,8 @@ public class DataAuthorityConverter {
      * key: serviceId; value: 数据接口权限,Set集合自动去重
      */
     public static Map<String, Set<DataAuthority>> toDataAuthority(Set<DataApi> dataApis) {
-        if (isEmpty(dataApis)) {
-            return emptyMap();
+        if (CollectionUtils.isEmpty(dataApis)) {
+            return Collections.emptyMap();
         }
         Map<String, Set<DataAuthority>> authorities = new HashMap<>();
         dataApis.forEach(api -> authorities.computeIfAbsent(api.getServiceId(), k -> new HashSet<>())

@@ -4,9 +4,8 @@ import org.isite.tenant.po.RoleResourcePo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class RoleResourceConverter {
 

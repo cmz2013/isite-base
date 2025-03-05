@@ -1,16 +1,14 @@
 package org.isite.operation.data;
 
+import org.isite.commons.lang.json.Jackson;
+import org.isite.operation.support.enums.EventType;
 import org.isite.operation.support.enums.TaskType;
-
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-import static org.isite.operation.support.enums.EventType.POST_SHOP_PAYMENT_NOTIFY;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 public class TaskTypeTest {
 
     public static void main(String[] args) {
-        System.out.println(toJsonString(TaskType.values(POST_SHOP_PAYMENT_NOTIFY)));
+        System.out.println(Jackson.toJsonString(TaskType.values(EventType.POST_SHOP_PAYMENT_NOTIFY)));
     }
 }

@@ -2,18 +2,26 @@ package org.isite.operation.controller;
 
 import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.isite.commons.cloud.converter.DataConverter;
+import org.isite.commons.cloud.converter.PageQueryConverter;
+import org.isite.commons.cloud.data.constants.UrlConstants;
 import org.isite.commons.cloud.data.dto.PageRequest;
 import org.isite.commons.cloud.data.enums.TerminalType;
 import org.isite.commons.cloud.data.vo.PageResult;
 import org.isite.commons.cloud.data.vo.Result;
+import org.isite.commons.cloud.utils.MessageUtils;
+import org.isite.commons.lang.Assert;
+import org.isite.commons.web.constants.UserAgent;
 import org.isite.commons.web.controller.BaseController;
 import org.isite.commons.web.exception.IllegalParameterError;
 import org.isite.commons.web.mq.Message;
 import org.isite.commons.web.mq.Publisher;
 import org.isite.commons.web.sync.Lock;
 import org.isite.commons.web.sync.Synchronized;
+import org.isite.operation.activity.ActivityAssert;
 import org.isite.operation.cache.ActivityCache;
 import org.isite.operation.converter.ActivityConverter;
+import org.isite.operation.converter.WebpageConverter;
 import org.isite.operation.mq.WebpageProducer;
 import org.isite.operation.po.PrizePo;
 import org.isite.operation.po.TaskPo;
@@ -22,6 +30,9 @@ import org.isite.operation.service.ActivityService;
 import org.isite.operation.service.PrizeService;
 import org.isite.operation.service.TaskService;
 import org.isite.operation.service.WebpageService;
+import org.isite.operation.support.constants.CacheKeys;
+import org.isite.operation.support.constants.OperationConstants;
+import org.isite.operation.support.constants.OperationUrls;
 import org.isite.operation.support.dto.WebpagePutDto;
 import org.isite.operation.support.vo.Activity;
 import org.isite.operation.support.vo.Webpage;
@@ -32,22 +43,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.isite.commons.cloud.converter.DataConverter.convert;
-import static org.isite.commons.cloud.converter.PageQueryConverter.toPageQuery;
-import static org.isite.commons.cloud.data.constants.UrlConstants.URL_API;
-import static org.isite.commons.cloud.utils.MessageUtils.getMessage;
-import static org.isite.commons.lang.Assert.isTrue;
-import static org.isite.commons.lang.Assert.notNull;
-import static org.isite.commons.web.constants.UserAgent.getTerminalType;
-import static org.isite.operation.activity.ActivityAssert.notOnline;
-import static org.isite.operation.controller.ActivityController.KEY_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.controller.ActivityController.VALUE_ACTIVITY_NOT_FOUND;
-import static org.isite.operation.converter.WebpageConverter.toWebpagePo;
-import static org.isite.operation.support.constants.CacheKeys.LOCK_ACTIVITY;
-import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
-import static org.isite.operation.support.constants.OperationUrls.URL_OPERATION;
-
 /**
  * @Description 活动页面 Controller
  * @Author <font color='blue'>zhangcm</font>
@@ -64,37 +59,39 @@ public class WebpageController extends BaseController {
     /**
      * 分页查询活动页面
      */
-    @GetMapping(URL_OPERATION + "/webpages")
+    @GetMapping(OperationUrls.URL_OPERATION + "/webpages")
     public PageResult<Webpage> findPage(PageRequest<Integer> request) {
-        try (Page<WebpagePo> page = webpageService.findPage(toPageQuery(request, () -> toWebpagePo(request.getQuery())))) {
-            return toPageResult(request, convert(page.getResult(), Webpage::new), page.getTotal());
+        try (Page<WebpagePo> page = webpageService.findPage(
+                PageQueryConverter.toPageQuery(request, () -> WebpageConverter.toWebpagePo(request.getQuery())))) {
+            return toPageResult(request, DataConverter.convert(page.getResult(), Webpage::new), page.getTotal());
         }
     }
 
     /**
      * 用户访问活动页面，不需要登录就可以访问（从缓存读取数据）。被邀请人url携带邀请码：invite，发送行为消息触发运营任务
      */
-    @GetMapping(URL_API + URL_OPERATION + "/webpage/{activityId}")
-    @Publisher(messages = @Message(queues = QUEUE_OPERATION_EVENT, producer = WebpageProducer.class))
+    @GetMapping(UrlConstants.URL_API + OperationUrls.URL_OPERATION + "/webpage/{activityId}")
+    @Publisher(messages = @Message(queues = OperationConstants.QUEUE_OPERATION_EVENT, producer = WebpageProducer.class))
     public Result<String> getWebpage(@PathVariable("activityId") int activityId) {
         Activity activity = activityCache.getActivity(activityId);
-        notNull(activity, getMessage(KEY_ACTIVITY_NOT_FOUND, VALUE_ACTIVITY_NOT_FOUND));
-        return toResult(activityCache.getWebpage(activity, getTerminalType()));
+        Assert.notNull(activity, MessageUtils.getMessage(
+                ActivityController.KEY_ACTIVITY_NOT_FOUND, ActivityController.VALUE_ACTIVITY_NOT_FOUND));
+        return toResult(activityCache.getWebpage(activity, UserAgent.getTerminalType()));
     }
 
     /**
      * 获取模板页面（用于管理后台查询数据）
      */
-    @GetMapping(URL_OPERATION + "/webpage/{activityId}/{terminalType}")
+    @GetMapping(OperationUrls.URL_OPERATION + "/webpage/{activityId}/{terminalType}")
     public Result<Webpage> getWebpage(@PathVariable("activityId") int activityId,
                            @PathVariable("terminalType") TerminalType terminalType) {
-        return toResult(convert(webpageService.getWebpage(activityId, terminalType), Webpage::new));
+        return toResult(DataConverter.convert(webpageService.getWebpage(activityId, terminalType), Webpage::new));
     }
 
     /**
      * 活动页面预览（用于管理后台从数据库查询数据）
      */
-    @GetMapping(URL_OPERATION + "/webpage/{activityId}/{terminalType}/preview")
+    @GetMapping(OperationUrls.URL_OPERATION + "/webpage/{activityId}/{terminalType}/preview")
     public Result<String> getPreview(@PathVariable("activityId") int activityId,
                            @PathVariable("terminalType") TerminalType terminalType) {
         Activity activity = ActivityConverter.toActivity(activityService.getActivity(activityId, null),
@@ -106,13 +103,13 @@ public class WebpageController extends BaseController {
     /**
      * 更新活动页面，活动ID不能变更
      */
-    @PutMapping(URL_OPERATION + "/webpage/{activityId}")
-    @Synchronized(locks = @Lock(name = LOCK_ACTIVITY, keys = "#activityId"))
+    @PutMapping(OperationUrls.URL_OPERATION + "/webpage/{activityId}")
+    @Synchronized(locks = @Lock(name = CacheKeys.LOCK_ACTIVITY, keys = "#activityId"))
     public Result<Integer> updateWebpage(@PathVariable("activityId") Integer activityId,
                                          @Validated @RequestBody WebpagePutDto webpagePutDto) {
-        notOnline(activityService.get(activityId).getStatus());
-        isTrue(webpageService.get(webpagePutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
-        return toResult(webpageService.updateSelectiveById(convert(webpagePutDto, WebpagePo::new)));
+        ActivityAssert.notOnline(activityService.get(activityId).getStatus());
+        Assert.isTrue(webpageService.get(webpagePutDto.getId()).getActivityId().equals(activityId), new IllegalParameterError());
+        return toResult(webpageService.updateSelectiveById(DataConverter.convert(webpagePutDto, WebpagePo::new)));
     }
 
     @Autowired

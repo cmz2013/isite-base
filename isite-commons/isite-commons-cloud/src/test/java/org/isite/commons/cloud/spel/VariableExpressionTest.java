@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.isite.commons.cloud.utils.SpelExpressionUtils;
 
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class VariableExpressionTest {
 

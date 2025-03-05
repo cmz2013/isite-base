@@ -2,7 +2,7 @@ package org.isite.operation.task;
 
 import org.isite.operation.support.dto.EventDto;
 import org.isite.operation.support.enums.TaskType;
-import org.isite.operation.support.vo.AnswerEventParam;
+import org.isite.operation.support.vo.AnswerInviteParam;
 import org.isite.operation.support.vo.AnswerPrizeProperty;
 import org.isite.operation.support.vo.TaskProperty;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class AnswerPrizeExecutor extends PrizeTaskExecutor {
     @Override
     protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
         AnswerPrizeProperty answerPrizeProperty = cast(taskProperty);
-        AnswerEventParam eventParam = cast(eventDto.getEventParam());
+        AnswerInviteParam eventParam = cast(eventDto.getEventParam());
         if (null == answerPrizeProperty.getFirstReply() ||
                 answerPrizeProperty.getFirstReply().equals(eventParam.getFirstAnswer())) {
            return (null == answerPrizeProperty.getMaxResponseTime() ||

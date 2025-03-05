@@ -18,7 +18,7 @@ public class NullSerializer {
     /**
      * 数组集合，当值为null时，序列化成[]
      */
-    public static class NullArrayJsonSerializer extends JsonSerializer<Object> {
+    public static class NullArraySerializer extends JsonSerializer<Object> {
 
         @Override
         public void serialize(Object value, JsonGenerator jsonGenerator,
@@ -31,7 +31,7 @@ public class NullSerializer {
     /**
      * 字符串，当值为null时，序列化成""
      */
-    public static class NullStringJsonSerializer extends JsonSerializer<Object> {
+    public static class NullStringSerializer extends JsonSerializer<Object> {
         @Override
         public void serialize(Object value, JsonGenerator jsonGenerator, 
         					  SerializerProvider serializerProvider) throws IOException {

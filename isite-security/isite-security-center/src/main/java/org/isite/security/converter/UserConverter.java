@@ -1,5 +1,8 @@
 package org.isite.security.converter;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.enums.ActiveStatus;
 import org.isite.security.data.dto.UserRegistDto;
 import org.isite.security.data.vo.OauthUser;
 import org.isite.tenant.data.vo.Role;
@@ -10,22 +13,10 @@ import org.isite.user.data.vo.UserSecret;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static org.apache.commons.lang3.BooleanUtils.isNotTrue;
-import static org.isite.commons.lang.Constants.TWO;
-import static org.isite.commons.lang.enums.ActiveStatus.ENABLED;
-import static org.isite.security.converter.ResourceConverter.toResourceMaps;
-import static org.isite.security.converter.ResourceConverter.toResources;
-import static org.isite.security.converter.RoleConverter.toRoleMaps;
-import static org.isite.security.converter.TenantConverter.toTenantMap;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
 public class UserConverter {
-
     private static final String USERNAME = "username";
     private static final String ROLES = "roles";
     private static final String RESOURCES = "resources";
@@ -49,15 +40,14 @@ public class UserConverter {
     /**
      * 员工信息序列化
      */
-    public static Map<String, Object> toUserMap(
-            OauthUser oauthUser, List<Role> roles, boolean hasRole) {
-        Map<String, Object> data = new HashMap<>(TWO);
+    public static Map<String, Object> toUserMap(OauthUser oauthUser, List<Role> roles, boolean hasRole) {
+        Map<String, Object> data = new HashMap<>(Constants.THREE);
         data.put(USERNAME, oauthUser.getUsername());
-        data.put(TENANT, toTenantMap(oauthUser.getTenant()));
-        if (isNotTrue(hasRole)) {
-            data.put(RESOURCES, toResourceMaps(toResources(roles)));
+        data.put(TENANT, TenantConverter.toTenantMap(oauthUser.getTenant()));
+        if (BooleanUtils.isNotTrue(hasRole)) {
+            data.put(RESOURCES, ResourceConverter.toResourceMaps(ResourceConverter.toResources(roles)));
         } else {
-            data.put(ROLES, toRoleMaps(roles));
+            data.put(ROLES, RoleConverter.toRoleMaps(roles));
         }
         return data;
     }
@@ -68,8 +58,8 @@ public class UserConverter {
         user.setUsername(userPostDto.getUsername());
         user.setHeadImg(userPostDto.getHeadImg());
         user.setSex(userPostDto.getSex());
-        user.setInternal(FALSE);
-        user.setEnabled(TRUE);
+        user.setEnabled(Boolean.TRUE);
+        user.setInternal(Boolean.FALSE);
         return user;
     }
 
@@ -80,7 +70,7 @@ public class UserConverter {
         user.setHeadImg(userBasic.getHeadImg());
         user.setSex(userBasic.getSex());
         user.setInternal(userBasic.getInternal());
-        user.setEnabled(ENABLED.equals(userBasic.getStatus()));
+        user.setEnabled(ActiveStatus.ENABLED.equals(userBasic.getStatus()));
         return user;
     }
 

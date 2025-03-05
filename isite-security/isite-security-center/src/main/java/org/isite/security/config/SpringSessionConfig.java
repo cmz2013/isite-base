@@ -1,5 +1,6 @@
 package org.isite.security.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +10,6 @@ import org.springframework.session.web.http.CookieHttpSessionIdResolver;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.HttpSessionIdResolver;
-
-import static java.lang.Boolean.FALSE;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 /**
  * @Description 配置 Spring Session
  * @Author <font color='blue'>zhangcm</font>
@@ -20,7 +17,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Configuration
 @EnableRedisHttpSession
 public class SpringSessionConfig {
-
     private final Environment environment;
 
     @Autowired
@@ -32,18 +28,18 @@ public class SpringSessionConfig {
     public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer defaultCookieSerializer = new DefaultCookieSerializer();
         String domain = environment.getProperty("spring.session.cookie.domain");
-        if (isNotBlank(domain)) {
+        if (StringUtils.isNotBlank(domain)) {
             defaultCookieSerializer.setDomainName(domain);
         }
         String path = environment.getProperty("spring.session.cookie.path");
-        if (isNotBlank(path)) {
+        if (StringUtils.isNotBlank(path)) {
             defaultCookieSerializer.setCookiePath(path);
         }
         String name = environment.getProperty("spring.session.cookie.name");
-        if (isNotBlank(name)) {
+        if (StringUtils.isNotBlank(name)) {
             defaultCookieSerializer.setCookieName(name);
         }
-        defaultCookieSerializer.setUseBase64Encoding(FALSE);
+        defaultCookieSerializer.setUseBase64Encoding(Boolean.FALSE);
         return defaultCookieSerializer;
     }
 

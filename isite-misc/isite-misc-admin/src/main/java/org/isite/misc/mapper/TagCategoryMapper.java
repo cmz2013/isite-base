@@ -5,8 +5,8 @@ import org.isite.mybatis.mapper.TreePoMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * 标签分类DAO
- * @author <font color='blue'>zhangcm</font>
+ * @Description 标签分类DAO
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Repository
 public interface TagCategoryMapper extends TreePoMapper<TagCategoryPo, Integer> {

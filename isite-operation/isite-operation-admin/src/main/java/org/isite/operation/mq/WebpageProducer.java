@@ -1,20 +1,17 @@
 package org.isite.operation.mq;
 
+import org.apache.commons.lang3.StringUtils;
+import org.isite.commons.cloud.utils.ResultUtils;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.utils.TypeUtils;
+import org.isite.commons.web.interceptor.TransmittableHeaders;
 import org.isite.commons.web.mq.Producer;
+import org.isite.commons.web.utils.RequestUtils;
+import org.isite.operation.support.constants.OperationConstants;
 import org.isite.operation.support.dto.EventDto;
-import org.isite.operation.support.vo.InviteEventParam;
+import org.isite.operation.support.enums.EventType;
+import org.isite.operation.support.vo.InviteParam;
 import org.springframework.stereotype.Component;
-
-import static java.lang.String.valueOf;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.isite.commons.cloud.utils.ResultUtils.isOk;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.commons.web.interceptor.TransmittableHeaders.getUserId;
-import static org.isite.commons.web.utils.RequestUtils.getRequest;
-import static org.isite.operation.support.constants.OperationConstants.FIELD_INVITE;
-import static org.isite.operation.support.enums.EventType.GET_OPERATION_WEBPAGE;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -23,21 +20,20 @@ public class WebpageProducer implements Producer {
 
     @Override
     public EventDto getBody(Object[] args, Object returnValue) {
-        Long userId = getUserId();
+        Long userId = TransmittableHeaders.getUserId();
         if (null == userId) {
             return null;
         }
-        String inviteCode = getRequest().getParameter(FIELD_INVITE);
-        if (isOk(cast(returnValue)) && isNotBlank(inviteCode)) {
+        String inviteCode = RequestUtils.getRequest().getParameter(OperationConstants.FIELD_INVITE);
+        if (ResultUtils.isOk(TypeUtils.cast(returnValue)) && StringUtils.isNotBlank(inviteCode)) {
             EventDto eventDto = new EventDto();
             eventDto.setUserId(userId);
-            eventDto.setEventType(GET_OPERATION_WEBPAGE);
-            eventDto.setObjectValue(valueOf(args[ZERO]));
-
-            InviteEventParam eventParam = new InviteEventParam();
+            eventDto.setEventType(EventType.GET_OPERATION_WEBPAGE);
+            eventDto.setObjectValue(String.valueOf(args[Constants.ZERO]));
+            InviteParam inviteParam = new InviteParam();
             //活动邀请码
-            eventParam.setInviteCode(inviteCode);
-            eventDto.setEventParam(eventParam);
+            inviteParam.setInviteCode(inviteCode);
+            eventDto.setEventParam(inviteParam);
             return eventDto;
         }
         return null;

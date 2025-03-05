@@ -1,5 +1,7 @@
 package org.isite.operation.service;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.isite.commons.cloud.utils.VoUtils;
 import org.isite.operation.cache.ActivityCache;
 import org.isite.operation.support.enums.EventType;
 import org.isite.operation.support.vo.Activity;
@@ -7,21 +9,16 @@ import org.isite.operation.support.vo.Prize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static java.lang.System.currentTimeMillis;
-import static java.util.Collections.emptyList;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.cloud.utils.VoUtils.get;
-
 /**
  * @Description 进行中的活动Service
  * @Author <font color='blue'>zhangcm</font>
  */
 @Service
 public class OngoingActivityService {
-
     private ActivityCache activityCache;
 
     /**
@@ -32,7 +29,7 @@ public class OngoingActivityService {
         if (null == activity) {
             return null;
         }
-        return get(activity.getPrizes(), prizeId);
+        return VoUtils.get(activity.getPrizes(), prizeId);
     }
 
     /**
@@ -41,9 +38,8 @@ public class OngoingActivityService {
     public Activity getOngoingActivity(Integer activityId) {
         Activity activity = activityCache.getActivity(activityId);
         if (null != activity) {
-            long currTime = currentTimeMillis();
-            if (currTime >= activity.getStartTime().getTime() &&
-                    currTime <= activity.getEndTime().getTime()) {
+            LocalDateTime currTime = LocalDateTime.now();
+            if (currTime.isAfter(activity.getStartTime()) && currTime.isBefore(activity.getEndTime())) {
                 return activity;
             }
         }
@@ -55,8 +51,8 @@ public class OngoingActivityService {
      */
     public List<Activity> findOngoingActivities(EventType eventType) {
         List<Integer> activityIds = activityCache.findActivityIds(eventType);
-        if (isEmpty(activityIds)) {
-            return emptyList();
+        if (CollectionUtils.isEmpty(activityIds)) {
+            return Collections.emptyList();
         }
         List<Activity> activityList = new ArrayList<>(activityIds.size());
         activityIds.forEach(activityId -> {

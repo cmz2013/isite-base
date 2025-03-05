@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import org.isite.commons.lang.enums.EnumConstantSerializer;
+import org.isite.commons.lang.enums.EnumerableSerializer;
 import org.isite.commons.lang.enums.Enumerable;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
 /**
  * @Description BeanSerializerModifier是Jackson用于自定义对象序列化的过程。
  * 通过继承BeanSerializerModifier并重写其方法，开发者可以在对象序列化为JSON的过程中插入自定义的逻辑。
@@ -26,11 +25,11 @@ public class DefaultSerializerModifier extends BeanSerializerModifier {
         writers.forEach(writer -> {
             Class<?> clazz = writer.getType().getRawClass();
             if (Enumerable.class.isAssignableFrom(clazz)) {
-                writer.assignSerializer(new EnumConstantSerializer());
+                writer.assignSerializer(new EnumerableSerializer());
             } else if (isArray(clazz)) { //注册null Serializer
-                writer.assignNullSerializer(new NullSerializer.NullArrayJsonSerializer());
+                writer.assignNullSerializer(new NullSerializer.NullArraySerializer());
             } else if (isString(clazz)) {
-                writer.assignNullSerializer(new NullSerializer.NullStringJsonSerializer());
+                writer.assignNullSerializer(new NullSerializer.NullStringSerializer());
             }
         });
         return writers;

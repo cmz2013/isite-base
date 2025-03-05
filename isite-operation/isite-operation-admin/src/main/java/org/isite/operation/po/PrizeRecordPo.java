@@ -7,8 +7,7 @@ import org.isite.operation.support.enums.PrizeType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 /**
  * @Description 奖品记录。一条记录只保存的奖品数量为1，不支持多个
  * @Author <font color='blue'>zhangcm</font>
@@ -34,7 +33,7 @@ public class PrizeRecordPo extends TaskRecordPo {
     /**
      * 领取时间
      */
-    private Date receiveTime;
+    private LocalDateTime receiveTime;
     /**
      * 奖品名称
      */

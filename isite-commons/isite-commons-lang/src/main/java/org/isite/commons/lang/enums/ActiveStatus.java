@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * @Description : 启用状态
  * @Author <font color='blue'>zhangcm</font>
  */
-@JsonDeserialize(using = SwitchDeserializer.class)
+@JsonDeserialize(using = ActiveStatusDeserializer.class)
 public enum ActiveStatus implements Enumerable<Integer> {
     /**
      * 禁用的

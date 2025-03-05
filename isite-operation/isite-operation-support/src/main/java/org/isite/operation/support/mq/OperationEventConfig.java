@@ -1,11 +1,9 @@
 package org.isite.operation.support.mq;
 
+import org.isite.operation.support.constants.OperationConstants;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.isite.operation.support.constants.OperationConstants.QUEUE_OPERATION_EVENT;
-
 /**
  * @Description Spring AMQP提供了声明式配置，可以确保队列和交换机只被创建一次，即使多个微服务实例同时启动。
  * @Author <font color='blue'>zhangcm</font>
@@ -25,6 +23,6 @@ public class OperationEventConfig {
          *
          * autoDelete:是否自动删除，当没有生产者或者消费者使用此队列，该队列会自动删除
          */
-        return new Queue(QUEUE_OPERATION_EVENT, true, false, false);
+        return new Queue(OperationConstants.QUEUE_OPERATION_EVENT, true, false, false);
     }
 }

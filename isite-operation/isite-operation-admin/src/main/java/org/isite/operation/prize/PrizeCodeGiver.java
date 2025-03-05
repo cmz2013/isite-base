@@ -5,16 +5,12 @@ import org.isite.operation.service.PrizeCodeService;
 import org.isite.operation.support.enums.PrizeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import static org.isite.operation.support.enums.PrizeType.PRIZE_CODE;
-
 /**
  * @Description 兑奖码发放接口
  * @Author <font color='blue'>zhangcm</font>
  */
 @Component
 public class PrizeCodeGiver extends PrizeGiver {
-
     private PrizeCodeService prizeCodeService;
 
     /**
@@ -33,6 +29,6 @@ public class PrizeCodeGiver extends PrizeGiver {
 
     @Override
     public PrizeType[] getIdentities() {
-        return new PrizeType[] {PRIZE_CODE};
+        return new PrizeType[] {PrizeType.PRIZE_CODE};
     }
 }

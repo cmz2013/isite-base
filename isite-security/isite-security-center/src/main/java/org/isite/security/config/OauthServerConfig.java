@@ -1,5 +1,7 @@
 package org.isite.security.config;
 
+import org.isite.security.data.constants.CacheKeys;
+import org.isite.security.data.constants.SecurityUrls;
 import org.isite.security.exception.WebResponseExceptionTranslator;
 import org.isite.security.oauth.ClientService;
 import org.isite.security.oauth.OauthTokenEnhancer;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -16,13 +19,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
-import static org.isite.security.data.constants.CacheKeys.SECURITY_PREFIX;
-import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH;
-import static org.isite.security.data.constants.SecurityUrls.URL_OAUTH_APPROVAL;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-
 /**
  * @Description 认证服务器配置
  * 被@Configuration注解的类内部包含有一个或多个被@Bean注解的方法，这些方法将会被会被Spring AOP代理增强，
@@ -33,11 +29,11 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableAuthorizationServer
 public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
     private final RedisConnectionFactory redisConnectionFactory;
-    private TokenService tokenService;
     private ClientService clientService;
-    private WebResponseExceptionTranslator webResponseExceptionTranslator;
-    private OauthTokenEnhancer oauthTokenEnhancer;
+    private TokenService tokenService;
     private AuthenticationManager authenticationManager;
+    private OauthTokenEnhancer oauthTokenEnhancer;
+    private WebResponseExceptionTranslator webResponseExceptionTranslator;
 
     @Autowired
     public OauthServerConfig(RedisConnectionFactory redisConnectionFactory) {
@@ -72,7 +68,7 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Bean
     public TokenStore redisTokenStore() {
         RedisTokenStore redisTokenStore = new RedisTokenStore(redisConnectionFactory);
-        redisTokenStore.setPrefix(SECURITY_PREFIX);
+        redisTokenStore.setPrefix(CacheKeys.SECURITY_PREFIX);
         return redisTokenStore;
     }
 
@@ -85,9 +81,9 @@ public class OauthServerConfig extends AuthorizationServerConfigurerAdapter {
                 // 自定义token生成方式
                 .tokenEnhancer(oauthTokenEnhancer)
                 // 支持GET、POST请求获取token
-                .allowedTokenEndpointRequestMethods(POST, GET)
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET)
                 // 替换默认的url
-                .pathMapping(URL_OAUTH + "/confirm_access", URL_OAUTH_APPROVAL)
+                .pathMapping(SecurityUrls.URL_OAUTH + "/confirm_access", SecurityUrls.URL_OAUTH_APPROVAL)
                 .authenticationManager(authenticationManager);
     }
 

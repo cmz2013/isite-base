@@ -1,10 +1,9 @@
 package org.isite.tenant.data.enums;
 
 import org.isite.commons.lang.enums.Enumerable;
-
 /**
- * 系统资源类型枚举
- * @author <font color='blue'>zhangcm</font>
+ * @Description 系统资源类型枚举
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum ResourceType implements Enumerable<String> {
     /**

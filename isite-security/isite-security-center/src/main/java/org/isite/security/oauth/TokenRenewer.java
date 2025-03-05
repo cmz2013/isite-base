@@ -1,16 +1,12 @@
 package org.isite.security.oauth;
 
+import org.isite.commons.lang.enums.ChronoUnit;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import java.util.Date;
-
-import static java.lang.System.currentTimeMillis;
-import static org.isite.commons.lang.enums.ChronoUnit.MINUTE;
-import static org.isite.commons.lang.enums.ChronoUnit.SECOND;
-
 /**
  * @Description token续签
  * @Author <font color='blue'>zhangcm</font>
@@ -30,8 +26,8 @@ public class TokenRenewer {
      * @Author <font color='blue'>zhangcm</font>
      */
     public void execute(OAuth2AccessToken accessToken, OAuth2Authentication authentication, int validity) {
-        long expirationTime = currentTimeMillis() + validity * SECOND.getMillis();
-        if (expirationTime - accessToken.getExpiration().getTime() > MINUTE.getMillis()) {
+        long expirationTime = System.currentTimeMillis() + validity * ChronoUnit.SECOND.getMillis();
+        if (expirationTime - accessToken.getExpiration().getTime() > ChronoUnit.MINUTE.getMillis()) {
             ((DefaultOAuth2AccessToken) accessToken).setExpiration(new Date(expirationTime));
             tokenStore.storeAccessToken(accessToken, authentication);
         }

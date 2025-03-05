@@ -1,10 +1,9 @@
 package org.isite.tenant.data.enums;
 
 import org.isite.commons.lang.enums.Enumerable;
-
 /**
- * 员工岗位状态
- * @author <font color='blue'>zhangcm</font>
+ * @Description 员工岗位状态
+ * @Author <font color='blue'>zhangcm</font>
  */
 public enum OfficeStatus implements Enumerable<Integer> {
     /**

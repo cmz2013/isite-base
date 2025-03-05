@@ -1,16 +1,14 @@
 package org.isite.operation.data;
 
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.json.Jackson;
 import org.isite.operation.support.vo.SignScoreProperty;
-
-import static org.isite.commons.lang.Reflection.toJsonFields;
-import static org.isite.commons.lang.json.Jackson.toJsonString;
-
 /**
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 public class TaskPropertyTest {
 
     public static void main(String[] args) {
-        System.out.println(toJsonString(toJsonFields(SignScoreProperty.class)));
+        System.out.println(Jackson.toJsonString(Reflection.toJsonFields(SignScoreProperty.class)));
     }
 }

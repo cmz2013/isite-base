@@ -3,11 +3,9 @@ package org.isite.operation.support.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.isite.commons.cloud.data.dto.Dto;
+import org.isite.commons.lang.Constants;
 
 import javax.validation.constraints.NotBlank;
-
-import static org.isite.commons.lang.Constants.ZERO;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
@@ -35,7 +33,7 @@ public class PrizePutDto extends Dto<Integer> {
      * 总库存，0不做库存校验。
      * 兑奖码的总库存不能编辑，导入或删除兑奖码时维护
      */
-    private Integer totalInventory = ZERO;
+    private Integer totalInventory = Constants.ZERO;
     /**
      * 奖品排列顺序
      */

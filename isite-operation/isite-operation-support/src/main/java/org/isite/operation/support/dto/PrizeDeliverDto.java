@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-
 /**
  * @Author <font color='blue'>zhangcm</font>
  */

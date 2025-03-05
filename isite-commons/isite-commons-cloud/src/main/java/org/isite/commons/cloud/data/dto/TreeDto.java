@@ -5,7 +5,7 @@ import lombok.Setter;
 
 /**
  * @Description 树 DTO。pids由后端负责设置，接口不传参
- * @author <font color='blue'>zhangcm</font>
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter

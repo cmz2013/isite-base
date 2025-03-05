@@ -1,7 +1,11 @@
 package org.isite.operation.task;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.isite.commons.cloud.factory.Strategy;
+import org.isite.commons.lang.Constants;
+import org.isite.commons.lang.Reflection;
+import org.isite.commons.lang.utils.TypeUtils;
 import org.isite.operation.po.TaskObjectPo;
 import org.isite.operation.po.TaskRecordPo;
 import org.isite.operation.service.TaskObjectService;
@@ -16,17 +20,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import static java.lang.Boolean.TRUE;
-import static java.lang.System.currentTimeMillis;
-import static org.apache.commons.collections4.CollectionUtils.isEmpty;
-import static org.isite.commons.lang.Constants.ONE;
-import static org.isite.commons.lang.Constants.ZERO;
-import static org.isite.commons.lang.Reflection.getGenericParameter;
-import static org.isite.commons.lang.utils.TypeUtils.cast;
-import static org.isite.operation.task.IdempotentKey.toValue;
-
 /**
  * @Description 任务执行接口，用于处理行为消息
  * @param <P> 任务记录PO Class
@@ -55,7 +48,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             limit = task.getTaskPeriod().getLimit();
         }
         long taskNumber = getTaskNumber(activity.getId(), task.getId(), startTime, limit, eventDto);
-        if (taskNumber > ZERO) {
+        if (taskNumber > Constants.ZERO) {
             P taskRecord = createTaskRecord(eventDto, activity, task, startTime, taskNumber);
             if (null != taskRecord) {
                 saveTaskRecord(activity, taskRecord, getReward(activity, task, eventDto));
@@ -67,7 +60,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * 校验任务自定义属性约束条件
      */
     protected boolean checkTaskProperty(TaskProperty<?> taskProperty, EventDto eventDto) {
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     /**
@@ -76,12 +69,12 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     protected boolean checkTaskObject(Task task, EventDto eventDto) {
         TaskObjectPo taskObjectPo = new TaskObjectPo();
         taskObjectPo.setTaskId(task.getId());
-        if (taskObjectService.count(taskObjectPo) > ZERO) {
+        if (taskObjectService.count(taskObjectPo) > Constants.ZERO) {
             taskObjectPo.setObjectType(eventDto.getEventType().getObjectType());
             taskObjectPo.setObjectValue(eventDto.getObjectValue());
-            return taskObjectService.count(taskObjectPo) > ZERO;
+            return taskObjectService.count(taskObjectPo) > Constants.ZERO;
         }
-        return TRUE;
+        return Boolean.TRUE;
     }
 
     /**
@@ -96,11 +89,11 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
             taskRecord.setActivityPid(activity.getPid());
             taskRecord.setObjectType(eventDto.getEventType().getObjectType());
             taskRecord.setObjectValue(eventDto.getObjectValue());
-            taskRecord.setFinishTime(new Date(currentTimeMillis()));
+            taskRecord.setFinishTime(LocalDateTime.now());
             taskRecord.setUserId(eventDto.getUserId());
             taskRecord.setActivityId(activity.getId());
             taskRecord.setRemark(task.getRemark());
-            taskRecord.setIdempotentKey(toValue(
+            taskRecord.setIdempotentKey(IdempotentKey.toValue(
                     activity.getId(), task.getId(), periodStartTime, eventDto.getUserId(), taskNumber));
             return taskRecord;
         } catch (Exception e) {
@@ -110,7 +103,7 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
     }
 
     protected Class<P> getTaskRecordClass() {
-        return cast(getGenericParameter(this.getClass(), TaskExecutor.class));
+        return TypeUtils.cast(Reflection.getGenericParameter(this.getClass(), TaskExecutor.class));
     }
 
     /**
@@ -129,10 +122,10 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      * @return 任务奖励
      */
     protected Reward getReward(Activity activity, Task task, EventDto eventDto) {
-        if (null == task.getProperty() || isEmpty(task.getProperty().getRewards())) {
+        if (null == task.getProperty() || CollectionUtils.isEmpty(task.getProperty().getRewards())) {
             return null;
         }
-        return task.getProperty().getRewards().get(ZERO);
+        return task.getProperty().getRewards().get(Constants.ZERO);
     }
 
     /**
@@ -160,11 +153,11 @@ public abstract class TaskExecutor<P extends TaskRecordPo> implements Strategy<T
      */
     public long getTaskNumber(int activityId, int taskId, LocalDateTime periodStartTime, Integer limit, long userId) {
         long records = countTaskRecord(activityId, taskId, periodStartTime, userId);
-        if (null != limit && limit > ZERO) {
-            return limit > records ? records + ONE : ZERO;
+        if (null != limit && limit > Constants.ZERO) {
+            return limit > records ? records + Constants.ONE : Constants.ZERO;
         }
         //如果不配置任务周期频率，可以重复多次执行任务
-        return records + ONE;
+        return records + Constants.ONE;
     }
 
     /**

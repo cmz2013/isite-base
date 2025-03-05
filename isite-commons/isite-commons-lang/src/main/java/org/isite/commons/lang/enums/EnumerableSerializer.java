@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * @Author <font color='blue'>zhangcm</font>
  */
-public class EnumConstantSerializer extends JsonSerializer<Object> {
+public class EnumerableSerializer extends JsonSerializer<Object> {
 
     @Override
     public void serialize(Object object, JsonGenerator generator, SerializerProvider provider) throws IOException {

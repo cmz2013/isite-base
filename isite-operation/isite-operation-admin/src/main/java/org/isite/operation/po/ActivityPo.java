@@ -10,11 +10,12 @@ import org.isite.operation.support.vo.ActivityProperty;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * @description 运营活动
- * @author <font color='blue'>zhangcm</font>
+ * @Description 运营活动
+ * @Author <font color='blue'>zhangcm</font>
  */
 @Getter
 @Setter
@@ -36,11 +37,11 @@ public class ActivityPo extends Po<Integer> {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * @see ActivityProperty
      * 活动属性JSON

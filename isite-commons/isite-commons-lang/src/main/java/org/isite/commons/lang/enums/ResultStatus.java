@@ -1,7 +1,6 @@
 package org.isite.commons.lang.enums;
 
 import lombok.Getter;
-
 /**
  * @Description http status
  * @Author <font color='blue'>zhangcm</font>
@@ -26,7 +25,11 @@ public enum ResultStatus implements Enumerable<Integer> {
     /**
      * 禁止
      */
-    FORBIDDEN(403, "Forbidden");
+    FORBIDDEN(403, "Forbidden"),
+    /**
+     * 服务不可用
+     */
+    SERVICE_UNAVAILABLE(503, "Service Unavailable");
 
     private final int code;
     @Getter
